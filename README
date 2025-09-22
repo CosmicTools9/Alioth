@@ -91,47 +91,12 @@ pgsql -h db_host -U db_user -p db_port -d your_db_name -f alioth.ddl
 
 ### 基本概念
 
-```python
-from alioth.core import EconomicSystem, Transaction, Agent
 
-# 创建经济系统
-econ_system = EconomicSystem()
+### 同构数据结构设计
 
-# 定义经济主体
-alice = Agent("Alice", initial_endowment=100)
-bob = Agent("Bob", initial_endowment=50)
 
-# 创建交易
-transaction = Transaction(sender=alice, receiver=bob, amount=10, commodity="USD")
+### 对称性设计
 
-# 执行交易
-econ_system.execute(transaction)
-```
-
-### 对称性分析
-
-```python
-from alioth.symmetry import analyze_symmetry
-
-# 分析交易对称性
-symmetry_group = analyze_symmetry(transaction)
-print(f"对称群阶数: {symmetry_group.order}")
-print(f"生成元: {symmetry_group.generators}")
-```
-
-### 同构检测
-
-```python
-from alioth.isomorphism import find_isomorphisms
-
-# 比较两个经济系统
-system1 = EconomicSystem()
-system2 = EconomicSystem()
-
-# 寻找同构映射
-isomorphisms = find_isomorphisms(system1, system2)
-print(f"找到 {len(isomorphisms)} 个同构映射")
-```
 
 ## 📚 理论背景
 
@@ -153,15 +118,15 @@ Alioth 模型建立在以下数学理论之上：
 
 ## 🧪 示例应用
 
-### 金融市场分析
+### ERP构建
 
 
 
-### 宏观经济建模
+### 销售管理
 
 
 
-### 网络经济学
+### 供应链管理
 
 
 
@@ -201,7 +166,7 @@ Alioth 模型建立在以下数学理论之上：
 ## 🙏 致谢
 
 - 感谢所有贡献者和用户
-- 基于优秀的开源数学库
+- 
 - 受经济学和数学交叉研究的启发
 
 ## 📞 支持
