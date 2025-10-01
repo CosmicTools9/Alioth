@@ -171,6 +171,7 @@ sudo systemctl start postgresql
 ```bash
 # 导入数据模型
 psql -h localhost -U postgres -d postgres -f init.ddl
+psql -h localhost -U isahl -d "isahl_9.x" -f alioth.ddl
 ```
 
 #### 4. 验证安装
