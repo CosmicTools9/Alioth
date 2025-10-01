@@ -39,7 +39,7 @@ Alioth 致力于：
 - **守恒原理**: 确保经济系统中的价值守恒和交易可逆性
 - **可验证性**: 通过数学证明验证交易的正确性和完整性
 
-### 🏗️ 同构群结构  
+### 🏗️ 同构群结构
 - **统一建模**: 使用群论框架统一表示经济主体和交易关系
 - **结构保持**: 保持经济系统在变换下的结构不变性
 - **层次化组织**: 通过子群和同态映射组织复杂经济关系
@@ -71,7 +71,7 @@ Alioth 模型的核心是交易对称性原理，它将经济行为视为对称�
 交易 T: A(M) ↔ B(D)
 其中:
 - A, B ∈ G (经济主体群)
-- M, D ∈ Z (可交易权益群)  
+- M, D ∈ Z (可交易权益群)
 - T ∈ Hom(A, B) (交易态射集)
 ```
 
@@ -169,17 +169,14 @@ sudo systemctl start postgresql
 
 #### 3. 初始化数据库
 ```bash
-# 创建数据库
-createdb alioth_db
-
 # 导入数据模型
-psql -h localhost -U postgres -d alioth_db -f alioth.ddl
+psql -h localhost -U postgres -d postgres -f init.ddl
 ```
 
 #### 4. 验证安装
 ```bash
 # 连接数据库验证
-psql -h localhost -U postgres -d alioth_db -c "SELECT version();"
+psql -h localhost -U postgres -d "isahl_9.x" -c "SELECT version();"
 ```
 
 ## 🛠️ 使用指南
@@ -231,7 +228,7 @@ psql -h localhost -U postgres -d alioth_db -c "SELECT version();"
 通过数学验证确保系统总价值守恒：
 ```sql
 -- 验证守恒性
-SELECT SUM(endowment) FROM economic_agents;
+
 -- 结果应该保持不变
 ```
 
@@ -247,7 +244,7 @@ Alioth 模型建立在坚实的数学理论基础之上：
 - **群操作**: 定义经济行为的组合和变换规则
 - **子群理论**: 组织复杂经济系统的层次结构
 
-#### 范畴论 (Category Theory)  
+#### 范畴论 (Category Theory)
 - **关系建模**: 提供经济关系的严格形式化框架
 - **函子理论**: 支持经济系统间的映射和变换
 - **自然变换**: 描述经济行为的等价性和相似性
@@ -280,18 +277,10 @@ Alioth 模型建立在坚实的数学理论基础之上：
 
 ```sql
 -- 财务模块：会计科目对称性设计
-CREATE TABLE accounting_subjects (
-    id BIGSERIAL PRIMARY KEY,
-    subject_code VARCHAR(50) UNIQUE,
-    subject_name VARCHAR(200),
-    subject_type VARCHAR(20), -- 资产/负债/权益/收入/费用
-    symmetry_pair VARCHAR(50) -- 对称科目代码
-);
+
 
 -- 示例：资产与负债的对称关系
-INSERT INTO accounting_subjects VALUES 
-(1, '1001', '现金', 'asset', '2001'),
-(2, '2001', '应付账款', 'liability', '1001');
+
 ```
 
 #### 业务流程建模
@@ -305,16 +294,10 @@ INSERT INTO accounting_subjects VALUES
 #### 客户关系管理
 ```sql
 -- 客户主体建模
-INSERT INTO isahl.zc_id_subjects (o_name, domain_, "biz-type") 
-VALUES 
-('客户A', 'customer', 'retail'),
-('客户B', 'customer', 'wholesale');
+
 
 -- 销售交易对称性
-INSERT INTO isahl.zc_id_event (o_name, "biz-type", fk_subject, fk_object) 
-VALUES 
-('销售订单', 'sales_order', 1, 2),  -- 正向交易
-('销售收款', 'sales_payment', 2, 1); -- 对称交易
+
 ```
 
 #### 销售数据分析
@@ -328,23 +311,13 @@ VALUES
 #### 供应商网络建模
 ```sql
 -- 供应链网络结构
-INSERT INTO isahl.zc_ad_relation (o_name, ref_left, ref_right, r_number) 
-VALUES 
-('供应关系', 1, 3, 'supplies'),    -- 供应商A供应原材料
-('供应关系', 2, 3, 'supplies'),    -- 供应商B供应原材料
-('生产关系', 3, 4, 'produces');    -- 工厂生产成品
+
 ```
 
 #### 库存管理对称性
 ```sql
 -- 库存变动对称性设计
-CREATE TABLE inventory_movements (
-    id BIGSERIAL PRIMARY KEY,
-    movement_type VARCHAR(20), -- inbound/outbound
-    item_id BIGINT,
-    quantity DECIMAL(15,2),
-    symmetry_movement_id BIGINT -- 对称移动ID
-);
+
 ```
 
 #### 供应链优化
@@ -442,6 +415,6 @@ Alioth 项目的成功离不开以下方面的支持：
 
 ---
 
-**Alioth** - 基于数学对称性的企业级数据建模框架  
-由 [CosmicTools](https://cosmic-tools.ltd) 团队用 ❤️ 打造  
+**Alioth** - 基于数学对称性的企业级数据建模框架
+由 [CosmicTools](https://cosmic-tools.ltd) 团队用 ❤️ 打造
 版本: v9.0.3 | 最后更新: 2025年9月
