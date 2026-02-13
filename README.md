@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![GitHub Issues](https://img.shields.io/badge/github-issues-blue.svg)](https://github.com/CosmicTools9/Alioth/issues)
 [![GitHub Stars](https://img.shields.io/badge/github-stars-blue.svg)](https://github.com/CosmicTools9/Alioth/stargazers)
-[![Version](https://img.shields.io/badge/version-v9.0.3-blue.svg)](Version)
+[![Version](https://img.shields.io/badge/version-v9.2.4-blue.svg)](Version)
 
 ## 📋 目录
 
@@ -196,7 +196,7 @@ psql -h localhost -U postgres -d "isahl_9.x" -c "SELECT version();"
 
 ## 使用指南
 
-Alioth 框架采用基于群论和范畴论的分层数据模型，核心包括抽象数据类型层（zc_ad_*）和业务身份层（zc_id_*）。
+Alioth 框架采用基于群论和范畴论的分层数据模型，核心包括抽象数据类型层（zc_ad_*）和实现数据层（zc_id_*）。
 
 ### 核心概念
 
@@ -214,17 +214,17 @@ Alioth 框架采用基于群论和范畴论的分层数据模型，核心包括�
 | zc_ad_scalar | 标量，零维向量 | 继承 variable |
 | zc_ad_tensor | 张量，多维数组 | 继承 variable |
 
-#### 业务身份层（Identity Data）
+#### 实现数据层（Implement Data）
 
-业务身份层在抽象类型基础上添加业务特性：
+实现数据层在抽象类型基础上实现具体业务要素，zc_id_* 表示业务要素的具体数据实现：
 
 | 类型 | 说明 | 继承关系 |
 |------|------|----------|
-| zc_id_object | 身份对象，添加角色和所有权 | 继承 variable |
-| zc_id_lifecycle | 生命周期对象，添加编号和业务流程 | 继承 tensor, object |
-| zc_id_agreement | 协议 | 继承 lifecycle |
-| zc_id_event | 事件，添加时间、地点、主体 | 继承 lifecycle |
-| zc_id_approve | 审批流程 | 继承 event |
+| zc_id_object | 业务要素实现根类型 | 继承 variable/tensor/dimension |
+| zc_id_lifecycle | 生命周期实现 | 继承 tensor, object |
+| zc_id_contract | 合同实现 | 继承 lifecycle |
+| zc_id_event | 事件实现 | 继承 lifecycle |
+| zc_id_approve | 审批流程实现 | 继承 event |
 
 ### 模型范畴分类
 
@@ -365,14 +365,14 @@ zc_id_invoice
 | 前缀 | 含义 |
 |------|------|
 | zc_ad_* | 抽象数据类型 |
-| zc_id_* | 业务身份数据 |
+| zc_id_* | 实现数据（业务要素具体化） |
 | meta_* | 元数据/系统数据 |
 | *_r_* | 关系表 |
 | *_rr_* | 多对多关系表 |
 
 ### 表继承关系
 
-Alioth 模型采用 PostgreSQL 表继承机制构建分层数据结构，从抽象数据类型逐步特化到具体业务对象。
+Alioth 模型采用 PostgreSQL 表继承机制构建分层数据结构，从抽象数据类型逐步特化到具体业务对象。zc_id_object 的一阶继承表表述了业务要素如何被分类实现。
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#e8f4fc', 'edgeLabelBackground':'#ffffff', 'tertiaryColor': '#f5f5f5'}}}%%
@@ -390,7 +390,7 @@ graph TD
         Ten --> TenS[zc_ad_tensor_r_scalar<br/>标量张量]
     end
 
-    subgraph 业务身份层_核心
+    subgraph 实现数据层_核心
         IDO[zc_id_object<br/>身份对象] --> AD
         IDO --> Sca
         IDO --> Ten
@@ -404,7 +404,7 @@ graph TD
         Apv[zc_id_approve<br/>审批] --> Evt
     end
 
-    subgraph 业务身份层_交易主体
+    subgraph 实现数据层_交易主体
         Entity[zc_id_entity<br/>实体] --> IDO
         Subj[zc_id_subjects<br/>主体集合] --> IDO
         
@@ -416,7 +416,7 @@ graph TD
         BCorp[zc_id_bank-commercial-corp<br/>商业银行] --> Bank
     end
 
-    subgraph 业务身份层_交易过程
+    subgraph 实现数据层_交易过程
         Ord[zc_id_order<br/>订单] --> LC
         Plan[zc_id_plan<br/>计划] --> LC
         Prod[zc_id_production<br/>生产] --> LC
@@ -426,25 +426,25 @@ graph TD
         Prod --> BOM[zc_id_bom-combine<br/>组合BOM]
     end
 
-    subgraph 业务身份层_交易信息
+    subgraph 实现数据层_交易信息
         Inv[zc_id_invoice<br/>发票] --> LC
         Con[zc_id_contract<br/>合同] --> LC
         Doc[zc_id_document<br/>文档] --> IDO
         Form[zc_id_formula<br/>公式] --> IDO
     end
 
-    subgraph 业务身份层_交易状态
+    subgraph 实现数据层_交易状态
         Stat[zc_id_status<br/>状态] --> IDO
         Ver[zc_id_version<br/>版本] --> IDO
     end
 
-    subgraph 业务身份层_交易对象
+    subgraph 实现数据层_交易对象
         ProdT[zc_id_prod-*-*-<br/>产品变体] --> IDO
         Scal[zc_id_scale<br/>计量] --> IDO
         Unit[zc_id_unit<br/>单位] --> IDO
     end
 
-    subgraph 业务身份层_交易媒介
+    subgraph 实现数据层_交易媒介
         Stor[zc_id_storage<br/>存储] --> IDO
         Plac[zc_id_place<br/>场所] --> IDO
         Info[zc_id_contact_infos<br/>联系信息] --> IDO
@@ -464,7 +464,7 @@ graph TD
 |------|------|------|
 | 第零层 | zc_ad_object | 根类型，包含通用字段（id, created_at, updated_at等） |
 | 第一层 | zc_ad_variable, zc_ad_vector, zc_ad_tensor | 添加数据类型和编码 |
-| 第二层 | zc_id_object | 叠加角色、所有权、权限控制 |
+| 第二层 | zc_id_object | 业务要素实现根类型，一阶继承表定义分类实现 |
 | 第三层 | zc_id_lifecycle | 添加业务流程编号和序列 |
 | 第四层 | 具体业务对象 | 特定业务场景的完全特化 |
 
