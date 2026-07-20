@@ -4,7 +4,9 @@
 [![Version](https://img.shields.io/badge/version-v10.0.7-blue.svg)](Version)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14%2B-336791.svg)](https://www.postgresql.org/)
 
-**企业级数据本体建模框架** — 基于群论与范畴论构建的 PostgreSQL 表继承体系，覆盖交易主体、对象、媒介、过程、信息、状态六大范畴。
+基于群论与交换本体论的 **PostgreSQL 表继承数据模型**。将经济行为形式化为对称操作，通过三维正交坐标 `(Scene, Factor, Function)` 加上状态维构成完整的本体空间。
+
+本文档说明如何使用 `alioth.ddl` 部署模型，以及模型的架构设计。
 
 ---
 
@@ -12,10 +14,10 @@
 
 |文件|内容|
 |---|---|
-|`alioth.ddl`|**完整 DDL**（schema + 所有表、类型、函数、约束），可直接导入|
-|`Version`|模型版本号，与 `alioth.ddl` 头部一致|
+|`alioth.ddl`|完整 DDL（schema + 所有表、类型、函数、索引、约束），由 `pg_dump` 生成并后处理为纯 CREATE/ALTER 形式|
+|`Version`|当前模型版本号，每次发布自动更新|
 
-> `alioth.ddl` 由 `pg_dump --schema isahl` 生成，经过后处理过滤为纯 `CREATE` / `ALTER` 语句，在空数据库中可直接执行。
+`alioth.ddl` 在空数据库中可直接执行，无需任何预处理。
 
 ---
 
@@ -24,7 +26,7 @@
 ### 前置条件
 
 - PostgreSQL 14+
-- 已创建 `isahl` 角色和 `isahl` 数据库：
+- 已创建 `isahl` 角色和数据库：
 
 ```sql
 CREATE ROLE isahl WITH LOGIN;
@@ -42,20 +44,20 @@ psql -h localhost -U isahl -d isahl -f alioth.ddl
 ### 验证
 
 ```sql
--- 查看抽象类型层
+-- 抽象类型层
 SELECT relname FROM pg_class WHERE relname LIKE 'zc_ad_%' AND relkind = 'r' ORDER BY 1;
 
--- 查看业务对象数量
+-- 业务对象数量
 SELECT count(*) FROM pg_class WHERE relname LIKE 'zc_id_%' AND relkind = 'r';
 ```
 
 ---
 
-## 模型结构
+## 模型架构
 
 ### 继承层次
 
-Alioth 采用 PostgreSQL 表继承机制，从抽象数学类型逐步特化到具体业务对象：
+Alioth 通过 PostgreSQL 表继承构建从抽象数学类型到具体业务对象的层次结构：
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#e8f4fc'}}}%%
@@ -71,15 +73,13 @@ graph TD
 
     subgraph 实现数据层
         AD --> IDO[zc_id_object 身份对象]
-        Ten --> LC[zc_id_lifecycle 生命周期]
         IDO --> Entity[zc_id_entity 实体]
-        IDO --> Prod[zc_id_product 产品]
-        IDO --> Stor[zc_id_storage 存储]
         IDO --> Stat[zc_id_status 状态]
-        LC --> Ord[zc_id_order 订单]
-        LC --> Agr[zc_id_agreement 协议]
+        IDO --> Prod[zc_id_product 产品]
+        Ten --> LC[zc_id_lifecycle 生命周期]
+        LC --> IDO
         LC --> Evt[zc_id_event 事件]
-        LC --> Prod[zc_id_production 生产]
+        LC --> Agr[zc_id_agreement 协议]
         Evt --> Apv[zc_id_approve 审批]
     end
 
@@ -88,90 +88,138 @@ graph TD
     style LC fill:#fff9c4,stroke:#333,stroke-width:2px
 ```
 
-|层次|类型|字段特征|
+|层|基表|职责|字段特征|
+|---|---|---|---|
+|L0 抽象|`zc_ad_object`|所有对象的根|`id`, `created_at`, `updated_at`|
+|L1 语义|`zc_ad_variable`|为对象添加语义标识|`code`, `notice`, `unit`|
+|L2 结构|`zc_ad_scalar` / `zc_ad_vector` / `zc_ad_tensor` / `zc_ad_dimension`|按数学结构分化|
+|L3 关系|`zc_ad_relation`|两实体的有向连接|`ref_left`, `ref_right`|
+|L4 实现|`zc_id_object`|**业务要素根** — 一阶继承表定义分类实现|继承 L0~L3 的全部字段|
+|L5 生命周期|`zc_id_lifecycle`|为对象赋予运作轨迹|`no`, `op_seq`|
+|L6+ 叶表|`zc_id_order`, `zc_id_orde-shipping`, …|具体业务场景|继承链上全部字段 + 业务专有字段|
+
+### 三维坐标体系
+
+每个生命周期实体在 `isahl` 空间中占据唯一坐标点 `(Scene, Factor, Function)`，三维**完全正交**：
+
+|维度|DB 列|指向|含义|
+|---|---|---|---|
+|Scene 场景|`dk_scene`|`zc_id_scene`|交换发生的业务上下文（在哪交易）|
+|Factor 要素|`dk_factor`|`zc_id_factor`|参与交换的主体/媒介/标的物（谁在交易，交易什么）|
+|Function 功能|`dk_function`|`zc_id_function`|交换中不同阶段不同层次的操作（怎么交易）|
+
+三个维度的基表都是 `zc_ad_dimension`。每个维度的 `code` 由**类目前缀 + 序号符号**自动拼接（如 `JC` = 系统管理），由触发器在 INSERT/UPDATE 时自动生成。
+
+### 五领域完备性
+
+Factor 维度按要素类型分为五个子域，对应一次完整交换不可或缺的五个视角：
+
+|领域码|领域|要素|经济角色|
+|---|---|---|---|
+|L|人|参与者子群|谁在交易|
+|C|箱|媒介/容器子群|用什么承载|
+|G|货|标的物子群|交易什么|
+|P|场|场所子群|在哪交易|
+|F|财|过程与信息子群|怎么流转|
+
+领域归属于 `ck_category` → `zc_id_cons-factor-cate.a_type_`。一次完整的交换快照必须覆盖全部五个领域（不允许对称性破缺），由 AliothStudio 平台的推理引擎自动补全缺失领域。
+
+### 生命周期的状态表达
+
+业务对象在整个生命周期中的状态的离散投影，通过关系表实现：
+
+```
+zc_id_lifecycle_r_primary-status → zc_id_stus-*  主状态（单向演进，如生→死）
+zc_id_lifecycle_r_status         → zc_id_status   通用状态（双向，如在职↔休假）
+zc_id_lifecycle_r_tags           → zc_id_tags     标签
+zc_id_lifecycle_r_category       → zc_id_category 分类
+```
+
+---
+
+## 命名约定
+
+### 表级
+
+|后缀|关系类型|示例|
 |---|---|---|
-|L0|`zc_ad_object`|`id bigint`, `created_at`, `updated_at`|
-|L1|`zc_ad_variable`|+ `code`, `notice`, `unit` 等语义字段|
-|L2|`zc_ad_scalar` / `zc_ad_vector` / `zc_ad_tensor` / `zc_ad_dimension`|按数学结构分化（标量、向量、张量、维度）|
-|L3|`zc_ad_relation`|+ `ref_left`, `ref_right` 关系字段|
-|L4|`zc_id_object`|**业务要素实现根** — 继承自 L0~L3，携带组织维度绑定|
-|L5|`zc_id_lifecycle`|+ `no`（编号）、`op_seq`（操作序列）— 支持状态机|
-|L6+|具体业务表|`zc_id_order`, `zc_id_orde-shipping`, `zc_id_prod-sales` 等|
+|`{entity}_r_{target}`|一对多引用表|`zc_id_lifecycle_r_status`|
+|`{entity}_rr_{target}`|多对多桥接表|`zc_id_bom_rr_item`|
 
-### 六大范畴
+关系表持有 `ref_left` 和 `ref_right`，分别表示引用方和被引用方的 ID。
 
-模型按经济活动维度组织为六个范畴，每张业务表属于其中一个：
-
-|范畴|根表|关键子表（部分）|
-|---|---|---|
-|**交易主体** Entity|`zc_id_entity`|`zc_id_subjects`, `zc_id_orga-corporation`, `zc_id_bank-commercial`|
-|**交易对象** Product|`zc_id_product`|`zc_id_prod-sales`, `zc_id_prod-combine`, `zc_id_inventory`|
-|**交易媒介** Storage|`zc_id_storage`|`zc_id_stor-account`, `zc_id_place`, `zc_id_contact_infos`|
-|**交易过程** Lifecycle|`zc_id_lifecycle`|`zc_id_order`, `zc_id_plan`, `zc_id_production`, `zc_id_operation`|
-|**交易信息** Document|`zc_id_document`|`zc_id_invoice`, `zc_id_contract`, `zc_id_formula`|
-|**交易状态** Status|`zc_id_status`|`zc_id_version`, `zc_id_stus-payment`, `zc_id_stus-billing`|
-
-### 表命名约定
-
-关系表通过表名后缀标识：
-
-|后缀|含义|示例|
-|---|---|---|
-|`_r_`|多对一关系表|`zc_id_lifecycle_r_status` — 生命周期引用状态|
-|`_rr_`|多对多关系表|`zc_id_bom_rr_item` — BOM 与物料多对多|
-
-### 列前缀约定
-
-业务表的列通过前缀区分用途：
+### 列级
 
 |前缀|含义|示例|
 |---|---|---|
-|`qk_`|标量引用键|`qk_price` — 价格引用（指向标量表）|
-|`fk_`|外键|`fk_country` — 国家外键|
-|`sk_`|序列/流水号|`sk_no` — 流水编号|
-|`ck_`|分类/类别键|`ck_type` — 类型分类|
+|`qk_*`|标量引用键 → `zc_id_scal-*` 体系|`qk_price`（价格引用）、`qk_amount`（金额引用）|
+|`fk_*`|外键引用|`fk_country`|
+|`sk_*`|单位引用|`sk_unit`（指向计量单位表）|
+|`ck_*`|分类/类目引用|`ck_category`（指向类目体系）|
+|`tk_*`|标签引用|`tk_batch_no`（单选标签）|
+|`lk_*`|等级引用|`lk_level`|
 
-> 另外 `_f_` 和 `_t_` 列由 `dk_function` 触发器自动派生，不在 DTO 中暴露。
+> `_f_` 和 `_t_` 列由 `dk_function.code` 前缀自动派生（六种：`!.` / `!_` / `↑.` / `↑_` / `↓.` / `↓_` → 创意/设计/实现 × 范例/实例），不在业务层的 DTO 中暴露。
+
+---
+
+## 关键设计
 
 ### ID 生成
 
-所有表的 `id` 列通过 `gen_next_uid(table_code)` 生成全局唯一 ID，继承表通过后置 `ALTER COLUMN id SET DEFAULT` 独立绑定自己的生成器，确保即使在多继承场景下也不会冲突。
+|表类型|函数|
+|---|---|
+|`zc_id_lifecycle` 及其所有子表|`isahl.gen_next_zuid()` — 全局唯一 ID|
+|非 lifecycle 业务表|`isahl.gen_next_uid(table_code)` — 确定性 ID|
+|`isahl_meta` 元数据表|`BIGSERIAL`|
+
+继承表通过后置 `ALTER COLUMN id SET DEFAULT` 独立绑定各自的生成器，确保多继承场景下不会冲突。
+
+### 标量引用模型
+
+所有可度量的连续量（金额、日期、数量、价格等）**不以原生类型存储在业务表上**，而是统一经过标量表：
+
+```
+业务表.qk_price (bigint) → zc_id_scal-price.id → zc_id_scal-price.mark (numeric)
+业务表.qk_date  (bigint) → zc_id_scal-date.id  → zc_id_scal-date.date  (timestamptz)
+```
+
+|前缀|标量表|实际值字段|
+|---|---|---|
+|`qk_date`|`zc_id_scal-date`|`date` (timestamptz)|
+|`qk_amount`|`zc_id_scal-amount`|`mark` (numeric)|
+|`qk_price`|`zc_id_scal-price`|`mark` (numeric)|
+|`qk_qty`|`zc_id_scal-common`|`mark` (numeric)|
+|其他 `qk_*`|`zc_id_scale` 继承体系|`mark` (numeric)|
+
+**硬约束**：所有 `qk_*` 列在 DDL 中为 `bigint`，绝对禁止定义为 `Decimal` / `DateTime` / `String` 等实际值类型。
+
+### 列可写性
+
+|分类|可写性|典型列|
+|---|---|---|
+|🚫 系统生成|用户不可见、不可写|`id`, `created_at`, `updated_at`, `deleted_at`|
+|🔒 维度/触发器派生|不在 DTO 出现|`number`, `domain_`, `_f_`, `_t_`, `dk_*`, `paths`|
+|✅ 用户可写|DTO 直接暴露|`notice`, `code`, `comments`, `qk_*`, `fk_*`, `ck_*`, `tk_*`|
 
 ---
 
-## 理论背景
+## 模型发布
 
-Alioth 的理论基础是**交易对称性**——将经济行为形式化为群论中的对称操作：
+本仓库的 `alioth.ddl` 由 [AliothStudio](https://github.com/aliothstudio) 的模型发布功能自动生成：
 
-- 一笔交易 $T: A \to B$ 必然对应一笔逆交易 $T^{-1}: B \to A$
-- 系统的总价值守恒（$\sum endowment = \text{constant}$）
-- 经济关系在范畴论框架下保持结构不变性
+1. Meta 平台的模型发布 → `pg_dump --schema isahl`
+2. 后处理过滤为纯 CREATE/ALTER 形式
+3. 多继承表的 `id` 列 DEFAULT 精修（剥离内联后补 ALTER SET DEFAULT）
+4. 推送到本仓库
 
-这种数学严谨性使得 Alioth 能够：
-- **形式化验证**交易的完整性和一致性
-- **自动派生**双边的记账分录
-- **类型安全**地组合任意复杂的经济行为
-
-关于数学模型的详细推导，参见 `docs/theory.md`（规划中）。
-
----
-
-## 版本历史
-
-Alioth 通过持续迭代演进数据模型。本仓库包含最新的完整 DDL 文件，通过 `alioth.ddl` 即可获得当前最新表结构。
-
-各版本的详细差异由 [AliothStudio](https://github.com/aliothstudio) 平台的模型发布功能自动追踪。
+每次发布自动更新 `alioth.ddl` 和 `Version`。版本号遵循 [SemVer](https://semver.org/)。
 
 ---
 
 ## 贡献
 
-欢迎通过 [Issues](https://github.com/CosmicTools9/Alioth/issues) 提交：
-- 模型改进建议（新增实体、关系调整、字段补充）
-- DDL 兼容性问题
-- 文档错误
-
-代码贡献请 Fork 后提交 PR。更多信息见 [CONTRIBUTING.md](CONTRIBUTING.md)（规划中）。
+Alioth 模型通过 [AliothStudio](https://github.com/aliothstudio) 平台演化。欢迎通过 [Issues](https://github.com/CosmicTools9/Alioth/issues) 报告 DDL 兼容性问题或模型设计建议。
 
 ---
 
@@ -181,7 +229,7 @@ Alioth 通过持续迭代演进数据模型。本仓库包含最新的完整 DDL
 
 ---
 
-**Alioth** — 基于数学对称性的企业级数据建模框架
+**Alioth** — 基于数学对称性的企业级数据本体
 
 由 [CosmicTools](https://cosmic-tools.ltd) 团队用爱打造
 
