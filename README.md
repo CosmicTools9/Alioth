@@ -111,14 +111,27 @@ graph TD
 |**交易信息** Document|`zc_id_document`|`zc_id_invoice`, `zc_id_contract`, `zc_id_formula`|
 |**交易状态** Status|`zc_id_status`|`zc_id_version`, `zc_id_stus-payment`, `zc_id_stus-billing`|
 
-### 关系命名约定
+### 表命名约定
+
+关系表通过表名后缀标识：
 
 |后缀|含义|示例|
 |---|---|---|
-|`_r_`|多对一引用|`zc_id_lifecycle_r_status` — 生命周期引用状态|
-|`_rr_`|多对多关联|`zc_id_bom_rr_item` — BOM 与物料多对多|
-|`_f_`|事实外键（自动维度）|`_f_status` — 由触发器自动维护|
-|`_c_`|副本列|`_c_price` — 引用源字段的实时副本|
+|`_r_`|多对一关系表|`zc_id_lifecycle_r_status` — 生命周期引用状态|
+|`_rr_`|多对多关系表|`zc_id_bom_rr_item` — BOM 与物料多对多|
+
+### 列前缀约定
+
+业务表的列通过前缀区分用途：
+
+|前缀|含义|示例|
+|---|---|---|
+|`qk_`|标量引用键|`qk_price` — 价格引用（指向标量表）|
+|`fk_`|外键|`fk_country` — 国家外键|
+|`sk_`|序列/流水号|`sk_no` — 流水编号|
+|`ck_`|分类/类别键|`ck_type` — 类型分类|
+
+> 另外 `_f_` 和 `_t_` 列由 `dk_function` 触发器自动派生，不在 DTO 中暴露。
 
 ### ID 生成
 
