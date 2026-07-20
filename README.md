@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![GitHub Issues](https://img.shields.io/badge/github-issues-blue.svg)](https://github.com/CosmicTools9/Alioth/issues)
 [![GitHub Stars](https://img.shields.io/badge/github-stars-blue.svg)](https://github.com/CosmicTools9/Alioth/stargazers)
-[![Version](https://img.shields.io/badge/version-v9.2.4-blue.svg)](Version)
+[![Version](https://img.shields.io/badge/version-v10.0.7-blue.svg)](Version)
 
 ## 📋 目录
 
@@ -184,14 +184,14 @@ sudo systemctl start postgresql
 ```bash
 # 导入数据模型
 psql -h localhost -U postgres -d postgres -f init.ddl
-psql -h localhost -U isahl -d "isahl_9.x" -f alioth.ddl
+psql -h localhost -U isahl -d "isahl" -f alioth.ddl
 ```
 
 #### 4. 验证安装
 
 ```bash
 # 连接数据库验证
-psql -h localhost -U postgres -d "isahl_9.x" -c "SELECT version();"
+psql -h localhost -U postgres -d "isahl" -c "SELECT version();"
 ```
 
 ## 使用指南
@@ -621,4 +621,4 @@ Alioth 项目的成功离不开以下方面的支持：
 
 由 [CosmicTools](https://cosmic-tools.ltd) 团队用爱打造
 
-版本：v9.0.3 | 最后更新：2025年9月
+版本：v10.0.7 | 最后更新：2026年07月
