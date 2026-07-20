@@ -57,12 +57,13 @@ SELECT count(*) FROM pg_class WHERE relname LIKE 'zc_id_%' AND relkind = 'r';
 
 ### 继承层次
 
-Alioth 通过 PostgreSQL 表继承构建从抽象数学类型到具体业务对象的层次结构：
+Alioth 通过 PostgreSQL 表继承构建从抽象数学类型到具体业务对象的层次结构。
+表名前缀约定：`zc` 为项目前缀，`ad` = **abstract data**（抽象数据），`id` = **implement data**（实现数据）。
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#e8f4fc'}}}%%
 graph TD
-    subgraph 抽象类型层
+    subgraph 抽象类型层[zc_ad_* abstract data]
         AD[zc_ad_object 基础对象] --> V[zc_ad_variable 变量]
         V --> Vec[zc_ad_vector 向量]
         V --> Sca[zc_ad_scalar 标量]
@@ -71,8 +72,8 @@ graph TD
         Vec --> Rel[zc_ad_relation 关系]
     end
 
-    subgraph 实现数据层
-        AD --> IDO[zc_id_object 身份对象]
+    subgraph 实现数据层[zc_id_* implement data]
+        AD --> IDO[zc_id_object 实现数据根]
         IDO --> Entity[zc_id_entity 实体]
         IDO --> Stat[zc_id_status 状态]
         IDO --> Prod[zc_id_product 产品]
@@ -88,15 +89,15 @@ graph TD
     style LC fill:#fff9c4,stroke:#333,stroke-width:2px
 ```
 
-|层|基表|职责|字段特征|
-|---|---|---|---|
-|L0 抽象|`zc_ad_object`|所有对象的根|`id`, `created_at`, `updated_at`|
-|L1 语义|`zc_ad_variable`|为对象添加语义标识|`code`, `notice`, `unit`|
-|L2 结构|`zc_ad_scalar` / `zc_ad_vector` / `zc_ad_tensor` / `zc_ad_dimension`|按数学结构分化|
-|L3 关系|`zc_ad_relation`|两实体的有向连接|`ref_left`, `ref_right`|
-|L4 实现|`zc_id_object`|**业务要素根** — 一阶继承表定义分类实现|继承 L0~L3 的全部字段|
-|L5 生命周期|`zc_id_lifecycle`|为对象赋予运作轨迹|`no`, `op_seq`|
-|L6+ 叶表|`zc_id_order`, `zc_id_orde-shipping`, …|具体业务场景|继承链上全部字段 + 业务专有字段|
+|层|前缀|基表|职责|字段特征|
+|---|---|---|---|---|
+|L0 抽象|`zc_ad_`|`zc_ad_object`|所有对象的根|`id`, `created_at`, `updated_at`|
+|L1 语义|`zc_ad_`|`zc_ad_variable`|为对象添加语义标识|`code`, `notice`, `unit`|
+|L2 结构|`zc_ad_`|`zc_ad_scalar` / `zc_ad_vector` / `zc_ad_tensor` / `zc_ad_dimension`|按数学结构分化|
+|L3 关系|`zc_ad_`|`zc_ad_relation`|两实体的有向连接|`ref_left`, `ref_right`|
+|L4 实现|`zc_id_`|`zc_id_object`|**业务要素根** — 一阶继承表定义分类实现|继承 L0~L3 的全部字段|
+|L5 生命周期|`zc_id_`|`zc_id_lifecycle`|为对象赋予运作轨迹|`no`, `op_seq`|
+|L6+ 叶表|`zc_id_`|`zc_id_order`, `zc_id_orde-shipping`, …|具体业务场景|继承链上全部字段 + 业务专有字段|
 
 ### 三维坐标体系
 
