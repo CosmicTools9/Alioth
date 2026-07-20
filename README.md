@@ -179,12 +179,15 @@ sudo systemctl start postgresql
 
 下载并安装 [PostgreSQL for Windows](https://www.postgresql.org/download/windows/)
 
-#### 3. 初始化数据库
+#### 3. 导入数据模型
 
 ```bash
+# 前置准备：请确保已有 isahl role 和 isahl 数据库
+# CREATE ROLE isahl WITH LOGIN;  （按需设置密码）
+# CREATE DATABASE isahl OWNER isahl;
+
 # 导入数据模型
-psql -h localhost -U postgres -d postgres -f init.ddl
-psql -h localhost -U isahl -d "isahl" -f alioth.ddl
+psql -h localhost -U isahl -d isahl -f alioth.ddl
 ```
 
 #### 4. 验证安装
