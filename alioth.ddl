@@ -1,5 +1,7 @@
--- Alioth Model @ v10.0.7
--- Generated 2026-07-20T12:29:20Z
+-- =============================================================================
+-- Alioth Model v10.0.0 — PostgreSQL 表继承数据模型
+-- =============================================================================
+-- Generated at 2026-07-21T09:49:45Z
 --
 
 -- Schema Setup
@@ -117,35 +119,20 @@ CREATE TYPE isahl.zc_id_unit_system_enum AS ENUM (
 -- Name: gen_next_uid(bigint); Type: FUNCTION; Schema: isahl; Owner: -
 --
 
-CREATE FUNCTION isahl.gen_next_uid(table_code bigint) RETURNS bigint
+CREATE FUNCTION isahl.gen_next_uid(table_code bigint DEFAULT 1, OUT result bigint) RETURNS bigint
     LANGUAGE plpgsql
-    AS $_$
-   DECLARE
-       dp_bits CONSTANT INTEGER := 10;
-       seq_bits CONSTANT INTEGER := 53;
-       dp_shift CONSTANT INTEGER := seq_bits;
-       dp_mask CONSTANT BIGINT := (1 << dp_bits) - 1;
-       seq_mask CONSTANT BIGINT := (1 << seq_bits) - 1;
-       seq_val BIGINT;
-   BEGIN
-       IF $1 < 0 OR $1 > dp_mask THEN
-           RAISE EXCEPTION 'Invalid dp: %. Must be between 0 and %', $1, dp_mask;
-       END IF;
-       seq_val := nextval('isahl.uid_seq') & seq_mask;
-       RETURN (($1 & dp_mask) << dp_shift) | seq_val;
-   END;
-   $_$;
+    AS $$ BEGIN result := ((table_code::bigint & 65535) << 48) | (nextval('isahl.uid_seq') & 281474976710655); END; $$;
 
 
 --
 -- Name: gen_next_zuid(); Type: FUNCTION; Schema: isahl; Owner: -
 --
 
-CREATE FUNCTION isahl.gen_next_zuid(OUT result bigint) RETURNS bigint
+CREATE FUNCTION isahl.gen_next_zuid() RETURNS bigint
     LANGUAGE plpgsql
     AS $$
         BEGIN
-            result := nextval('isahl.zuid_seq');
+            RETURN isahl.gen_zuid(2, 0, 0, 0);
         END;
         $$;
 
@@ -341,7 +328,7 @@ CREATE FUNCTION isahl.gf_check_gen_next_uid_uniqueness() RETURNS TABLE(table_nam
                     c.relname::name AS table_name,
                     n.nspname::name AS schema_name,
                     substring(pg_get_expr(d.adbin, d.adrelid)
-                        FROM 'gen_next_uid\(\(?([0-9]+)\)?\)')::bigint AS table_code,
+                        FROM 'gen_next_uid\((?:\(?)([0-9]+)(?:\)?::bigint)?\)')::bigint AS table_code,
                     pg_get_expr(d.adbin, d.adrelid)::text AS default_expr
                 FROM pg_class c
                 JOIN pg_namespace n ON n.oid = c.relnamespace
@@ -1192,8 +1179,8 @@ CREATE TABLE isahl.zc_id_appeal (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
-    qk_qty bigint,
-    qk_total bigint
+    qk_total bigint,
+    qk_qty bigint
 )
 INHERITS (isahl.zc_id_statement);
 
@@ -1346,6 +1333,56 @@ CREATE TABLE isahl."zc_id_appr-org-structure" (
     model text
 )
 INHERITS (isahl."zc_id_even-approve");
+
+
+--
+-- Name: zc_id_appr-payment; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_appr-payment" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_even-approve");
+
+
+--
+-- Name: zc_id_lifecycle_rr_non_self; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl.zc_id_lifecycle_rr_non_self (
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    code text,
+    ref_left bigint,
+    ref_right bigint,
+    comments text
+)
+INHERITS (isahl."zc_ad_tensor_rr_non_self-ref");
+
+
+--
+-- Name: zc_id_appr-payment_rr_invoice; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_appr-payment_rr_invoice" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_rr_non_self);
+
+
+--
+-- Name: zc_id_appr-payment_rr_smt-voucher; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_appr-payment_rr_smt-voucher" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
 --
@@ -1771,26 +1808,6 @@ CREATE TABLE isahl."zc_id_appr-user_verify" (
     fk_object bigint
 )
 INHERITS (isahl."zc_id_even-approve");
-
-
---
--- Name: zc_id_lifecycle_rr_non_self; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl.zc_id_lifecycle_rr_non_self (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    ref_left bigint,
-    ref_right bigint,
-    comments text
-)
-INHERITS (isahl."zc_ad_tensor_rr_non_self-ref");
 
 
 --
@@ -2321,6 +2338,16 @@ INHERITS (isahl.zc_id_bill);
 
 
 --
+-- Name: zc_id_bill_rr_process; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl.zc_id_bill_rr_process (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_rr_non_self);
+
+
+--
 -- Name: zc_id_bill_rr_recipients; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -2368,7 +2395,7 @@ CREATE TABLE isahl.zc_id_version (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint
+    revision bigint
 )
 INHERITS (isahl.zc_id_lifecycle);
 
@@ -2401,7 +2428,7 @@ CREATE TABLE isahl.zc_id_bom (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     b_number text,
     fk_editor bigint
 )
@@ -2436,7 +2463,7 @@ CREATE TABLE isahl."zc_id_bom-assemble" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     b_number text,
     fk_editor bigint,
     type text
@@ -2472,7 +2499,7 @@ CREATE TABLE isahl."zc_id_bom-combine" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     b_number text,
     fk_editor bigint,
     type text
@@ -2508,7 +2535,7 @@ CREATE TABLE isahl."zc_id_bom-file" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     b_number text,
     fk_editor bigint,
     type text
@@ -2544,7 +2571,7 @@ CREATE TABLE isahl."zc_id_bom-gift_set" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     b_number text,
     fk_editor bigint,
     type text
@@ -2580,7 +2607,7 @@ CREATE TABLE isahl."zc_id_bom-inbound" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     b_number text,
     fk_editor bigint,
     type text
@@ -2718,7 +2745,7 @@ CREATE TABLE isahl."zc_id_bom-loading" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     b_number text,
     fk_editor bigint,
     type text
@@ -2754,7 +2781,7 @@ CREATE TABLE isahl."zc_id_bom-outbound" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     b_number text,
     fk_editor bigint,
     type text
@@ -2790,7 +2817,7 @@ CREATE TABLE isahl."zc_id_bom-pickup" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     b_number text,
     fk_editor bigint,
     type text
@@ -2826,7 +2853,7 @@ CREATE TABLE isahl."zc_id_bom-shelve" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     b_number text,
     fk_editor bigint,
     type text
@@ -2862,7 +2889,7 @@ CREATE TABLE isahl."zc_id_bom-shipment" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     b_number text,
     fk_editor bigint,
     type text
@@ -2898,7 +2925,7 @@ CREATE TABLE isahl."zc_id_bom-solution" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     b_number text,
     fk_editor bigint,
     type text
@@ -2991,9 +3018,9 @@ CREATE TABLE isahl."zc_id_form-calculation" (
     expression text,
     valid_at timestamp with time zone,
     invalid_at timestamp with time zone,
-    "exe-type" text,
     active boolean,
-    context jsonb
+    context jsonb,
+    "exe-type" text
 )
 INHERITS (isahl.zc_id_formula, isahl."zc_id_eval-calculable");
 
@@ -3017,9 +3044,9 @@ CREATE TABLE isahl."zc_id_calc-prod_pricing" (
     expression text,
     valid_at timestamp with time zone,
     invalid_at timestamp with time zone,
-    "exe-type" text,
     active boolean,
-    context jsonb
+    context jsonb,
+    "exe-type" text
 )
 INHERITS (isahl."zc_id_form-calculation");
 
@@ -3043,9 +3070,9 @@ CREATE TABLE isahl."zc_id_calc-sales_bonus" (
     expression text,
     valid_at timestamp with time zone,
     invalid_at timestamp with time zone,
-    "exe-type" text,
     active boolean,
     context jsonb,
+    "exe-type" text,
     engine text,
     source_collection text
 )
@@ -3071,9 +3098,9 @@ CREATE TABLE isahl."zc_id_calc-zone_qty" (
     expression text,
     valid_at timestamp with time zone,
     invalid_at timestamp with time zone,
-    "exe-type" text,
     active boolean,
-    context jsonb
+    context jsonb,
+    "exe-type" text
 )
 INHERITS (isahl."zc_id_calc-prod_pricing");
 
@@ -3113,8 +3140,8 @@ CREATE TABLE isahl."zc_id_cate-acc-title" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     parent_id bigint,
     direction text,
     sk_currency bigint,
@@ -3141,8 +3168,8 @@ CREATE TABLE isahl."zc_id_cate-subject" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
 
@@ -3162,8 +3189,8 @@ CREATE TABLE isahl."zc_id_cate-agent" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     sub_tables jsonb
 )
 INHERITS (isahl."zc_id_cate-subject");
@@ -3211,8 +3238,8 @@ CREATE TABLE isahl."zc_id_cate-bom-item" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     direction text,
     lk_satisfy bigint
 )
@@ -3234,8 +3261,8 @@ CREATE TABLE isahl."zc_id_cate-clause" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
 
@@ -3260,8 +3287,8 @@ CREATE TABLE isahl."zc_id_cate-contacts" (
     ak_benefit_user bigint[],
     ak_permit_user bigint[],
     ak_access_user bigint[],
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
 
@@ -3290,8 +3317,8 @@ CREATE TABLE isahl."zc_id_cate-department" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     sub_tables jsonb
 )
 INHERITS (isahl."zc_id_cate-subject");
@@ -3330,8 +3357,8 @@ CREATE TABLE isahl."zc_id_cate-group" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     sub_tables jsonb
 )
 INHERITS (isahl."zc_id_cate-subject");
@@ -3352,8 +3379,8 @@ CREATE TABLE isahl."zc_id_cate-group_member" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
 
@@ -3373,8 +3400,8 @@ CREATE TABLE isahl."zc_id_cate-identity" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
 
@@ -3394,8 +3421,8 @@ CREATE TABLE isahl."zc_id_cate-sto-title" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     parent_id bigint,
     sk_currency bigint,
     sk_unit bigint,
@@ -3419,8 +3446,8 @@ CREATE TABLE isahl."zc_id_cate-inv-title" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     parent_id bigint,
     sk_currency bigint,
     sk_unit bigint,
@@ -3444,8 +3471,8 @@ CREATE TABLE isahl."zc_id_cate-inv-title-ns" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     parent_id bigint,
     sk_currency bigint,
     sk_unit bigint,
@@ -3469,8 +3496,8 @@ CREATE TABLE isahl."zc_id_cate-inve-trasnfer" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
 
@@ -3490,8 +3517,8 @@ CREATE TABLE isahl."zc_id_cate-op_standard" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
 
@@ -3511,8 +3538,8 @@ CREATE TABLE isahl."zc_id_cate-ope-title" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     parent_id bigint,
     sk_currency bigint,
     sk_unit bigint,
@@ -3538,8 +3565,8 @@ CREATE TABLE isahl."zc_id_cate-ope-title-ns" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     parent_id bigint,
     sk_currency bigint,
     sk_unit bigint,
@@ -3593,8 +3620,8 @@ CREATE TABLE isahl."zc_id_cate-position" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     sub_tables jsonb
 )
 INHERITS (isahl."zc_id_cate-subject");
@@ -3615,8 +3642,8 @@ CREATE TABLE isahl."zc_id_cate-proc_op" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
 
@@ -3639,8 +3666,8 @@ CREATE TABLE isahl."zc_id_cate-process" (
     ak_benefit_user bigint[],
     ak_permit_user bigint[],
     ak_access_user bigint[],
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
 
@@ -3660,8 +3687,8 @@ CREATE TABLE isahl."zc_id_cate-project-stage" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
 
@@ -3681,8 +3708,8 @@ CREATE TABLE isahl."zc_id_cate-society" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     sub_tables jsonb
 )
 INHERITS (isahl."zc_id_cate-subject");
@@ -3722,8 +3749,8 @@ CREATE TABLE isahl."zc_id_cate-tax-title" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     fk_country bigint
 )
 INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
@@ -3743,8 +3770,8 @@ INHERITS (isahl.zc_id_category);
 --
 
 CREATE TABLE isahl."zc_id_cate-tsp" (
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
 
@@ -3764,8 +3791,8 @@ CREATE TABLE isahl."zc_id_cate-tsp-title" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     parent_id bigint,
     sk_currency bigint,
     sk_unit bigint,
@@ -3789,8 +3816,8 @@ CREATE TABLE isahl."zc_id_cate-tsp-title-ns" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     parent_id bigint,
     sk_currency bigint,
     sk_unit bigint,
@@ -3814,8 +3841,8 @@ CREATE TABLE isahl."zc_id_cate-ver_branch" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
 
@@ -3835,8 +3862,8 @@ CREATE TABLE isahl."zc_id_cate-warehouse" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
 
@@ -3856,91 +3883,10 @@ CREATE TABLE isahl."zc_id_cate-wh-title" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
-
-
---
--- Name: zc_id_file; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl.zc_id_file (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    projection text,
-    _f_ text,
-    _t_ text,
-    dk_scene bigint,
-    dk_factor bigint,
-    dk_function bigint,
-    tpl_id bigint,
-    title text,
-    filename text,
-    extname text,
-    size integer,
-    mimetype text,
-    path text,
-    url text,
-    meta jsonb,
-    storage_id bigint,
-    checksum text
-)
-INHERITS (isahl.zc_id_lifecycle);
-
-
---
--- Name: zc_id_file-ver_ctrl; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl."zc_id_file-ver_ctrl" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    projection text,
-    _f_ text,
-    _t_ text,
-    dk_scene bigint,
-    dk_factor bigint,
-    dk_function bigint,
-    tpl_id bigint,
-    title text,
-    filename text,
-    extname text,
-    size integer,
-    mimetype text,
-    path text,
-    url text,
-    meta jsonb,
-    storage_id bigint,
-    checksum text
-)
-INHERITS (isahl.zc_id_file);
-
-
---
--- Name: zc_id_certificate; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl.zc_id_certificate (
-)
-INHERITS (isahl."zc_id_file-ver_ctrl", isahl.zc_id_version);
 
 
 --
@@ -3958,8 +3904,8 @@ CREATE TABLE isahl."zc_id_cons-cron-cate" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
 
@@ -4023,8 +3969,8 @@ CREATE TABLE isahl."zc_id_cons-factor-cate" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     a_type_ text
 )
 INHERITS (isahl.zc_id_consensus, isahl.zc_id_category);
@@ -4066,8 +4012,8 @@ CREATE TABLE isahl."zc_id_cons-industry-cate" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
 
@@ -4087,8 +4033,8 @@ CREATE TABLE isahl."zc_id_cons-license-cate" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_consensus, isahl.zc_id_category);
 
@@ -4108,8 +4054,8 @@ CREATE TABLE isahl."zc_id_cons-packing-cate" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
-    enable boolean
+    enable boolean,
+    c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
 
@@ -4129,8 +4075,8 @@ CREATE TABLE isahl."zc_id_cons-r-type-cate" (
     code text,
     o_number text,
     comments text,
-    c_sort_ bigint,
     enable boolean,
+    c_sort_ bigint,
     "r-form" jsonb
 )
 INHERITS (isahl.zc_id_consensus, isahl.zc_id_category);
@@ -4804,8 +4750,7 @@ CREATE TABLE isahl.zc_id_detail (
     qk_date bigint,
     fk_subject bigint,
     ck_category bigint,
-    fk_list bigint,
-    qk_qty bigint
+    fk_list bigint
 )
 INHERITS (isahl.zc_id_lifecycle);
 
@@ -4962,11 +4907,11 @@ CREATE TABLE isahl."zc_id_deta-bill-pricing" (
     fk_subject bigint,
     ck_category bigint,
     fk_list bigint,
+    qk_qty bigint,
     qk_price bigint,
     qk_discount_amount bigint,
     qk_discount_ratio bigint,
     fk_goods bigint,
-    qk_qty bigint,
     qk_tax_ratio bigint,
     qk_amount bigint,
     sk_currency bigint,
@@ -5042,8 +4987,8 @@ CREATE TABLE isahl."zc_id_deta-invoice" (
     fk_subject bigint,
     ck_category bigint,
     fk_list bigint,
-    qk_amount bigint,
     qk_qty bigint,
+    qk_amount bigint,
     qk_tax_amount bigint,
     qk_tax_ratio bigint,
     qk_price bigint
@@ -5417,6 +5362,16 @@ INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
 --
+-- Name: zc_id_device_rr_protocol; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl.zc_id_device_rr_protocol (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_rr_non_self);
+
+
+--
 -- Name: zc_id_document; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -5444,7 +5399,7 @@ CREATE TABLE isahl.zc_id_document (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint
+    revision bigint
 )
 INHERITS (isahl.zc_id_version);
 
@@ -5477,7 +5432,7 @@ CREATE TABLE isahl."zc_id_docu-accounting" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint
+    revision bigint
 )
 INHERITS (isahl.zc_id_document);
 
@@ -5542,6 +5497,16 @@ CREATE TABLE isahl."zc_id_empl-agent" (
     settings jsonb
 )
 INHERITS (isahl."zc_id_subj-employee");
+
+
+--
+-- Name: zc_id_empl-agent_rr_llm-config; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_empl-agent_rr_llm-config" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
 --
@@ -5789,6 +5754,42 @@ INHERITS (isahl.zc_id_object, isahl.zc_ad_dimension);
 
 
 --
+-- Name: zc_id_file; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl.zc_id_file (
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    code text,
+    o_number text,
+    comments text,
+    projection text,
+    _f_ text,
+    _t_ text,
+    dk_scene bigint,
+    dk_factor bigint,
+    dk_function bigint,
+    tpl_id bigint,
+    title text,
+    filename text,
+    extname text,
+    size integer,
+    mimetype text,
+    path text,
+    url text,
+    meta jsonb,
+    storage_id bigint,
+    checksum text
+)
+INHERITS (isahl.zc_id_lifecycle);
+
+
+--
 -- Name: zc_id_file-blueprint; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -5829,6 +5830,42 @@ INHERITS (isahl.zc_id_file);
 --
 
 CREATE TABLE isahl."zc_id_file-picture" (
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    code text,
+    o_number text,
+    comments text,
+    projection text,
+    _f_ text,
+    _t_ text,
+    dk_scene bigint,
+    dk_factor bigint,
+    dk_function bigint,
+    tpl_id bigint,
+    title text,
+    filename text,
+    extname text,
+    size integer,
+    mimetype text,
+    path text,
+    url text,
+    meta jsonb,
+    storage_id bigint,
+    checksum text
+)
+INHERITS (isahl.zc_id_file);
+
+
+--
+-- Name: zc_id_file-ver_ctrl; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_file-ver_ctrl" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
@@ -5908,9 +5945,9 @@ CREATE TABLE isahl."zc_id_form-calc_tax" (
     expression text,
     valid_at timestamp with time zone,
     invalid_at timestamp with time zone,
-    "exe-type" text,
     active boolean,
     context jsonb,
+    "exe-type" text,
     ak_tax_ratio bigint[]
 )
 INHERITS (isahl."zc_id_form-calculation");
@@ -5935,9 +5972,9 @@ CREATE TABLE isahl."zc_id_form-condition" (
     expression text,
     valid_at timestamp with time zone,
     invalid_at timestamp with time zone,
-    "exe-type" text,
     active boolean,
-    context jsonb
+    context jsonb,
+    "exe-type" text
 )
 INHERITS (isahl.zc_id_formula, isahl."zc_id_eval-comparable");
 
@@ -5961,9 +5998,9 @@ CREATE TABLE isahl."zc_id_form-mapping" (
     expression text,
     valid_at timestamp with time zone,
     invalid_at timestamp with time zone,
-    "exe-type" text,
     active boolean,
-    context jsonb
+    context jsonb,
+    "exe-type" text
 )
 INHERITS (isahl."zc_id_eval-calculable", isahl.zc_id_formula);
 
@@ -6483,46 +6520,6 @@ INHERITS (isahl.zc_id_contact_infos);
 
 
 --
--- Name: zc_id_lifecycle_rr_form; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl.zc_id_lifecycle_rr_form (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    ref_left bigint,
-    ref_right bigint,
-    comments text
-)
-INHERITS (isahl.zc_id_lifecycle_rr_non_self);
-
-
---
--- Name: zc_id_inv-voucher_rr_form; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl."zc_id_inv-voucher_rr_form" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    ref_left bigint,
-    ref_right bigint,
-    comments text
-)
-INHERITS (isahl.zc_id_lifecycle_rr_form);
-
-
---
 -- Name: zc_id_inventory; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -6921,7 +6918,7 @@ CREATE TABLE isahl.zc_id_law (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     fk_sovereign bigint,
     jurisdiction text,
     qk_effective bigint
@@ -7325,6 +7322,26 @@ INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
 --
+-- Name: zc_id_lifecycle_rr_form; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl.zc_id_lifecycle_rr_form (
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    code text,
+    ref_left bigint,
+    ref_right bigint,
+    comments text
+)
+INHERITS (isahl.zc_id_lifecycle_rr_non_self);
+
+
+--
 -- Name: zc_id_manual; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -7352,7 +7369,7 @@ CREATE TABLE isahl.zc_id_manual (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint
+    revision bigint
 )
 INHERITS (isahl.zc_id_version);
 
@@ -7385,7 +7402,7 @@ CREATE TABLE isahl."zc_id_manu-product" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint
+    revision bigint
 )
 INHERITS (isahl.zc_id_manual);
 
@@ -7747,7 +7764,7 @@ CREATE TABLE isahl.zc_id_operation (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
@@ -7790,16 +7807,16 @@ CREATE TABLE isahl."zc_id_oper-action" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -7832,15 +7849,15 @@ CREATE TABLE isahl."zc_id_oper-approve" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    "sk_unit-working" bigint,
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -7883,16 +7900,16 @@ CREATE TABLE isahl."zc_id_oper-check" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -7925,16 +7942,16 @@ CREATE TABLE isahl."zc_id_oper-check_bill" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -7967,16 +7984,16 @@ CREATE TABLE isahl."zc_id_oper-clearance_import" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8009,16 +8026,16 @@ CREATE TABLE isahl."zc_id_oper-confirm_bill" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8051,16 +8068,16 @@ CREATE TABLE isahl."zc_id_oper-decide" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8093,16 +8110,16 @@ CREATE TABLE isahl."zc_id_oper-declaration_export" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8135,16 +8152,16 @@ CREATE TABLE isahl."zc_id_oper-delivery" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8177,16 +8194,16 @@ CREATE TABLE isahl."zc_id_oper-fo_booking" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8228,16 +8245,16 @@ CREATE TABLE isahl."zc_id_oper-lading" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8270,16 +8287,16 @@ CREATE TABLE isahl."zc_id_oper-merchandise_on" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8323,16 +8340,16 @@ CREATE TABLE isahl."zc_id_oper-observe" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8365,16 +8382,16 @@ CREATE TABLE isahl."zc_id_oper-orient" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8407,16 +8424,16 @@ CREATE TABLE isahl."zc_id_oper-payment" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8449,16 +8466,16 @@ CREATE TABLE isahl."zc_id_oper-planing" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8491,16 +8508,16 @@ CREATE TABLE isahl."zc_id_oper-put_in_stock" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8533,16 +8550,16 @@ CREATE TABLE isahl."zc_id_oper-register" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
     fk_approve bigint,
-    "sk_unit-working" bigint,
     vak_grant_roles text[]
 )
 INHERITS (isahl.zc_id_operation);
@@ -8576,16 +8593,16 @@ CREATE TABLE isahl."zc_id_oper-resp_inquiry" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8618,16 +8635,16 @@ CREATE TABLE isahl."zc_id_oper-sales_order" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8660,16 +8677,16 @@ CREATE TABLE isahl."zc_id_oper-smtv_review" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8702,16 +8719,16 @@ CREATE TABLE isahl."zc_id_oper-storage" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
     fk_approve bigint,
-    "sk_unit-working" bigint,
     fk_storage bigint
 )
 INHERITS (isahl.zc_id_operation);
@@ -8745,16 +8762,16 @@ CREATE TABLE isahl."zc_id_oper-take_off_stock" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8796,16 +8813,16 @@ CREATE TABLE isahl."zc_id_oper-trailer" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8838,18 +8855,28 @@ CREATE TABLE isahl."zc_id_oper-transport_tracking" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_work_duration bigint,
     fk_operator bigint,
     fk_subject bigint,
     op_number text,
     qk_period bigint,
     "ck_cate-wh" bigint,
+    "sk_unit-working" bigint,
     "ck_cate-biz" bigint,
-    fk_approve bigint,
-    "sk_unit-working" bigint
+    fk_approve bigint
 )
 INHERITS (isahl.zc_id_operation);
+
+
+--
+-- Name: zc_id_operation_rr_bill; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl.zc_id_operation_rr_bill (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
 --
@@ -9047,10 +9074,10 @@ CREATE TABLE isahl."zc_id_orde-airlift" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
+    qk_total bigint,
     fk_contract bigint,
     sk_currency bigint,
     qk_amount bigint,
-    qk_total bigint,
     ck_category bigint
 )
 INHERITS (isahl."zc_id_stat-trade_order");
@@ -9117,10 +9144,10 @@ CREATE TABLE isahl."zc_id_orde-hbl" (
     fk_contract bigint,
     sk_currency bigint,
     qk_amount bigint,
+    ck_category bigint,
     fk_mbl bigint,
     qk_ready_date bigint,
-    "fk_prod-pfos" bigint,
-    ck_category bigint
+    "fk_prod-pfos" bigint
 )
 INHERITS (isahl."zc_id_stat-trade_order");
 
@@ -9189,10 +9216,10 @@ CREATE TABLE isahl."zc_id_orde-multimodal" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
+    qk_total bigint,
     fk_contract bigint,
     sk_currency bigint,
     qk_amount bigint,
-    qk_total bigint,
     ck_category bigint
 )
 INHERITS (isahl."zc_id_stat-trade_order");
@@ -9256,10 +9283,10 @@ CREATE TABLE isahl."zc_id_orde-retail" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
+    qk_total bigint,
     fk_contract bigint,
     sk_currency bigint,
     qk_amount bigint,
-    qk_total bigint,
     ck_category bigint
 )
 INHERITS (isahl."zc_id_stat-trade_order");
@@ -9290,10 +9317,10 @@ CREATE TABLE isahl."zc_id_orde-shipping" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
+    qk_total bigint,
     fk_contract bigint,
     sk_currency bigint,
     qk_amount bigint,
-    qk_total bigint,
     ck_category bigint
 )
 INHERITS (isahl."zc_id_stat-trade_order");
@@ -9330,10 +9357,10 @@ CREATE TABLE isahl."zc_id_orde-storage" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
+    qk_total bigint,
     fk_contract bigint,
     sk_currency bigint,
     qk_amount bigint,
-    qk_total bigint,
     ck_category bigint
 )
 INHERITS (isahl."zc_id_stat-trade_order");
@@ -9474,48 +9501,6 @@ CREATE TABLE isahl."zc_id_orga-non-banking-legal" (
     fk_representative bigint
 )
 INHERITS (isahl."zc_id_orga-legal");
-
-
---
--- Name: zc_id_payment_rr_invoice; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl.zc_id_payment_rr_invoice (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    ref_left bigint,
-    ref_right bigint,
-    comments text,
-    qk_verify bigint
-)
-INHERITS (isahl.zc_id_lifecycle_rr_non_self);
-
-
---
--- Name: zc_id_payment_rr_smt-voucher; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl."zc_id_payment_rr_smt-voucher" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    ref_left bigint,
-    ref_right bigint,
-    comments text,
-    qk_verify bigint
-)
-INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
 --
@@ -9697,27 +9682,6 @@ INHERITS (isahl.zc_id_plan);
 
 
 --
--- Name: zc_id_plan-making_items_rr_material; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl."zc_id_plan-making_items_rr_material" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    ref_left bigint,
-    ref_right bigint,
-    comments text,
-    qk_qty bigint
-)
-INHERITS (isahl.zc_id_lifecycle_rr_non_self);
-
-
---
 -- Name: zc_id_plan-making_rr_prod; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -9772,45 +9736,11 @@ INHERITS (isahl.zc_id_plan);
 
 
 --
--- Name: zc_id_plan-material_prod_rr_material; Type: TABLE; Schema: isahl; Owner: -
+-- Name: zc_id_plan-material_rr_material; Type: TABLE; Schema: isahl; Owner: -
 --
 
-CREATE TABLE isahl."zc_id_plan-material_prod_rr_material" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    ref_left bigint,
-    ref_right bigint,
-    comments text,
-    qk_qty bigint,
-    vk_unit bigint
-)
-INHERITS (isahl.zc_id_lifecycle_rr_non_self);
-
-
---
--- Name: zc_id_plan-material_rr_prod; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl."zc_id_plan-material_rr_prod" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    ref_left bigint,
-    ref_right bigint,
-    comments text,
-    qk_qty bigint,
-    vk_unit bigint
+CREATE TABLE isahl."zc_id_plan-material_rr_material" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
@@ -10175,7 +10105,7 @@ CREATE TABLE isahl.zc_id_project (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     fk_launcher bigint,
     fk_group bigint,
     ck_category bigint,
@@ -10215,7 +10145,7 @@ CREATE TABLE isahl."zc_id_prjt-proc_ctrl" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     fk_launcher bigint,
     fk_group bigint,
     ck_category bigint
@@ -10251,7 +10181,7 @@ CREATE TABLE isahl.zc_id_process (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     fk_subject bigint,
     "fk_subj-define" bigint,
     p_number text,
@@ -10289,7 +10219,7 @@ CREATE TABLE isahl."zc_id_proc-approve" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     fk_subject bigint,
     "fk_subj-define" bigint,
     p_number text,
@@ -10327,7 +10257,7 @@ CREATE TABLE isahl."zc_id_proc-loading" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     fk_subject bigint,
     "fk_subj-define" bigint,
     p_number text,
@@ -10365,7 +10295,7 @@ CREATE TABLE isahl."zc_id_proc-make" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     fk_subject bigint,
     "fk_subj-define" bigint,
     p_number text,
@@ -10404,7 +10334,7 @@ CREATE TABLE isahl."zc_id_proc-project" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     fk_subject bigint,
     "fk_subj-define" bigint,
     p_number text,
@@ -10442,7 +10372,7 @@ CREATE TABLE isahl."zc_id_proc-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     fk_subject bigint,
     "fk_subj-define" bigint,
     p_number text,
@@ -10480,7 +10410,7 @@ CREATE TABLE isahl."zc_id_proc-service" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     fk_subject bigint,
     "fk_subj-define" bigint,
     p_number text,
@@ -10506,10 +10436,9 @@ CREATE TABLE isahl.zc_id_process_rr_operation (
     ref_left bigint,
     ref_right bigint,
     comments text,
-    op_seq bigint,
     qk_duration bigint,
-    ck_dw_title bigint,
-    "ck_proc-op" bigint
+    "next-ops" jsonb,
+    start boolean
 )
 INHERITS (isahl.zc_id_master_rr_slave);
 
@@ -10542,18 +10471,67 @@ CREATE TABLE isahl.zc_id_production (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
-    sk_currency bigint,
-    type text
+    sk_currency bigint
 )
 INHERITS (isahl.zc_id_version);
+
+
+--
+-- Name: zc_id_prod-data; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_prod-data" (
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    code text,
+    o_number text,
+    comments text,
+    projection text,
+    _f_ text,
+    _t_ text,
+    dk_scene bigint,
+    dk_factor bigint,
+    dk_function bigint,
+    tpl_id bigint,
+    tk_version bigint,
+    tk_batch_no bigint,
+    fk_previous bigint,
+    ck_branch bigint,
+    majority text,
+    sprint text,
+    revision bigint,
+    sk_unit bigint,
+    p_number text,
+    "fk_subj-demand" bigint,
+    "fk_subj-provider" bigint,
+    qk_price bigint,
+    fk_process bigint,
+    sk_currency bigint,
+    qk_size bigint
+)
+INHERITS (isahl.zc_id_production);
+
+
+--
+-- Name: zc_id_prod-certificate; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_prod-certificate" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_prod-data");
 
 
 --
@@ -10584,16 +10562,14 @@ CREATE TABLE isahl."zc_id_prod-lease" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_duration bigint,
     qk_period bigint
 )
@@ -10628,16 +10604,14 @@ CREATE TABLE isahl."zc_id_prod-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[]
 )
@@ -10672,16 +10646,14 @@ CREATE TABLE isahl."zc_id_prod-channel_cost-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[],
     qk_duration bigint
@@ -10717,59 +10689,14 @@ CREATE TABLE isahl."zc_id_prod-combine" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
-    sk_currency bigint,
-    type text
-)
-INHERITS (isahl.zc_id_production);
-
-
---
--- Name: zc_id_prod-data; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl."zc_id_prod-data" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    projection text,
-    _f_ text,
-    _t_ text,
-    dk_scene bigint,
-    dk_factor bigint,
-    dk_function bigint,
-    tpl_id bigint,
-    tk_version bigint,
-    tk_batch_no bigint,
-    fk_previous bigint,
-    ck_branch bigint,
-    majority text,
-    sprint text,
-    reversion bigint,
-    sk_unit bigint,
-    p_number text,
-    "fk_subj-demand" bigint,
-    "fk_subj-provider" bigint,
-    qk_price bigint,
-    fk_process bigint,
-    model text,
-    sk_currency bigint,
-    type text,
-    qk_size bigint
+    sk_currency bigint
 )
 INHERITS (isahl.zc_id_production);
 
@@ -10802,16 +10729,14 @@ CREATE TABLE isahl."zc_id_prod-consult" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_size bigint,
     fk_target_place bigint,
     qk_duration bigint,
@@ -10848,16 +10773,14 @@ CREATE TABLE isahl."zc_id_prod-made" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-sales" bigint[]
 )
 INHERITS (isahl.zc_id_production);
@@ -10891,16 +10814,14 @@ CREATE TABLE isahl."zc_id_prod-consult-made" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_size bigint,
     fk_target_place bigint,
     qk_duration bigint,
@@ -10938,16 +10859,14 @@ CREATE TABLE isahl."zc_id_prod-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-made" bigint[]
 )
 INHERITS (isahl.zc_id_production);
@@ -10981,16 +10900,14 @@ CREATE TABLE isahl."zc_id_prod-consult-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_size bigint,
     fk_target_place bigint,
     qk_duration bigint,
@@ -11028,16 +10945,14 @@ CREATE TABLE isahl."zc_id_prod-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     lk_priority bigint
 )
 INHERITS (isahl.zc_id_production);
@@ -11071,16 +10986,14 @@ CREATE TABLE isahl."zc_id_prod-consult-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     lk_priority bigint,
     qk_size bigint,
     fk_target_place bigint,
@@ -11118,16 +11031,14 @@ CREATE TABLE isahl."zc_id_prod-consult-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_size bigint,
     fk_target_place bigint,
     qk_duration bigint,
@@ -11166,16 +11077,14 @@ CREATE TABLE isahl."zc_id_prod-pub_affairs" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
-    sk_currency bigint,
-    type text
+    sk_currency bigint
 )
 INHERITS (isahl.zc_id_production);
 
@@ -11208,16 +11117,14 @@ CREATE TABLE isahl."zc_id_prod-customs-clearance" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
-    sk_currency bigint,
-    type text
+    sk_currency bigint
 )
 INHERITS (isahl."zc_id_prod-pub_affairs");
 
@@ -11250,16 +11157,14 @@ CREATE TABLE isahl."zc_id_prod-customs_cle_fo-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-made" bigint[],
     fk_mbl bigint
 )
@@ -11294,16 +11199,14 @@ CREATE TABLE isahl."zc_id_prod-customs_cle_fo-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     fk_mbl bigint
 )
 INHERITS (isahl."zc_id_prod-customs-clearance");
@@ -11337,16 +11240,14 @@ CREATE TABLE isahl."zc_id_prod-customs_declaration" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
-    sk_currency bigint,
-    type text
+    sk_currency bigint
 )
 INHERITS (isahl."zc_id_prod-pub_affairs");
 
@@ -11366,7 +11267,6 @@ CREATE TABLE isahl."zc_id_prod-customs_dec_fo-purchase" (
     code text,
     o_number text,
     comments text,
-    ak_dimensions bigint[],
     projection text,
     _f_ text,
     _t_ text,
@@ -11380,17 +11280,16 @@ CREATE TABLE isahl."zc_id_prod-customs_dec_fo-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-made" bigint[],
+    ak_dimensions bigint[],
     fk_mbl bigint
 )
 INHERITS (isahl."zc_id_prod-customs_declaration", isahl."zc_id_prod-purchase");
@@ -11424,16 +11323,14 @@ CREATE TABLE isahl."zc_id_prod-customs_dec_fo-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[],
     fk_mbl bigint
@@ -11448,6 +11345,16 @@ INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-customs_declaration");
 CREATE TABLE isahl."zc_id_prod-dev-tools-made" (
 )
 INHERITS (isahl.zc_id_device, isahl."zc_id_prod-made");
+
+
+--
+-- Name: zc_id_prod-digital_cert-sales; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_prod-digital_cert-sales" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_prod-certificate", isahl."zc_id_prod-combine", isahl."zc_id_prod-sales");
 
 
 --
@@ -11478,16 +11385,14 @@ CREATE TABLE isahl."zc_id_prod-financial" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_duration bigint
 )
 INHERITS (isahl."zc_id_prod-lease");
@@ -11521,16 +11426,14 @@ CREATE TABLE isahl."zc_id_prod-insurance" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_duration bigint
 )
 INHERITS (isahl."zc_id_prod-lease");
@@ -11564,16 +11467,14 @@ CREATE TABLE isahl."zc_id_prod-fo_insurance-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-made" bigint[],
     qk_duration bigint
 )
@@ -11608,16 +11509,14 @@ CREATE TABLE isahl."zc_id_prod-fo_insurance-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_duration bigint,
     lk_priority bigint
 )
@@ -11652,16 +11551,14 @@ CREATE TABLE isahl."zc_id_prod-fo_insurance-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_duration bigint,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[]
@@ -11697,16 +11594,14 @@ CREATE TABLE isahl."zc_id_prod-traffic" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -11747,16 +11642,14 @@ CREATE TABLE isahl."zc_id_prod-freight_inland-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-made" bigint[],
     fk_departure bigint,
     fk_destination bigint,
@@ -11798,16 +11691,14 @@ CREATE TABLE isahl."zc_id_prod-freight_inland-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[],
     fk_departure bigint,
@@ -11850,16 +11741,14 @@ CREATE TABLE isahl."zc_id_prod-freight_ocean-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -11901,16 +11790,14 @@ CREATE TABLE isahl."zc_id_prod-freight_ocean-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     lk_priority bigint,
     fk_departure bigint,
     fk_destination bigint,
@@ -11953,16 +11840,14 @@ CREATE TABLE isahl."zc_id_prod-freight_ocean-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[],
     fk_departure bigint,
@@ -11975,6 +11860,16 @@ CREATE TABLE isahl."zc_id_prod-freight_ocean-sales" (
     qk_duration bigint,
     qk_cot_customs bigint,
     fk_vessel bigint
+)
+INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-traffic");
+
+
+--
+-- Name: zc_id_prod-freight_road-sales; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_prod-freight_road-sales" (
+    id bigint NOT NULL
 )
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-traffic");
 
@@ -12027,16 +11922,14 @@ CREATE TABLE isahl."zc_id_prod-legal_tender" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
-    sk_currency bigint,
-    type text
+    sk_currency bigint
 )
 INHERITS (isahl."zc_id_prod-pub_affairs");
 
@@ -12069,16 +11962,14 @@ CREATE TABLE isahl."zc_id_prod-legal_tender-made" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-sales" bigint[]
 )
 INHERITS (isahl."zc_id_prod-legal_tender", isahl."zc_id_prod-made");
@@ -12090,7 +11981,7 @@ INHERITS (isahl."zc_id_prod-legal_tender", isahl."zc_id_prod-made");
 
 CREATE TABLE isahl."zc_id_prod-license" (
     ck_category bigint,
-    qk_qty bigint
+    qk_capacity bigint
 )
 INHERITS (isahl."zc_id_prod-lease");
 
@@ -12100,6 +11991,7 @@ INHERITS (isahl."zc_id_prod-lease");
 --
 
 CREATE TABLE isahl."zc_id_prod-license-purchase" (
+    qk_qty bigint
 )
 INHERITS (isahl."zc_id_prod-license", isahl."zc_id_prod-purchase");
 
@@ -12132,16 +12024,14 @@ CREATE TABLE isahl."zc_id_prod-loading" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     fk_receptacle bigint,
     qk_weight bigint,
     qk_volume bigint,
@@ -12185,16 +12075,14 @@ CREATE TABLE isahl."zc_id_prod-loading-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-made" bigint[],
     fk_receptacle bigint,
     qk_weight bigint,
@@ -12235,16 +12123,14 @@ CREATE TABLE isahl."zc_id_prod-loading-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     fk_receptacle bigint,
     qk_weight bigint,
     qk_volume bigint,
@@ -12285,16 +12171,14 @@ CREATE TABLE isahl."zc_id_prod-loading-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     fk_receptacle bigint,
     qk_weight bigint,
     qk_volume bigint,
@@ -12396,16 +12280,14 @@ CREATE TABLE isahl."zc_id_prod-transform" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
-    sk_currency bigint,
-    type text
+    sk_currency bigint
 )
 INHERITS (isahl.zc_id_production);
 
@@ -12438,16 +12320,14 @@ CREATE TABLE isahl."zc_id_prod-material-made" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-sales" bigint[]
 )
 INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-transform");
@@ -12481,16 +12361,14 @@ CREATE TABLE isahl."zc_id_prod-payload" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_length bigint,
     qk_width bigint,
     qk_height bigint,
@@ -12531,16 +12409,14 @@ CREATE TABLE isahl."zc_id_prod-passenger" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_length bigint,
     qk_width bigint,
     qk_height bigint,
@@ -12581,16 +12457,14 @@ CREATE TABLE isahl."zc_id_prod-ports-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-made" bigint[]
 )
 INHERITS (isahl."zc_id_prod-purchase");
@@ -12624,16 +12498,14 @@ CREATE TABLE isahl."zc_id_prod-ports-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     lk_priority bigint
 )
 INHERITS (isahl."zc_id_prod-request");
@@ -12667,16 +12539,14 @@ CREATE TABLE isahl."zc_id_prod-ports-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[]
 )
@@ -12731,16 +12601,14 @@ CREATE TABLE isahl."zc_id_prod-prj_doc-made" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_size bigint,
     "vak_prod-sales" bigint[]
 )
@@ -12795,16 +12663,14 @@ CREATE TABLE isahl."zc_id_prod-prj_doc-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-made" bigint[],
     qk_size bigint
 )
@@ -12859,16 +12725,14 @@ CREATE TABLE isahl."zc_id_prod-prj_doc-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_size bigint,
     lk_priority bigint
 )
@@ -12923,16 +12787,14 @@ CREATE TABLE isahl."zc_id_prod-prj_doc-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_size bigint,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[]
@@ -12988,16 +12850,14 @@ CREATE TABLE isahl."zc_id_prod-project-made" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-sales" bigint[]
 )
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-made");
@@ -13031,16 +12891,14 @@ CREATE TABLE isahl."zc_id_prod-project-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-made" bigint[]
 )
 INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-combine");
@@ -13074,16 +12932,14 @@ CREATE TABLE isahl."zc_id_prod-project-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     lk_priority bigint
 )
 INHERITS (isahl."zc_id_prod-request", isahl."zc_id_prod-combine");
@@ -13117,16 +12973,14 @@ CREATE TABLE isahl."zc_id_prod-project-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[]
 )
@@ -13161,16 +13015,14 @@ CREATE TABLE isahl."zc_id_prod-proxy" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
-    sk_currency bigint,
-    type text
+    sk_currency bigint
 )
 INHERITS (isahl.zc_id_production);
 
@@ -13244,16 +13096,14 @@ CREATE TABLE isahl."zc_id_prod-pxy-auto_mfg-made" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-sales" bigint[]
 )
 INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-proxy");
@@ -13287,16 +13137,14 @@ CREATE TABLE isahl."zc_id_prod-pxy-components-made" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-sales" bigint[]
 )
 INHERITS (isahl."zc_id_prod-proxy", isahl."zc_id_prod-made");
@@ -13330,16 +13178,14 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_express-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-made" bigint[],
     fk_departure bigint,
     fk_destination bigint,
@@ -13381,16 +13227,14 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_express-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -13432,16 +13276,14 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_express-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[],
     fk_departure bigint,
@@ -13484,16 +13326,14 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_fcl-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -13536,16 +13376,14 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_fcl-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     lk_priority bigint,
     fk_departure bigint,
     fk_destination bigint,
@@ -13588,16 +13426,14 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_fcl-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[],
     fk_departure bigint,
@@ -13642,16 +13478,14 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_lcl-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-made" bigint[],
     fk_departure bigint,
     fk_destination bigint,
@@ -13694,16 +13528,14 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_lcl-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     lk_priority bigint,
     fk_departure bigint,
     fk_destination bigint,
@@ -13746,16 +13578,14 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_lcl-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[],
     fk_departure bigint,
@@ -13800,16 +13630,14 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_ltl-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -13851,16 +13679,14 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_ltl-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     lk_priority bigint,
     fk_departure bigint,
     fk_destination bigint,
@@ -13902,16 +13728,14 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_ltl-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[],
     fk_departure bigint,
@@ -13954,16 +13778,14 @@ CREATE TABLE isahl."zc_id_prod-pxy-insurance-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_duration bigint,
     "vak_prod-made" bigint[]
 )
@@ -13998,16 +13820,14 @@ CREATE TABLE isahl."zc_id_prod-pxy-insurance-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_duration bigint,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[]
@@ -14043,16 +13863,14 @@ CREATE TABLE isahl."zc_id_prod-rdc_express-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-made" bigint[],
     fk_departure bigint,
     fk_destination bigint,
@@ -14094,16 +13912,14 @@ CREATE TABLE isahl."zc_id_prod-rdc_express-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     lk_priority bigint,
     fk_departure bigint,
     fk_destination bigint,
@@ -14145,16 +13961,14 @@ CREATE TABLE isahl."zc_id_prod-rdc_express-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -14197,16 +14011,14 @@ CREATE TABLE isahl."zc_id_prod-rdc_pickup-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-made" bigint[],
     fk_departure bigint,
     fk_destination bigint,
@@ -14248,16 +14060,14 @@ CREATE TABLE isahl."zc_id_prod-rdc_pickup-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     lk_priority bigint,
     fk_departure bigint,
     fk_destination bigint,
@@ -14299,16 +14109,14 @@ CREATE TABLE isahl."zc_id_prod-rdc_pickup-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[],
     fk_departure bigint,
@@ -14391,16 +14199,14 @@ CREATE TABLE isahl."zc_id_prod-retail-made" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-sales" bigint[],
     qk_length bigint,
     qk_width bigint,
@@ -14442,16 +14248,14 @@ CREATE TABLE isahl."zc_id_prod-retail-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-made" bigint[],
     qk_length bigint,
     qk_width bigint,
@@ -14493,16 +14297,14 @@ CREATE TABLE isahl."zc_id_prod-retail-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_length bigint,
     qk_width bigint,
     qk_height bigint,
@@ -14544,16 +14346,14 @@ CREATE TABLE isahl."zc_id_prod-retail-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[],
     qk_length bigint,
@@ -14637,16 +14437,14 @@ CREATE TABLE isahl."zc_id_prod-sovereign_currency-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[]
 )
@@ -14681,16 +14479,14 @@ CREATE TABLE isahl."zc_id_prod-storage" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_duration bigint,
     fk_storage bigint,
     fk_warehouse bigint,
@@ -14729,16 +14525,14 @@ CREATE TABLE isahl."zc_id_prod-stor_sorting-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     qk_duration bigint,
     fk_storage bigint,
     fk_warehouse bigint,
@@ -14775,16 +14569,14 @@ CREATE TABLE isahl."zc_id_prod-stor_sorting-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     lk_priority bigint,
     qk_duration bigint,
     fk_storage bigint,
@@ -14821,16 +14613,14 @@ CREATE TABLE isahl."zc_id_prod-stor_sorting-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[],
     qk_duration bigint,
@@ -14857,6 +14647,15 @@ CREATE TABLE isahl."zc_id_prod-traffic_rr_contacts" (
     ref_right bigint,
     comments text,
     title text
+)
+INHERITS (isahl.zc_id_lifecycle_rr_non_self);
+
+
+--
+-- Name: zc_id_prod-traffic_rr_conveyance; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_prod-traffic_rr_conveyance" (
 )
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
@@ -14912,16 +14711,14 @@ CREATE TABLE isahl."zc_id_prod-transfer_p2p-purchase" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "vak_prod-made" bigint[],
     fk_departure bigint,
     fk_destination bigint,
@@ -14964,16 +14761,14 @@ CREATE TABLE isahl."zc_id_prod-transfer_p2p-request" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -15016,16 +14811,14 @@ CREATE TABLE isahl."zc_id_prod-transfer_p2p-sales" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     sk_unit bigint,
     p_number text,
     "fk_subj-demand" bigint,
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    model text,
     sk_currency bigint,
-    type text,
     "qk_calc-rule" bigint,
     "vak_prod-request" bigint[],
     fk_departure bigint,
@@ -15323,6 +15116,16 @@ INHERITS (isahl.zc_id_protocol);
 
 
 --
+-- Name: zc_id_prot-im_config; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_prot-im_config" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_protocol);
+
+
+--
 -- Name: zc_id_prot-iot_config; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -15342,6 +15145,16 @@ INHERITS (isahl.zc_id_protocol);
 
 
 --
+-- Name: zc_id_prot-oss_config; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_prot-oss_config" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_protocol);
+
+
+--
 -- Name: zc_id_prot-profile_config; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -15356,6 +15169,16 @@ INHERITS (isahl.zc_id_protocol);
 
 CREATE TABLE isahl."zc_id_prot-sms_config" (
     settings jsonb
+)
+INHERITS (isahl.zc_id_protocol);
+
+
+--
+-- Name: zc_id_prot-webhook_config; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_prot-webhook_config" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_protocol);
 
@@ -16116,15 +15939,6 @@ INHERITS (isahl.zc_id_ratio);
 
 
 --
--- Name: zc_id_relation-agent_rr_llm-config; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl."zc_id_relation-agent_rr_llm-config" (
-)
-INHERITS (isahl.zc_id_lifecycle_rr_non_self);
-
-
---
 -- Name: zc_id_relation-bom_item_r_tags; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -16145,31 +15959,13 @@ INHERITS (isahl.zc_ad_relation_r_scalar);
 
 
 --
--- Name: zc_id_relation-device_rr_protocol; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl."zc_id_relation-device_rr_protocol" (
-)
-INHERITS (isahl.zc_id_lifecycle_rr_non_self);
-
-
---
 -- Name: zc_id_relation-employee_r_skill-tags; Type: TABLE; Schema: isahl; Owner: -
 --
 
 CREATE TABLE isahl."zc_id_relation-employee_r_skill-tags" (
     lk_proficiency bigint
 )
-INHERITS (isahl.zc_id_lifecycle_r_tags);
-
-
---
--- Name: zc_id_relation-event_r_tags; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl."zc_id_relation-event_r_tags" (
-)
-INHERITS (isahl.zc_id_lifecycle_r_tags);
+INHERITS (isahl.zc_ad_relation_r_scalar);
 
 
 --
@@ -16210,26 +16006,6 @@ CREATE TABLE isahl."zc_id_relation-post_view_r_tags" (
     comments text
 )
 INHERITS (isahl.zc_ad_relation_r_scalar);
-
-
---
--- Name: zc_id_relation-proc_op_rr_dependency; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl."zc_id_relation-proc_op_rr_dependency" (
-    created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_relation_proc_op_rr_dependency_created_at_not_null NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_relation_proc_op_rr_dependency_updated_at_not_null NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    ref_left bigint,
-    ref_right bigint,
-    comments text
-)
-INHERITS (isahl."zc_ad_relation_rr_non_self-ref");
 
 
 --
@@ -17057,30 +16833,6 @@ INHERITS (isahl.zc_id_segment);
 
 
 --
--- Name: zc_id_smt-voucher_rr_form; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl."zc_id_smt-voucher_rr_form" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    ref_left bigint,
-    ref_right bigint,
-    comments text,
-    fk_subject bigint,
-    fk_object bigint,
-    "ck_ope-title" bigint,
-    ak_tags bigint[]
-)
-INHERITS (isahl.zc_id_lifecycle_rr_form);
-
-
---
 -- Name: zc_id_snapshot; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -17202,7 +16954,7 @@ CREATE TABLE isahl.zc_id_standard (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     lk_priority bigint
 )
 INHERITS (isahl.zc_id_version);
@@ -17236,7 +16988,7 @@ CREATE TABLE isahl."zc_id_stan-operation" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     qk_sla bigint
 )
 INHERITS (isahl.zc_id_standard);
@@ -17270,7 +17022,7 @@ CREATE TABLE isahl."zc_id_stan-prod_quality" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint
+    revision bigint
 )
 INHERITS (isahl.zc_id_standard);
 
@@ -17349,6 +17101,7 @@ CREATE TABLE isahl."zc_id_stat-sto-voucher" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
+    qk_total bigint,
     qk_qty bigint,
     "fk_subj-storage" bigint,
     "fk_obj-storage" bigint,
@@ -17361,8 +17114,7 @@ CREATE TABLE isahl."zc_id_stat-sto-voucher" (
     sk_unit bigint,
     "qk_write-off" bigint,
     qk_income bigint,
-    qk_outgo bigint,
-    qk_total bigint
+    qk_outgo bigint
 )
 INHERITS (isahl.zc_id_statement);
 
@@ -17393,6 +17145,7 @@ CREATE TABLE isahl."zc_id_stat-bok-voucher" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
+    qk_total bigint,
     qk_qty bigint,
     "fk_subj-storage" bigint,
     "fk_obj-storage" bigint,
@@ -17401,14 +17154,13 @@ CREATE TABLE isahl."zc_id_stat-bok-voucher" (
     qk_balance bigint,
     "ck_sto-title" bigint,
     qk_pre_balance bigint,
-    "counting-type" text,
     fk_production bigint,
     sk_unit bigint,
     "qk_write-off" bigint,
     qk_income bigint,
     qk_outgo bigint,
-    "fk_bok-title" bigint,
-    qk_total bigint
+    "counting-type" text,
+    "fk_bok-title" bigint
 )
 INHERITS (isahl."zc_id_stat-sto-voucher");
 
@@ -17450,6 +17202,7 @@ CREATE TABLE isahl."zc_id_stat-smt-voucher" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
+    qk_total bigint,
     qk_qty bigint,
     "fk_subj-storage" bigint,
     "fk_obj-storage" bigint,
@@ -17458,14 +17211,13 @@ CREATE TABLE isahl."zc_id_stat-smt-voucher" (
     qk_balance bigint,
     "ck_sto-title" bigint,
     qk_pre_balance bigint,
-    "counting-type" text,
     fk_production bigint,
     sk_unit bigint,
     "qk_write-off" bigint,
     qk_income bigint,
     qk_outgo bigint,
-    "qk_exchange-rate" bigint,
-    qk_total bigint
+    "counting-type" text,
+    "qk_exchange-rate" bigint
 )
 INHERITS (isahl."zc_id_stat-sto-voucher");
 
@@ -17495,6 +17247,7 @@ CREATE TABLE isahl."zc_id_stat-smt-bank" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
+    qk_total bigint,
     qk_qty bigint,
     "fk_subj-storage" bigint,
     "fk_obj-storage" bigint,
@@ -17503,14 +17256,13 @@ CREATE TABLE isahl."zc_id_stat-smt-bank" (
     qk_balance bigint,
     "ck_sto-title" bigint,
     qk_pre_balance bigint,
-    "counting-type" text,
     fk_production bigint,
     sk_unit bigint,
     "qk_write-off" bigint,
     qk_income bigint,
     qk_outgo bigint,
-    "qk_exchange-rate" bigint,
-    qk_total bigint
+    "counting-type" text,
+    "qk_exchange-rate" bigint
 )
 INHERITS (isahl."zc_id_stat-smt-voucher");
 
@@ -17540,6 +17292,7 @@ CREATE TABLE isahl."zc_id_stat-smt-cash" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
+    qk_total bigint,
     qk_qty bigint,
     "fk_subj-storage" bigint,
     "fk_obj-storage" bigint,
@@ -17548,15 +17301,14 @@ CREATE TABLE isahl."zc_id_stat-smt-cash" (
     qk_balance bigint,
     "ck_sto-title" bigint,
     qk_pre_balance bigint,
-    "counting-type" text,
     fk_production bigint,
     sk_unit bigint,
     "qk_write-off" bigint,
     qk_income bigint,
     qk_outgo bigint,
+    "counting-type" text,
     "qk_exchange-rate" bigint,
-    qk_amount bigint,
-    qk_total bigint
+    qk_amount bigint
 )
 INHERITS (isahl."zc_id_stat-smt-voucher");
 
@@ -17586,6 +17338,7 @@ CREATE TABLE isahl."zc_id_stat-smt-channel" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
+    qk_total bigint,
     qk_qty bigint,
     "fk_subj-storage" bigint,
     "fk_obj-storage" bigint,
@@ -17594,15 +17347,14 @@ CREATE TABLE isahl."zc_id_stat-smt-channel" (
     qk_balance bigint,
     "ck_sto-title" bigint,
     qk_pre_balance bigint,
-    "counting-type" text,
     fk_production bigint,
     sk_unit bigint,
     "qk_write-off" bigint,
     qk_income bigint,
     qk_outgo bigint,
+    "counting-type" text,
     "qk_exchange-rate" bigint,
-    qk_amount bigint,
-    qk_total bigint
+    qk_amount bigint
 )
 INHERITS (isahl."zc_id_stat-smt-voucher");
 
@@ -17632,6 +17384,7 @@ CREATE TABLE isahl."zc_id_stat-tsp-voucher" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
+    qk_total bigint,
     qk_qty bigint,
     "fk_subj-storage" bigint,
     "fk_obj-storage" bigint,
@@ -17640,13 +17393,12 @@ CREATE TABLE isahl."zc_id_stat-tsp-voucher" (
     qk_balance bigint,
     "ck_sto-title" bigint,
     qk_pre_balance bigint,
-    "counting-type" text,
     fk_production bigint,
     sk_unit bigint,
     "qk_write-off" bigint,
     qk_income bigint,
     qk_outgo bigint,
-    qk_total bigint
+    "counting-type" text
 )
 INHERITS (isahl."zc_id_stat-sto-voucher");
 
@@ -17676,6 +17428,7 @@ CREATE TABLE isahl."zc_id_stat-whs-voucher" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
+    qk_total bigint,
     qk_qty bigint,
     "fk_subj-storage" bigint,
     "fk_obj-storage" bigint,
@@ -17684,13 +17437,12 @@ CREATE TABLE isahl."zc_id_stat-whs-voucher" (
     qk_balance bigint,
     "ck_sto-title" bigint,
     qk_pre_balance bigint,
-    "counting-type" text,
     fk_production bigint,
     sk_unit bigint,
     "qk_write-off" bigint,
     qk_income bigint,
     qk_outgo bigint,
-    qk_total bigint
+    "counting-type" text
 )
 INHERITS (isahl."zc_id_stat-sto-voucher");
 
@@ -21208,7 +20960,7 @@ CREATE TABLE isahl.zc_id_task (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     fk_subject bigint,
     fk_place bigint,
     qk_period bigint,
@@ -22245,7 +21997,7 @@ CREATE TABLE isahl."zc_id_vers-context" (
     ck_branch bigint,
     majority text,
     sprint text,
-    reversion bigint,
+    revision bigint,
     lock boolean,
     hashcode text
 )
@@ -22303,6 +22055,19 @@ CREATE SEQUENCE isahl.zuid_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+
+
+--
+-- Name: zuid_sequence; Type: SEQUENCE; Schema: isahl; Owner: -
+--
+
+CREATE SEQUENCE isahl.zuid_sequence
+    START WITH 0
+    INCREMENT BY 1
+    MINVALUE 0
+    MAXVALUE 2047
+    CACHE 1
+    CYCLE;
 
 
 --
@@ -22390,6 +22155,48 @@ ALTER TABLE ONLY isahl."zc_id_appr-damage" ALTER COLUMN id SET DEFAULT isahl.gen
 
 
 --
+-- Name: zc_id_appr-payment created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_appr-payment" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_appr-payment updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_appr-payment" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_appr-payment_rr_invoice created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_invoice" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_appr-payment_rr_invoice updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_invoice" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_appr-payment_rr_smt-voucher created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_smt-voucher" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_appr-payment_rr_smt-voucher updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_smt-voucher" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
 -- Name: zc_id_appr-process created_at; Type: DEFAULT; Schema: isahl; Owner: -
 --
 
@@ -22408,6 +22215,20 @@ ALTER TABLE ONLY isahl."zc_id_appr-process" ALTER COLUMN updated_at SET DEFAULT 
 --
 
 ALTER TABLE ONLY isahl."zc_id_appr-process" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+
+
+--
+-- Name: zc_id_bill_rr_process created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl.zc_id_bill_rr_process ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_bill_rr_process updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl.zc_id_bill_rr_process ALTER COLUMN updated_at SET DEFAULT now();
 
 
 --
@@ -22712,27 +22533,6 @@ ALTER TABLE ONLY isahl."zc_id_cate-tsp" ALTER COLUMN updated_by_id SET DEFAULT 1
 
 
 --
--- Name: zc_id_certificate created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl.zc_id_certificate ALTER COLUMN created_at SET DEFAULT now();
-
-
---
--- Name: zc_id_certificate updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl.zc_id_certificate ALTER COLUMN updated_at SET DEFAULT now();
-
-
---
--- Name: zc_id_certificate id; Type: DEFAULT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl.zc_id_certificate ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-
-
---
 -- Name: zc_id_container_rr_device created_at; Type: DEFAULT; Schema: isahl; Owner: -
 --
 
@@ -22814,6 +22614,34 @@ ALTER TABLE ONLY isahl."zc_id_device_r_iot-status" ALTER COLUMN updated_at SET D
 --
 
 ALTER TABLE ONLY isahl."zc_id_device_r_iot-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((220)::bigint);
+
+
+--
+-- Name: zc_id_device_rr_protocol created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl.zc_id_device_rr_protocol ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_device_rr_protocol updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl.zc_id_device_rr_protocol ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_empl-agent_rr_llm-config created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_empl-agent_rr_llm-config" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_empl-agent_rr_llm-config updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_empl-agent_rr_llm-config" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 --
@@ -23426,6 +23254,20 @@ ALTER TABLE ONLY isahl."zc_id_oper-test" ALTER COLUMN id SET DEFAULT isahl.gen_n
 
 
 --
+-- Name: zc_id_operation_rr_bill created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl.zc_id_operation_rr_bill ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_operation_rr_bill updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl.zc_id_operation_rr_bill ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
 -- Name: zc_id_order_rr_foreign created_at; Type: DEFAULT; Schema: isahl; Owner: -
 --
 
@@ -23444,6 +23286,20 @@ ALTER TABLE ONLY isahl.zc_id_order_rr_foreign ALTER COLUMN updated_at SET DEFAUL
 --
 
 ALTER TABLE ONLY isahl.zc_id_order_rr_foreign ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((342)::bigint);
+
+
+--
+-- Name: zc_id_plan-material_rr_material created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_plan-material_rr_material" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_plan-material_rr_material updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_plan-material_rr_material" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 --
@@ -23510,6 +23366,20 @@ ALTER TABLE ONLY isahl.zc_id_plan_rr_task ALTER COLUMN id SET DEFAULT isahl.gen_
 
 
 --
+-- Name: zc_id_prod-certificate created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-certificate" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_prod-certificate updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-certificate" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
 -- Name: zc_id_prod-dev-tools-made created_at; Type: DEFAULT; Schema: isahl; Owner: -
 --
 
@@ -23528,6 +23398,34 @@ ALTER TABLE ONLY isahl."zc_id_prod-dev-tools-made" ALTER COLUMN updated_at SET D
 --
 
 ALTER TABLE ONLY isahl."zc_id_prod-dev-tools-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+
+
+--
+-- Name: zc_id_prod-digital_cert-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-digital_cert-sales" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_prod-digital_cert-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-digital_cert-sales" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_prod-freight_road-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-freight_road-sales" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_prod-freight_road-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-freight_road-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 --
@@ -23570,6 +23468,27 @@ ALTER TABLE ONLY isahl."zc_id_prod-license-purchase" ALTER COLUMN updated_at SET
 --
 
 ALTER TABLE ONLY isahl."zc_id_prod-license-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+
+
+--
+-- Name: zc_id_prod-traffic_rr_conveyance created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-traffic_rr_conveyance" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_prod-traffic_rr_conveyance updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-traffic_rr_conveyance" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_prod-traffic_rr_conveyance id; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-traffic_rr_conveyance" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((440)::bigint);
 
 
 --
@@ -23636,6 +23555,20 @@ ALTER TABLE ONLY isahl."zc_id_prot-env_config" ALTER COLUMN id SET DEFAULT isahl
 
 
 --
+-- Name: zc_id_prot-im_config created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prot-im_config" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_prot-im_config updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prot-im_config" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
 -- Name: zc_id_prot-iot_config created_at; Type: DEFAULT; Schema: isahl; Owner: -
 --
 
@@ -23678,6 +23611,20 @@ ALTER TABLE ONLY isahl."zc_id_prot-llm_config" ALTER COLUMN id SET DEFAULT isahl
 
 
 --
+-- Name: zc_id_prot-oss_config created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prot-oss_config" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_prot-oss_config updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prot-oss_config" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
 -- Name: zc_id_prot-profile_config created_at; Type: DEFAULT; Schema: isahl; Owner: -
 --
 
@@ -23717,6 +23664,20 @@ ALTER TABLE ONLY isahl."zc_id_prot-sms_config" ALTER COLUMN updated_at SET DEFAU
 --
 
 ALTER TABLE ONLY isahl."zc_id_prot-sms_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+
+
+--
+-- Name: zc_id_prot-webhook_config created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prot-webhook_config" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_prot-webhook_config updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prot-webhook_config" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 --
@@ -23797,48 +23758,6 @@ ALTER TABLE ONLY isahl."zc_id_rati-progress" ALTER COLUMN id SET DEFAULT isahl.g
 
 
 --
--- Name: zc_id_relation-agent_rr_llm-config created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_relation-agent_rr_llm-config" ALTER COLUMN created_at SET DEFAULT now();
-
-
---
--- Name: zc_id_relation-agent_rr_llm-config updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_relation-agent_rr_llm-config" ALTER COLUMN updated_at SET DEFAULT now();
-
-
---
--- Name: zc_id_relation-agent_rr_llm-config id; Type: DEFAULT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_relation-agent_rr_llm-config" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((275)::bigint);
-
-
---
--- Name: zc_id_relation-device_rr_protocol created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_relation-device_rr_protocol" ALTER COLUMN created_at SET DEFAULT now();
-
-
---
--- Name: zc_id_relation-device_rr_protocol updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_relation-device_rr_protocol" ALTER COLUMN updated_at SET DEFAULT now();
-
-
---
--- Name: zc_id_relation-device_rr_protocol id; Type: DEFAULT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_relation-device_rr_protocol" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((276)::bigint);
-
-
---
 -- Name: zc_id_relation-employee_r_skill-tags created_at; Type: DEFAULT; Schema: isahl; Owner: -
 --
 
@@ -23857,27 +23776,6 @@ ALTER TABLE ONLY isahl."zc_id_relation-employee_r_skill-tags" ALTER COLUMN updat
 --
 
 ALTER TABLE ONLY isahl."zc_id_relation-employee_r_skill-tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((277)::bigint);
-
-
---
--- Name: zc_id_relation-event_r_tags created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_relation-event_r_tags" ALTER COLUMN created_at SET DEFAULT now();
-
-
---
--- Name: zc_id_relation-event_r_tags updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_relation-event_r_tags" ALTER COLUMN updated_at SET DEFAULT now();
-
-
---
--- Name: zc_id_relation-event_r_tags id; Type: DEFAULT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_relation-event_r_tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((278)::bigint);
 
 
 --
@@ -24684,6 +24582,30 @@ ALTER TABLE ONLY isahl."zc_id_appr-org-structure"
 
 
 --
+-- Name: zc_id_appr-payment zc_id_appr-payment_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_appr-payment"
+    ADD CONSTRAINT "zc_id_appr-payment_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: zc_id_appr-payment_rr_invoice zc_id_appr-payment_rr_invoice_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_invoice"
+    ADD CONSTRAINT "zc_id_appr-payment_rr_invoice_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: zc_id_appr-payment_rr_smt-voucher zc_id_appr-payment_rr_smt-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_smt-voucher"
+    ADD CONSTRAINT "zc_id_appr-payment_rr_smt-voucher_pkey" PRIMARY KEY (id);
+
+
+--
 -- Name: zc_id_appr-pricing zc_id_appr-pricing_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
 --
 
@@ -24857,6 +24779,14 @@ ALTER TABLE ONLY isahl."zc_id_bill-pricing"
 
 ALTER TABLE ONLY isahl.zc_id_bill
     ADD CONSTRAINT zc_id_bill_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: zc_id_bill_rr_process zc_id_bill_rr_process_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl.zc_id_bill_rr_process
+    ADD CONSTRAINT zc_id_bill_rr_process_pkey PRIMARY KEY (id);
 
 
 --
@@ -25292,14 +25222,6 @@ ALTER TABLE ONLY isahl.zc_id_category
 
 
 --
--- Name: zc_id_certificate zc_id_certificate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl.zc_id_certificate
-    ADD CONSTRAINT zc_id_certificate_pkey PRIMARY KEY (id);
-
-
---
 -- Name: zc_id_cons-cron-cate zc_id_cons-cron-cate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
 --
 
@@ -25684,6 +25606,14 @@ ALTER TABLE ONLY isahl.zc_id_device
 
 
 --
+-- Name: zc_id_device_rr_protocol zc_id_device_rr_protocol_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl.zc_id_device_rr_protocol
+    ADD CONSTRAINT zc_id_device_rr_protocol_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: zc_id_docu-accounting zc_id_docu-accounting_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
 --
 
@@ -25705,6 +25635,14 @@ ALTER TABLE ONLY isahl.zc_id_document
 
 ALTER TABLE ONLY isahl."zc_id_empl-agent"
     ADD CONSTRAINT "zc_id_empl-agent_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: zc_id_empl-agent_rr_llm-config zc_id_empl-agent_rr_llm-config_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_empl-agent_rr_llm-config"
+    ADD CONSTRAINT "zc_id_empl-agent_rr_llm-config_pkey" PRIMARY KEY (id);
 
 
 --
@@ -26089,14 +26027,6 @@ ALTER TABLE ONLY isahl."zc_id_info-telephone"
 
 ALTER TABLE ONLY isahl."zc_id_info-zipcode"
     ADD CONSTRAINT "zc_id_info-zipcode_pkey" PRIMARY KEY (id);
-
-
---
--- Name: zc_id_inv-voucher_rr_form zc_id_inv-voucher_rr_form_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_inv-voucher_rr_form"
-    ADD CONSTRAINT "zc_id_inv-voucher_rr_form_pkey" PRIMARY KEY (id);
 
 
 --
@@ -26740,6 +26670,14 @@ ALTER TABLE ONLY isahl.zc_id_operation
 
 
 --
+-- Name: zc_id_operation_rr_bill zc_id_operation_rr_bill_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl.zc_id_operation_rr_bill
+    ADD CONSTRAINT zc_id_operation_rr_bill_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: zc_id_operation_rr_bom zc_id_operation_rr_bom_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
 --
 
@@ -26916,22 +26854,6 @@ ALTER TABLE ONLY isahl."zc_id_orga-non-banking-legal"
 
 
 --
--- Name: zc_id_payment_rr_invoice zc_id_payment_rr_invoice_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl.zc_id_payment_rr_invoice
-    ADD CONSTRAINT zc_id_payment_rr_invoice_pkey PRIMARY KEY (id);
-
-
---
--- Name: zc_id_payment_rr_smt-voucher zc_id_payment_rr_smt-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_payment_rr_smt-voucher"
-    ADD CONSTRAINT "zc_id_payment_rr_smt-voucher_pkey" PRIMARY KEY (id);
-
-
---
 -- Name: zc_id_place zc_id_place_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
 --
 
@@ -26964,14 +26886,6 @@ ALTER TABLE ONLY isahl."zc_id_plan-inbound"
 
 
 --
--- Name: zc_id_plan-making_items_rr_material zc_id_plan-making_items_rr_material_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_plan-making_items_rr_material"
-    ADD CONSTRAINT "zc_id_plan-making_items_rr_material_pkey" PRIMARY KEY (id);
-
-
---
 -- Name: zc_id_plan-making zc_id_plan-making_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
 --
 
@@ -26996,19 +26910,11 @@ ALTER TABLE ONLY isahl."zc_id_plan-material"
 
 
 --
--- Name: zc_id_plan-material_prod_rr_material zc_id_plan-material_prod_rr_material_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+-- Name: zc_id_plan-material_rr_material zc_id_plan-material_rr_material_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
 --
 
-ALTER TABLE ONLY isahl."zc_id_plan-material_prod_rr_material"
-    ADD CONSTRAINT "zc_id_plan-material_prod_rr_material_pkey" PRIMARY KEY (id);
-
-
---
--- Name: zc_id_plan-material_rr_prod zc_id_plan-material_rr_prod_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_plan-material_rr_prod"
-    ADD CONSTRAINT "zc_id_plan-material_rr_prod_pkey" PRIMARY KEY (id);
+ALTER TABLE ONLY isahl."zc_id_plan-material_rr_material"
+    ADD CONSTRAINT "zc_id_plan-material_rr_material_pkey" PRIMARY KEY (id);
 
 
 --
@@ -27196,6 +27102,14 @@ ALTER TABLE ONLY isahl.zc_id_process_rr_operation
 
 
 --
+-- Name: zc_id_prod-certificate zc_id_prod-certificate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-certificate"
+    ADD CONSTRAINT "zc_id_prod-certificate_pkey" PRIMARY KEY (id);
+
+
+--
 -- Name: zc_id_prod-channel_cost-sales zc_id_prod-channel_cost-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
 --
 
@@ -27316,6 +27230,14 @@ ALTER TABLE ONLY isahl."zc_id_prod-dev-tools-made"
 
 
 --
+-- Name: zc_id_prod-digital_cert-sales zc_id_prod-digital_cert-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-digital_cert-sales"
+    ADD CONSTRAINT "zc_id_prod-digital_cert-sales_pkey" PRIMARY KEY (id);
+
+
+--
 -- Name: zc_id_prod-financial zc_id_prod-financial_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
 --
 
@@ -27385,6 +27307,14 @@ ALTER TABLE ONLY isahl."zc_id_prod-freight_ocean-request"
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_ocean-sales"
     ADD CONSTRAINT "zc_id_prod-freight_ocean-sales_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: zc_id_prod-freight_road-sales zc_id_prod-freight_road-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-freight_road-sales"
+    ADD CONSTRAINT "zc_id_prod-freight_road-sales_pkey" PRIMARY KEY (id);
 
 
 --
@@ -28004,6 +27934,14 @@ ALTER TABLE ONLY isahl."zc_id_prod-traffic_rr_contacts"
 
 
 --
+-- Name: zc_id_prod-traffic_rr_conveyance zc_id_prod-traffic_rr_conveyance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-traffic_rr_conveyance"
+    ADD CONSTRAINT "zc_id_prod-traffic_rr_conveyance_pkey" PRIMARY KEY (id);
+
+
+--
 -- Name: zc_id_prod-traffic_rr_stopover zc_id_prod-traffic_rr_stopover_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
 --
 
@@ -28172,6 +28110,14 @@ ALTER TABLE ONLY isahl."zc_id_prot-env_config"
 
 
 --
+-- Name: zc_id_prot-im_config zc_id_prot-im_config_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prot-im_config"
+    ADD CONSTRAINT "zc_id_prot-im_config_pkey" PRIMARY KEY (id);
+
+
+--
 -- Name: zc_id_prot-iot_config zc_id_prot-iot_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
 --
 
@@ -28188,11 +28134,27 @@ ALTER TABLE ONLY isahl."zc_id_prot-llm_config"
 
 
 --
+-- Name: zc_id_prot-oss_config zc_id_prot-oss_config_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prot-oss_config"
+    ADD CONSTRAINT "zc_id_prot-oss_config_pkey" PRIMARY KEY (id);
+
+
+--
 -- Name: zc_id_prot-profile_config zc_id_prot-profile_config_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
 --
 
 ALTER TABLE ONLY isahl."zc_id_prot-profile_config"
     ADD CONSTRAINT "zc_id_prot-profile_config_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: zc_id_prot-webhook_config zc_id_prot-webhook_config_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prot-webhook_config"
+    ADD CONSTRAINT "zc_id_prot-webhook_config_pkey" PRIMARY KEY (id);
 
 
 --
@@ -28420,35 +28382,11 @@ ALTER TABLE ONLY isahl.zc_id_ratio
 
 
 --
--- Name: zc_id_relation-agent_rr_llm-config zc_id_relation-agent_rr_llm-config_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_relation-agent_rr_llm-config"
-    ADD CONSTRAINT "zc_id_relation-agent_rr_llm-config_pkey" PRIMARY KEY (id);
-
-
---
 -- Name: zc_id_relation-bom_item_r_tags zc_id_relation-bom_item_r_tags_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
 --
 
 ALTER TABLE ONLY isahl."zc_id_relation-bom_item_r_tags"
     ADD CONSTRAINT "zc_id_relation-bom_item_r_tags_pkey" PRIMARY KEY (id);
-
-
---
--- Name: zc_id_relation-device_rr_protocol zc_id_relation-device_rr_protocol_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_relation-device_rr_protocol"
-    ADD CONSTRAINT "zc_id_relation-device_rr_protocol_pkey" PRIMARY KEY (id);
-
-
---
--- Name: zc_id_relation-event_r_tags zc_id_relation-event_r_tags_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_relation-event_r_tags"
-    ADD CONSTRAINT "zc_id_relation-event_r_tags_pkey" PRIMARY KEY (id);
 
 
 --
@@ -28465,14 +28403,6 @@ ALTER TABLE ONLY isahl."zc_id_relation-plan_smt_r_tags"
 
 ALTER TABLE ONLY isahl."zc_id_relation-post_view_r_tags"
     ADD CONSTRAINT "zc_id_relation-post_view_r_tags_pkey" PRIMARY KEY (id);
-
-
---
--- Name: zc_id_relation-proc_op_rr_dependency zc_id_relation_proc_op_rr_dependency_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_relation-proc_op_rr_dependency"
-    ADD CONSTRAINT zc_id_relation_proc_op_rr_dependency_pkey PRIMARY KEY (id);
 
 
 --
@@ -28737,14 +28667,6 @@ ALTER TABLE ONLY isahl."zc_id_segm-weight"
 
 ALTER TABLE ONLY isahl.zc_id_segment
     ADD CONSTRAINT zc_id_segment_pkey PRIMARY KEY (id);
-
-
---
--- Name: zc_id_smt-voucher_rr_form zc_id_smt-voucher_rr_form_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl."zc_id_smt-voucher_rr_form"
-    ADD CONSTRAINT "zc_id_smt-voucher_rr_form_pkey" PRIMARY KEY (id);
 
 
 --
@@ -36152,20 +36074,6 @@ CREATE INDEX idx_zc_id_project_fk_previous ON isahl.zc_id_project USING btree (f
 
 
 --
--- Name: idx_zc_id_smt-voucher_rr_form_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
-
-CREATE INDEX "idx_zc_id_smt-voucher_rr_form_fk_object" ON isahl."zc_id_smt-voucher_rr_form" USING btree (fk_object);
-
-
---
--- Name: idx_zc_id_smt-voucher_rr_form_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
-
-CREATE INDEX "idx_zc_id_smt-voucher_rr_form_fk_subject" ON isahl."zc_id_smt-voucher_rr_form" USING btree (fk_subject);
-
-
---
 -- Name: idx_zc_id_stan-clause_code; Type: INDEX; Schema: isahl; Owner: -
 --
 
@@ -37722,10 +37630,12 @@ ALTER TABLE ONLY isahl."zc_id_plan-promotion" ALTER COLUMN id SET DEFAULT isahl.
 ALTER TABLE ONLY isahl."zc_id_plan-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_plan-purchase_items_r_prod" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((168)::bigint);
 ALTER TABLE ONLY isahl."zc_id_plan-recruitment" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prot-im_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prot-oss_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prot-webhook_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_relation-bom_item_r_tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((169)::bigint);
 ALTER TABLE ONLY isahl."zc_id_relation-plan_smt_r_tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((170)::bigint);
 ALTER TABLE ONLY isahl."zc_id_relation-post_view_r_tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((171)::bigint);
-ALTER TABLE ONLY isahl."zc_id_relation-proc_op_rr_dependency" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((172)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-trade_order" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-account" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -37786,6 +37696,9 @@ ALTER TABLE ONLY isahl.zc_id_subjects ALTER COLUMN id SET DEFAULT isahl.gen_next
 ALTER TABLE ONLY isahl.zc_id_task ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_appr-bid-evaluation" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_appr-org-structure" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_appr-payment" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_invoice" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((443)::bigint);
+ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_smt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((444)::bigint);
 ALTER TABLE ONLY isahl."zc_id_appr-pricing" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_appr-prj-initiation" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_appr-prj_doc-push" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -37821,6 +37734,7 @@ ALTER TABLE ONLY isahl."zc_id_devi-display" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_devi-measure" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_devi-sensor" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_docu-accounting" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_empl-agent_rr_llm-config" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((447)::bigint);
 ALTER TABLE ONLY isahl."zc_id_empl-natural_rr_country" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((221)::bigint);
 ALTER TABLE ONLY isahl."zc_id_form-calculation" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((226)::bigint);
 ALTER TABLE ONLY isahl."zc_id_form-condition" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((227)::bigint);
@@ -37868,11 +37782,8 @@ ALTER TABLE ONLY isahl."zc_id_orde-shipping" ALTER COLUMN id SET DEFAULT isahl.g
 ALTER TABLE ONLY isahl."zc_id_orde-storage" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_order_rr_obj-rep" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((245)::bigint);
 ALTER TABLE ONLY isahl."zc_id_order_rr_subj-rep" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((246)::bigint);
-ALTER TABLE ONLY isahl."zc_id_payment_rr_smt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((248)::bigint);
-ALTER TABLE ONLY isahl."zc_id_plan-making_items_rr_material" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((250)::bigint);
 ALTER TABLE ONLY isahl."zc_id_plan-making_rr_prod" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((251)::bigint);
-ALTER TABLE ONLY isahl."zc_id_plan-material_prod_rr_material" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((252)::bigint);
-ALTER TABLE ONLY isahl."zc_id_plan-material_rr_prod" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((253)::bigint);
+ALTER TABLE ONLY isahl."zc_id_plan-material_rr_material" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((445)::bigint);
 ALTER TABLE ONLY isahl."zc_id_plan-purchase_rr_material" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((254)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prjt-proc_ctrl" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_proc-approve" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -37964,12 +37875,14 @@ ALTER TABLE ONLY isahl."zc_id_task_rr_act-group" ALTER COLUMN id SET DEFAULT isa
 ALTER TABLE ONLY isahl."zc_id_task_rr_act-position" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((305)::bigint);
 ALTER TABLE ONLY isahl."zc_id_vers-context_r_baseline" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((308)::bigint);
 ALTER TABLE ONLY isahl."zc_id_vers-context_r_ver-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((309)::bigint);
+ALTER TABLE ONLY isahl.zc_id_bill_rr_process ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((441)::bigint);
 ALTER TABLE ONLY isahl.zc_id_bill_rr_recipients ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((208)::bigint);
 ALTER TABLE ONLY isahl.zc_id_contacts_rr_infos ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((212)::bigint);
 ALTER TABLE ONLY isahl.zc_id_contract_r_term ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((214)::bigint);
 ALTER TABLE ONLY isahl.zc_id_contract_rr_matter ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((216)::bigint);
 ALTER TABLE ONLY isahl.zc_id_contract_rr_party ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((217)::bigint);
 ALTER TABLE ONLY isahl.zc_id_demand_rr_supply ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((218)::bigint);
+ALTER TABLE ONLY isahl.zc_id_device_rr_protocol ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((446)::bigint);
 ALTER TABLE ONLY isahl.zc_id_entity_rr_contacts ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((222)::bigint);
 ALTER TABLE ONLY isahl.zc_id_entity_rr_identity ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((223)::bigint);
 ALTER TABLE ONLY isahl.zc_id_event_rr_object ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((224)::bigint);
@@ -37980,12 +37893,12 @@ ALTER TABLE ONLY isahl.zc_id_level ALTER COLUMN id SET DEFAULT isahl.gen_next_ui
 ALTER TABLE ONLY isahl.zc_id_lifecycle_rr_foreign ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((235)::bigint);
 ALTER TABLE ONLY isahl.zc_id_lifecycle_rr_form ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((236)::bigint);
 ALTER TABLE ONLY isahl.zc_id_master_rr_slave ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((237)::bigint);
+ALTER TABLE ONLY isahl.zc_id_operation_rr_bill ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((442)::bigint);
 ALTER TABLE ONLY isahl.zc_id_operation_rr_bom ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((240)::bigint);
 ALTER TABLE ONLY isahl.zc_id_operation_rr_dependency ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((241)::bigint);
 ALTER TABLE ONLY isahl.zc_id_operation_rr_event ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((242)::bigint);
 ALTER TABLE ONLY isahl.zc_id_operation_rr_post ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((243)::bigint);
 ALTER TABLE ONLY isahl.zc_id_operation_rr_standard ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((244)::bigint);
-ALTER TABLE ONLY isahl.zc_id_payment_rr_invoice ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((247)::bigint);
 ALTER TABLE ONLY isahl.zc_id_place_rr_contacts ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((249)::bigint);
 ALTER TABLE ONLY isahl.zc_id_plan_rr_event ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((256)::bigint);
 ALTER TABLE ONLY isahl.zc_id_plan_rr_participants ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((257)::bigint);
@@ -38028,11 +37941,11 @@ ALTER TABLE ONLY isahl."zc_id_geom-circle" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_geom-coordinate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((322)::bigint);
 ALTER TABLE ONLY isahl."zc_id_geom-path" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((323)::bigint);
 ALTER TABLE ONLY isahl."zc_id_geom-polygon" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((324)::bigint);
-ALTER TABLE ONLY isahl."zc_id_inv-voucher_rr_form" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((325)::bigint);
 ALTER TABLE ONLY isahl."zc_id_leve-bom_satisfy" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((326)::bigint);
 ALTER TABLE ONLY isahl."zc_id_leve-post-seq" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((329)::bigint);
 ALTER TABLE ONLY isahl."zc_id_leve-structure" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((335)::bigint);
 ALTER TABLE ONLY isahl."zc_id_leve-substitute" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((336)::bigint);
+ALTER TABLE ONLY isahl."zc_id_prod-certificate" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-channel_cost-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-consult" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-customs-clearance" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38043,6 +37956,7 @@ ALTER TABLE ONLY isahl."zc_id_prod-freight_inland-sales" ALTER COLUMN id SET DEF
 ALTER TABLE ONLY isahl."zc_id_prod-freight_ocean-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-freight_ocean-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-freight_ocean-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-freight_road-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-insurance" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-legal_tender" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-loading" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38145,7 +38059,6 @@ ALTER TABLE ONLY isahl."zc_id_segm-speed" ALTER COLUMN id SET DEFAULT isahl.gen_
 ALTER TABLE ONLY isahl."zc_id_segm-temperature" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((414)::bigint);
 ALTER TABLE ONLY isahl."zc_id_segm-volume" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((415)::bigint);
 ALTER TABLE ONLY isahl."zc_id_segm-weight" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((416)::bigint);
-ALTER TABLE ONLY isahl."zc_id_smt-voucher_rr_form" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((417)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-smt-bank" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-cash" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-channel" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38189,6 +38102,7 @@ ALTER TABLE ONLY isahl."zc_id_prod-customs_cle_fo-purchase" ALTER COLUMN id SET 
 ALTER TABLE ONLY isahl."zc_id_prod-customs_cle_fo-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-customs_dec_fo-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-customs_dec_fo-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-digital_cert-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-fo_insurance-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-fo_insurance-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-fo_insurance-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38214,4 +38128,3 @@ ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-request" ALTER COLUMN id SET DEF
 ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bank-commercial" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orga-non-banking-legal" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-
