@@ -2,6 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14%2B-336791.svg)](https://www.postgresql.org/)
+[![简体中文](https://img.shields.io/badge/README-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-blue.svg)](README.zh-CN.md)
 
 A **PostgreSQL table-inherited data model** grounded in group theory and commutative ontology. Alioth formalizes economic behavior as symmetric operations within a 4-dimensional orthogonal space `(Scene, Factor, Function, State)`, providing a mathematically rigorous foundation for enterprise data management.
 
