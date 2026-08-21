@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "name": "001_schema.sql",
+      "size_bytes": 51
+    },
+    {
+      "name": "002_isahl_tables.sql",
+      "size_bytes": 1144552
+    },
+    {
+      "name": "003_seed_dimensions.meta.json",
+      "size_bytes": 286
+    },
+    {
+      "name": "003_seed_dimensions.sql",
+      "size_bytes": 271179
+    },
+    {
+      "name": "README.md",
+      "size_bytes": 656
+    }
+  ],
+  "published_at": "2026-08-19T08:06:21.920418+00:00",
+  "tables": {
+    "zc_id_category": 1,
+    "zc_id_cons-factor-cate": 62,
+    "zc_id_cons-function-cate": 91,
+    "zc_id_cons-industry-cate": 21,
+    "zc_id_factor": 118,
+    "zc_id_function": 424,
+    "zc_id_lifecycle": 0,
+    "zc_id_scene": 119,
+    "zc_id_status": 65,
+    "zc_id_subjects": 0,
+    "zc_id_version": 0
+  },
+  "version": "v10.0.0"
+}
