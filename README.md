@@ -17,7 +17,7 @@ Published models are stored **per version** in this repository. Each publish wri
 ```
 Alioth/
 ├── latest.json                     # Latest version anchor: version, published_at, seed table row counts, file list
-└── v10.0.2/                       # One directory per released version (SemVer)
+└── v10.0.3/                       # One directory per released version (SemVer)
     ├── 001_schema.sql              # CREATE SCHEMA IF NOT EXISTS isahl
     ├── 002_isahl_tables.sql        # isahl schema structure only (pure CREATE/ALTER, post-processed)
     ├── 003_seed_dimensions.sql     # Seed data for 11 dimension/consensus/system-settings tables
