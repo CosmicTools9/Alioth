@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict UABmMBKeY4VbEICt8kaCbmMnUebUVoc6CClcC5L8s6bod0c4nJat2B5iR44T3y2
+\restrict kxIULzxRVAhgJzy4hBM7E0tDcLNkImpRe8kOUPeSW6uhZw6IK47fEWMLnrgioqB
 
 -- Dumped from database version 18.4 (Homebrew)
 -- Dumped by pg_dump version 18.6 (Homebrew)
@@ -1001,5 +1001,5 @@ INSERT INTO isahl."zc_id_tags-post_view" VALUES ('2026-08-22 15:22:31.648776+08'
 -- PostgreSQL database dump complete
 --
 
-\unrestrict UABmMBKeY4VbEICt8kaCbmMnUebUVoc6CClcC5L8s6bod0c4nJat2B5iR44T3y2
+\unrestrict kxIULzxRVAhgJzy4hBM7E0tDcLNkImpRe8kOUPeSW6uhZw6IK47fEWMLnrgioqB
 

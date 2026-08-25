@@ -5405,7 +5405,12 @@ CREATE TABLE isahl."zc_id_deta-trade_order" (
     fk_deal bigint,
     qk_amount bigint,
     fk_counterparty bigint,
-    fk_purchase bigint
+    fk_purchase bigint,
+    qk_v_qty bigint,
+    qk_w_qty bigint,
+    qk_a_qty bigint,
+    qk_ts_qty bigint,
+    qk_d_qty bigint
 )
 INHERITS (isahl.zc_id_detail);
 
@@ -9425,7 +9430,6 @@ CREATE TABLE isahl."zc_id_stat-trade_order" (
     fk_object bigint,
     qk_date bigint,
     fk_contract bigint,
-    qk_amount bigint,
     ck_category bigint
 )
 INHERITS (isahl.zc_id_statement);
@@ -9436,9 +9440,7 @@ INHERITS (isahl.zc_id_statement);
 --
 
 CREATE TABLE isahl."zc_id_orde-traffic" (
-    id bigint NOT NULL,
-    qk_v_total bigint,
-    qk_w_total bigint
+    id bigint NOT NULL
 )
 INHERITS (isahl."zc_id_stat-trade_order");
 
@@ -9474,10 +9476,8 @@ CREATE TABLE isahl."zc_id_orde-ahbl" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
-    qk_total bigint,
     fk_contract bigint,
     sk_currency bigint,
-    qk_amount bigint,
     ck_category bigint
 )
 INHERITS (isahl."zc_id_orde-traffic");
@@ -9514,10 +9514,8 @@ CREATE TABLE isahl."zc_id_orde-airlift" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
-    qk_total bigint,
     fk_contract bigint,
     sk_currency bigint,
-    qk_amount bigint,
     ck_category bigint
 )
 INHERITS (isahl."zc_id_orde-traffic");
@@ -9549,7 +9547,6 @@ CREATE TABLE isahl."zc_id_orde-consult" (
     fk_object bigint,
     qk_date bigint,
     fk_contract bigint,
-    qk_amount bigint,
     ck_category bigint
 )
 INHERITS (isahl."zc_id_stat-trade_order");
@@ -9586,10 +9583,8 @@ CREATE TABLE isahl."zc_id_orde-hbl" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
-    qk_total bigint,
     fk_contract bigint,
     sk_currency bigint,
-    qk_amount bigint,
     ck_category bigint,
     fk_mbl bigint,
     qk_ready_date bigint,
@@ -9629,10 +9624,8 @@ CREATE TABLE isahl."zc_id_orde-land" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
-    qk_total bigint,
     fk_contract bigint,
     sk_currency bigint,
-    qk_amount bigint,
     ck_category bigint
 )
 INHERITS (isahl."zc_id_orde-traffic");
@@ -9680,10 +9673,8 @@ CREATE TABLE isahl."zc_id_orde-multimodal" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
-    qk_total bigint,
     fk_contract bigint,
     sk_currency bigint,
-    qk_amount bigint,
     ck_category bigint
 )
 INHERITS (isahl."zc_id_orde-traffic");
@@ -9720,10 +9711,8 @@ CREATE TABLE isahl."zc_id_orde-railway" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
-    qk_total bigint,
     fk_contract bigint,
     sk_currency bigint,
-    qk_amount bigint,
     ck_category bigint
 )
 INHERITS (isahl."zc_id_orde-traffic");
@@ -9765,9 +9754,7 @@ CREATE TABLE isahl."zc_id_orde-retail" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
-    qk_total bigint,
     fk_contract bigint,
-    qk_amount bigint,
     ck_category bigint
 )
 INHERITS (isahl."zc_id_stat-trade_order");
@@ -9804,10 +9791,8 @@ CREATE TABLE isahl."zc_id_orde-shipping" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
-    qk_total bigint,
     fk_contract bigint,
     sk_currency bigint,
-    qk_amount bigint,
     ck_category bigint
 )
 INHERITS (isahl."zc_id_orde-traffic");
@@ -9844,9 +9829,7 @@ CREATE TABLE isahl."zc_id_orde-storage" (
     fk_subject bigint,
     fk_object bigint,
     qk_date bigint,
-    qk_total bigint,
     fk_contract bigint,
-    qk_amount bigint,
     ck_category bigint
 )
 INHERITS (isahl."zc_id_stat-trade_order");
@@ -41790,7 +41773,7 @@ ALTER TABLE ONLY isahl."zc_id_orde-consult" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_orde-retail" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orde-storage" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orde-traffic" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_orde-traffic_rr_tsp-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((482)::bigint);
+ALTER TABLE ONLY isahl."zc_id_orde-traffic_rr_tsp-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((332)::bigint);
 ALTER TABLE ONLY isahl."zc_id_order_rr_obj-rep" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((272)::bigint);
 ALTER TABLE ONLY isahl."zc_id_order_rr_subj-rep" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((273)::bigint);
 ALTER TABLE ONLY isahl."zc_id_plan-making_rr_prod" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((275)::bigint);
@@ -41973,8 +41956,8 @@ ALTER TABLE ONLY isahl."zc_id_leve-log" ALTER COLUMN id SET DEFAULT isahl.gen_ne
 ALTER TABLE ONLY isahl."zc_id_leve-post-seq" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((353)::bigint);
 ALTER TABLE ONLY isahl."zc_id_leve-structure" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((359)::bigint);
 ALTER TABLE ONLY isahl."zc_id_leve-substitute" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((360)::bigint);
-ALTER TABLE ONLY isahl."zc_id_oper-sign_rr_agreement" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((478)::bigint);
-ALTER TABLE ONLY isahl."zc_id_oper-sign_rr_contract" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((477)::bigint);
+ALTER TABLE ONLY isahl."zc_id_oper-sign_rr_agreement" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((466)::bigint);
+ALTER TABLE ONLY isahl."zc_id_oper-sign_rr_contract" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((468)::bigint);
 ALTER TABLE ONLY isahl."zc_id_orde-ahbl" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orde-airlift" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orde-hbl" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -41984,7 +41967,7 @@ ALTER TABLE ONLY isahl."zc_id_orde-multimodal" ALTER COLUMN id SET DEFAULT isahl
 ALTER TABLE ONLY isahl."zc_id_orde-railway" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orde-rbl" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orde-shipping" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_orde-traffic_rr_ticket" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((481)::bigint);
+ALTER TABLE ONLY isahl."zc_id_orde-traffic_rr_ticket" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((479)::bigint);
 ALTER TABLE ONLY isahl."zc_id_plan-payment_rr_smt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((371)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-certificate" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-channel_cost-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -42134,12 +42117,12 @@ ALTER TABLE ONLY isahl."zc_id_bom_rr_item" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_contract_rr_deal" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((329)::bigint);
 ALTER TABLE ONLY isahl."zc_id_contract_rr_demand" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((330)::bigint);
 ALTER TABLE ONLY isahl."zc_id_contract_rr_goods" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((331)::bigint);
-ALTER TABLE ONLY isahl."zc_id_event_rr_bill" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((475)::bigint);
+ALTER TABLE ONLY isahl."zc_id_event_rr_bill" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((366)::bigint);
 ALTER TABLE ONLY isahl."zc_id_event_rr_matter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((333)::bigint);
-ALTER TABLE ONLY isahl."zc_id_event_rr_reason" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((473)::bigint);
+ALTER TABLE ONLY isahl."zc_id_event_rr_reason" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((454)::bigint);
 ALTER TABLE ONLY isahl."zc_id_event_rr_standard" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((334)::bigint);
 ALTER TABLE ONLY isahl."zc_id_file_rr_url" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((335)::bigint);
-ALTER TABLE ONLY isahl."zc_id_operation_rr_bill" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((476)::bigint);
+ALTER TABLE ONLY isahl."zc_id_operation_rr_bill" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((471)::bigint);
 ALTER TABLE ONLY isahl."zc_id_operation_rr_bom" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((367)::bigint);
 ALTER TABLE ONLY isahl."zc_id_operation_rr_statement" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((469)::bigint);
 ALTER TABLE ONLY isahl."zc_id_order_rr_issue_invoice" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((369)::bigint);
