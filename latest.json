@@ -6,7 +6,7 @@
     },
     {
       "name": "002_isahl_tables.sql",
-      "size_bytes": 1166754
+      "size_bytes": 1166756
     },
     {
       "name": "003_seed_dimensions.meta.json",
@@ -21,7 +21,7 @@
       "size_bytes": 706
     }
   ],
-  "published_at": "2026-08-25T02:43:57.370288+00:00",
+  "published_at": "2026-08-25T04:34:44.916405+00:00",
   "tables": {
     "zc_id_category": 1,
     "zc_id_cons-factor-cate": 62,
@@ -36,5 +36,5 @@
     "zc_id_tags-post_view": 4,
     "zc_id_version": 0
   },
-  "version": "v10.0.5"
+  "version": "v10.0.6"
 }
