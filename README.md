@@ -20,8 +20,8 @@ Alioth/
 └── v10.0.6/                       # One directory per released version (SemVer)
     ├── 001_schema.sql              # CREATE SCHEMA IF NOT EXISTS isahl
     ├── 002_isahl_tables.sql        # isahl schema structure only (pure CREATE/ALTER, post-processed)
-    ├── 003_seed_dimensions.sql     # Seed data for 11 dimension/consensus/system-settings tables
-    ├── 003_seed_dimensions.meta.json  # Expected row counts per seed table (for verification)
+    ├── seed-dimensions.sql     # Seed data for 11 dimension/consensus/system-settings tables
+    ├── seed-dimensions.meta.json  # Expected row counts per seed table (for verification)
     └── README.md                   # Per-version readme (export timestamp, pg_dump version)
 ```
 
@@ -42,7 +42,7 @@ cd Alioth
 VERSION=$(jq -r .version latest.json)   # or pick a concrete version directory
 psql "$DATABASE_URL" -f "$VERSION/001_schema.sql"
 psql "$DATABASE_URL" -f "$VERSION/002_isahl_tables.sql"
-psql "$DATABASE_URL" -f "$VERSION/003_seed_dimensions.sql"
+psql "$DATABASE_URL" -f "$VERSION/seed-dimensions.sql"
 ```
 
 The three files must be applied **in order**: schema → tables → seed data.
