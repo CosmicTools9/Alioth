@@ -20,8 +20,8 @@ Alioth/
 └── v10.0.6/                       # 每个已发布版本一个目录（SemVer）
     ├── 001_schema.sql              # CREATE SCHEMA IF NOT EXISTS isahl
     ├── 002_isahl_tables.sql        # isahl schema 结构（纯 CREATE/ALTER，后处理产物）
-    ├── 003_seed_dimensions.sql     # 11 张维度/共识/系统设置表的种子数据
-    ├── 003_seed_dimensions.meta.json  # 各种子表预期行数（用于验证）
+    ├── seed-dimensions.sql     # 11 张维度/共识/系统设置表的种子数据
+    ├── seed-dimensions.meta.json  # 各种子表预期行数（用于验证）
     └── README.md                   # 版本内 README（导出时间戳、pg_dump 版本）
 ```
 
@@ -42,7 +42,7 @@ cd Alioth
 VERSION=$(jq -r .version latest.json)   # 或选择具体版本目录
 psql "$DATABASE_URL" -f "$VERSION/001_schema.sql"
 psql "$DATABASE_URL" -f "$VERSION/002_isahl_tables.sql"
-psql "$DATABASE_URL" -f "$VERSION/003_seed_dimensions.sql"
+psql "$DATABASE_URL" -f "$VERSION/seed-dimensions.sql"
 ```
 
 三个文件必须 **按顺序** 执行：schema → tables → seed data。
