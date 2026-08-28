@@ -6,22 +6,22 @@
     },
     {
       "name": "002_isahl_tables.sql",
-      "size_bytes": 1166385
-    },
-    {
-      "name": "seed-dimensions.meta.json",
-      "size_bytes": 315
-    },
-    {
-      "name": "seed-dimensions.sql",
-      "size_bytes": 272341
+      "size_bytes": 1171594
     },
     {
       "name": "README.md",
-      "size_bytes": 706
+      "size_bytes": 698
+    },
+    {
+      "name": "seed-dimensions.meta.json",
+      "size_bytes": 316
+    },
+    {
+      "name": "seed-dimensions.sql",
+      "size_bytes": 311306
     }
   ],
-  "published_at": "2026-08-25T05:49:01.958175+00:00",
+  "published_at": "2026-08-28T17:16:37.337368+00:00",
   "tables": {
     "zc_id_category": 1,
     "zc_id_cons-factor-cate": 62,
@@ -33,8 +33,8 @@
     "zc_id_scene": 119,
     "zc_id_status": 65,
     "zc_id_subjects": 0,
-    "zc_id_tags-post_view": 4,
+    "zc_id_tags-post_view": 12,
     "zc_id_version": 0
   },
-  "version": "v10.0.6"
+  "version": "v10.0.7"
 }
