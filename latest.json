@@ -6,35 +6,35 @@
     },
     {
       "name": "002_isahl_tables.sql",
-      "size_bytes": 1168312
+      "size_bytes": 1220612
     },
     {
       "name": "README.md",
-      "size_bytes": 698
+      "size_bytes": 699
     },
     {
       "name": "seed-dimensions.meta.json",
-      "size_bytes": 316
+      "size_bytes": 314
     },
     {
       "name": "seed-dimensions.sql",
-      "size_bytes": 315213
+      "size_bytes": 553449
     }
   ],
-  "published_at": "2026-08-29T17:47:16.953502+00:00",
+  "published_at": "2026-09-07T06:41:16.560428+00:00",
   "tables": {
-    "zc_id_category": 1,
+    "zc_id_category": 0,
     "zc_id_cons-factor-cate": 62,
     "zc_id_cons-function-cate": 91,
     "zc_id_cons-industry-cate": 21,
     "zc_id_factor": 118,
-    "zc_id_function": 424,
+    "zc_id_function": 418,
     "zc_id_lifecycle": 0,
-    "zc_id_scene": 119,
-    "zc_id_status": 65,
+    "zc_id_scene": 109,
+    "zc_id_status": 0,
     "zc_id_subjects": 0,
-    "zc_id_tags-post_view": 24,
+    "zc_id_tags-post_view": 5,
     "zc_id_version": 0
   },
-  "version": "v10.0.9"
+  "version": "v10.0.15"
 }
