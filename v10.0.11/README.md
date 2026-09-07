@@ -1,0 +1,20 @@
+# Alioth Model @ v10.0.11
+
+Exported at 2026-09-02T05:45:38.265721+00:00
+pg_dump version: pg_dump (PostgreSQL) 18.6 (Homebrew)
+
+## Files
+
+- `001_schema.sql` — Create `isahl` schema.
+- `002_isahl_tables.sql` — All tables in `isahl` schema (structure only).
+- `seed-dimensions.sql` — Seed data for isahl standard model: dimension tables (scene/factor/function), consensus category tables, system-settings reference tables (status/subjects/category/version/lifecycle), and the trade-view dictionary (zc_id_tags-post_view).
+
+## Usage
+
+Run the SQL files in order:
+
+```bash
+psql $DATABASE_URL -f 001_schema.sql
+psql $DATABASE_URL -f 002_isahl_tables.sql
+psql $DATABASE_URL -f seed-dimensions.sql
+```
