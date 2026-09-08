@@ -6,7 +6,7 @@
     },
     {
       "name": "002_isahl_tables.sql",
-      "size_bytes": 1229104
+      "size_bytes": 1234798
     },
     {
       "name": "README.md",
@@ -18,12 +18,12 @@
     },
     {
       "name": "seed-dimensions.sql",
-      "size_bytes": 662370
+      "size_bytes": 748291
     }
   ],
-  "published_at": "2026-09-07T10:50:14.940750+00:00",
+  "published_at": "2026-09-08T00:55:35.107793+00:00",
   "tables": {
-    "zc_id_category": 0,
+    "zc_id_category": 1,
     "zc_id_cons-factor-cate": 62,
     "zc_id_cons-function-cate": 91,
     "zc_id_cons-industry-cate": 21,
@@ -36,5 +36,5 @@
     "zc_id_tags-post_view": 5,
     "zc_id_version": 0
   },
-  "version": "v10.0.16"
+  "version": "v10.0.17"
 }
