@@ -6,7 +6,7 @@
     },
     {
       "name": "002_isahl_tables.sql",
-      "size_bytes": 1246401
+      "size_bytes": 1246815
     },
     {
       "name": "README.md",
@@ -22,14 +22,14 @@
     },
     {
       "name": "seed-dimensions.sql",
-      "size_bytes": 783353
+      "size_bytes": 783819
     },
     {
       "name": "seed-model-contract.sql",
       "size_bytes": 3326
     }
   ],
-  "published_at": "2026-09-13T14:15:38.127430+00:00",
+  "published_at": "2026-09-14T09:21:18.091670+00:00",
   "tables": {
     "zc_id_cate-acc-title": 13,
     "zc_id_cate-agent": 0,
@@ -191,7 +191,7 @@
     "zc_id_stus-inventory": 5,
     "zc_id_stus-invoice_issue": 0,
     "zc_id_stus-invoice_verify": 0,
-    "zc_id_stus-iot": 4,
+    "zc_id_stus-iot": 5,
     "zc_id_stus-legal_person": 6,
     "zc_id_stus-license": 6,
     "zc_id_stus-marital": 4,
@@ -207,7 +207,7 @@
     "zc_id_stus-process": 3,
     "zc_id_stus-prod-made": 3,
     "zc_id_stus-prod-purchase": 4,
-    "zc_id_stus-prod-request": 5,
+    "zc_id_stus-prod-request": 6,
     "zc_id_stus-prod-sales": 6,
     "zc_id_stus-production": 0,
     "zc_id_stus-project": 8,
@@ -285,5 +285,5 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "version": "v10.0.22"
+  "version": "v10.0.24"
 }
