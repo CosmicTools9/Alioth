@@ -1,0 +1,9 @@
+{
+  "output": "✅ 001_schema.sql: 51 bytes\n✅ 002_isahl_tables.sql: 1246815 bytes\n✅ seed-dimensions.sql: 783819 bytes\n✅ seed-model-contract.sql: 3326 bytes\n✅ uid 默认值体系校验：0 冲突 0 缺失\n✅ 数据往返：253 张表逐表计数与发布快照一致\n❌ 种子契约检查失败：7 项\nmissing_seed_roots|-|模型侧未声明任何 seed_family_root；模型级种子表集将解析为空\nunruled_parent_rows|zc_id_cate-sto-title|继承父表持有 4 行直接行但未声明 row_layer；需模型中心裁决 abstract（应清零）或 carry（设计内）\nunruled_parent_rows|zc_id_category|继承父表持有 1 行直接行但未声明 row_layer；需模型中心裁决 abstract（应清零）或 carry（设计内）\nunruled_parent_rows|zc_id_level|继承父表持有 4 行直接行但未声明 row_layer；需模型中心裁决 abstract（应清零）或 carry（设计内）\nunruled_parent_rows|zc_id_stus-container|继承父表持有 5 行直接行但未声明 row_layer；需模型中心裁决 abstract（应清零）或 carry（设计内）\nunruled_parent_rows|zc_id_stus-storage|继承父表持有 5 行直接行但未声明 row_layer；需模型中心裁决 abstract（应清零）或 carry（设计内）\nunruled_parent_rows|zc_id_stus-trade|继承父表持有 16 行直接行但未声明 row_layer；需模型中心裁决 abstract（应清零）或 carry（设计内）\n裁决路径：模型中心在 isahl_meta.meta_collections.config 补 row_layer（abstract|carry）/ seed_scope（model|namespace + reason）/ seed_family_root 声明后重验。\n",
+  "source_db": "postgres://isahl@localhost:5432/aliothstudio_dev",
+  "verified_at": "2026-09-14T08:54:01.979384+00:00",
+  "verify_status": "failed",
+  "verify_target_db": "postgres://localhost:5432/aliothstudio_verify",
+  "verify_target_is_shared": false,
+  "version": "v10.0.23"
+}
