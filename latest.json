@@ -6,7 +6,7 @@
     },
     {
       "name": "002_isahl_tables.sql",
-      "size_bytes": 1246815
+      "size_bytes": 1252733
     },
     {
       "name": "README.md",
@@ -14,22 +14,22 @@
     },
     {
       "name": "model-contract.json",
-      "size_bytes": 15219
+      "size_bytes": 15222
     },
     {
       "name": "seed-dimensions.meta.json",
-      "size_bytes": 7104
+      "size_bytes": 7107
     },
     {
       "name": "seed-dimensions.sql",
-      "size_bytes": 783819
+      "size_bytes": 789189
     },
     {
       "name": "seed-model-contract.sql",
       "size_bytes": 3326
     }
   ],
-  "published_at": "2026-09-14T09:21:18.091670+00:00",
+  "published_at": "2026-09-15T05:20:22.728026+00:00",
   "tables": {
     "zc_id_cate-acc-title": 13,
     "zc_id_cate-agent": 0,
@@ -86,7 +86,7 @@
     "zc_id_cons-date-tags": 6,
     "zc_id_cons-ethnic_group-cate": 56,
     "zc_id_cons-factor-cate": 62,
-    "zc_id_cons-function-cate": 91,
+    "zc_id_cons-function-cate": 79,
     "zc_id_cons-goods-tags": 13,
     "zc_id_cons-industry-cate": 21,
     "zc_id_cons-license-cate": 9,
@@ -106,7 +106,7 @@
     "zc_id_leve-impact": 4,
     "zc_id_leve-kpi": 0,
     "zc_id_leve-log": 0,
-    "zc_id_leve-org": 0,
+    "zc_id_leve-org": 4,
     "zc_id_leve-plan": 0,
     "zc_id_leve-post-resp": 0,
     "zc_id_leve-post-seq": 0,
@@ -192,7 +192,7 @@
     "zc_id_stus-invoice_issue": 0,
     "zc_id_stus-invoice_verify": 0,
     "zc_id_stus-iot": 5,
-    "zc_id_stus-legal_person": 6,
+    "zc_id_stus-legal_person": 8,
     "zc_id_stus-license": 6,
     "zc_id_stus-marital": 4,
     "zc_id_stus-message": 4,
@@ -230,7 +230,7 @@
     "zc_id_stus-training": 2,
     "zc_id_stus-vehicle": 0,
     "zc_id_stus-version": 4,
-    "zc_id_stus-vessel": 5,
+    "zc_id_stus-vessel": 10,
     "zc_id_tags": 0,
     "zc_id_tags-baseline": 0,
     "zc_id_tags-batch": 1,
@@ -244,12 +244,12 @@
     "zc_id_tags-milestone": 14,
     "zc_id_tags-parties": 0,
     "zc_id_tags-plan_action": 0,
-    "zc_id_tags-post_view": 5,
+    "zc_id_tags-post_view": 18,
     "zc_id_tags-project": 25,
     "zc_id_tags-r-type": 5,
     "zc_id_tags-r-type-alias": 0,
     "zc_id_tags-skill": 3,
-    "zc_id_tags-version": 2,
+    "zc_id_tags-version": 10,
     "zc_id_tags-warehousing": 0,
     "zc_id_tags_poi": 0,
     "zc_id_unit": 0,
@@ -285,5 +285,5 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "version": "v10.0.24"
+  "version": "v10.0.25"
 }
