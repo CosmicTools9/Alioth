@@ -4,9 +4,9 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14%2B-336791.svg)](https://www.postgresql.org/)
 [![English](https://img.shields.io/badge/README-English-blue.svg)](README.md)
 
-基于 **PostgreSQL 表继承** 的企业数据模型，以群论与交换本体论为理论基础。Alioth 将经济行为形式化为 4 维正交空间 `(Scene, Factor, Function, State)` 中的对称运算，为企业数据管理提供数学上严格的基础。
+基于 **PostgreSQL 表继承** 的企业数据模型，以范畴论与交换本体论为理论基础。Alioth 将经济行为形式化为*交换范畴*中的态射：可逆交易构成一个**群胚**（groupoid），其上配备对合对称函子（每笔可逆交易都有镜像逆交易，`S² = id`）；每个业务实体在 4 维正交空间 `(Scene, Factor, Function, Status)` 中占据唯一坐标——为企业数据管理提供数学上严格的基础。
 
-最新模型版本以 [`latest.json`](latest.json) 为锚点。
+最新模型版本以 [`latest.json`](latest.json) 为锚点。最新发布（`v10.0.27`，2026-09-17）包含 **972 张继承表**（13 张 `zc_ad_*` 抽象表 + 959 张 `zc_id_*` 实现表）与 **254 张种子表**，已在专用验证库上通过全量重建验证。
 
 ---
 
@@ -16,12 +16,15 @@
 
 ```
 Alioth/
-├── latest.json                     # 最新版本锚点：version、published_at、种子表行数、文件清单
-└── v10.0.25/                       # 每个已发布版本一个目录（SemVer）
+├── latest.json                     # 最新版本锚点：version、published_at、逐表种子行数、文件清单
+└── v10.0.27/                       # 每个已发布版本一个目录（SemVer）
     ├── 001_schema.sql              # CREATE SCHEMA IF NOT EXISTS isahl
-    ├── 002_isahl_tables.sql        # isahl schema 结构（纯 CREATE/ALTER，后处理产物）
-    ├── seed-dimensions.sql     # 11 张维度/共识/系统设置表的种子数据
-    ├── seed-dimensions.meta.json  # 各种子表预期行数（用于验证）
+    ├── 002_isahl_tables.sql        # isahl schema 结构（纯 CREATE/ALTER，后处理产物；972 张表）
+    ├── seed-dimensions.sql         # 254 张维度/类目/状态/字典表的种子数据
+    ├── seed-dimensions.meta.json   # 各种子表预期行数（用于验证）
+    ├── seed-model-contract.sql     # 模型级种子契约（声明的种子表集合，幂等）
+    ├── model-contract.json         # 本次发布的机读模型契约
+    ├── verify-report.json          # 重建验证报告（验证运行后落盘）
     └── README.md                   # 版本内 README（导出时间戳、pg_dump 版本）
 ```
 
@@ -43,18 +46,17 @@ VERSION=$(jq -r .version latest.json)   # 或选择具体版本目录
 psql "$DATABASE_URL" -f "$VERSION/001_schema.sql"
 psql "$DATABASE_URL" -f "$VERSION/002_isahl_tables.sql"
 psql "$DATABASE_URL" -f "$VERSION/seed-dimensions.sql"
+psql "$DATABASE_URL" -f "$VERSION/seed-model-contract.sql"
 ```
 
-三个文件必须 **按顺序** 执行：schema → tables → seed data。
+文件必须 **按顺序** 执行：schema → tables → seed data → seed contract。
 
 ### 验证
 
 ```sql
--- 抽象类型层
-SELECT relname FROM pg_class WHERE relname LIKE 'zc_ad_%' AND relkind = 'r' ORDER BY 1;
-
--- 业务对象数量
-SELECT count(*) FROM pg_class WHERE relname LIKE 'zc_id_%' AND relkind = 'r';
+-- 表计数（v10.0.27 预期值）
+SELECT count(*) FROM pg_tables WHERE schemaname='isahl' AND tablename LIKE 'zc\_ad\_%';  -- 13
+SELECT count(*) FROM pg_tables WHERE schemaname='isahl' AND tablename LIKE 'zc\_id\_%';  -- 959
 
 -- 维度种子数据加载
 SELECT code, notice FROM isahl.zc_id_scene LIMIT 10;
@@ -81,15 +83,16 @@ graph TD
     end
 
     subgraph Implement Layer[zc_id_* implement data]
-        AD --> IDO[zc_id_object]
-        IDO --> Entity[zc_id_entity]
-        IDO --> Stat[zc_id_status]
-        IDO --> Prod[zc_id_product]
+        V --> IDO[zc_id_object]
+        Sca --> Stat[zc_id_status]
+        IDO --> Stat
         Ten --> LC[zc_id_lifecycle]
-        LC --> IDO
+        IDO --> LC
         LC --> Evt[zc_id_event]
-        LC --> Agr[zc_id_agreement]
-        Evt --> Apv[zc_id_approve]
+        LC --> Prod[zc_id_production]
+        LC --> Stmt[zc_id_statement]
+        Evt --> Cnt[zc_id_even-counting]
+        Stmt --> Ord[zc_id_stat-trade_order]
     end
 
     style AD fill:#e8f4fc,stroke:#333,stroke-width:2px
@@ -100,16 +103,16 @@ graph TD
 | 层级 | 前缀 | 根表 | 角色 | 字段特征 |
 |---|---|---|---|---|
 | L0 抽象 | `zc_ad_` | `zc_ad_object` | 所有对象之根 | `id`, `created_at`, `updated_at` |
-| L1 语义 | `zc_ad_` | `zc_ad_variable` | 增加语义标识 | `code`, `notice`, `unit` |
-| L2 结构 | `zc_ad_` | `zc_ad_scalar` / `zc_ad_vector` / `zc_ad_tensor` / `zc_ad_dimension` | 按数学结构分化 |
+| L1 语义 | `zc_ad_` | `zc_ad_variable` | 增加语义标识 | `code`, `notice` |
+| L2 结构 | `zc_ad_` | `zc_ad_scalar` / `zc_ad_vector` / `zc_ad_tensor` / `zc_ad_dimension` | 按数学结构分化 | `mark`、`precision_`（scalar）等 |
 | L3 关系 | `zc_ad_` | `zc_ad_relation` | 两个实体间的有向连接 | `ref_left`, `ref_right` |
-| L4 实现 | `zc_id_` | `zc_id_object` | **业务元素根**——一阶继承定义分类实现 |
-| L5 生命周期 | `zc_id_` | `zc_id_lifecycle` | 对象生命周期轨迹 | `no`, `op_seq` |
-| L6+ 叶子 | `zc_id_` | `zc_id_order`, `zc_id_order-shipping`, … | 具体业务场景 | 全部继承字段 + 业务专属列 |
+| L4 实现 | `zc_id_` | `zc_id_object` | **业务元素根**——一阶继承定义分类实现 | `o_number`、`comments` |
+| L5 生命周期 | `zc_id_` | `zc_id_lifecycle` | 生命周期轨迹 + 本体坐标 | `dk_scene` / `dk_factor` / `dk_function`、`_f_` / `_t_`、`tpl_id`、`o_number` |
+| L6+ 叶子 | `zc_id_` | `zc_id_stat-trade_order`、`zc_id_orde-land`、`zc_id_even-counting` … | 具体业务场景 | 全部继承字段 + 业务专属列 |
 
 ### 3D 坐标系
 
-每个生命周期实体在 `isahl` 空间中占据唯一坐标 `(Scene, Factor, Function)`——三个维度 **完全正交**：
+每个生命周期实体在 `isahl` 空间中占据唯一坐标 `(Scene, Factor, Function)`——三个维度 **完全正交**（积范畴：各维度独立取值）：
 
 | 维度 | DB 列 | 引用 | 含义 |
 |---|---|---|---|
@@ -131,18 +134,20 @@ Factor 维度划分为五个域，对应任何完整交换不可或缺的五个�
 | P | Place | 位置子群 | 在哪交易 |
 | F | Finance | 流程与信息子群 | 价值如何流动 |
 
-域归属通过 `ck_category` → `zc_id_cons-factor-cate.a_type_` 分类。完整交换快照 **必须** 覆盖全部五个域（不允许破坏对称性），由模型推理引擎强制。
+域归属经 `ck_category` → `zc_id_cons-factor-cate.a_type_` 推导。完整交换快照 **必须** 覆盖全部五个域——形式化表述：领域映射的像覆盖 `{L, C, G, P, F}`（不允许对称性破缺），由模型推理引擎在生成期强制。
 
 ### 生命周期状态表达
 
-业务对象生命周期状态的离散投影通过关系表表达：
+业务对象生命周期状态的离散投影通过关系表表达（实体行自身不携带状态列）：
 
 ```
-zc_id_lifecycle_r_primary-status → zc_id_status-*     主状态（单调，如 出生→死亡）
+zc_id_lifecycle_r_primary-status → zc_id_stus-*       主状态（领域状态叶表；单调，如 出生→死亡）
 zc_id_lifecycle_r_status         → zc_id_status       一般状态（双向，如 在职↔请假）
 zc_id_lifecycle_r_tags           → zc_id_tags         标签
 zc_id_lifecycle_r_category       → zc_id_category     分类
 ```
+
+主状态链是全序集——离散逻辑时间；`status_date` 将其对齐到物理时间。过去与未来的时间切片关于*现在*互为镜像：`zc_id_event`（已发生）↔ `zc_id_task`（待发生），任务完成即切片翻转为事件。
 
 ---
 
@@ -152,23 +157,25 @@ zc_id_lifecycle_r_category       → zc_id_category     分类
 
 | 后缀 | 关系类型 | 示例 |
 |---|---|---|
-| `{entity}_r_{target}` | 一对多引用表 | `zc_id_lifecycle_r_status` |
-| `{entity}_rr_{target}` | 多对多桥接表 | `zc_id_bom_rr_item` |
+| `{entity}_r_{target}` | 一对多关系表（`ref_right` 唯一：每个子恰属一父） | `zc_id_lifecycle_r_status` |
+| `{entity}_rr_{target}` | 多对多桥接表（span：两端均可重复） | `zc_id_bom_rr_item` |
 
-引用表携带 `ref_left`（引用方）与 `ref_right`（被引用方）列。
+关系表携带 `ref_left`（引用方）与 `ref_right`（被引用方）列。
 
 ### 列级
 
 | 前缀 | 含义 | 示例 |
 |---|---|---|
-| `qk_*` | 标量引用键 → `zc_id_scalar-*` 系统 | `qk_price`, `qk_amount` |
-| `fk_*` | 外键引用 | `fk_country` |
+| `dk_*` | 本体坐标 → `zc_ad_dimension` 族 | `dk_scene`, `dk_factor`, `dk_function` |
+| `qk_*` | 标量引用键 → `zc_id_scale` 继承体系（`zc_id_scal-*` 叶表） | `qk_price`, `qk_amount` |
+| `fk_*` | 生命体引用 | `fk_country` |
 | `sk_*` | 单位引用 | `sk_unit`（指向计量单位表） |
 | `ck_*` | 分类/类别引用 | `ck_category` |
 | `tk_*` | 标签引用 | `tk_batch_no`（单选标签） |
 | `lk_*` | 级别/等级引用 | `lk_level` |
+| `tpl_id` | 实例 → 范例桥接 | 固定列名 |
 
-> `_f_` 与 `_t_` 列由 `dk_function.code` 前缀自动派生（六种形式：`!.` / `!_` / `↑.` / `↑_` / `↓.` / `↓_` → 创意 / 设计 / 实现 × 范式 / 实例），永不暴露在业务层 DTO 中。
+> `_f_` 与 `_t_` 列由 `dk_function.code` 前缀自动派生（六种形式：`!.` / `!_` / `↑.` / `↑_` / `↓.` / `↓_` → 创意 / 设计 / 实现 × 范例 / 实例——阶段 × 抽象层级的积结构），永不暴露在业务层 DTO 中。
 
 ---
 
@@ -186,29 +193,29 @@ zc_id_lifecycle_r_category       → zc_id_category     分类
 
 ### 标量引用模型
 
-所有可测量的连续量（金额、日期、数量、价格）**不**以原生类型存储于业务表，而是通过标量引用表传递：
+所有可测量的连续量（金额、日期、数量、价格）**不**以原生类型存储于业务表，而是通过标量引用表传递——值对象外化方案：相等值共享同一行：
 
 ```
-business_table.qk_price (bigint) → zc_id_scalar-price.id → zc_id_scalar-price.mark (numeric)
-business_table.qk_date  (bigint) → zc_id_scalar-date.id  → zc_id_scalar-date.date  (timestamptz)
+business_table.qk_price (bigint) → zc_id_scal-price.id → zc_id_scal-price.mark (numeric)
+business_table.qk_date  (bigint) → zc_id_scal-date.id  → zc_id_scal-date.date  (timestamptz)
 ```
 
 | 前缀 | 标量表 | 实际值列 |
 |---|---|---|
-| `qk_date` | `zc_id_scalar-date` | `date` (timestamptz) |
-| `qk_amount` | `zc_id_scalar-amount` | `mark` (numeric) |
-| `qk_price` | `zc_id_scalar-price` | `mark` (numeric) |
-| `qk_qty` | `zc_id_scalar-common` | `mark` (numeric) |
+| `qk_date` | `zc_id_scal-date` | `date` (timestamptz) |
+| `qk_amount` | `zc_id_scal-amount` | `mark` (numeric) |
+| `qk_price` | `zc_id_scal-price` | `mark` (numeric) |
+| `qk_qty` | `zc_id_scal-common` | `mark` (numeric) |
 | 其他 `qk_*` | `zc_id_scale` 继承层级 | `mark` (numeric) |
 
-**硬性约束**：所有 `qk_*` 列在 DDL 中均为 `bigint`。禁止定义为 `Decimal`、`DateTime` 或 `String`——实际类型化值存储在被引用的标量行上。
+**硬性约束**：所有 `qk_*` 列在 DDL 中均为 `bigint`。禁止定义为 `Decimal`、`DateTime` 或 `String`——实际类型化值存储在被引用的标量行上（含 `sk_unit` 单位与 `precision_` 精度）。
 
 ### 列可写性
 
 | 类别 | 可写性 | 典型列 |
 |---|---|---|
 | 🚫 系统生成 | 不可见且不可写 | `id`, `created_at`, `updated_at`, `deleted_at` |
-| 🔒 维度/触发器派生 | 不暴露于 DTO | `number`, `domain_`, `_f_`, `_t_`, `dk_*`, `paths` |
+| 🔒 维度/触发器派生 | 不暴露于 DTO | `o_number`, `domain_`, `_f_`, `_t_`, `dk_*`, `paths` |
 | ✅ 用户可写 | 直接出现在 DTO | `notice`, `code`, `comments`, `qk_*`, `fk_*`, `ck_*`, `tk_*` |
 
 ---
@@ -217,10 +224,10 @@ business_table.qk_date  (bigint) → zc_id_scalar-date.id  → zc_id_scalar-date
 
 每个版本目录由模型发布管道产出：
 
-1. 通过 `pg_dump --schema-only` 从权威数据库导出 `isahl` schema（外加 11 张种子表的数据导出）。
+1. 通过 `pg_dump --schema-only` 从权威数据库导出 `isahl` schema（外加 254 张种子表的数据导出）。
 2. 后处理为 **纯 CREATE/ALTER** 形式：剥离仅运行时语句，内联 `id` 列 DEFAULT 提取后以 `ALTER TABLE ... ALTER COLUMN id SET DEFAULT isahl.gen_next_uid(...)` 语句重新应用，按继承深度拓扑排序，使每个继承表绑定自己的生成器。
-3. 在本仓库写入版本目录并更新 `latest.json`。
-4. **重建验证**（非阻断）：在干净测试库上，删除 `isahl` / `isahl_auth` / `isahl_audit` 后按顺序以 `ON_ERROR_STOP=1` 重放三个 SQL 文件，再断言种子表行数与 `gen_next_uid` 唯一性（0 冲突、0 缺失）。验证通过后版本标记为 `verified`。
+3. 在本仓库写入版本目录（含机读契约 `model-contract.json` / `seed-model-contract.sql`）并更新 `latest.json`。
+4. **重建验证**（非阻断）：在专用干净验证库上，删除 `isahl` / `isahl_auth` / `isahl_audit` 后按顺序以 `ON_ERROR_STOP=1` 重放 SQL 文件，再断言种子表行数（逐表与发布快照往返一致）、`gen_next_uid` 唯一性（0 冲突、0 缺失）与结构往返（972 表集合与源库一致）。报告落盘为版本目录中的 `verify-report.json`；验证通过后版本标记为 `verified`。
 
 版本遵循 [SemVer](https://semver.org/)。版本只增不减，下限为 `v10.0.0`。发布记录（版本、描述、输出目录、文件清单、状态）记录于 `isahl_meta.model_publish_records`。
 
