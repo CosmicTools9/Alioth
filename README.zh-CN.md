@@ -17,7 +17,7 @@
 ```
 Alioth/
 ├── latest.json                     # 最新版本锚点：version、published_at、逐表种子行数、文件清单
-└── v10.0.27/                       # 每个已发布版本一个目录（SemVer）
+└── v10.0.28/                       # 每个已发布版本一个目录（SemVer）
     ├── 001_schema.sql              # CREATE SCHEMA IF NOT EXISTS isahl
     ├── 002_isahl_tables.sql        # isahl schema 结构（纯 CREATE/ALTER，后处理产物；972 张表）
     ├── seed-dimensions.sql         # 254 张维度/类目/状态/字典表的种子数据
