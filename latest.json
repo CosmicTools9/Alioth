@@ -6,7 +6,7 @@
     },
     {
       "name": "002_isahl_tables.sql",
-      "size_bytes": 1261947
+      "size_bytes": 1268502
     },
     {
       "name": "README.md",
@@ -14,22 +14,22 @@
     },
     {
       "name": "model-contract.json",
-      "size_bytes": 15286
+      "size_bytes": 15347
     },
     {
       "name": "seed-dimensions.meta.json",
-      "size_bytes": 7139
+      "size_bytes": 7169
     },
     {
       "name": "seed-dimensions.sql",
-      "size_bytes": 984043
+      "size_bytes": 984135
     },
     {
       "name": "seed-model-contract.sql",
       "size_bytes": 3326
     }
   ],
-  "published_at": "2026-09-18T05:34:17.673945+00:00",
+  "published_at": "2026-09-20T14:26:39.039232+00:00",
   "tables": {
     "zc_id_cate-acc-title": 13,
     "zc_id_cate-agent": 0,
@@ -229,6 +229,7 @@
     "zc_id_stus-tracking_transport": 0,
     "zc_id_stus-trade": 16,
     "zc_id_stus-training": 2,
+    "zc_id_stus-tsk_verify": 0,
     "zc_id_stus-vehicle": 0,
     "zc_id_stus-version": 4,
     "zc_id_stus-vessel": 10,
@@ -286,5 +287,5 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "version": "v10.0.28"
+  "version": "v10.0.29"
 }
