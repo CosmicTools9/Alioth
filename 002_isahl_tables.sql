@@ -3394,6 +3394,16 @@ INHERITS (isahl."zc_id_calc-prod_pricing");
 
 
 --
+-- Name: zc_id_carrier; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl.zc_id_carrier (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_entity);
+
+
+--
 -- Name: zc_id_category; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -5428,7 +5438,8 @@ INHERITS (isahl.zc_id_detail);
 CREATE TABLE isahl."zc_id_deta-plan" (
     id bigint NOT NULL,
     qk_progress_pct bigint,
-    "qk_avg-weight" bigint
+    "qk_avg-weight" bigint,
+    "qk_budget-segm" bigint
 )
 INHERITS (isahl.zc_id_detail);
 
@@ -10200,6 +10211,16 @@ INHERITS (isahl."zc_id_subj-org");
 
 
 --
+-- Name: zc_id_orga-department_rr_project; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_orga-department_rr_project" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_rr_non_self);
+
+
+--
 -- Name: zc_id_orga-non-banking-legal; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -10285,9 +10306,14 @@ CREATE TABLE isahl.zc_id_plan (
     updated_by_id bigint,
     notice text,
     t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
     code text,
     o_number text,
     comments text,
+    ak_benefit_user bigint[],
+    ak_permit_user bigint[],
+    ak_access_user bigint[],
     projection text,
     _f_ text,
     _t_ text,
@@ -10295,6 +10321,7 @@ CREATE TABLE isahl.zc_id_plan (
     dk_factor bigint,
     dk_function bigint,
     tpl_id bigint,
+    ak_source bigint[],
     cron text,
     exclude json,
     sort bigint,
@@ -10302,9 +10329,13 @@ CREATE TABLE isahl.zc_id_plan (
     qk_progress bigint,
     lk_health bigint,
     "qk_date-segm" bigint,
-    lk_priority bigint
+    lk_priority bigint,
+    tk_version bigint,
+    ck_branch bigint,
+    tk_batch_no bigint,
+    fk_previous bigint
 )
-INHERITS (isahl.zc_id_lifecycle);
+INHERITS (isahl.zc_id_version);
 
 
 --
@@ -10599,6 +10630,36 @@ INHERITS (isahl.zc_id_plan);
 
 
 --
+-- Name: zc_id_plan-perform_rr_tsk-make; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_plan-perform_rr_tsk-make" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_plan_rr_statement);
+
+
+--
+-- Name: zc_id_plan-perform_rr_tsp-voucher; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_plan-perform_rr_tsp-voucher" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_plan_rr_statement);
+
+
+--
+-- Name: zc_id_plan-perform_rr_whs-voucher; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_plan-perform_rr_whs-voucher" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_plan_rr_statement);
+
+
+--
 -- Name: zc_id_plan-personal; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -10636,7 +10697,6 @@ CREATE TABLE isahl."zc_id_plan-project" (
     "qk_date-segm" bigint,
     schedule_pct numeric,
     fk_project bigint,
-    qk_amount bigint,
     "qk_budget-segm" bigint
 )
 INHERITS (isahl.zc_id_plan);
@@ -12743,6 +12803,16 @@ INHERITS (isahl.zc_id_production_rr_project);
 
 
 --
+-- Name: zc_id_prod-made_rr_stor-place; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_prod-made_rr_stor-place" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_production_rr_storage);
+
+
+--
 -- Name: zc_id_prod-marriage_cert-sales; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -12956,6 +13026,16 @@ CREATE TABLE isahl."zc_id_prod-passenger" (
     sk_h_unit bigint
 )
 INHERITS (isahl."zc_id_prod-payload");
+
+
+--
+-- Name: zc_id_prod-payload_rr_stor-container; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_prod-payload_rr_stor-container" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_production_rr_storage);
 
 
 --
@@ -14578,6 +14658,16 @@ INHERITS (isahl.zc_id_production_rr_project);
 
 
 --
+-- Name: zc_id_prod-sales_rr_stor-place; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_prod-sales_rr_stor-place" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_production_rr_storage);
+
+
+--
 -- Name: zc_id_prod-sovereign_currency-sales; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -15204,17 +15294,6 @@ INHERITS (isahl.zc_id_lifecycle_r_tags);
 
 CREATE TABLE isahl.zc_id_project_rr_dependency (
     id bigint NOT NULL
-)
-INHERITS (isahl.zc_id_lifecycle_rr_non_self);
-
-
---
--- Name: zc_id_project_rr_group; Type: TABLE; Schema: isahl; Owner: -
---
-
-CREATE TABLE isahl.zc_id_project_rr_group (
-    id bigint NOT NULL,
-    ck_category bigint
 )
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
@@ -17624,6 +17703,16 @@ INHERITS (isahl.zc_id_statement);
 
 
 --
+-- Name: zc_id_stat-tsk-make; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_stat-tsk-make" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_stat-task");
+
+
+--
 -- Name: zc_id_stat-tsk-requisition; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -18390,7 +18479,8 @@ INHERITS (isahl."zc_id_stor-container");
 --
 
 CREATE TABLE isahl."zc_id_stor-ctn-subj" (
-    id bigint NOT NULL
+    id bigint NOT NULL,
+    fk_user bigint
 )
 INHERITS (isahl."zc_id_stor-container");
 
@@ -18448,9 +18538,10 @@ CREATE TABLE isahl."zc_id_stor-ctn-vehicle" (
     tpl_id bigint,
     fk_trustee bigint,
     qk_capacity bigint,
-    "ck_r-type" bigint
+    "ck_r-type" bigint,
+    fk_user bigint
 )
-INHERITS (isahl."zc_id_stor-container");
+INHERITS (isahl."zc_id_stor-container", isahl.zc_id_carrier);
 
 
 --
@@ -21350,6 +21441,16 @@ INHERITS (isahl.zc_id_task);
 
 
 --
+-- Name: zc_id_task-pay; Type: TABLE; Schema: isahl; Owner: -
+--
+
+CREATE TABLE isahl."zc_id_task-pay" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_task);
+
+
+--
 -- Name: zc_id_task-storage; Type: TABLE; Schema: isahl; Owner: -
 --
 
@@ -22729,6 +22830,20 @@ ALTER TABLE ONLY isahl."zc_id_bom-output_rr_item" ALTER COLUMN created_at SET DE
 --
 
 ALTER TABLE ONLY isahl."zc_id_bom-output_rr_item" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_carrier created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl.zc_id_carrier ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_carrier updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl.zc_id_carrier ALTER COLUMN updated_at SET DEFAULT now();
 
 
 --
@@ -25525,6 +25640,20 @@ ALTER TABLE ONLY isahl.zc_id_order_rr_contract ALTER COLUMN updated_at SET DEFAU
 
 
 --
+-- Name: zc_id_orga-department_rr_project created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_orga-department_rr_project" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_orga-department_rr_project updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_orga-department_rr_project" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
 -- Name: zc_id_place_rr_address created_at; Type: DEFAULT; Schema: isahl; Owner: -
 --
 
@@ -25606,6 +25735,48 @@ ALTER TABLE ONLY isahl."zc_id_plan-payment_rr_smt-voucher" ALTER COLUMN created_
 --
 
 ALTER TABLE ONLY isahl."zc_id_plan-payment_rr_smt-voucher" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_plan-perform_rr_tsk-make created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_tsk-make" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_plan-perform_rr_tsk-make updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_tsk-make" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_plan-perform_rr_tsp-voucher created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_tsp-voucher" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_plan-perform_rr_tsp-voucher updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_tsp-voucher" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_plan-perform_rr_whs-voucher created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_whs-voucher" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_plan-perform_rr_whs-voucher updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_whs-voucher" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 --
@@ -26141,6 +26312,20 @@ ALTER TABLE ONLY isahl."zc_id_prod-loading_r_goods-tag" ALTER COLUMN updated_at 
 
 
 --
+-- Name: zc_id_prod-made_rr_stor-place created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-made_rr_stor-place" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_prod-made_rr_stor-place updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-made_rr_stor-place" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
 -- Name: zc_id_prod-marriage_cert-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
 --
 
@@ -26215,6 +26400,20 @@ ALTER TABLE ONLY isahl."zc_id_prod-openapi-sales" ALTER COLUMN created_at SET DE
 --
 
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-sales" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_prod-payload_rr_stor-container created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-payload_rr_stor-container" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_prod-payload_rr_stor-container updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-payload_rr_stor-container" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 --
@@ -26442,6 +26641,20 @@ ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_ltl-made" ALTER COLUMN updated_at SET 
 
 
 --
+-- Name: zc_id_prod-sales_rr_stor-place created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-sales_rr_stor-place" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_prod-sales_rr_stor-place updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-sales_rr_stor-place" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
 -- Name: zc_id_prod-traffic_rr_conveyance created_at; Type: DEFAULT; Schema: isahl; Owner: -
 --
 
@@ -26558,20 +26771,6 @@ ALTER TABLE ONLY isahl.zc_id_project_rr_dependency ALTER COLUMN created_at SET D
 --
 
 ALTER TABLE ONLY isahl.zc_id_project_rr_dependency ALTER COLUMN updated_at SET DEFAULT now();
-
-
---
--- Name: zc_id_project_rr_group created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl.zc_id_project_rr_group ALTER COLUMN created_at SET DEFAULT now();
-
-
---
--- Name: zc_id_project_rr_group updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl.zc_id_project_rr_group ALTER COLUMN updated_at SET DEFAULT now();
 
 
 --
@@ -27426,6 +27625,20 @@ ALTER TABLE ONLY isahl."zc_id_stat-training" ALTER COLUMN created_at SET DEFAULT
 --
 
 ALTER TABLE ONLY isahl."zc_id_stat-training" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_stat-tsk-make created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_stat-tsk-make" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_stat-tsk-make updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_stat-tsk-make" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 --
@@ -28339,6 +28552,20 @@ ALTER TABLE ONLY isahl."zc_id_task-fix" ALTER COLUMN updated_at SET DEFAULT now(
 
 
 --
+-- Name: zc_id_task-pay created_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_task-pay" ALTER COLUMN created_at SET DEFAULT now();
+
+
+--
+-- Name: zc_id_task-pay updated_at; Type: DEFAULT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_task-pay" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+--
 -- Name: zc_id_task-storage created_at; Type: DEFAULT; Schema: isahl; Owner: -
 --
 
@@ -29111,6 +29338,14 @@ ALTER TABLE ONLY isahl."zc_id_calc-sales_bonus"
 
 ALTER TABLE ONLY isahl."zc_id_calc-zone_qty"
     ADD CONSTRAINT "zc_id_calc-zone_qty_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: zc_id_carrier zc_id_carrier_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl.zc_id_carrier
+    ADD CONSTRAINT zc_id_carrier_pkey PRIMARY KEY (id);
 
 
 --
@@ -31722,6 +31957,14 @@ ALTER TABLE ONLY isahl."zc_id_orga-department"
 
 
 --
+-- Name: zc_id_orga-department_rr_project zc_id_orga-department_rr_project_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_orga-department_rr_project"
+    ADD CONSTRAINT "zc_id_orga-department_rr_project_pkey" PRIMARY KEY (id);
+
+
+--
 -- Name: zc_id_orga-legal zc_id_orga-legal_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
 --
 
@@ -31855,6 +32098,30 @@ ALTER TABLE ONLY isahl."zc_id_plan-payment_rr_smt-voucher"
 
 ALTER TABLE ONLY isahl."zc_id_plan-perform"
     ADD CONSTRAINT "zc_id_plan-perform_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: zc_id_plan-perform_rr_tsk-make zc_id_plan-perform_rr_tsk-make_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_tsk-make"
+    ADD CONSTRAINT "zc_id_plan-perform_rr_tsk-make_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: zc_id_plan-perform_rr_tsp-voucher zc_id_plan-perform_rr_tsp-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_tsp-voucher"
+    ADD CONSTRAINT "zc_id_plan-perform_rr_tsp-voucher_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: zc_id_plan-perform_rr_whs-voucher zc_id_plan-perform_rr_whs-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_whs-voucher"
+    ADD CONSTRAINT "zc_id_plan-perform_rr_whs-voucher_pkey" PRIMARY KEY (id);
 
 
 --
@@ -32498,6 +32765,14 @@ ALTER TABLE ONLY isahl."zc_id_prod-made_rr_project"
 
 
 --
+-- Name: zc_id_prod-made_rr_stor-place zc_id_prod-made_rr_stor-place_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-made_rr_stor-place"
+    ADD CONSTRAINT "zc_id_prod-made_rr_stor-place_pkey" PRIMARY KEY (id);
+
+
+--
 -- Name: zc_id_prod-marriage_cert-sales zc_id_prod-marriage_cert-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
 --
 
@@ -32559,6 +32834,14 @@ ALTER TABLE ONLY isahl."zc_id_prod-passenger"
 
 ALTER TABLE ONLY isahl."zc_id_prod-payload"
     ADD CONSTRAINT "zc_id_prod-payload_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: zc_id_prod-payload_rr_stor-container zc_id_prod-payload_rr_stor-container_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-payload_rr_stor-container"
+    ADD CONSTRAINT "zc_id_prod-payload_rr_stor-container_pkey" PRIMARY KEY (id);
 
 
 --
@@ -33002,6 +33285,14 @@ ALTER TABLE ONLY isahl."zc_id_prod-sales_rr_project"
 
 
 --
+-- Name: zc_id_prod-sales_rr_stor-place zc_id_prod-sales_rr_stor-place_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_prod-sales_rr_stor-place"
+    ADD CONSTRAINT "zc_id_prod-sales_rr_stor-place_pkey" PRIMARY KEY (id);
+
+
+--
 -- Name: zc_id_prod-sovereign_currency-sales zc_id_prod-sovereign_currency-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
 --
 
@@ -33263,14 +33554,6 @@ ALTER TABLE ONLY isahl."zc_id_project_r_milestone-tags"
 
 ALTER TABLE ONLY isahl.zc_id_project_rr_dependency
     ADD CONSTRAINT zc_id_project_rr_dependency_pkey PRIMARY KEY (id);
-
-
---
--- Name: zc_id_project_rr_group zc_id_project_rr_group_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
-
-ALTER TABLE ONLY isahl.zc_id_project_rr_group
-    ADD CONSTRAINT zc_id_project_rr_group_pkey PRIMARY KEY (id);
 
 
 --
@@ -34111,6 +34394,14 @@ ALTER TABLE ONLY isahl."zc_id_stat-trade_order"
 
 ALTER TABLE ONLY isahl."zc_id_stat-training"
     ADD CONSTRAINT "zc_id_stat-training_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: zc_id_stat-tsk-make zc_id_stat-tsk-make_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_stat-tsk-make"
+    ADD CONSTRAINT "zc_id_stat-tsk-make_pkey" PRIMARY KEY (id);
 
 
 --
@@ -35463,6 +35754,14 @@ ALTER TABLE ONLY isahl.zc_id_tags
 
 ALTER TABLE ONLY isahl.zc_id_tags_poi
     ADD CONSTRAINT zc_id_tags_poi_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: zc_id_task-pay zc_id_task-pay_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
+--
+
+ALTER TABLE ONLY isahl."zc_id_task-pay"
+    ADD CONSTRAINT "zc_id_task-pay_pkey" PRIMARY KEY (id);
 
 
 --
@@ -44241,6 +44540,13 @@ CREATE UNIQUE INDEX "uq_zc_id_order_rr_subj-rep_ref_left_ref_right_qk_period" ON
 
 
 --
+-- Name: uq_zc_id_orga-department_rr_project_ref_left_ref_right_qk_perio; Type: INDEX; Schema: isahl; Owner: -
+--
+
+CREATE UNIQUE INDEX "uq_zc_id_orga-department_rr_project_ref_left_ref_right_qk_perio" ON isahl."zc_id_orga-department_rr_project" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+--
 -- Name: uq_zc_id_place_rr_address_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
 --
 
@@ -44273,6 +44579,27 @@ CREATE UNIQUE INDEX "uq_zc_id_plan-material_rr_material_ref_left_ref_right_qk_pe
 --
 
 CREATE UNIQUE INDEX "uq_zc_id_plan-payment_rr_smt-voucher_ref_left_ref_right_qk_peri" ON isahl."zc_id_plan-payment_rr_smt-voucher" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+--
+-- Name: uq_zc_id_plan-perform_rr_tsk-make_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
+--
+
+CREATE UNIQUE INDEX "uq_zc_id_plan-perform_rr_tsk-make_ref_left_ref_right_qk_period" ON isahl."zc_id_plan-perform_rr_tsk-make" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+--
+-- Name: uq_zc_id_plan-perform_rr_tsp-voucher_ref_left_ref_right_qk_peri; Type: INDEX; Schema: isahl; Owner: -
+--
+
+CREATE UNIQUE INDEX "uq_zc_id_plan-perform_rr_tsp-voucher_ref_left_ref_right_qk_peri" ON isahl."zc_id_plan-perform_rr_tsp-voucher" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+--
+-- Name: uq_zc_id_plan-perform_rr_whs-voucher_ref_left_ref_right_qk_peri; Type: INDEX; Schema: isahl; Owner: -
+--
+
+CREATE UNIQUE INDEX "uq_zc_id_plan-perform_rr_whs-voucher_ref_left_ref_right_qk_peri" ON isahl."zc_id_plan-perform_rr_whs-voucher" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 --
@@ -44367,6 +44694,20 @@ CREATE UNIQUE INDEX "uq_zc_id_prod-made_rr_project_ref_left_ref_right_qk_period"
 
 
 --
+-- Name: uq_zc_id_prod-made_rr_stor-place_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
+--
+
+CREATE UNIQUE INDEX "uq_zc_id_prod-made_rr_stor-place_ref_left_ref_right_qk_period" ON isahl."zc_id_prod-made_rr_stor-place" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+--
+-- Name: uq_zc_id_prod-payload_rr_stor-container_ref_left_ref_right_qk_p; Type: INDEX; Schema: isahl; Owner: -
+--
+
+CREATE UNIQUE INDEX "uq_zc_id_prod-payload_rr_stor-container_ref_left_ref_right_qk_p" ON isahl."zc_id_prod-payload_rr_stor-container" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+--
 -- Name: uq_zc_id_prod-prj_data_rr_project_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
 --
 
@@ -44413,6 +44754,13 @@ CREATE UNIQUE INDEX "uq_zc_id_prod-sales_rr_prod-made_ref_left_ref_right_qk_peri
 --
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-sales_rr_project_ref_left_ref_right_qk_period" ON isahl."zc_id_prod-sales_rr_project" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+--
+-- Name: uq_zc_id_prod-sales_rr_stor-place_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
+--
+
+CREATE UNIQUE INDEX "uq_zc_id_prod-sales_rr_stor-place_ref_left_ref_right_qk_period" ON isahl."zc_id_prod-sales_rr_stor-place" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 --
@@ -44532,13 +44880,6 @@ CREATE UNIQUE INDEX "uq_zc_id_project_r_milestone-tags_ref_left_ref_right" ON is
 --
 
 CREATE UNIQUE INDEX uq_zc_id_project_rr_dependency_ref_left_ref_right_qk_period ON isahl.zc_id_project_rr_dependency USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
-
-
---
--- Name: uq_zc_id_project_rr_group_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
-
-CREATE UNIQUE INDEX uq_zc_id_project_rr_group_ref_left_ref_right_qk_period ON isahl.zc_id_project_rr_group USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 --
@@ -45011,7 +45352,7 @@ ALTER TABLE ONLY isahl."zc_id_stus-tracking_log" ALTER COLUMN id SET DEFAULT isa
 ALTER TABLE ONLY isahl."zc_id_stus-tracking_transport" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((118)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-trade" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((119)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-training" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((487)::bigint);
-ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((513)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((482)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-version" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((120)::bigint);
 ALTER TABLE ONLY isahl."zc_id_tags-baseline" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((121)::bigint);
 ALTER TABLE ONLY isahl."zc_id_tags-batch" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((122)::bigint);
@@ -45067,7 +45408,6 @@ ALTER TABLE ONLY isahl."zc_id_identity" ALTER COLUMN id SET DEFAULT isahl.gen_ne
 ALTER TABLE ONLY isahl."zc_id_invoice" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_message" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_place" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_plan" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_protocol" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_scene" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((71)::bigint);
 ALTER TABLE ONLY isahl."zc_id_statement" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -45129,20 +45469,7 @@ ALTER TABLE ONLY isahl."zc_id_msgs-review" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_msgs-system" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-telephone" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-zchat" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_plan-certification" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_plan-delivery" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_plan-inbound" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_plan-maintain" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_plan-making" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_plan-material" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_plan-outbound" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_plan-payment" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_plan-perform" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_plan-project" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_plan-promotion" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_plan-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_plan-purchase_items_r_prod" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((179)::bigint);
-ALTER TABLE ONLY isahl."zc_id_plan-recruitment" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prot-im_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prot-openapi_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prot-oss_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -45184,7 +45511,6 @@ ALTER TABLE ONLY isahl."zc_id_stus-purchase" ALTER COLUMN id SET DEFAULT isahl.g
 ALTER TABLE ONLY isahl."zc_id_stus-retail" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((201)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-service" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((202)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-supranational" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((203)::bigint);
-ALTER TABLE ONLY isahl."zc_id_thre-meeting" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_unit-area" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((204)::bigint);
 ALTER TABLE ONLY isahl."zc_id_unit-common" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((205)::bigint);
 ALTER TABLE ONLY isahl."zc_id_unit-container" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((206)::bigint);
@@ -45199,6 +45525,7 @@ ALTER TABLE ONLY isahl."zc_id_unit-working" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_vers-context" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bill" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bom" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_carrier" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_device" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_document" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_event" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -45210,6 +45537,7 @@ ALTER TABLE ONLY isahl."zc_id_lifecycle_r_status" ALTER COLUMN id SET DEFAULT is
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((177)::bigint);
 ALTER TABLE ONLY isahl."zc_id_lifecycle_rr_non_self" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((178)::bigint);
 ALTER TABLE ONLY isahl."zc_id_operation" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_plan" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_process" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_production" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_project" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -45242,7 +45570,7 @@ ALTER TABLE ONLY isahl."zc_id_cont-transport_rr_stop" ALTER COLUMN id SET DEFAUL
 ALTER TABLE ONLY isahl."zc_id_counting_r_cnt-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((241)::bigint);
 ALTER TABLE ONLY isahl."zc_id_deta-bill-check_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((243)::bigint);
 ALTER TABLE ONLY isahl."zc_id_deta-training_rr_matter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((244)::bigint);
-ALTER TABLE ONLY isahl."zc_id_deta-tsk_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((512)::bigint);
+ALTER TABLE ONLY isahl."zc_id_deta-tsk_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((498)::bigint);
 ALTER TABLE ONLY isahl."zc_id_devi-camera" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_devi-chess" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_devi-control_board" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -45308,9 +45636,23 @@ ALTER TABLE ONLY isahl."zc_id_orde-traffic_rr_tsp-voucher" ALTER COLUMN id SET D
 ALTER TABLE ONLY isahl."zc_id_order-after_sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_order_rr_obj-rep" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((272)::bigint);
 ALTER TABLE ONLY isahl."zc_id_order_rr_subj-rep" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((273)::bigint);
+ALTER TABLE ONLY isahl."zc_id_orga-department_rr_project" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((520)::bigint);
+ALTER TABLE ONLY isahl."zc_id_plan-certification" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_plan-delivery" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_plan-inbound" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_plan-maintain" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_plan-making" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_plan-making_rr_prod" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((275)::bigint);
+ALTER TABLE ONLY isahl."zc_id_plan-material" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_plan-material_rr_material" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((276)::bigint);
+ALTER TABLE ONLY isahl."zc_id_plan-outbound" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_plan-payment" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_plan-perform" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_plan-project" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_plan-promotion" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_plan-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_plan-purchase_rr_material" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((277)::bigint);
+ALTER TABLE ONLY isahl."zc_id_plan-recruitment" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prjt-proc_ctrl" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_proc-approve" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_proc-cicd" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -45346,9 +45688,10 @@ ALTER TABLE ONLY isahl."zc_id_stat-bok-voucher" ALTER COLUMN id SET DEFAULT isah
 ALTER TABLE ONLY isahl."zc_id_stat-com-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-slf-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((511)::bigint);
-ALTER TABLE ONLY isahl."zc_id_stat-task_rr_sto-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((510)::bigint);
-ALTER TABLE ONLY isahl."zc_id_stat-task_rr_trade_order" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((509)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((503)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stat-task_rr_sto-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((506)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stat-task_rr_trade_order" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((507)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stat-tsk-make" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-requisition" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-tsp-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-whs-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -45414,7 +45757,9 @@ ALTER TABLE ONLY isahl."zc_id_subj-sovereign" ALTER COLUMN id SET DEFAULT isahl.
 ALTER TABLE ONLY isahl."zc_id_task-design" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-develop" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-fix" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_task-pay" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-storage" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_thre-meeting" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_thread_rr_topic-x" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((323)::bigint);
 ALTER TABLE ONLY isahl."zc_id_vers-context_r_baseline" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((324)::bigint);
 ALTER TABLE ONLY isahl."zc_id_vers-context_r_ver-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((325)::bigint);
@@ -45458,7 +45803,6 @@ ALTER TABLE ONLY isahl."zc_id_production_rr_process" ALTER COLUMN id SET DEFAULT
 ALTER TABLE ONLY isahl."zc_id_production_rr_project" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((294)::bigint);
 ALTER TABLE ONLY isahl."zc_id_production_rr_storage" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((295)::bigint);
 ALTER TABLE ONLY isahl."zc_id_project_rr_dependency" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((494)::bigint);
-ALTER TABLE ONLY isahl."zc_id_project_rr_group" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((497)::bigint);
 ALTER TABLE ONLY isahl."zc_id_project_rr_process" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((483)::bigint);
 ALTER TABLE ONLY isahl."zc_id_rate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((297)::bigint);
 ALTER TABLE ONLY isahl."zc_id_ratio" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((298)::bigint);
@@ -45535,6 +45879,9 @@ ALTER TABLE ONLY isahl."zc_id_orde-shipping" ALTER COLUMN id SET DEFAULT isahl.g
 ALTER TABLE ONLY isahl."zc_id_orde-traffic_rr_devi-seal" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((499)::bigint);
 ALTER TABLE ONLY isahl."zc_id_orde-traffic_rr_ticket" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((475)::bigint);
 ALTER TABLE ONLY isahl."zc_id_plan-payment_rr_smt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((371)::bigint);
+ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_tsk-make" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((516)::bigint);
+ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_tsp-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((515)::bigint);
+ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_whs-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((514)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-channel_cost-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-conclusion" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-consulting" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -45565,12 +45912,14 @@ ALTER TABLE ONLY isahl."zc_id_prod-legal_tender" ALTER COLUMN id SET DEFAULT isa
 ALTER TABLE ONLY isahl."zc_id_prod-loading" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-made_rr_prod-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((373)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-made_rr_project" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((374)::bigint);
+ALTER TABLE ONLY isahl."zc_id_prod-made_rr_stor-place" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((519)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-material-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-passenger" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-payload_rr_stor-container" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((517)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-ports-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-ports-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-ports-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -45608,6 +45957,7 @@ ALTER TABLE ONLY isahl."zc_id_prod-retail-request" ALTER COLUMN id SET DEFAULT i
 ALTER TABLE ONLY isahl."zc_id_prod-retail-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-sales_rr_prod-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((379)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-sales_rr_project" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((380)::bigint);
+ALTER TABLE ONLY isahl."zc_id_prod-sales_rr_stor-place" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((518)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-storage" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-transfer_p2p-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-transfer_p2p-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
