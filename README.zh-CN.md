@@ -6,26 +6,34 @@
 
 基于 **PostgreSQL 表继承** 的企业数据模型，以范畴论与交换本体论为理论基础。Alioth 将经济行为形式化为*交换范畴*中的态射：可逆交易构成一个**群胚**（groupoid），其上配备对合对称函子（每笔可逆交易都有镜像逆交易，`S² = id`）；每个业务实体在 4 维正交空间 `(Scene, Factor, Function, Status)` 中占据唯一坐标——为企业数据管理提供数学上严格的基础。
 
-最新模型版本以 [`latest.json`](latest.json) 为锚点。最新发布（`v10.0.27`，2026-09-17）包含 **972 张继承表**（13 张 `zc_ad_*` 抽象表 + 959 张 `zc_id_*` 实现表）与 **254 张种子表**，已在专用验证库上通过全量重建验证。
+最新模型版本以 [`latest.json`](latest.json) 为锚点；每次发布另以同名 **annotated git tag**（`v{major}.{minor}.{patch}`）固定该版本快照。最新发布（`v10.0.29`，2026-09-20）包含 **972 张继承表**（13 张 `zc_ad_*` 抽象表 + 959 张 `zc_id_*` 实现表）与 **254 张种子表**，已在专用验证库上通过全量重建验证。
 
 ---
 
 ## 仓库布局（Repository Layout）
 
-发布模型按 **版本** 存放于本仓库。每次发布写入一个版本目录 `v{major}.{minor}.{patch}/`：
+发布产物平铺于仓库根 **固定路径**——不存在版本目录；版本维度由每次发布创建的 git tag 承载：
 
 ```
 Alioth/
-├── latest.json                     # 最新版本锚点：version、published_at、逐表种子行数、文件清单
-└── v10.0.29/                       # 每个已发布版本一个目录（SemVer）
-    ├── 001_schema.sql              # CREATE SCHEMA IF NOT EXISTS isahl
-    ├── 002_isahl_tables.sql        # isahl schema 结构（纯 CREATE/ALTER，后处理产物；972 张表）
-    ├── seed-dimensions.sql         # 254 张维度/类目/状态/字典表的种子数据
-    ├── seed-dimensions.meta.json   # 各种子表预期行数（用于验证）
-    ├── seed-model-contract.sql     # 模型级种子契约（声明的种子表集合，幂等）
-    ├── model-contract.json         # 本次发布的机读模型契约
-    ├── verify-report.json          # 重建验证报告（验证运行后落盘）
-    └── README.md                   # 版本内 README（导出时间戳、pg_dump 版本）
+├── latest.json                     # 版本锚点：version、published_at、pg_dump_version、逐表种子行数、文件清单
+├── 001_schema.sql                  # CREATE SCHEMA IF NOT EXISTS isahl
+├── 002_isahl_tables.sql            # isahl schema 结构（纯 CREATE/ALTER，后处理产物；972 张表）
+├── seed-dimensions.sql             # 254 张维度/类目/状态/字典表的种子数据
+├── seed-dimensions.meta.json       # 各种子表预期行数（用于验证）
+├── seed-model-contract.sql         # 模型级种子契约（声明的种子表集合，幂等）
+├── model-contract.json             # 本次发布的机读模型契约
+├── verify-report.json              # 锚点版本的重建验证报告
+├── README.md / README.zh-CN.md     # 仓库文档（发布不覆盖）
+└── LICENSE
+```
+
+工作树恒只含一个版本（`latest.json` 所指）；历史版本从其 tag 取得：
+
+```bash
+git fetch --tags
+git show v10.0.29:002_isahl_tables.sql > /tmp/002_isahl_tables.sql   # 单文件
+git archive v10.0.29 | tar -x -C /tmp/alioth-v10.0.29                # 整快照
 ```
 
 ---
@@ -42,11 +50,11 @@ Alioth/
 ```bash
 git clone https://github.com/CosmicTools9/Alioth.git
 cd Alioth
-VERSION=$(jq -r .version latest.json)   # 或选择具体版本目录
-psql "$DATABASE_URL" -f "$VERSION/001_schema.sql"
-psql "$DATABASE_URL" -f "$VERSION/002_isahl_tables.sql"
-psql "$DATABASE_URL" -f "$VERSION/seed-dimensions.sql"
-psql "$DATABASE_URL" -f "$VERSION/seed-model-contract.sql"
+# 检出即为 latest.json 所指版本；历史快照用 `git checkout v10.0.29`
+psql "$DATABASE_URL" -f 001_schema.sql
+psql "$DATABASE_URL" -f 002_isahl_tables.sql
+psql "$DATABASE_URL" -f seed-dimensions.sql
+psql "$DATABASE_URL" -f seed-model-contract.sql
 ```
 
 文件必须 **按顺序** 执行：schema → tables → seed data → seed contract。
@@ -222,12 +230,13 @@ business_table.qk_date  (bigint) → zc_id_scal-date.id  → zc_id_scal-date.dat
 
 ## 模型发布（Model Publishing）
 
-每个版本目录由模型发布管道产出：
+每次发布由模型发布管道产出：
 
 1. 通过 `pg_dump --schema-only` 从权威数据库导出 `isahl` schema（外加 254 张种子表的数据导出）。
 2. 后处理为 **纯 CREATE/ALTER** 形式：剥离仅运行时语句，内联 `id` 列 DEFAULT 提取后以 `ALTER TABLE ... ALTER COLUMN id SET DEFAULT isahl.gen_next_uid(...)` 语句重新应用，按继承深度拓扑排序，使每个继承表绑定自己的生成器。
-3. 在本仓库写入版本目录（含机读契约 `model-contract.json` / `seed-model-contract.sql`）并更新 `latest.json`。
-4. **重建验证**（非阻断）：在专用干净验证库上，删除 `isahl` / `isahl_auth` / `isahl_audit` 后按顺序以 `ON_ERROR_STOP=1` 重放 SQL 文件，再断言种子表行数（逐表与发布快照往返一致）、`gen_next_uid` 唯一性（0 冲突、0 缺失）与结构往返（972 表集合与源库一致）。报告落盘为版本目录中的 `verify-report.json`；验证通过后版本标记为 `verified`。
+3. 在仓库根**固定路径**写入产物（含机读契约 `model-contract.json` / `seed-model-contract.sql`）并更新 `latest.json`（版本、时间戳、`pg_dump_version`、逐表种子计数、文件清单）。
+4. 提交产物并创建 **annotated tag** `<version>`（tag 名 = 锚点版本）；已存在且指向其他提交的同名 tag 被拒绝（禁止 tag 复用）。
+5. **重建验证**：在专用干净验证库上，删除 `isahl` / `isahl_auth` / `isahl_audit` 后按顺序以 `ON_ERROR_STOP=1` 重放 SQL 文件，再断言种子表行数（逐表与发布快照往返一致）、`gen_next_uid` 唯一性（0 冲突、0 缺失）与结构往返（972 表集合与源库一致）。报告落盘为仓库根的 `verify-report.json`；验证通过后版本标记为 `verified`。
 
 版本遵循 [SemVer](https://semver.org/)。版本只增不减，下限为 `v10.0.0`。发布记录（版本、描述、输出目录、文件清单、状态）记录于 `isahl_meta.model_publish_records`。
 
