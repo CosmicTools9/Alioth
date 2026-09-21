@@ -1,5 +1,3 @@
--- 模型级种子契约声明（发布管线从 isahl_meta.meta_collections.config 生成；幂等 merge，勿手改）
--- 应用顺序：本文件晚于 seed-dimensions.sql（二者均由产物 seed-*.sql 链下发）
 BEGIN;
 UPDATE isahl_meta.meta_collections SET config = config || '{"seed_family_root": true}'::jsonb WHERE table_name = ANY(ARRAY['zc_id_category', 'zc_id_factor', 'zc_id_function', 'zc_id_level', 'zc_id_rate', 'zc_id_ratio', 'zc_id_scene', 'zc_id_status', 'zc_id_tags', 'zc_id_unit']);
 UPDATE isahl_meta.meta_collections mc SET config = mc.config || jsonb_build_object('row_layer', v.layer)

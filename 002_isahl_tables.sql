@@ -1,10 +1,5 @@
---
--- PostgreSQL database dump
---
 
 
--- Dumped from database version 18.6 (Homebrew)
--- Dumped by pg_dump version 18.6 (Homebrew)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -18,15 +13,9 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- Name: isahl; Type: SCHEMA; Schema: -; Owner: -
---
 
 
 
---
--- Name: status_flag; Type: TYPE; Schema: isahl; Owner: -
---
 
 CREATE TYPE isahl.status_flag AS ENUM (
     'start',
@@ -35,9 +24,6 @@ CREATE TYPE isahl.status_flag AS ENUM (
 );
 
 
---
--- Name: zc_id_cate_bom_item_direction_enum; Type: TYPE; Schema: isahl; Owner: -
---
 
 CREATE TYPE isahl.zc_id_cate_bom_item_direction_enum AS ENUM (
     'input',
@@ -45,9 +31,6 @@ CREATE TYPE isahl.zc_id_cate_bom_item_direction_enum AS ENUM (
 );
 
 
---
--- Name: zc_id_formula_exe_type_enum; Type: TYPE; Schema: isahl; Owner: -
---
 
 CREATE TYPE isahl.zc_id_formula_exe_type_enum AS ENUM (
     'JIT',
@@ -55,9 +38,6 @@ CREATE TYPE isahl.zc_id_formula_exe_type_enum AS ENUM (
 );
 
 
---
--- Name: zc_id_message_rr_contact_info_feedback_enum; Type: TYPE; Schema: isahl; Owner: -
---
 
 CREATE TYPE isahl.zc_id_message_rr_contact_info_feedback_enum AS ENUM (
     'received',
@@ -68,9 +48,6 @@ CREATE TYPE isahl.zc_id_message_rr_contact_info_feedback_enum AS ENUM (
 );
 
 
---
--- Name: zc_id_prod_file_encoding_enum; Type: TYPE; Schema: isahl; Owner: -
---
 
 CREATE TYPE isahl.zc_id_prod_file_encoding_enum AS ENUM (
     'GBK',
@@ -83,9 +60,6 @@ CREATE TYPE isahl.zc_id_prod_file_encoding_enum AS ENUM (
 );
 
 
---
--- Name: zc_id_unit_formatter_enum; Type: TYPE; Schema: isahl; Owner: -
---
 
 CREATE TYPE isahl.zc_id_unit_formatter_enum AS ENUM (
     '{symbol}{mark}',
@@ -94,9 +68,6 @@ CREATE TYPE isahl.zc_id_unit_formatter_enum AS ENUM (
 );
 
 
---
--- Name: zc_id_unit_system_enum; Type: TYPE; Schema: isahl; Owner: -
---
 
 CREATE TYPE isahl.zc_id_unit_system_enum AS ENUM (
     '公制',
@@ -105,9 +76,6 @@ CREATE TYPE isahl.zc_id_unit_system_enum AS ENUM (
 );
 
 
---
--- Name: fn_legal_search(text[], integer); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.fn_legal_search(keywords text[], max_results integer DEFAULT 5) RETURNS TABLE(article_id bigint, article_code text, article_title text, article_body text, hierarchy jsonb, source_table text)
     LANGUAGE plpgsql STABLE
@@ -147,18 +115,12 @@ END;
 $$;
 
 
---
--- Name: gen_next_uid(bigint); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.gen_next_uid(table_code bigint DEFAULT 1, OUT result bigint) RETURNS bigint
     LANGUAGE plpgsql
     AS $$ BEGIN result := ((table_code::bigint & 65535) << 48) | (nextval('isahl.uid_seq') & 281474976710655); END; $$;
 
 
---
--- Name: gen_next_zuid(); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.gen_next_zuid() RETURNS bigint
     LANGUAGE plpgsql
@@ -169,9 +131,6 @@ CREATE FUNCTION isahl.gen_next_zuid() RETURNS bigint
         $$;
 
 
---
--- Name: gen_zuid(integer, integer, integer, integer); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.gen_zuid(peer_type integer DEFAULT 0, idc integer DEFAULT 0, cluster integer DEFAULT 0, node integer DEFAULT 0) RETURNS bigint
     LANGUAGE plpgsql
@@ -219,9 +178,6 @@ END;
 $$;
 
 
---
--- Name: get_logistics_task_related_ops(bigint); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.get_logistics_task_related_ops(p_task_id bigint) RETURNS TABLE(source text, entity_id bigint, entity_code text, entity_notice text, entity_type text, created_at timestamp with time zone)
     LANGUAGE sql STABLE
@@ -268,9 +224,6 @@ CREATE FUNCTION isahl.get_logistics_task_related_ops(p_task_id bigint) RETURNS T
 $$;
 
 
---
--- Name: get_logistics_task_summary(); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.get_logistics_task_summary() RETURNS TABLE(biz_type text, task_count bigint, latest_created_at timestamp with time zone)
     LANGUAGE sql STABLE
@@ -286,9 +239,6 @@ CREATE FUNCTION isahl.get_logistics_task_summary() RETURNS TABLE(biz_type text, 
 $$;
 
 
---
--- Name: get_object_reachable_oa(bigint); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.get_object_reachable_oa(p_oa_id bigint) RETURNS TABLE(oa_id bigint, depth integer)
     LANGUAGE plpgsql STABLE
@@ -314,9 +264,6 @@ END;
 $$;
 
 
---
--- Name: get_user_reachable_ua(bigint); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.get_user_reachable_ua(p_user_id bigint) RETURNS TABLE(ua_id bigint, depth integer)
     LANGUAGE plpgsql STABLE
@@ -345,9 +292,6 @@ END;
 $$;
 
 
---
--- Name: gf_check_gen_next_uid_uniqueness(); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.gf_check_gen_next_uid_uniqueness() RETURNS TABLE(table_name name, schema_name name, table_code bigint, default_expr text, is_duplicate boolean, conflict_count bigint, missing_default boolean)
     LANGUAGE plpgsql STABLE
@@ -430,9 +374,6 @@ CREATE FUNCTION isahl.gf_check_gen_next_uid_uniqueness() RETURNS TABLE(table_nam
         $$;
 
 
---
--- Name: gf_check_seed_contract(); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.gf_check_seed_contract() RETURNS TABLE(kind text, table_name text, detail text)
     LANGUAGE plpgsql STABLE
@@ -487,9 +428,6 @@ END;
 $$;
 
 
---
--- Name: gf_clean_contacts(); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.gf_clean_contacts(OUT dc integer) RETURNS integer
     LANGUAGE plpgsql
@@ -508,9 +446,6 @@ END;
 $$;
 
 
---
--- Name: gf_clean_entity(); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.gf_clean_entity(OUT rc integer) RETURNS integer
     LANGUAGE plpgsql
@@ -552,9 +487,6 @@ END;
 $$;
 
 
---
--- Name: gf_clean_evaluation(); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.gf_clean_evaluation(OUT rc integer) RETURNS integer
     LANGUAGE plpgsql
@@ -578,9 +510,6 @@ END;
 $$;
 
 
---
--- Name: gf_crc32(text); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.gf_crc32(input text) RETURNS bigint
     LANGUAGE sql IMMUTABLE PARALLEL SAFE
@@ -589,9 +518,6 @@ SELECT pg_catalog.crc32(convert_to(input, 'UTF8'));
 $$;
 
 
---
--- Name: gf_seed_tables(); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.gf_seed_tables() RETURNS TABLE(table_name text)
     LANGUAGE sql STABLE
@@ -617,9 +543,6 @@ SELECT c.t
 $$;
 
 
---
--- Name: gf_uid_table_order(); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.gf_uid_table_order() RETURNS TABLE(table_name name, max_depth bigint, is_lifecycle boolean, order_seq bigint)
     LANGUAGE sql STABLE
@@ -664,9 +587,6 @@ CREATE FUNCTION isahl.gf_uid_table_order() RETURNS TABLE(table_name name, max_de
 $$;
 
 
---
--- Name: tf_clear_place_fence_ref(); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.tf_clear_place_fence_ref() RETURNS trigger
     LANGUAGE plpgsql
@@ -680,9 +600,6 @@ END;
 $$;
 
 
---
--- Name: zuid_extract_cluster(bigint); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.zuid_extract_cluster(id bigint) RETURNS integer
     LANGUAGE plpgsql IMMUTABLE
@@ -693,9 +610,6 @@ END;
 $$;
 
 
---
--- Name: zuid_extract_idc(bigint); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.zuid_extract_idc(id bigint) RETURNS integer
     LANGUAGE plpgsql IMMUTABLE
@@ -706,9 +620,6 @@ END;
 $$;
 
 
---
--- Name: zuid_extract_node(bigint); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.zuid_extract_node(id bigint) RETURNS integer
     LANGUAGE plpgsql IMMUTABLE
@@ -719,9 +630,6 @@ END;
 $$;
 
 
---
--- Name: zuid_extract_peer_type(bigint); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.zuid_extract_peer_type(id bigint) RETURNS integer
     LANGUAGE plpgsql IMMUTABLE
@@ -732,9 +640,6 @@ END;
 $$;
 
 
---
--- Name: zuid_extract_sequence(bigint); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.zuid_extract_sequence(id bigint) RETURNS integer
     LANGUAGE plpgsql IMMUTABLE
@@ -745,9 +650,6 @@ END;
 $$;
 
 
---
--- Name: zuid_extract_timestamp(bigint); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.zuid_extract_timestamp(id bigint) RETURNS bigint
     LANGUAGE plpgsql IMMUTABLE
@@ -758,9 +660,6 @@ END;
 $$;
 
 
---
--- Name: zuid_extract_timestamp_tz(bigint); Type: FUNCTION; Schema: isahl; Owner: -
---
 
 CREATE FUNCTION isahl.zuid_extract_timestamp_tz(id bigint) RETURNS timestamp with time zone
     LANGUAGE plpgsql IMMUTABLE
@@ -776,9 +675,6 @@ $$;
 
 SET default_tablespace = '';
 
---
--- Name: zc_ad_object; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_ad_object (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -793,9 +689,6 @@ CREATE TABLE isahl.zc_ad_object (
 );
 
 
---
--- Name: zc_ad_variable; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_ad_variable (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -810,9 +703,6 @@ CREATE TABLE isahl.zc_ad_variable (
 INHERITS (isahl.zc_ad_object);
 
 
---
--- Name: zc_ad_vector; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_ad_vector (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -827,9 +717,6 @@ CREATE TABLE isahl.zc_ad_vector (
 INHERITS (isahl.zc_ad_variable);
 
 
---
--- Name: zc_ad_dimension; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_ad_dimension (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -844,9 +731,6 @@ CREATE TABLE isahl.zc_ad_dimension (
 INHERITS (isahl.zc_ad_vector);
 
 
---
--- Name: zc_ad_relation; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_ad_relation (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -864,9 +748,6 @@ CREATE TABLE isahl.zc_ad_relation (
 INHERITS (isahl.zc_ad_vector);
 
 
---
--- Name: zc_ad_tensor; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_ad_tensor (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -881,9 +762,6 @@ CREATE TABLE isahl.zc_ad_tensor (
 INHERITS (isahl.zc_ad_variable);
 
 
---
--- Name: zc_ad_tensor_rr_non_self-ref; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_ad_tensor_rr_non_self-ref" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -901,9 +779,6 @@ CREATE TABLE isahl."zc_ad_tensor_rr_non_self-ref" (
 INHERITS (isahl.zc_ad_relation);
 
 
---
--- Name: zc_id_object; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_object (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -923,9 +798,6 @@ CREATE TABLE isahl.zc_id_object (
 INHERITS (isahl.zc_ad_variable);
 
 
---
--- Name: zc_id_lifecycle; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_lifecycle (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -950,9 +822,6 @@ CREATE TABLE isahl.zc_id_lifecycle (
 INHERITS (isahl.zc_id_object, isahl.zc_ad_tensor);
 
 
---
--- Name: zc_id_detail; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_detail (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -981,9 +850,6 @@ CREATE TABLE isahl.zc_id_detail (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_deta-counting; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-counting" (
     id bigint NOT NULL,
@@ -998,9 +864,6 @@ CREATE TABLE isahl."zc_id_deta-counting" (
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_evaluation; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_evaluation (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1018,9 +881,6 @@ CREATE TABLE isahl.zc_id_evaluation (
 INHERITS (isahl.zc_ad_dimension, isahl.zc_id_object);
 
 
---
--- Name: zc_id_eval-calculable; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_eval-calculable" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1038,9 +898,6 @@ CREATE TABLE isahl."zc_id_eval-calculable" (
 INHERITS (isahl.zc_id_evaluation);
 
 
---
--- Name: zc_id_lifecycle_rr_non_self; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_lifecycle_rr_non_self (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1059,9 +916,6 @@ CREATE TABLE isahl.zc_id_lifecycle_rr_non_self (
 INHERITS (isahl."zc_ad_tensor_rr_non_self-ref");
 
 
---
--- Name: zc_id_production_rr_storage; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_production_rr_storage (
     id bigint NOT NULL,
@@ -1083,9 +937,6 @@ CREATE TABLE isahl.zc_id_production_rr_storage (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_scale; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_scale (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1107,9 +958,6 @@ CREATE TABLE isahl.zc_id_scale (
 INHERITS (isahl."zc_id_eval-calculable");
 
 
---
--- Name: zc_id_scal-date; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-date" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1135,9 +983,6 @@ CREATE TABLE isahl."zc_id_scal-date" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_segment; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_segment (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1160,9 +1005,6 @@ CREATE TABLE isahl.zc_id_segment (
 INHERITS (isahl."zc_id_eval-calculable");
 
 
---
--- Name: zc_id_segm-date; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_segm-date" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1191,9 +1033,6 @@ CREATE TABLE isahl."zc_id_segm-date" (
 INHERITS (isahl.zc_id_segment);
 
 
---
--- Name: mv_inventory; Type: MATERIALIZED VIEW; Schema: isahl; Owner: -
---
 
 CREATE MATERIALIZED VIEW isahl.mv_inventory AS
  SELECT r.id,
@@ -1227,9 +1066,6 @@ CREATE MATERIALIZED VIEW isahl.mv_inventory AS
   WITH NO DATA;
 
 
---
--- Name: zc_id_statement; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_statement (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1257,9 +1093,6 @@ CREATE TABLE isahl.zc_id_statement (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_stat-sto-voucher; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-sto-voucher" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1296,9 +1129,6 @@ CREATE TABLE isahl."zc_id_stat-sto-voucher" (
 INHERITS (isahl.zc_id_statement);
 
 
---
--- Name: mv_title_ownership; Type: MATERIALIZED VIEW; Schema: isahl; Owner: -
---
 
 CREATE MATERIALIZED VIEW isahl.mv_title_ownership AS
  SELECT v.fk_subject AS subject_id,
@@ -1317,9 +1147,6 @@ CREATE MATERIALIZED VIEW isahl.mv_title_ownership AS
   WITH NO DATA;
 
 
---
--- Name: uid_seq; Type: SEQUENCE; Schema: isahl; Owner: -
---
 
 CREATE SEQUENCE isahl.uid_seq
     START WITH 1
@@ -1329,9 +1156,6 @@ CREATE SEQUENCE isahl.uid_seq
     CACHE 1;
 
 
---
--- Name: zc_ad_relation_r_isolate-tensor; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_ad_relation_r_isolate-tensor" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1349,9 +1173,6 @@ CREATE TABLE isahl."zc_ad_relation_r_isolate-tensor" (
 INHERITS (isahl.zc_ad_relation);
 
 
---
--- Name: zc_ad_relation_r_scalar; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_ad_relation_r_scalar (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1369,9 +1190,6 @@ CREATE TABLE isahl.zc_ad_relation_r_scalar (
 INHERITS (isahl.zc_ad_relation);
 
 
---
--- Name: zc_ad_relation_rr_non_self-ref; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_ad_relation_rr_non_self-ref" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1389,9 +1207,6 @@ CREATE TABLE isahl."zc_ad_relation_rr_non_self-ref" (
 INHERITS (isahl.zc_ad_relation);
 
 
---
--- Name: zc_ad_scalar; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_ad_scalar (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1406,9 +1221,6 @@ CREATE TABLE isahl.zc_ad_scalar (
 INHERITS (isahl.zc_ad_variable);
 
 
---
--- Name: zc_ad_tensor_r_dimension; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_ad_tensor_r_dimension (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1426,9 +1238,6 @@ CREATE TABLE isahl.zc_ad_tensor_r_dimension (
 INHERITS (isahl.zc_ad_relation);
 
 
---
--- Name: zc_ad_tensor_r_scalar; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_ad_tensor_r_scalar (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1446,9 +1255,6 @@ CREATE TABLE isahl.zc_ad_tensor_r_scalar (
 INHERITS (isahl.zc_ad_relation);
 
 
---
--- Name: zc_id_agreement; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_agreement (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1472,27 +1278,18 @@ CREATE TABLE isahl.zc_id_agreement (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_agre-pricing; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_agre-pricing" (
 )
 INHERITS (isahl.zc_id_agreement);
 
 
---
--- Name: zc_id_agre-tolerance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_agre-tolerance" (
 )
 INHERITS (isahl.zc_id_agreement);
 
 
---
--- Name: zc_id_lifecycle_r_evaluation; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_lifecycle_r_evaluation (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1510,9 +1307,6 @@ CREATE TABLE isahl.zc_id_lifecycle_r_evaluation (
 INHERITS (isahl.zc_ad_tensor_r_dimension);
 
 
---
--- Name: zc_id_agreement_r_calc; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_agreement_r_calc (
     id bigint NOT NULL
@@ -1520,18 +1314,12 @@ CREATE TABLE isahl.zc_id_agreement_r_calc (
 INHERITS (isahl.zc_id_lifecycle_r_evaluation);
 
 
---
--- Name: zc_id_agreement_r_term; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_agreement_r_term (
 )
 INHERITS (isahl.zc_id_lifecycle_r_evaluation);
 
 
---
--- Name: zc_id_proc-context; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_proc-context" (
     id bigint NOT NULL,
@@ -1541,9 +1329,6 @@ CREATE TABLE isahl."zc_id_proc-context" (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_event; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_event (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1579,9 +1364,6 @@ CREATE TABLE isahl.zc_id_event (
 INHERITS (isahl."zc_id_proc-context");
 
 
---
--- Name: zc_id_even-approve; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_even-approve" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1615,9 +1397,6 @@ CREATE TABLE isahl."zc_id_even-approve" (
 INHERITS (isahl.zc_id_event);
 
 
---
--- Name: zc_id_appr-authorization; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-authorization" (
     id bigint NOT NULL
@@ -1625,9 +1404,6 @@ CREATE TABLE isahl."zc_id_appr-authorization" (
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-bid-evaluation; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-bid-evaluation" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1661,9 +1437,6 @@ CREATE TABLE isahl."zc_id_appr-bid-evaluation" (
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-code-review; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-code-review" (
     id bigint NOT NULL
@@ -1671,18 +1444,12 @@ CREATE TABLE isahl."zc_id_appr-code-review" (
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-damage; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-damage" (
 )
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-org-structure; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-org-structure" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1716,9 +1483,6 @@ CREATE TABLE isahl."zc_id_appr-org-structure" (
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-payment; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-payment" (
     id bigint NOT NULL
@@ -1726,9 +1490,6 @@ CREATE TABLE isahl."zc_id_appr-payment" (
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-payment_rr_invoice; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-payment_rr_invoice" (
     id bigint NOT NULL
@@ -1736,9 +1497,6 @@ CREATE TABLE isahl."zc_id_appr-payment_rr_invoice" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_appr-payment_rr_smt-voucher; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-payment_rr_smt-voucher" (
     id bigint NOT NULL
@@ -1746,9 +1504,6 @@ CREATE TABLE isahl."zc_id_appr-payment_rr_smt-voucher" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_appr-pricing; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-pricing" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1782,9 +1537,6 @@ CREATE TABLE isahl."zc_id_appr-pricing" (
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-prj-initiation; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-prj-initiation" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1818,9 +1570,6 @@ CREATE TABLE isahl."zc_id_appr-prj-initiation" (
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-prj_doc-push; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-prj_doc-push" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1854,9 +1603,6 @@ CREATE TABLE isahl."zc_id_appr-prj_doc-push" (
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-prj_made-push; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-prj_made-push" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1890,9 +1636,6 @@ CREATE TABLE isahl."zc_id_appr-prj_made-push" (
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-prj_request-push; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-prj_request-push" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1926,9 +1669,6 @@ CREATE TABLE isahl."zc_id_appr-prj_request-push" (
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-prj_sales-push; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-prj_sales-push" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1962,18 +1702,12 @@ CREATE TABLE isahl."zc_id_appr-prj_sales-push" (
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-process; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-process" (
 )
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-project-push; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-project-push" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2007,9 +1741,6 @@ CREATE TABLE isahl."zc_id_appr-project-push" (
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2043,9 +1774,6 @@ CREATE TABLE isahl."zc_id_appr-purchase" (
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-recruitment; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-recruitment" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2079,9 +1807,6 @@ CREATE TABLE isahl."zc_id_appr-recruitment" (
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-req-time_off; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-req-time_off" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2115,9 +1840,6 @@ CREATE TABLE isahl."zc_id_appr-req-time_off" (
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_appr-user_verify; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_appr-user_verify" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2150,9 +1872,6 @@ CREATE TABLE isahl."zc_id_appr-user_verify" (
 INHERITS (isahl."zc_id_even-approve");
 
 
---
--- Name: zc_id_attachment; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_attachment (
     id bigint NOT NULL
@@ -2160,9 +1879,6 @@ CREATE TABLE isahl.zc_id_attachment (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_audit; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_audit (
     id bigint NOT NULL,
@@ -2172,9 +1888,6 @@ CREATE TABLE isahl.zc_id_audit (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_audit_rr_auditee; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_audit_rr_auditee (
     id bigint NOT NULL
@@ -2182,9 +1895,6 @@ CREATE TABLE isahl.zc_id_audit_rr_auditee (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_audit_rr_conclusion; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_audit_rr_conclusion (
     id bigint NOT NULL
@@ -2192,9 +1902,6 @@ CREATE TABLE isahl.zc_id_audit_rr_conclusion (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_entity; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_entity (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2220,9 +1927,6 @@ CREATE TABLE isahl.zc_id_entity (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_subjects; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_subjects (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2250,9 +1954,6 @@ CREATE TABLE isahl.zc_id_subjects (
 INHERITS (isahl.zc_id_entity);
 
 
---
--- Name: zc_id_subj-bank; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-bank" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2280,9 +1981,6 @@ CREATE TABLE isahl."zc_id_subj-bank" (
 INHERITS (isahl.zc_id_subjects);
 
 
---
--- Name: zc_id_subj-hierarchy; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-hierarchy" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2312,9 +2010,6 @@ CREATE TABLE isahl."zc_id_subj-hierarchy" (
 INHERITS (isahl.zc_id_subjects);
 
 
---
--- Name: zc_id_subj-ministry; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-ministry" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2344,9 +2039,6 @@ CREATE TABLE isahl."zc_id_subj-ministry" (
 INHERITS (isahl."zc_id_subj-hierarchy");
 
 
---
--- Name: zc_id_bank-central; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bank-central" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2377,9 +2069,6 @@ CREATE TABLE isahl."zc_id_bank-central" (
 INHERITS (isahl."zc_id_subj-ministry", isahl."zc_id_subj-bank");
 
 
---
--- Name: zc_id_subj-org; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-org" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2410,9 +2099,6 @@ CREATE TABLE isahl."zc_id_subj-org" (
 INHERITS (isahl."zc_id_subj-hierarchy");
 
 
---
--- Name: zc_id_orga-legal; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orga-legal" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2425,9 +2111,6 @@ CREATE TABLE isahl."zc_id_orga-legal" (
 INHERITS (isahl."zc_id_subj-org");
 
 
---
--- Name: zc_id_bank-commercial; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bank-commercial" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2443,9 +2126,6 @@ CREATE TABLE isahl."zc_id_bank-commercial" (
 INHERITS (isahl."zc_id_subj-bank", isahl."zc_id_orga-legal");
 
 
---
--- Name: zc_id_version; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_version (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2473,9 +2153,6 @@ CREATE TABLE isahl.zc_id_version (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_bill; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_bill (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2512,9 +2189,6 @@ CREATE TABLE isahl.zc_id_bill (
 INHERITS (isahl."zc_id_proc-context", isahl.zc_id_version);
 
 
---
--- Name: zc_id_bill-check; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bill-check" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2557,9 +2231,6 @@ CREATE TABLE isahl."zc_id_bill-check" (
 INHERITS (isahl.zc_id_bill);
 
 
---
--- Name: zc_id_lifecycle_r_status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_lifecycle_r_status (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2578,9 +2249,6 @@ CREATE TABLE isahl.zc_id_lifecycle_r_status (
 INHERITS (isahl.zc_ad_tensor_r_scalar);
 
 
---
--- Name: zc_id_bill-check_r_verify-status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bill-check_r_verify-status" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2599,9 +2267,6 @@ CREATE TABLE isahl."zc_id_bill-check_r_verify-status" (
 INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
---
--- Name: zc_id_bill-check_rr_invoice; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bill-check_rr_invoice" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2621,9 +2286,6 @@ CREATE TABLE isahl."zc_id_bill-check_rr_invoice" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_bill-check_rr_plan-payment; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bill-check_rr_plan-payment" (
     id bigint NOT NULL,
@@ -2632,9 +2294,6 @@ CREATE TABLE isahl."zc_id_bill-check_rr_plan-payment" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_bill-check_rr_smt-voucher; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bill-check_rr_smt-voucher" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2654,9 +2313,6 @@ CREATE TABLE isahl."zc_id_bill-check_rr_smt-voucher" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_bill-check_rr_trade_order; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bill-check_rr_trade_order" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2676,9 +2332,6 @@ CREATE TABLE isahl."zc_id_bill-check_rr_trade_order" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_bill-pricing; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bill-pricing" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2706,9 +2359,6 @@ CREATE TABLE isahl."zc_id_bill-pricing" (
 INHERITS (isahl.zc_id_bill);
 
 
---
--- Name: zc_id_bill-ticket; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bill-ticket" (
     id bigint NOT NULL
@@ -2716,9 +2366,6 @@ CREATE TABLE isahl."zc_id_bill-ticket" (
 INHERITS (isahl.zc_id_bill);
 
 
---
--- Name: zc_id_bill_rr_process; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_bill_rr_process (
     id bigint NOT NULL
@@ -2726,9 +2373,6 @@ CREATE TABLE isahl.zc_id_bill_rr_process (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_bill_rr_recipients; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_bill_rr_recipients (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2746,9 +2390,6 @@ CREATE TABLE isahl.zc_id_bill_rr_recipients (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_bom; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_bom (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2778,9 +2419,6 @@ CREATE TABLE isahl.zc_id_bom (
 INHERITS (isahl.zc_id_version);
 
 
---
--- Name: zc_id_bom-assemble; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bom-assemble" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2811,9 +2449,6 @@ CREATE TABLE isahl."zc_id_bom-assemble" (
 INHERITS (isahl.zc_id_bom);
 
 
---
--- Name: zc_id_bom-combine; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bom-combine" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2844,9 +2479,6 @@ CREATE TABLE isahl."zc_id_bom-combine" (
 INHERITS (isahl.zc_id_bom);
 
 
---
--- Name: zc_id_bom-equipment; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bom-equipment" (
     id bigint NOT NULL
@@ -2854,9 +2486,6 @@ CREATE TABLE isahl."zc_id_bom-equipment" (
 INHERITS (isahl."zc_id_bom-combine");
 
 
---
--- Name: zc_id_bom-file; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bom-file" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2887,9 +2516,6 @@ CREATE TABLE isahl."zc_id_bom-file" (
 INHERITS (isahl."zc_id_bom-combine");
 
 
---
--- Name: zc_id_bom-gift_set; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bom-gift_set" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2920,9 +2546,6 @@ CREATE TABLE isahl."zc_id_bom-gift_set" (
 INHERITS (isahl."zc_id_bom-combine");
 
 
---
--- Name: zc_id_bom-inbound; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bom-inbound" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2953,9 +2576,6 @@ CREATE TABLE isahl."zc_id_bom-inbound" (
 INHERITS (isahl."zc_id_bom-combine");
 
 
---
--- Name: zc_id_bom-input_item_r_substitution; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bom-input_item_r_substitution" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2974,9 +2594,6 @@ CREATE TABLE isahl."zc_id_bom-input_item_r_substitution" (
 INHERITS (isahl."zc_ad_relation_r_isolate-tensor");
 
 
---
--- Name: zc_id_master_rr_slave; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_master_rr_slave (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2994,9 +2611,6 @@ CREATE TABLE isahl.zc_id_master_rr_slave (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_bom_rr_item; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_bom_rr_item (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3019,9 +2633,6 @@ CREATE TABLE isahl.zc_id_bom_rr_item (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_bom-input_rr_item; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bom-input_rr_item" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3044,18 +2655,12 @@ CREATE TABLE isahl."zc_id_bom-input_rr_item" (
 INHERITS (isahl.zc_id_bom_rr_item);
 
 
---
--- Name: zc_id_bom-integration; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bom-integration" (
 )
 INHERITS (isahl."zc_id_bom-combine");
 
 
---
--- Name: zc_id_bom-loading; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bom-loading" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3086,9 +2691,6 @@ CREATE TABLE isahl."zc_id_bom-loading" (
 INHERITS (isahl."zc_id_bom-combine");
 
 
---
--- Name: zc_id_bom-outbound; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bom-outbound" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3119,9 +2721,6 @@ CREATE TABLE isahl."zc_id_bom-outbound" (
 INHERITS (isahl."zc_id_bom-combine");
 
 
---
--- Name: zc_id_bom-output_rr_item; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bom-output_rr_item" (
     id bigint NOT NULL
@@ -3129,9 +2728,6 @@ CREATE TABLE isahl."zc_id_bom-output_rr_item" (
 INHERITS (isahl.zc_id_bom_rr_item);
 
 
---
--- Name: zc_id_bom-pickup; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bom-pickup" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3162,9 +2758,6 @@ CREATE TABLE isahl."zc_id_bom-pickup" (
 INHERITS (isahl."zc_id_bom-combine");
 
 
---
--- Name: zc_id_bom-shelve; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bom-shelve" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3195,9 +2788,6 @@ CREATE TABLE isahl."zc_id_bom-shelve" (
 INHERITS (isahl."zc_id_bom-combine");
 
 
---
--- Name: zc_id_bom-shipment; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bom-shipment" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3228,9 +2818,6 @@ CREATE TABLE isahl."zc_id_bom-shipment" (
 INHERITS (isahl."zc_id_bom-combine");
 
 
---
--- Name: zc_id_bom-solution; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_bom-solution" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3261,9 +2848,6 @@ CREATE TABLE isahl."zc_id_bom-solution" (
 INHERITS (isahl."zc_id_bom-assemble");
 
 
---
--- Name: zc_id_formula; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_formula (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3287,9 +2871,6 @@ CREATE TABLE isahl.zc_id_formula (
 INHERITS (isahl.zc_id_evaluation);
 
 
---
--- Name: zc_id_form-calculation; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_form-calculation" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3313,9 +2894,6 @@ CREATE TABLE isahl."zc_id_form-calculation" (
 INHERITS (isahl.zc_id_formula, isahl."zc_id_eval-calculable");
 
 
---
--- Name: zc_id_calc-prod_pricing; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_calc-prod_pricing" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3339,9 +2917,6 @@ CREATE TABLE isahl."zc_id_calc-prod_pricing" (
 INHERITS (isahl."zc_id_form-calculation");
 
 
---
--- Name: zc_id_calc-sales_bonus; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_calc-sales_bonus" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3367,9 +2942,6 @@ CREATE TABLE isahl."zc_id_calc-sales_bonus" (
 INHERITS (isahl."zc_id_form-calculation");
 
 
---
--- Name: zc_id_calc-zone_qty; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_calc-zone_qty" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3393,9 +2965,6 @@ CREATE TABLE isahl."zc_id_calc-zone_qty" (
 INHERITS (isahl."zc_id_calc-prod_pricing");
 
 
---
--- Name: zc_id_carrier; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_carrier (
     id bigint NOT NULL
@@ -3403,9 +2972,6 @@ CREATE TABLE isahl.zc_id_carrier (
 INHERITS (isahl.zc_id_entity);
 
 
---
--- Name: zc_id_category; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_category (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3423,9 +2989,6 @@ CREATE TABLE isahl.zc_id_category (
 INHERITS (isahl.zc_id_object, isahl.zc_ad_scalar);
 
 
---
--- Name: zc_id_cate-acc-title; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-acc-title" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3450,9 +3013,6 @@ CREATE TABLE isahl."zc_id_cate-acc-title" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-subject; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-subject" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3471,9 +3031,6 @@ CREATE TABLE isahl."zc_id_cate-subject" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-agent; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-agent" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3493,9 +3050,6 @@ CREATE TABLE isahl."zc_id_cate-agent" (
 INHERITS (isahl."zc_id_cate-subject");
 
 
---
--- Name: zc_id_cate-alert; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-alert" (
     id bigint NOT NULL
@@ -3503,36 +3057,24 @@ CREATE TABLE isahl."zc_id_cate-alert" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-approve; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-approve" (
 )
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-approve_role; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-approve_role" (
 )
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-auth; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-auth" (
 )
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-bom-item; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-bom-item" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3553,9 +3095,6 @@ CREATE TABLE isahl."zc_id_cate-bom-item" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-certification; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-certification" (
     id bigint NOT NULL
@@ -3563,9 +3102,6 @@ CREATE TABLE isahl."zc_id_cate-certification" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-clause; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-clause" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3584,9 +3120,6 @@ CREATE TABLE isahl."zc_id_cate-clause" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-contact_role; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-contact_role" (
     id bigint NOT NULL
@@ -3594,9 +3127,6 @@ CREATE TABLE isahl."zc_id_cate-contact_role" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-contacts; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-contacts" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3620,9 +3150,6 @@ CREATE TABLE isahl."zc_id_cate-contacts" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-cooperation; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-cooperation" (
     id bigint NOT NULL
@@ -3630,18 +3157,12 @@ CREATE TABLE isahl."zc_id_cate-cooperation" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-defect; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-defect" (
 )
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-department; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-department" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3661,18 +3182,12 @@ CREATE TABLE isahl."zc_id_cate-department" (
 INHERITS (isahl."zc_id_cate-subject");
 
 
---
--- Name: zc_id_cate-employment; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-employment" (
 )
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-file; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-file" (
     id bigint NOT NULL
@@ -3680,9 +3195,6 @@ CREATE TABLE isahl."zc_id_cate-file" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-group; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-group" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3702,9 +3214,6 @@ CREATE TABLE isahl."zc_id_cate-group" (
 INHERITS (isahl."zc_id_cate-subject");
 
 
---
--- Name: zc_id_cate-group_member; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-group_member" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3723,9 +3232,6 @@ CREATE TABLE isahl."zc_id_cate-group_member" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-identity; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-identity" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3744,9 +3250,6 @@ CREATE TABLE isahl."zc_id_cate-identity" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-inspection; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-inspection" (
     id bigint NOT NULL
@@ -3754,9 +3257,6 @@ CREATE TABLE isahl."zc_id_cate-inspection" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-sto-title; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-sto-title" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3779,9 +3279,6 @@ CREATE TABLE isahl."zc_id_cate-sto-title" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-inv-title; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-inv-title" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3804,9 +3301,6 @@ CREATE TABLE isahl."zc_id_cate-inv-title" (
 INHERITS (isahl."zc_id_cate-sto-title");
 
 
---
--- Name: zc_id_cate-inv-title-cm; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-inv-title-cm" (
     id bigint NOT NULL
@@ -3814,9 +3308,6 @@ CREATE TABLE isahl."zc_id_cate-inv-title-cm" (
 INHERITS (isahl."zc_id_cate-inv-title");
 
 
---
--- Name: zc_id_cate-inv-title-ns; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-inv-title-ns" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3838,9 +3329,6 @@ CREATE TABLE isahl."zc_id_cate-inv-title-ns" (
 INHERITS (isahl."zc_id_cate-inv-title");
 
 
---
--- Name: zc_id_cate-inve-trasnfer; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-inve-trasnfer" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3859,9 +3347,6 @@ CREATE TABLE isahl."zc_id_cate-inve-trasnfer" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-log; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-log" (
     id bigint NOT NULL
@@ -3869,9 +3354,6 @@ CREATE TABLE isahl."zc_id_cate-log" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-maintain; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-maintain" (
     id bigint NOT NULL
@@ -3879,9 +3361,6 @@ CREATE TABLE isahl."zc_id_cate-maintain" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-modify; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-modify" (
     id bigint NOT NULL
@@ -3889,9 +3368,6 @@ CREATE TABLE isahl."zc_id_cate-modify" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-op_standard; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-op_standard" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3910,9 +3386,6 @@ CREATE TABLE isahl."zc_id_cate-op_standard" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-ope-title; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-ope-title" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3937,9 +3410,6 @@ CREATE TABLE isahl."zc_id_cate-ope-title" (
 INHERITS (isahl."zc_id_cate-sto-title");
 
 
---
--- Name: zc_id_cate-ope-title-cm; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-ope-title-cm" (
     id bigint NOT NULL
@@ -3947,9 +3417,6 @@ CREATE TABLE isahl."zc_id_cate-ope-title-cm" (
 INHERITS (isahl."zc_id_cate-ope-title");
 
 
---
--- Name: zc_id_cate-ope-title-ns; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-ope-title-ns" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3973,9 +3440,6 @@ CREATE TABLE isahl."zc_id_cate-ope-title-ns" (
 INHERITS (isahl."zc_id_cate-ope-title");
 
 
---
--- Name: zc_id_cate-org_system; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-org_system" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3987,9 +3451,6 @@ CREATE TABLE isahl."zc_id_cate-org_system" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-organization; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-organization" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4001,9 +3462,6 @@ CREATE TABLE isahl."zc_id_cate-organization" (
 INHERITS (isahl."zc_id_cate-subject");
 
 
---
--- Name: zc_id_cate-position; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-position" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4023,9 +3481,6 @@ CREATE TABLE isahl."zc_id_cate-position" (
 INHERITS (isahl."zc_id_cate-subject");
 
 
---
--- Name: zc_id_cate-proc_op; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-proc_op" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4044,9 +3499,6 @@ CREATE TABLE isahl."zc_id_cate-proc_op" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-process; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-process" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4068,9 +3520,6 @@ CREATE TABLE isahl."zc_id_cate-process" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-project; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-project" (
     id bigint NOT NULL
@@ -4078,9 +3527,6 @@ CREATE TABLE isahl."zc_id_cate-project" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-real_rights; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-real_rights" (
     id bigint NOT NULL
@@ -4088,9 +3534,6 @@ CREATE TABLE isahl."zc_id_cate-real_rights" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-seal; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-seal" (
     id bigint NOT NULL
@@ -4098,9 +3541,6 @@ CREATE TABLE isahl."zc_id_cate-seal" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-society; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-society" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4120,9 +3560,6 @@ CREATE TABLE isahl."zc_id_cate-society" (
 INHERITS (isahl."zc_id_cate-subject");
 
 
---
--- Name: zc_id_consensus; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_consensus (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4139,9 +3576,6 @@ CREATE TABLE isahl.zc_id_consensus (
 INHERITS (isahl.zc_id_object);
 
 
---
--- Name: zc_id_cate-tax-title; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-tax-title" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4161,18 +3595,12 @@ CREATE TABLE isahl."zc_id_cate-tax-title" (
 INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
 
 
---
--- Name: zc_id_cate-testing; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-testing" (
 )
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-tracking; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-tracking" (
     id bigint NOT NULL
@@ -4180,9 +3608,6 @@ CREATE TABLE isahl."zc_id_cate-tracking" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-traffic; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-traffic" (
     id bigint NOT NULL
@@ -4190,9 +3615,6 @@ CREATE TABLE isahl."zc_id_cate-traffic" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-training; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-training" (
     id bigint NOT NULL
@@ -4200,9 +3622,6 @@ CREATE TABLE isahl."zc_id_cate-training" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-tsp; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-tsp" (
     enable boolean,
@@ -4211,9 +3630,6 @@ CREATE TABLE isahl."zc_id_cate-tsp" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-tsp-title; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-tsp-title" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4236,9 +3652,6 @@ CREATE TABLE isahl."zc_id_cate-tsp-title" (
 INHERITS (isahl."zc_id_cate-sto-title");
 
 
---
--- Name: zc_id_cate-tsp-title-cm; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-tsp-title-cm" (
     id bigint NOT NULL
@@ -4246,9 +3659,6 @@ CREATE TABLE isahl."zc_id_cate-tsp-title-cm" (
 INHERITS (isahl."zc_id_cate-tsp-title");
 
 
---
--- Name: zc_id_cate-tsp-title-ns; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-tsp-title-ns" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4270,9 +3680,6 @@ CREATE TABLE isahl."zc_id_cate-tsp-title-ns" (
 INHERITS (isahl."zc_id_cate-tsp-title");
 
 
---
--- Name: zc_id_cate-ver_branch; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-ver_branch" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4291,9 +3698,6 @@ CREATE TABLE isahl."zc_id_cate-ver_branch" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-warehouse; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-warehouse" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4312,9 +3716,6 @@ CREATE TABLE isahl."zc_id_cate-warehouse" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cate-wh-title; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cate-wh-title" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4333,9 +3734,6 @@ CREATE TABLE isahl."zc_id_cate-wh-title" (
 INHERITS (isahl.zc_id_category);
 
 
---
--- Name: zc_id_cons-consanguinity-cate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cons-consanguinity-cate" (
     id bigint NOT NULL
@@ -4343,9 +3741,6 @@ CREATE TABLE isahl."zc_id_cons-consanguinity-cate" (
 INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
 
 
---
--- Name: zc_id_cons-cron-cate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cons-cron-cate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4364,9 +3759,6 @@ CREATE TABLE isahl."zc_id_cons-cron-cate" (
 INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
 
 
---
--- Name: zc_id_tags; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_tags (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4386,9 +3778,6 @@ CREATE TABLE isahl.zc_id_tags (
 INHERITS (isahl.zc_ad_scalar, isahl.zc_id_object);
 
 
---
--- Name: zc_id_cons-date-tags; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cons-date-tags" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4408,9 +3797,6 @@ CREATE TABLE isahl."zc_id_cons-date-tags" (
 INHERITS (isahl.zc_id_consensus, isahl.zc_id_tags);
 
 
---
--- Name: zc_id_cons-ethnic_group-cate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cons-ethnic_group-cate" (
     id bigint NOT NULL
@@ -4418,9 +3804,6 @@ CREATE TABLE isahl."zc_id_cons-ethnic_group-cate" (
 INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
 
 
---
--- Name: zc_id_cons-factor-cate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cons-factor-cate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4440,9 +3823,6 @@ CREATE TABLE isahl."zc_id_cons-factor-cate" (
 INHERITS (isahl.zc_id_consensus, isahl.zc_id_category);
 
 
---
--- Name: zc_id_cons-function-cate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cons-function-cate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4461,9 +3841,6 @@ CREATE TABLE isahl."zc_id_cons-function-cate" (
 INHERITS (isahl.zc_id_consensus, isahl.zc_id_category);
 
 
---
--- Name: zc_id_cons-goods-tags; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cons-goods-tags" (
     id bigint NOT NULL
@@ -4471,9 +3848,6 @@ CREATE TABLE isahl."zc_id_cons-goods-tags" (
 INHERITS (isahl.zc_id_consensus, isahl.zc_id_tags);
 
 
---
--- Name: zc_id_cons-industry-cate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cons-industry-cate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4492,9 +3866,6 @@ CREATE TABLE isahl."zc_id_cons-industry-cate" (
 INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
 
 
---
--- Name: zc_id_cons-license-cate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cons-license-cate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4513,9 +3884,6 @@ CREATE TABLE isahl."zc_id_cons-license-cate" (
 INHERITS (isahl.zc_id_consensus, isahl.zc_id_category);
 
 
---
--- Name: zc_id_cons-packing-cate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cons-packing-cate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4534,9 +3902,6 @@ CREATE TABLE isahl."zc_id_cons-packing-cate" (
 INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
 
 
---
--- Name: zc_id_cons-polity-cate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cons-polity-cate" (
     id bigint NOT NULL
@@ -4544,9 +3909,6 @@ CREATE TABLE isahl."zc_id_cons-polity-cate" (
 INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
 
 
---
--- Name: zc_id_cons-r-type-cate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cons-r-type-cate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4566,9 +3928,6 @@ CREATE TABLE isahl."zc_id_cons-r-type-cate" (
 INHERITS (isahl.zc_id_consensus, isahl.zc_id_category);
 
 
---
--- Name: zc_id_cons-timezone-cate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cons-timezone-cate" (
     id bigint NOT NULL
@@ -4576,9 +3935,6 @@ CREATE TABLE isahl."zc_id_cons-timezone-cate" (
 INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
 
 
---
--- Name: zc_id_cons-ts_concomitant-tags; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cons-ts_concomitant-tags" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4601,9 +3957,6 @@ CREATE TABLE isahl."zc_id_cons-ts_concomitant-tags" (
 INHERITS (isahl.zc_id_tags, isahl.zc_id_consensus);
 
 
---
--- Name: zc_id_cons-zone-tags; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cons-zone-tags" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4623,9 +3976,6 @@ CREATE TABLE isahl."zc_id_cons-zone-tags" (
 INHERITS (isahl.zc_id_tags, isahl.zc_id_consensus);
 
 
---
--- Name: zc_id_contract; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_contract (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4654,9 +4004,6 @@ CREATE TABLE isahl.zc_id_contract (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_cont-cooperative; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cont-cooperative" (
     id bigint NOT NULL
@@ -4664,9 +4011,6 @@ CREATE TABLE isahl."zc_id_cont-cooperative" (
 INHERITS (isahl.zc_id_contract);
 
 
---
--- Name: zc_id_cont-guarantee; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cont-guarantee" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4692,9 +4036,6 @@ CREATE TABLE isahl."zc_id_cont-guarantee" (
 INHERITS (isahl.zc_id_contract);
 
 
---
--- Name: zc_id_cont-insurance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cont-insurance" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4720,9 +4061,6 @@ CREATE TABLE isahl."zc_id_cont-insurance" (
 INHERITS (isahl.zc_id_contract);
 
 
---
--- Name: zc_id_cont-joint_venture; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cont-joint_venture" (
     id bigint NOT NULL
@@ -4730,9 +4068,6 @@ CREATE TABLE isahl."zc_id_cont-joint_venture" (
 INHERITS (isahl.zc_id_contract);
 
 
---
--- Name: zc_id_cont-partnership; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cont-partnership" (
     id bigint NOT NULL
@@ -4740,9 +4075,6 @@ CREATE TABLE isahl."zc_id_cont-partnership" (
 INHERITS (isahl.zc_id_contract);
 
 
---
--- Name: zc_id_cont-marriage; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cont-marriage" (
     id bigint NOT NULL
@@ -4750,9 +4082,6 @@ CREATE TABLE isahl."zc_id_cont-marriage" (
 INHERITS (isahl."zc_id_cont-partnership");
 
 
---
--- Name: zc_id_cont-proxy; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cont-proxy" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4778,9 +4107,6 @@ CREATE TABLE isahl."zc_id_cont-proxy" (
 INHERITS (isahl.zc_id_contract);
 
 
---
--- Name: zc_id_cont-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cont-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4806,9 +4132,6 @@ CREATE TABLE isahl."zc_id_cont-purchase" (
 INHERITS (isahl.zc_id_contract);
 
 
---
--- Name: zc_id_cont-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cont-request" (
     id bigint NOT NULL
@@ -4816,9 +4139,6 @@ CREATE TABLE isahl."zc_id_cont-request" (
 INHERITS (isahl.zc_id_contract);
 
 
---
--- Name: zc_id_cont-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cont-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4844,9 +4164,6 @@ CREATE TABLE isahl."zc_id_cont-sales" (
 INHERITS (isahl.zc_id_contract);
 
 
---
--- Name: zc_id_cont-transport-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cont-transport-purchase" (
     id bigint NOT NULL,
@@ -4855,9 +4172,6 @@ CREATE TABLE isahl."zc_id_cont-transport-purchase" (
 INHERITS (isahl."zc_id_cont-purchase");
 
 
---
--- Name: zc_id_cont-transport-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cont-transport-sales" (
     id bigint NOT NULL,
@@ -4866,9 +4180,6 @@ CREATE TABLE isahl."zc_id_cont-transport-sales" (
 INHERITS (isahl."zc_id_cont-sales");
 
 
---
--- Name: zc_id_cont-transport_rr_stop; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_cont-transport_rr_stop" (
     id bigint NOT NULL,
@@ -4878,9 +4189,6 @@ CREATE TABLE isahl."zc_id_cont-transport_rr_stop" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_contact_infos; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_contact_infos (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4904,9 +4212,6 @@ CREATE TABLE isahl.zc_id_contact_infos (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_contacts; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_contacts (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4932,9 +4237,6 @@ CREATE TABLE isahl.zc_id_contacts (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_contacts_rr_infos; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_contacts_rr_infos (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4955,9 +4257,6 @@ CREATE TABLE isahl.zc_id_contacts_rr_infos (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_container_rr_device; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_container_rr_device (
     is_active boolean
@@ -4965,9 +4264,6 @@ CREATE TABLE isahl.zc_id_container_rr_device (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_contract_r_calc; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_contract_r_calc (
     id bigint NOT NULL
@@ -4975,9 +4271,6 @@ CREATE TABLE isahl.zc_id_contract_r_calc (
 INHERITS (isahl.zc_id_lifecycle_r_evaluation);
 
 
---
--- Name: zc_id_contract_r_term; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_contract_r_term (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4996,18 +4289,12 @@ CREATE TABLE isahl.zc_id_contract_r_term (
 INHERITS (isahl.zc_id_lifecycle_r_evaluation);
 
 
---
--- Name: zc_id_contract_rr_agreement; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_contract_rr_agreement (
 )
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_contract_rr_matter; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_contract_rr_matter (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5027,9 +4314,6 @@ CREATE TABLE isahl.zc_id_contract_rr_matter (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_contract_rr_deal; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_contract_rr_deal (
     id bigint NOT NULL
@@ -5037,9 +4321,6 @@ CREATE TABLE isahl.zc_id_contract_rr_deal (
 INHERITS (isahl.zc_id_contract_rr_matter);
 
 
---
--- Name: zc_id_contract_rr_demand; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_contract_rr_demand (
     id bigint NOT NULL
@@ -5047,9 +4328,6 @@ CREATE TABLE isahl.zc_id_contract_rr_demand (
 INHERITS (isahl.zc_id_contract_rr_matter);
 
 
---
--- Name: zc_id_contract_rr_goods; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_contract_rr_goods (
     id bigint NOT NULL
@@ -5057,9 +4335,6 @@ CREATE TABLE isahl.zc_id_contract_rr_goods (
 INHERITS (isahl.zc_id_contract_rr_matter);
 
 
---
--- Name: zc_id_contract_rr_law; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_contract_rr_law (
     id bigint NOT NULL
@@ -5067,9 +4342,6 @@ CREATE TABLE isahl.zc_id_contract_rr_law (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_contract_rr_party; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_contract_rr_party (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5088,18 +4360,12 @@ CREATE TABLE isahl.zc_id_contract_rr_party (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_contract_rr_standard; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_contract_rr_standard (
 )
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_contract_rr_symmetry; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_contract_rr_symmetry (
     id bigint NOT NULL
@@ -5107,9 +4373,6 @@ CREATE TABLE isahl.zc_id_contract_rr_symmetry (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_counting_r_cnt-status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_counting_r_cnt-status" (
     id bigint NOT NULL
@@ -5117,9 +4380,6 @@ CREATE TABLE isahl."zc_id_counting_r_cnt-status" (
 INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
---
--- Name: zc_id_demand_rr_supply; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_demand_rr_supply (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5137,9 +4397,6 @@ CREATE TABLE isahl.zc_id_demand_rr_supply (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_deta-alert; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-alert" (
     id bigint NOT NULL
@@ -5147,9 +4404,6 @@ CREATE TABLE isahl."zc_id_deta-alert" (
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_deta-appeal; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-appeal" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5176,9 +4430,6 @@ CREATE TABLE isahl."zc_id_deta-appeal" (
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_deta-approve; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-approve" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5206,9 +4457,6 @@ CREATE TABLE isahl."zc_id_deta-approve" (
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_deta-bill-check; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-bill-check" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5252,9 +4500,6 @@ CREATE TABLE isahl."zc_id_deta-bill-check" (
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_deta-bill-check_r_verify-status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-bill-check_r_verify-status" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5273,9 +4518,6 @@ CREATE TABLE isahl."zc_id_deta-bill-check_r_verify-status" (
 INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
---
--- Name: zc_id_deta-bill-pricing; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-bill-pricing" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5312,9 +4554,6 @@ CREATE TABLE isahl."zc_id_deta-bill-pricing" (
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_deta-commit; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-commit" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5342,18 +4581,12 @@ CREATE TABLE isahl."zc_id_deta-commit" (
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_deta-inspection; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-inspection" (
 )
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_deta-invoice; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-invoice" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5386,9 +4619,6 @@ CREATE TABLE isahl."zc_id_deta-invoice" (
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_deta-maintenance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-maintenance" (
     id bigint NOT NULL,
@@ -5398,9 +4628,6 @@ CREATE TABLE isahl."zc_id_deta-maintenance" (
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_deta-opinion; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-opinion" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5431,9 +4658,6 @@ CREATE TABLE isahl."zc_id_deta-opinion" (
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_deta-plan; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-plan" (
     id bigint NOT NULL,
@@ -5444,9 +4668,6 @@ CREATE TABLE isahl."zc_id_deta-plan" (
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_deta-task; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-task" (
     id bigint NOT NULL,
@@ -5456,9 +4677,6 @@ CREATE TABLE isahl."zc_id_deta-task" (
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_deta-trade_order; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-trade_order" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5502,9 +4720,6 @@ CREATE TABLE isahl."zc_id_deta-trade_order" (
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_deta-training; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-training" (
     id bigint NOT NULL,
@@ -5514,9 +4729,6 @@ CREATE TABLE isahl."zc_id_deta-training" (
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_deta-training_rr_matter; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-training_rr_matter" (
     id bigint NOT NULL
@@ -5524,9 +4736,6 @@ CREATE TABLE isahl."zc_id_deta-training_rr_matter" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_deta-tsk; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-tsk" (
     id bigint NOT NULL,
@@ -5535,9 +4744,6 @@ CREATE TABLE isahl."zc_id_deta-tsk" (
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_deta-tsk_r_verify-status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-tsk_r_verify-status" (
     id bigint NOT NULL
@@ -5545,9 +4751,6 @@ CREATE TABLE isahl."zc_id_deta-tsk_r_verify-status" (
 INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
---
--- Name: zc_id_deta-tsp; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_deta-tsp" (
     id bigint NOT NULL,
@@ -5557,9 +4760,6 @@ CREATE TABLE isahl."zc_id_deta-tsp" (
 INHERITS (isahl.zc_id_detail);
 
 
---
--- Name: zc_id_device; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_device (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5587,9 +4787,6 @@ CREATE TABLE isahl.zc_id_device (
 INHERITS (isahl.zc_id_entity);
 
 
---
--- Name: zc_id_devi-camera; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_devi-camera" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5615,9 +4812,6 @@ CREATE TABLE isahl."zc_id_devi-camera" (
 INHERITS (isahl.zc_id_device);
 
 
---
--- Name: zc_id_devi-chess; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_devi-chess" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5650,9 +4844,6 @@ CREATE TABLE isahl."zc_id_devi-chess" (
 INHERITS (isahl.zc_id_device);
 
 
---
--- Name: zc_id_devi-control_board; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_devi-control_board" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5678,9 +4869,6 @@ CREATE TABLE isahl."zc_id_devi-control_board" (
 INHERITS (isahl.zc_id_device);
 
 
---
--- Name: zc_id_devi-display; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_devi-display" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5706,9 +4894,6 @@ CREATE TABLE isahl."zc_id_devi-display" (
 INHERITS (isahl.zc_id_device);
 
 
---
--- Name: zc_id_devi-measure; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_devi-measure" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5737,9 +4922,6 @@ CREATE TABLE isahl."zc_id_devi-measure" (
 INHERITS (isahl.zc_id_device);
 
 
---
--- Name: zc_id_devi-seal; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_devi-seal" (
     id bigint NOT NULL,
@@ -5748,9 +4930,6 @@ CREATE TABLE isahl."zc_id_devi-seal" (
 INHERITS (isahl.zc_id_device);
 
 
---
--- Name: zc_id_devi-sensor; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_devi-sensor" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5776,18 +4955,12 @@ CREATE TABLE isahl."zc_id_devi-sensor" (
 INHERITS (isahl.zc_id_device);
 
 
---
--- Name: zc_id_device_r_iot-status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_device_r_iot-status" (
 )
 INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
---
--- Name: zc_id_device_rr_protocol; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_device_rr_protocol (
     id bigint NOT NULL
@@ -5795,9 +4968,6 @@ CREATE TABLE isahl.zc_id_device_rr_protocol (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_document; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_document (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5825,9 +4995,6 @@ CREATE TABLE isahl.zc_id_document (
 INHERITS (isahl.zc_id_version);
 
 
---
--- Name: zc_id_docu-accounting; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_docu-accounting" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5855,9 +5022,6 @@ CREATE TABLE isahl."zc_id_docu-accounting" (
 INHERITS (isahl.zc_id_document);
 
 
---
--- Name: zc_id_subj-employee; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-employee" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5885,9 +5049,6 @@ CREATE TABLE isahl."zc_id_subj-employee" (
 INHERITS (isahl.zc_id_subjects);
 
 
---
--- Name: zc_id_empl-agent; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_empl-agent" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5917,9 +5078,6 @@ CREATE TABLE isahl."zc_id_empl-agent" (
 INHERITS (isahl."zc_id_subj-employee");
 
 
---
--- Name: zc_id_empl-agent_rr_llm-config; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_empl-agent_rr_llm-config" (
     id bigint NOT NULL
@@ -5927,9 +5085,6 @@ CREATE TABLE isahl."zc_id_empl-agent_rr_llm-config" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_empl-natural; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_empl-natural" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5958,9 +5113,6 @@ CREATE TABLE isahl."zc_id_empl-natural" (
 INHERITS (isahl."zc_id_subj-employee");
 
 
---
--- Name: zc_id_empl-natural_r_marital-status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_empl-natural_r_marital-status" (
     created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_status_created_at_not_null NOT NULL,
@@ -5981,9 +5133,6 @@ CREATE TABLE isahl."zc_id_empl-natural_r_marital-status" (
 INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
---
--- Name: zc_id_empl-natural_rr_consanguinity; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_empl-natural_rr_consanguinity" (
     id bigint NOT NULL,
@@ -5992,9 +5141,6 @@ CREATE TABLE isahl."zc_id_empl-natural_rr_consanguinity" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_empl-natural_rr_country; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_empl-natural_rr_country" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6012,9 +5158,6 @@ CREATE TABLE isahl."zc_id_empl-natural_rr_country" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_entity_rr_contacts; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_entity_rr_contacts (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6034,9 +5177,6 @@ CREATE TABLE isahl.zc_id_entity_rr_contacts (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_entity_rr_identity; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_entity_rr_identity (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6054,9 +5194,6 @@ CREATE TABLE isahl.zc_id_entity_rr_identity (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_eval-comparable; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_eval-comparable" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6074,9 +5211,6 @@ CREATE TABLE isahl."zc_id_eval-comparable" (
 INHERITS (isahl.zc_id_evaluation);
 
 
---
--- Name: zc_id_even-accident; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_even-accident" (
     lk_risk bigint,
@@ -6085,9 +5219,6 @@ CREATE TABLE isahl."zc_id_even-accident" (
 INHERITS (isahl.zc_id_event);
 
 
---
--- Name: zc_id_even-alert; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_even-alert" (
     ck_category bigint,
@@ -6096,9 +5227,6 @@ CREATE TABLE isahl."zc_id_even-alert" (
 INHERITS (isahl.zc_id_event);
 
 
---
--- Name: zc_id_even-counting; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_even-counting" (
     fk_storage bigint,
@@ -6107,9 +5235,6 @@ CREATE TABLE isahl."zc_id_even-counting" (
 INHERITS (isahl.zc_id_event);
 
 
---
--- Name: zc_id_even-issue; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_even-issue" (
     id bigint NOT NULL,
@@ -6118,9 +5243,6 @@ CREATE TABLE isahl."zc_id_even-issue" (
 INHERITS (isahl.zc_id_event);
 
 
---
--- Name: zc_id_even-log; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_even-log" (
     fk_env bigint,
@@ -6130,9 +5252,6 @@ CREATE TABLE isahl."zc_id_even-log" (
 INHERITS (isahl.zc_id_event);
 
 
---
--- Name: zc_id_even-modify; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_even-modify" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6165,18 +5284,12 @@ CREATE TABLE isahl."zc_id_even-modify" (
 INHERITS (isahl.zc_id_event);
 
 
---
--- Name: zc_id_even-report; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_even-report" (
 )
 INHERITS (isahl.zc_id_event);
 
 
---
--- Name: zc_id_even-tracking; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_even-tracking" (
     ck_category bigint
@@ -6184,9 +5297,6 @@ CREATE TABLE isahl."zc_id_even-tracking" (
 INHERITS (isahl.zc_id_event);
 
 
---
--- Name: zc_id_lifecycle_rr_foreign; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_lifecycle_rr_foreign (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6204,9 +5314,6 @@ CREATE TABLE isahl.zc_id_lifecycle_rr_foreign (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_event_rr_bill; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_event_rr_bill (
     id bigint NOT NULL
@@ -6214,9 +5321,6 @@ CREATE TABLE isahl.zc_id_event_rr_bill (
 INHERITS (isahl.zc_id_lifecycle_rr_foreign);
 
 
---
--- Name: zc_id_event_rr_container; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_event_rr_container (
     id bigint NOT NULL
@@ -6224,9 +5328,6 @@ CREATE TABLE isahl.zc_id_event_rr_container (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_event_rr_matter; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_event_rr_matter (
     id bigint NOT NULL
@@ -6234,9 +5335,6 @@ CREATE TABLE isahl.zc_id_event_rr_matter (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_event_rr_reason; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_event_rr_reason (
     id bigint NOT NULL
@@ -6244,9 +5342,6 @@ CREATE TABLE isahl.zc_id_event_rr_reason (
 INHERITS (isahl.zc_id_lifecycle_rr_foreign);
 
 
---
--- Name: zc_id_event_rr_standard; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_event_rr_standard (
     id bigint NOT NULL
@@ -6254,9 +5349,6 @@ CREATE TABLE isahl.zc_id_event_rr_standard (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_factor_o_number_seq; Type: SEQUENCE; Schema: isahl; Owner: -
---
 
 CREATE SEQUENCE isahl.zc_id_factor_o_number_seq
     START WITH 1
@@ -6266,9 +5358,6 @@ CREATE SEQUENCE isahl.zc_id_factor_o_number_seq
     CACHE 1;
 
 
---
--- Name: zc_id_factor; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_factor (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6286,9 +5375,6 @@ CREATE TABLE isahl.zc_id_factor (
 INHERITS (isahl.zc_id_object, isahl.zc_ad_dimension);
 
 
---
--- Name: zc_id_production; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_production (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6323,9 +5409,6 @@ CREATE TABLE isahl.zc_id_production (
 INHERITS (isahl.zc_id_version, isahl."zc_id_proc-context");
 
 
---
--- Name: zc_id_prod-data; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-data" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6360,9 +5443,6 @@ CREATE TABLE isahl."zc_id_prod-data" (
 INHERITS (isahl.zc_id_production);
 
 
---
--- Name: zc_id_prod-file; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-file" (
     id bigint NOT NULL,
@@ -6373,9 +5453,6 @@ CREATE TABLE isahl."zc_id_prod-file" (
 INHERITS (isahl."zc_id_prod-data", isahl.zc_id_attachment);
 
 
---
--- Name: zc_id_file-image; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_file-image" (
     id bigint NOT NULL
@@ -6383,9 +5460,6 @@ CREATE TABLE isahl."zc_id_file-image" (
 INHERITS (isahl."zc_id_prod-file");
 
 
---
--- Name: zc_id_file-avatar; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_file-avatar" (
     id bigint NOT NULL
@@ -6393,9 +5467,6 @@ CREATE TABLE isahl."zc_id_file-avatar" (
 INHERITS (isahl."zc_id_file-image");
 
 
---
--- Name: zc_id_file-document; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_file-document" (
     id bigint NOT NULL
@@ -6403,9 +5474,6 @@ CREATE TABLE isahl."zc_id_file-document" (
 INHERITS (isahl."zc_id_prod-file");
 
 
---
--- Name: zc_id_file-manual; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_file-manual" (
     id bigint NOT NULL
@@ -6413,9 +5481,6 @@ CREATE TABLE isahl."zc_id_file-manual" (
 INHERITS (isahl."zc_id_prod-file");
 
 
---
--- Name: zc_id_prod-combine; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-combine" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6449,9 +5514,6 @@ CREATE TABLE isahl."zc_id_prod-combine" (
 INHERITS (isahl.zc_id_production);
 
 
---
--- Name: zc_id_file-package; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_file-package" (
     id bigint NOT NULL
@@ -6459,9 +5521,6 @@ CREATE TABLE isahl."zc_id_file-package" (
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-file");
 
 
---
--- Name: zc_id_file-srm; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_file-srm" (
     id bigint NOT NULL
@@ -6469,9 +5528,6 @@ CREATE TABLE isahl."zc_id_file-srm" (
 INHERITS (isahl."zc_id_file-manual");
 
 
---
--- Name: zc_id_vers-context; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_vers-context" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6501,9 +5557,6 @@ CREATE TABLE isahl."zc_id_vers-context" (
 INHERITS (isahl.zc_id_version);
 
 
---
--- Name: zc_id_file-ver_ctrl; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_file-ver_ctrl" (
     id bigint NOT NULL
@@ -6511,9 +5564,6 @@ CREATE TABLE isahl."zc_id_file-ver_ctrl" (
 INHERITS (isahl."zc_id_prod-file", isahl."zc_id_vers-context");
 
 
---
--- Name: zc_id_file-wbm; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_file-wbm" (
     id bigint NOT NULL
@@ -6521,9 +5571,6 @@ CREATE TABLE isahl."zc_id_file-wbm" (
 INHERITS (isahl."zc_id_file-manual");
 
 
---
--- Name: zc_id_file_rr_url; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_file_rr_url (
     id bigint NOT NULL
@@ -6531,9 +5578,6 @@ CREATE TABLE isahl.zc_id_file_rr_url (
 INHERITS (isahl.zc_id_production_rr_storage);
 
 
---
--- Name: zc_id_form-condition; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_form-condition" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6557,9 +5601,6 @@ CREATE TABLE isahl."zc_id_form-condition" (
 INHERITS (isahl.zc_id_formula, isahl."zc_id_eval-comparable");
 
 
---
--- Name: zc_id_form-access; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_form-access" (
     id bigint NOT NULL
@@ -6567,18 +5608,12 @@ CREATE TABLE isahl."zc_id_form-access" (
 INHERITS (isahl."zc_id_form-condition");
 
 
---
--- Name: zc_id_form-billing; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_form-billing" (
 )
 INHERITS (isahl."zc_id_form-calculation");
 
 
---
--- Name: zc_id_form-calc_tax; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_form-calc_tax" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6603,9 +5638,6 @@ CREATE TABLE isahl."zc_id_form-calc_tax" (
 INHERITS (isahl."zc_id_form-calculation");
 
 
---
--- Name: zc_id_form-mapping; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_form-mapping" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6629,27 +5661,18 @@ CREATE TABLE isahl."zc_id_form-mapping" (
 INHERITS (isahl."zc_id_eval-calculable", isahl.zc_id_formula);
 
 
---
--- Name: zc_id_form-pricing; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_form-pricing" (
 )
 INHERITS (isahl."zc_id_form-calculation");
 
 
---
--- Name: zc_id_form-term; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_form-term" (
 )
 INHERITS (isahl."zc_id_form-condition");
 
 
---
--- Name: zc_id_function_o_number_seq; Type: SEQUENCE; Schema: isahl; Owner: -
---
 
 CREATE SEQUENCE isahl.zc_id_function_o_number_seq
     START WITH 1
@@ -6659,9 +5682,6 @@ CREATE SEQUENCE isahl.zc_id_function_o_number_seq
     CACHE 1;
 
 
---
--- Name: zc_id_function; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_function (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6679,9 +5699,6 @@ CREATE TABLE isahl.zc_id_function (
 INHERITS (isahl.zc_ad_dimension, isahl.zc_id_object);
 
 
---
--- Name: zc_id_geometry; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_geometry (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6700,9 +5717,6 @@ CREATE TABLE isahl.zc_id_geometry (
 INHERITS (isahl."zc_id_eval-calculable");
 
 
---
--- Name: zc_id_geom-area; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_geom-area" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6722,9 +5736,6 @@ CREATE TABLE isahl."zc_id_geom-area" (
 INHERITS (isahl.zc_id_geometry);
 
 
---
--- Name: zc_id_geog-area; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_geog-area" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6744,9 +5755,6 @@ CREATE TABLE isahl."zc_id_geog-area" (
 INHERITS (isahl."zc_id_geom-area");
 
 
---
--- Name: zc_id_geom-circle; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_geom-circle" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6766,9 +5774,6 @@ CREATE TABLE isahl."zc_id_geom-circle" (
 INHERITS (isahl.zc_id_geometry);
 
 
---
--- Name: zc_id_geog-circle; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_geog-circle" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6789,9 +5794,6 @@ CREATE TABLE isahl."zc_id_geog-circle" (
 INHERITS (isahl."zc_id_geom-circle");
 
 
---
--- Name: zc_id_geom-path; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_geom-path" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6812,9 +5814,6 @@ CREATE TABLE isahl."zc_id_geom-path" (
 INHERITS (isahl.zc_id_geometry);
 
 
---
--- Name: zc_id_geog-path; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_geog-path" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6835,9 +5834,6 @@ CREATE TABLE isahl."zc_id_geog-path" (
 INHERITS (isahl."zc_id_geom-path");
 
 
---
--- Name: zc_id_geom-coordinate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_geom-coordinate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6857,9 +5853,6 @@ CREATE TABLE isahl."zc_id_geom-coordinate" (
 INHERITS (isahl.zc_id_geometry);
 
 
---
--- Name: zc_id_geog-point; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_geog-point" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6879,9 +5872,6 @@ CREATE TABLE isahl."zc_id_geog-point" (
 INHERITS (isahl."zc_id_geom-coordinate");
 
 
---
--- Name: zc_id_geom-polygon; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_geom-polygon" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6902,9 +5892,6 @@ CREATE TABLE isahl."zc_id_geom-polygon" (
 INHERITS (isahl.zc_id_geometry);
 
 
---
--- Name: zc_id_geog-polygon; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_geog-polygon" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6925,9 +5912,6 @@ CREATE TABLE isahl."zc_id_geog-polygon" (
 INHERITS (isahl."zc_id_geom-polygon");
 
 
---
--- Name: zc_id_identity; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_identity (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6955,9 +5939,6 @@ CREATE TABLE isahl.zc_id_identity (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_identity_rr_country; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_identity_rr_country (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -6975,9 +5956,6 @@ CREATE TABLE isahl.zc_id_identity_rr_country (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_info-email; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_info-email" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7001,9 +5979,6 @@ CREATE TABLE isahl."zc_id_info-email" (
 INHERITS (isahl.zc_id_contact_infos);
 
 
---
--- Name: zc_id_info-im; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_info-im" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7027,9 +6002,6 @@ CREATE TABLE isahl."zc_id_info-im" (
 INHERITS (isahl.zc_id_contact_infos);
 
 
---
--- Name: zc_id_info-isahl; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_info-isahl" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7053,9 +6025,6 @@ CREATE TABLE isahl."zc_id_info-isahl" (
 INHERITS (isahl.zc_id_contact_infos);
 
 
---
--- Name: zc_id_info-postal; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_info-postal" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7081,9 +6050,6 @@ CREATE TABLE isahl."zc_id_info-postal" (
 INHERITS (isahl.zc_id_contact_infos);
 
 
---
--- Name: zc_id_info-telephone; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_info-telephone" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7107,9 +6073,6 @@ CREATE TABLE isahl."zc_id_info-telephone" (
 INHERITS (isahl.zc_id_contact_infos);
 
 
---
--- Name: zc_id_info-url; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_info-url" (
     id bigint NOT NULL,
@@ -7124,9 +6087,6 @@ CREATE TABLE isahl."zc_id_info-url" (
 INHERITS (isahl.zc_id_contact_infos);
 
 
---
--- Name: zc_id_info-zipcode; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_info-zipcode" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7150,9 +6110,6 @@ CREATE TABLE isahl."zc_id_info-zipcode" (
 INHERITS (isahl.zc_id_contact_infos);
 
 
---
--- Name: zc_id_invoice; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_invoice (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7182,9 +6139,6 @@ CREATE TABLE isahl.zc_id_invoice (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_invo-tax-list; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_invo-tax-list" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7215,9 +6169,6 @@ CREATE TABLE isahl."zc_id_invo-tax-list" (
 INHERITS (isahl.zc_id_invoice);
 
 
---
--- Name: zc_id_invo-electric; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_invo-electric" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7248,9 +6199,6 @@ CREATE TABLE isahl."zc_id_invo-electric" (
 INHERITS (isahl."zc_id_invo-tax-list");
 
 
---
--- Name: zc_id_invo-form; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_invo-form" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7281,9 +6229,6 @@ CREATE TABLE isahl."zc_id_invo-form" (
 INHERITS (isahl."zc_id_invo-tax-list");
 
 
---
--- Name: zc_id_invo-proforma; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_invo-proforma" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7314,9 +6259,6 @@ CREATE TABLE isahl."zc_id_invo-proforma" (
 INHERITS (isahl."zc_id_invo-tax-list");
 
 
---
--- Name: zc_id_invoice_r_verify-status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_invoice_r_verify-status" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7335,9 +6277,6 @@ CREATE TABLE isahl."zc_id_invoice_r_verify-status" (
 INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
---
--- Name: zc_id_law; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_law (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7367,9 +6306,6 @@ CREATE TABLE isahl.zc_id_law (
 INHERITS (isahl.zc_id_version);
 
 
---
--- Name: zc_id_law-civil; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-civil" (
     id bigint NOT NULL,
@@ -7378,9 +6314,6 @@ CREATE TABLE isahl."zc_id_law-civil" (
 INHERITS (isahl.zc_id_law);
 
 
---
--- Name: zc_id_law-civil-code; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-civil-code" (
     id bigint NOT NULL
@@ -7388,9 +6321,6 @@ CREATE TABLE isahl."zc_id_law-civil-code" (
 INHERITS (isahl."zc_id_law-civil");
 
 
---
--- Name: zc_id_law-civil-book; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-civil-book" (
     id bigint NOT NULL
@@ -7398,9 +6328,6 @@ CREATE TABLE isahl."zc_id_law-civil-book" (
 INHERITS (isahl."zc_id_law-civil-code");
 
 
---
--- Name: zc_id_law-civil-chapter; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-civil-chapter" (
     id bigint NOT NULL
@@ -7408,9 +6335,6 @@ CREATE TABLE isahl."zc_id_law-civil-chapter" (
 INHERITS (isahl."zc_id_law-civil-book");
 
 
---
--- Name: zc_id_law-civil-section; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-civil-section" (
     id bigint NOT NULL
@@ -7418,9 +6342,6 @@ CREATE TABLE isahl."zc_id_law-civil-section" (
 INHERITS (isahl."zc_id_law-civil-chapter");
 
 
---
--- Name: zc_id_law-civil-article; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-civil-article" (
     id bigint NOT NULL
@@ -7428,9 +6349,6 @@ CREATE TABLE isahl."zc_id_law-civil-article" (
 INHERITS (isahl."zc_id_law-civil-section");
 
 
---
--- Name: zc_id_law-common; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-common" (
     id bigint NOT NULL,
@@ -7439,9 +6357,6 @@ CREATE TABLE isahl."zc_id_law-common" (
 INHERITS (isahl.zc_id_law);
 
 
---
--- Name: zc_id_law-common-case; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-common-case" (
     id bigint NOT NULL
@@ -7449,9 +6364,6 @@ CREATE TABLE isahl."zc_id_law-common-case" (
 INHERITS (isahl."zc_id_law-common");
 
 
---
--- Name: zc_id_law-common-statute; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-common-statute" (
     id bigint NOT NULL
@@ -7459,9 +6371,6 @@ CREATE TABLE isahl."zc_id_law-common-statute" (
 INHERITS (isahl."zc_id_law-common");
 
 
---
--- Name: zc_id_law-common-title; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-common-title" (
     id bigint NOT NULL
@@ -7469,9 +6378,6 @@ CREATE TABLE isahl."zc_id_law-common-title" (
 INHERITS (isahl."zc_id_law-common-statute");
 
 
---
--- Name: zc_id_law-common-chapter; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-common-chapter" (
     id bigint NOT NULL
@@ -7479,9 +6385,6 @@ CREATE TABLE isahl."zc_id_law-common-chapter" (
 INHERITS (isahl."zc_id_law-common-title");
 
 
---
--- Name: zc_id_law-common-holding; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-common-holding" (
     id bigint NOT NULL
@@ -7489,9 +6392,6 @@ CREATE TABLE isahl."zc_id_law-common-holding" (
 INHERITS (isahl."zc_id_law-common-case");
 
 
---
--- Name: zc_id_law-common-section; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-common-section" (
     id bigint NOT NULL
@@ -7499,9 +6399,6 @@ CREATE TABLE isahl."zc_id_law-common-section" (
 INHERITS (isahl."zc_id_law-common-chapter");
 
 
---
--- Name: zc_id_law-intl; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-intl" (
     id bigint NOT NULL,
@@ -7510,9 +6407,6 @@ CREATE TABLE isahl."zc_id_law-intl" (
 INHERITS (isahl.zc_id_law);
 
 
---
--- Name: zc_id_law-intl-treaty; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-intl-treaty" (
     id bigint NOT NULL
@@ -7520,9 +6414,6 @@ CREATE TABLE isahl."zc_id_law-intl-treaty" (
 INHERITS (isahl."zc_id_law-intl");
 
 
---
--- Name: zc_id_law-intl-part; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-intl-part" (
     id bigint NOT NULL
@@ -7530,9 +6421,6 @@ CREATE TABLE isahl."zc_id_law-intl-part" (
 INHERITS (isahl."zc_id_law-intl-treaty");
 
 
---
--- Name: zc_id_law-intl-chapter; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-intl-chapter" (
     id bigint NOT NULL
@@ -7540,9 +6428,6 @@ CREATE TABLE isahl."zc_id_law-intl-chapter" (
 INHERITS (isahl."zc_id_law-intl-part");
 
 
---
--- Name: zc_id_law-intl-article; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-intl-article" (
     id bigint NOT NULL
@@ -7550,9 +6435,6 @@ CREATE TABLE isahl."zc_id_law-intl-article" (
 INHERITS (isahl."zc_id_law-intl-chapter");
 
 
---
--- Name: zc_id_law-intl-custom; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-intl-custom" (
     id bigint NOT NULL
@@ -7560,9 +6442,6 @@ CREATE TABLE isahl."zc_id_law-intl-custom" (
 INHERITS (isahl."zc_id_law-intl");
 
 
---
--- Name: zc_id_law-mixed; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-mixed" (
     id bigint NOT NULL,
@@ -7571,9 +6450,6 @@ CREATE TABLE isahl."zc_id_law-mixed" (
 INHERITS (isahl.zc_id_law);
 
 
---
--- Name: zc_id_law-religious; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_law-religious" (
     id bigint NOT NULL,
@@ -7582,9 +6458,6 @@ CREATE TABLE isahl."zc_id_law-religious" (
 INHERITS (isahl.zc_id_law);
 
 
---
--- Name: zc_id_level; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_level (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7603,9 +6476,6 @@ CREATE TABLE isahl.zc_id_level (
 INHERITS (isahl."zc_id_eval-comparable");
 
 
---
--- Name: zc_id_leve-applicable; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-applicable" (
     id bigint NOT NULL
@@ -7613,9 +6483,6 @@ CREATE TABLE isahl."zc_id_leve-applicable" (
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-bom_satisfy; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-bom_satisfy" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7634,9 +6501,6 @@ CREATE TABLE isahl."zc_id_leve-bom_satisfy" (
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-diploma; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-diploma" (
     id bigint NOT NULL
@@ -7644,9 +6508,6 @@ CREATE TABLE isahl."zc_id_leve-diploma" (
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-structure; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-structure" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7665,9 +6526,6 @@ CREATE TABLE isahl."zc_id_leve-structure" (
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-group_member; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-group_member" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7686,18 +6544,12 @@ CREATE TABLE isahl."zc_id_leve-group_member" (
 INHERITS (isahl."zc_id_leve-structure");
 
 
---
--- Name: zc_id_leve-health; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-health" (
 )
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-impact; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-impact" (
     id bigint NOT NULL
@@ -7705,18 +6557,12 @@ CREATE TABLE isahl."zc_id_leve-impact" (
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-kpi; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-kpi" (
 )
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-log; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-log" (
     id bigint NOT NULL
@@ -7724,9 +6570,6 @@ CREATE TABLE isahl."zc_id_leve-log" (
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-org; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-org" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7745,9 +6588,6 @@ CREATE TABLE isahl."zc_id_leve-org" (
 INHERITS (isahl."zc_id_leve-structure", isahl.zc_id_consensus);
 
 
---
--- Name: zc_id_leve-plan; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-plan" (
     id bigint NOT NULL
@@ -7755,9 +6595,6 @@ CREATE TABLE isahl."zc_id_leve-plan" (
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-post-resp; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-post-resp" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7776,9 +6613,6 @@ CREATE TABLE isahl."zc_id_leve-post-resp" (
 INHERITS (isahl."zc_id_leve-structure");
 
 
---
--- Name: zc_id_leve-post-seq; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-post-seq" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7797,27 +6631,18 @@ CREATE TABLE isahl."zc_id_leve-post-seq" (
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-proficiency; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-proficiency" (
 )
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-project; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-project" (
 )
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-qualification; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-qualification" (
     id bigint NOT NULL
@@ -7825,36 +6650,24 @@ CREATE TABLE isahl."zc_id_leve-qualification" (
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-risk; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-risk" (
 )
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-severity; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-severity" (
 )
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-standard; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-standard" (
 )
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-substitute; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-substitute" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7873,36 +6686,24 @@ CREATE TABLE isahl."zc_id_leve-substitute" (
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-task; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-task" (
 )
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-urgent; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-urgent" (
 )
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_leve-vote_weight; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_leve-vote_weight" (
 )
 INHERITS (isahl.zc_id_level);
 
 
---
--- Name: zc_id_lifecycle_r_category; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_lifecycle_r_category (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7920,9 +6721,6 @@ CREATE TABLE isahl.zc_id_lifecycle_r_category (
 INHERITS (isahl.zc_ad_tensor_r_scalar);
 
 
---
--- Name: zc_id_lifecycle_r_primary-status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_lifecycle_r_primary-status" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7941,9 +6739,6 @@ CREATE TABLE isahl."zc_id_lifecycle_r_primary-status" (
 INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
---
--- Name: zc_id_lifecycle_r_tags; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_lifecycle_r_tags (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7961,9 +6756,6 @@ CREATE TABLE isahl.zc_id_lifecycle_r_tags (
 INHERITS (isahl.zc_ad_tensor_r_scalar);
 
 
---
--- Name: zc_id_lifecycle_rr_form; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_lifecycle_rr_form (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7981,9 +6773,6 @@ CREATE TABLE isahl.zc_id_lifecycle_rr_form (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_message; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_message (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8012,9 +6801,6 @@ CREATE TABLE isahl.zc_id_message (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_message_rr_contact-info; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_message_rr_contact-info" (
     feedback isahl.zc_id_message_rr_contact_info_feedback_enum
@@ -8022,27 +6808,18 @@ CREATE TABLE isahl."zc_id_message_rr_contact-info" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_message_rr_copy; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_message_rr_copy (
 )
 INHERITS (isahl."zc_id_message_rr_contact-info");
 
 
---
--- Name: zc_id_message_rr_recipients; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_message_rr_recipients (
 )
 INHERITS (isahl."zc_id_message_rr_contact-info");
 
 
---
--- Name: zc_id_msgs-chat_ai; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_msgs-chat_ai" (
     created_at timestamp with time zone DEFAULT now() CONSTRAINT "zc_id_msgs-chat-ai_created_at_not_null" NOT NULL,
@@ -8071,9 +6848,6 @@ CREATE TABLE isahl."zc_id_msgs-chat_ai" (
 INHERITS (isahl.zc_id_message);
 
 
---
--- Name: zc_id_msgs-comments; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_msgs-comments" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8101,9 +6875,6 @@ CREATE TABLE isahl."zc_id_msgs-comments" (
 INHERITS (isahl.zc_id_message);
 
 
---
--- Name: zc_id_msgs-email; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_msgs-email" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8132,9 +6903,6 @@ CREATE TABLE isahl."zc_id_msgs-email" (
 INHERITS (isahl.zc_id_message);
 
 
---
--- Name: zc_id_msgs-feedback; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_msgs-feedback" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8161,9 +6929,6 @@ CREATE TABLE isahl."zc_id_msgs-feedback" (
 INHERITS (isahl.zc_id_message);
 
 
---
--- Name: zc_id_msgs-im; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_msgs-im" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8190,9 +6955,6 @@ CREATE TABLE isahl."zc_id_msgs-im" (
 INHERITS (isahl.zc_id_message);
 
 
---
--- Name: zc_id_msgs-review; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_msgs-review" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8220,9 +6982,6 @@ CREATE TABLE isahl."zc_id_msgs-review" (
 INHERITS (isahl.zc_id_message);
 
 
---
--- Name: zc_id_msgs-system; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_msgs-system" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8249,9 +7008,6 @@ CREATE TABLE isahl."zc_id_msgs-system" (
 INHERITS (isahl.zc_id_message);
 
 
---
--- Name: zc_id_msgs-telephone; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_msgs-telephone" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8278,9 +7034,6 @@ CREATE TABLE isahl."zc_id_msgs-telephone" (
 INHERITS (isahl.zc_id_message);
 
 
---
--- Name: zc_id_msgs-zchat; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_msgs-zchat" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8311,9 +7064,6 @@ CREATE TABLE isahl."zc_id_msgs-zchat" (
 INHERITS (isahl.zc_id_message);
 
 
---
--- Name: zc_id_operation; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_operation (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8351,9 +7101,6 @@ CREATE TABLE isahl.zc_id_operation (
 INHERITS (isahl.zc_id_version);
 
 
---
--- Name: zc_id_oper-action; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-action" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8386,9 +7133,6 @@ CREATE TABLE isahl."zc_id_oper-action" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-approve; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-approve" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8421,9 +7165,6 @@ CREATE TABLE isahl."zc_id_oper-approve" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-audit_acc; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-audit_acc" (
     id bigint NOT NULL
@@ -8431,9 +7172,6 @@ CREATE TABLE isahl."zc_id_oper-audit_acc" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-audit_prj; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-audit_prj" (
     id bigint NOT NULL
@@ -8441,9 +7179,6 @@ CREATE TABLE isahl."zc_id_oper-audit_prj" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-check; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-check" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8477,9 +7212,6 @@ CREATE TABLE isahl."zc_id_oper-check" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-check_bill; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-check_bill" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8513,9 +7245,6 @@ CREATE TABLE isahl."zc_id_oper-check_bill" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-clearance_import; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-clearance_import" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8549,9 +7278,6 @@ CREATE TABLE isahl."zc_id_oper-clearance_import" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-confirm_bill; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-confirm_bill" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8584,9 +7310,6 @@ CREATE TABLE isahl."zc_id_oper-confirm_bill" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-decide; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-decide" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8620,9 +7343,6 @@ CREATE TABLE isahl."zc_id_oper-decide" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-declaration_export; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-declaration_export" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8656,9 +7376,6 @@ CREATE TABLE isahl."zc_id_oper-declaration_export" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-delivery; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-delivery" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8692,9 +7409,6 @@ CREATE TABLE isahl."zc_id_oper-delivery" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-fo_booking; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-fo_booking" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8728,18 +7442,12 @@ CREATE TABLE isahl."zc_id_oper-fo_booking" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-gate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-gate" (
 )
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-lading; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-lading" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8773,9 +7481,6 @@ CREATE TABLE isahl."zc_id_oper-lading" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-merchandise_on; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-merchandise_on" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8809,9 +7514,6 @@ CREATE TABLE isahl."zc_id_oper-merchandise_on" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-move; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-move" (
     fk_departure bigint,
@@ -8820,9 +7522,6 @@ CREATE TABLE isahl."zc_id_oper-move" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-observe; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-observe" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8856,9 +7555,6 @@ CREATE TABLE isahl."zc_id_oper-observe" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-orient; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-orient" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8892,9 +7588,6 @@ CREATE TABLE isahl."zc_id_oper-orient" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-payment; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-payment" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8928,9 +7621,6 @@ CREATE TABLE isahl."zc_id_oper-payment" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-planing; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-planing" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8964,9 +7654,6 @@ CREATE TABLE isahl."zc_id_oper-planing" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-put_in_stock; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-put_in_stock" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9000,9 +7687,6 @@ CREATE TABLE isahl."zc_id_oper-put_in_stock" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-register; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-register" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9036,9 +7720,6 @@ CREATE TABLE isahl."zc_id_oper-register" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-resp_inquiry; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-resp_inquiry" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9072,9 +7753,6 @@ CREATE TABLE isahl."zc_id_oper-resp_inquiry" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-sales_order; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-sales_order" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9108,9 +7786,6 @@ CREATE TABLE isahl."zc_id_oper-sales_order" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-sign; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-sign" (
     id bigint NOT NULL
@@ -9118,9 +7793,6 @@ CREATE TABLE isahl."zc_id_oper-sign" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-sign_rr_agreement; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-sign_rr_agreement" (
     created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_rr_non_self_created_at_not_null NOT NULL,
@@ -9141,9 +7813,6 @@ CREATE TABLE isahl."zc_id_oper-sign_rr_agreement" (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_oper-sign_rr_contract; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-sign_rr_contract" (
     created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_rr_non_self_created_at_not_null NOT NULL,
@@ -9164,9 +7833,6 @@ CREATE TABLE isahl."zc_id_oper-sign_rr_contract" (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_oper-smtv_review; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-smtv_review" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9200,9 +7866,6 @@ CREATE TABLE isahl."zc_id_oper-smtv_review" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-storage; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-storage" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9237,9 +7900,6 @@ CREATE TABLE isahl."zc_id_oper-storage" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-take_off_stock; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-take_off_stock" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9273,18 +7933,12 @@ CREATE TABLE isahl."zc_id_oper-take_off_stock" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-test; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-test" (
 )
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-trailer; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-trailer" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9318,9 +7972,6 @@ CREATE TABLE isahl."zc_id_oper-trailer" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_oper-transport_tracking; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_oper-transport_tracking" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9354,9 +8005,6 @@ CREATE TABLE isahl."zc_id_oper-transport_tracking" (
 INHERITS (isahl.zc_id_operation);
 
 
---
--- Name: zc_id_operation_rr_approve; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_operation_rr_approve (
     id bigint NOT NULL,
@@ -9365,9 +8013,6 @@ CREATE TABLE isahl.zc_id_operation_rr_approve (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_operation_rr_bill; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_operation_rr_bill (
     created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_rr_non_self_created_at_not_null NOT NULL,
@@ -9388,9 +8033,6 @@ CREATE TABLE isahl.zc_id_operation_rr_bill (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_operation_rr_bom; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_operation_rr_bom (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9410,9 +8052,6 @@ CREATE TABLE isahl.zc_id_operation_rr_bom (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_operation_rr_dependency; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_operation_rr_dependency (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9430,9 +8069,6 @@ CREATE TABLE isahl.zc_id_operation_rr_dependency (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_operation_rr_event; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_operation_rr_event (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9450,9 +8086,6 @@ CREATE TABLE isahl.zc_id_operation_rr_event (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_operation_rr_post; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_operation_rr_post (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9471,9 +8104,6 @@ CREATE TABLE isahl.zc_id_operation_rr_post (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_operation_rr_review; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_operation_rr_review (
     id bigint NOT NULL
@@ -9481,9 +8111,6 @@ CREATE TABLE isahl.zc_id_operation_rr_review (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_operation_rr_standard; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_operation_rr_standard (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9504,9 +8131,6 @@ CREATE TABLE isahl.zc_id_operation_rr_standard (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_operation_rr_statement; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_operation_rr_statement (
     created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_rr_non_self_created_at_not_null NOT NULL,
@@ -9527,9 +8151,6 @@ CREATE TABLE isahl.zc_id_operation_rr_statement (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_operation_rr_task; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_operation_rr_task (
     id bigint NOT NULL
@@ -9537,9 +8158,6 @@ CREATE TABLE isahl.zc_id_operation_rr_task (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_stat-trade_order; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-trade_order" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9568,9 +8186,6 @@ CREATE TABLE isahl."zc_id_stat-trade_order" (
 INHERITS (isahl.zc_id_statement);
 
 
---
--- Name: zc_id_orde-traffic; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-traffic" (
     id bigint NOT NULL
@@ -9578,9 +8193,6 @@ CREATE TABLE isahl."zc_id_orde-traffic" (
 INHERITS (isahl."zc_id_stat-trade_order");
 
 
---
--- Name: zc_id_orde-ahbl; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-ahbl" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9616,9 +8228,6 @@ CREATE TABLE isahl."zc_id_orde-ahbl" (
 INHERITS (isahl."zc_id_orde-traffic");
 
 
---
--- Name: zc_id_orde-airlift; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-airlift" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9654,9 +8263,6 @@ CREATE TABLE isahl."zc_id_orde-airlift" (
 INHERITS (isahl."zc_id_orde-traffic");
 
 
---
--- Name: zc_id_orde-consult; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-consult" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9685,9 +8291,6 @@ CREATE TABLE isahl."zc_id_orde-consult" (
 INHERITS (isahl."zc_id_stat-trade_order");
 
 
---
--- Name: zc_id_orde-hbl; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-hbl" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9726,9 +8329,6 @@ CREATE TABLE isahl."zc_id_orde-hbl" (
 INHERITS (isahl."zc_id_orde-traffic");
 
 
---
--- Name: zc_id_orde-land; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-land" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9764,9 +8364,6 @@ CREATE TABLE isahl."zc_id_orde-land" (
 INHERITS (isahl."zc_id_orde-traffic");
 
 
---
--- Name: zc_id_orde-lbl; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-lbl" (
     id bigint NOT NULL,
@@ -9775,9 +8372,6 @@ CREATE TABLE isahl."zc_id_orde-lbl" (
 INHERITS (isahl."zc_id_orde-traffic");
 
 
---
--- Name: zc_id_orde-multimodal; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-multimodal" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9813,9 +8407,6 @@ CREATE TABLE isahl."zc_id_orde-multimodal" (
 INHERITS (isahl."zc_id_orde-traffic");
 
 
---
--- Name: zc_id_orde-payment; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-payment" (
     id bigint NOT NULL
@@ -9823,9 +8414,6 @@ CREATE TABLE isahl."zc_id_orde-payment" (
 INHERITS (isahl."zc_id_stat-trade_order");
 
 
---
--- Name: zc_id_orde-railway; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-railway" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9861,9 +8449,6 @@ CREATE TABLE isahl."zc_id_orde-railway" (
 INHERITS (isahl."zc_id_orde-traffic");
 
 
---
--- Name: zc_id_orde-rbl; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-rbl" (
     id bigint NOT NULL,
@@ -9872,9 +8457,6 @@ CREATE TABLE isahl."zc_id_orde-rbl" (
 INHERITS (isahl."zc_id_orde-traffic");
 
 
---
--- Name: zc_id_orde-retail; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-retail" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9903,9 +8485,6 @@ CREATE TABLE isahl."zc_id_orde-retail" (
 INHERITS (isahl."zc_id_stat-trade_order");
 
 
---
--- Name: zc_id_orde-shipping; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-shipping" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9941,9 +8520,6 @@ CREATE TABLE isahl."zc_id_orde-shipping" (
 INHERITS (isahl."zc_id_orde-traffic");
 
 
---
--- Name: zc_id_orde-storage; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-storage" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9978,9 +8554,6 @@ CREATE TABLE isahl."zc_id_orde-storage" (
 INHERITS (isahl."zc_id_stat-trade_order");
 
 
---
--- Name: zc_id_orde-traffic_rr_devi-seal; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-traffic_rr_devi-seal" (
     id bigint NOT NULL
@@ -9988,9 +8561,6 @@ CREATE TABLE isahl."zc_id_orde-traffic_rr_devi-seal" (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_orde-traffic_rr_ticket; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-traffic_rr_ticket" (
     id bigint NOT NULL
@@ -9998,9 +8568,6 @@ CREATE TABLE isahl."zc_id_orde-traffic_rr_ticket" (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_orde-traffic_rr_tsp-voucher; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orde-traffic_rr_tsp-voucher" (
     id bigint NOT NULL
@@ -10008,9 +8575,6 @@ CREATE TABLE isahl."zc_id_orde-traffic_rr_tsp-voucher" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_order-after_sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_order-after_sales" (
     id bigint NOT NULL
@@ -10018,9 +8582,6 @@ CREATE TABLE isahl."zc_id_order-after_sales" (
 INHERITS (isahl."zc_id_stat-trade_order");
 
 
---
--- Name: zc_id_statement_rr_reason; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_statement_rr_reason (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10041,9 +8602,6 @@ CREATE TABLE isahl.zc_id_statement_rr_reason (
 INHERITS (isahl.zc_id_lifecycle_rr_foreign);
 
 
---
--- Name: zc_id_order_rr_contract; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_order_rr_contract (
     id bigint NOT NULL
@@ -10051,9 +8609,6 @@ CREATE TABLE isahl.zc_id_order_rr_contract (
 INHERITS (isahl.zc_id_statement_rr_reason);
 
 
---
--- Name: zc_id_order_rr_foreign; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_order_rr_foreign (
     created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_rr_foreign_created_at_not_null NOT NULL,
@@ -10074,9 +8629,6 @@ CREATE TABLE isahl.zc_id_order_rr_foreign (
 INHERITS (isahl.zc_id_statement_rr_reason);
 
 
---
--- Name: zc_id_order_rr_demand; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_order_rr_demand (
     created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_rr_foreign_created_at_not_null NOT NULL,
@@ -10097,9 +8649,6 @@ CREATE TABLE isahl.zc_id_order_rr_demand (
 INHERITS (isahl.zc_id_order_rr_foreign);
 
 
---
--- Name: zc_id_order_rr_issue_invoice; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_order_rr_issue_invoice (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10117,9 +8666,6 @@ CREATE TABLE isahl.zc_id_order_rr_issue_invoice (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_order_rr_obj-rep; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_order_rr_obj-rep" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10137,9 +8683,6 @@ CREATE TABLE isahl."zc_id_order_rr_obj-rep" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_order_rr_recv_invoice; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_order_rr_recv_invoice (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10157,9 +8700,6 @@ CREATE TABLE isahl.zc_id_order_rr_recv_invoice (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_order_rr_subj-rep; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_order_rr_subj-rep" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10177,9 +8717,6 @@ CREATE TABLE isahl."zc_id_order_rr_subj-rep" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_orga-department; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orga-department" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10210,9 +8747,6 @@ CREATE TABLE isahl."zc_id_orga-department" (
 INHERITS (isahl."zc_id_subj-org");
 
 
---
--- Name: zc_id_orga-department_rr_project; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orga-department_rr_project" (
     id bigint NOT NULL
@@ -10220,9 +8754,6 @@ CREATE TABLE isahl."zc_id_orga-department_rr_project" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_orga-non-banking-legal; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_orga-non-banking-legal" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10235,9 +8766,6 @@ CREATE TABLE isahl."zc_id_orga-non-banking-legal" (
 INHERITS (isahl."zc_id_orga-legal");
 
 
---
--- Name: zc_id_place; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_place (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10264,9 +8792,6 @@ CREATE TABLE isahl.zc_id_place (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_place_rr_address; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_place_rr_address (
     id bigint NOT NULL
@@ -10274,9 +8799,6 @@ CREATE TABLE isahl.zc_id_place_rr_address (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_place_rr_contacts; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_place_rr_contacts (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10294,9 +8816,6 @@ CREATE TABLE isahl.zc_id_place_rr_contacts (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_plan; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_plan (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10338,9 +8857,6 @@ CREATE TABLE isahl.zc_id_plan (
 INHERITS (isahl.zc_id_version);
 
 
---
--- Name: zc_id_plan-certification; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-certification" (
     id bigint NOT NULL
@@ -10348,9 +8864,6 @@ CREATE TABLE isahl."zc_id_plan-certification" (
 INHERITS (isahl.zc_id_plan);
 
 
---
--- Name: zc_id_plan-delivery; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-delivery" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10381,9 +8894,6 @@ CREATE TABLE isahl."zc_id_plan-delivery" (
 INHERITS (isahl.zc_id_plan);
 
 
---
--- Name: zc_id_plan-inbound; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-inbound" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10414,9 +8924,6 @@ CREATE TABLE isahl."zc_id_plan-inbound" (
 INHERITS (isahl.zc_id_plan);
 
 
---
--- Name: zc_id_plan-maintain; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-maintain" (
     id bigint NOT NULL
@@ -10424,9 +8931,6 @@ CREATE TABLE isahl."zc_id_plan-maintain" (
 INHERITS (isahl.zc_id_plan);
 
 
---
--- Name: zc_id_plan-making; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-making" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10457,9 +8961,6 @@ CREATE TABLE isahl."zc_id_plan-making" (
 INHERITS (isahl.zc_id_plan);
 
 
---
--- Name: zc_id_plan-making_rr_prod; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-making_rr_prod" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10478,9 +8979,6 @@ CREATE TABLE isahl."zc_id_plan-making_rr_prod" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_plan-material; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-material" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10511,9 +9009,6 @@ CREATE TABLE isahl."zc_id_plan-material" (
 INHERITS (isahl.zc_id_plan);
 
 
---
--- Name: zc_id_plan-material_rr_material; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-material_rr_material" (
     id bigint NOT NULL
@@ -10521,9 +9016,6 @@ CREATE TABLE isahl."zc_id_plan-material_rr_material" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_plan-outbound; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-outbound" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10554,9 +9046,6 @@ CREATE TABLE isahl."zc_id_plan-outbound" (
 INHERITS (isahl.zc_id_plan);
 
 
---
--- Name: zc_id_plan-payment; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-payment" (
     id bigint NOT NULL,
@@ -10565,9 +9054,6 @@ CREATE TABLE isahl."zc_id_plan-payment" (
 INHERITS (isahl.zc_id_plan);
 
 
---
--- Name: zc_id_plan_rr_statement; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_plan_rr_statement (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10586,9 +9072,6 @@ CREATE TABLE isahl.zc_id_plan_rr_statement (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_plan-payment_rr_smt-voucher; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-payment_rr_smt-voucher" (
     id bigint NOT NULL
@@ -10596,9 +9079,6 @@ CREATE TABLE isahl."zc_id_plan-payment_rr_smt-voucher" (
 INHERITS (isahl.zc_id_plan_rr_statement);
 
 
---
--- Name: zc_id_plan-perform; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-perform" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10629,9 +9109,6 @@ CREATE TABLE isahl."zc_id_plan-perform" (
 INHERITS (isahl.zc_id_plan);
 
 
---
--- Name: zc_id_plan-perform_rr_tsk-make; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-perform_rr_tsk-make" (
     id bigint NOT NULL
@@ -10639,9 +9116,6 @@ CREATE TABLE isahl."zc_id_plan-perform_rr_tsk-make" (
 INHERITS (isahl.zc_id_plan_rr_statement);
 
 
---
--- Name: zc_id_plan-perform_rr_tsp-voucher; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-perform_rr_tsp-voucher" (
     id bigint NOT NULL
@@ -10649,9 +9123,6 @@ CREATE TABLE isahl."zc_id_plan-perform_rr_tsp-voucher" (
 INHERITS (isahl.zc_id_plan_rr_statement);
 
 
---
--- Name: zc_id_plan-perform_rr_whs-voucher; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-perform_rr_whs-voucher" (
     id bigint NOT NULL
@@ -10659,18 +9130,12 @@ CREATE TABLE isahl."zc_id_plan-perform_rr_whs-voucher" (
 INHERITS (isahl.zc_id_plan_rr_statement);
 
 
---
--- Name: zc_id_plan-personal; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-personal" (
 )
 INHERITS (isahl.zc_id_plan);
 
 
---
--- Name: zc_id_plan-project; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-project" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10702,9 +9167,6 @@ CREATE TABLE isahl."zc_id_plan-project" (
 INHERITS (isahl.zc_id_plan);
 
 
---
--- Name: zc_id_plan-promotion; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-promotion" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10735,9 +9197,6 @@ CREATE TABLE isahl."zc_id_plan-promotion" (
 INHERITS (isahl.zc_id_plan);
 
 
---
--- Name: zc_id_plan-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10768,9 +9227,6 @@ CREATE TABLE isahl."zc_id_plan-purchase" (
 INHERITS (isahl.zc_id_plan);
 
 
---
--- Name: zc_id_plan-purchase_items_r_prod; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-purchase_items_r_prod" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10789,9 +9245,6 @@ CREATE TABLE isahl."zc_id_plan-purchase_items_r_prod" (
 INHERITS (isahl."zc_ad_relation_r_isolate-tensor");
 
 
---
--- Name: zc_id_plan-purchase_rr_material; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-purchase_rr_material" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10810,9 +9263,6 @@ CREATE TABLE isahl."zc_id_plan-purchase_rr_material" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_plan-recruitment; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_plan-recruitment" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10843,18 +9293,12 @@ CREATE TABLE isahl."zc_id_plan-recruitment" (
 INHERITS (isahl.zc_id_plan);
 
 
---
--- Name: zc_id_plan_rr_dependency; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_plan_rr_dependency (
 )
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_plan_rr_event; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_plan_rr_event (
     id bigint NOT NULL
@@ -10862,9 +9306,6 @@ CREATE TABLE isahl.zc_id_plan_rr_event (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_plan_rr_participants; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_plan_rr_participants (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10883,18 +9324,12 @@ CREATE TABLE isahl.zc_id_plan_rr_participants (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_plan_rr_task; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_plan_rr_task (
 )
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_project; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_project (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10931,9 +9366,6 @@ CREATE TABLE isahl.zc_id_project (
 INHERITS (isahl.zc_id_version, isahl."zc_id_proc-context");
 
 
---
--- Name: zc_id_prjt-proc_ctrl; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prjt-proc_ctrl" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -10964,9 +9396,6 @@ CREATE TABLE isahl."zc_id_prjt-proc_ctrl" (
 INHERITS (isahl.zc_id_project);
 
 
---
--- Name: zc_id_process; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_process (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11000,9 +9429,6 @@ CREATE TABLE isahl.zc_id_process (
 INHERITS (isahl.zc_id_version);
 
 
---
--- Name: zc_id_proc-approve; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_proc-approve" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11035,9 +9461,6 @@ CREATE TABLE isahl."zc_id_proc-approve" (
 INHERITS (isahl.zc_id_process);
 
 
---
--- Name: zc_id_proc-cicd; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_proc-cicd" (
     id bigint NOT NULL
@@ -11045,9 +9468,6 @@ CREATE TABLE isahl."zc_id_proc-cicd" (
 INHERITS (isahl.zc_id_process);
 
 
---
--- Name: zc_id_proc-loading; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_proc-loading" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11080,9 +9500,6 @@ CREATE TABLE isahl."zc_id_proc-loading" (
 INHERITS (isahl.zc_id_process);
 
 
---
--- Name: zc_id_proc-make; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_proc-make" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11115,9 +9532,6 @@ CREATE TABLE isahl."zc_id_proc-make" (
 INHERITS (isahl.zc_id_process);
 
 
---
--- Name: zc_id_proc-project; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_proc-project" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11150,9 +9564,6 @@ CREATE TABLE isahl."zc_id_proc-project" (
 INHERITS (isahl.zc_id_process);
 
 
---
--- Name: zc_id_proc-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_proc-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11185,9 +9596,6 @@ CREATE TABLE isahl."zc_id_proc-purchase" (
 INHERITS (isahl.zc_id_process);
 
 
---
--- Name: zc_id_proc-service; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_proc-service" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11220,9 +9628,6 @@ CREATE TABLE isahl."zc_id_proc-service" (
 INHERITS (isahl.zc_id_process);
 
 
---
--- Name: zc_id_process_rr_context; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_process_rr_context (
     id bigint NOT NULL
@@ -11230,9 +9635,6 @@ CREATE TABLE isahl.zc_id_process_rr_context (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_process_rr_operation; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_process_rr_operation (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11252,9 +9654,6 @@ CREATE TABLE isahl.zc_id_process_rr_operation (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_prod-certificate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-certificate" (
     created_at timestamp with time zone DEFAULT now() CONSTRAINT "zc_id_prod-data_created_at_not_null" NOT NULL,
@@ -11303,9 +9702,6 @@ CREATE TABLE isahl."zc_id_prod-certificate" (
 INHERITS (isahl."zc_id_prod-file");
 
 
---
--- Name: zc_id_prod-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11341,9 +9737,6 @@ CREATE TABLE isahl."zc_id_prod-sales" (
 INHERITS (isahl.zc_id_production);
 
 
---
--- Name: zc_id_prod-air_cert-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-air_cert-sales" (
     id bigint NOT NULL,
@@ -11352,9 +9745,6 @@ CREATE TABLE isahl."zc_id_prod-air_cert-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-certificate");
 
 
---
--- Name: zc_id_prod-lease; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-lease" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11390,9 +9780,6 @@ CREATE TABLE isahl."zc_id_prod-lease" (
 INHERITS (isahl.zc_id_production);
 
 
---
--- Name: zc_id_prod-license; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-license" (
     ck_category bigint,
@@ -11402,9 +9789,6 @@ CREATE TABLE isahl."zc_id_prod-license" (
 INHERITS (isahl."zc_id_prod-lease");
 
 
---
--- Name: zc_id_prod-biz-license-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-biz-license-sales" (
     id bigint NOT NULL
@@ -11412,9 +9796,6 @@ CREATE TABLE isahl."zc_id_prod-biz-license-sales" (
 INHERITS (isahl."zc_id_prod-certificate", isahl."zc_id_prod-license", isahl."zc_id_prod-sales");
 
 
---
--- Name: zc_id_prod-channel_cost-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-channel_cost-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11451,9 +9832,6 @@ CREATE TABLE isahl."zc_id_prod-channel_cost-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-lease");
 
 
---
--- Name: zc_id_prod-conclusion; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-conclusion" (
     id bigint NOT NULL
@@ -11461,9 +9839,6 @@ CREATE TABLE isahl."zc_id_prod-conclusion" (
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-data");
 
 
---
--- Name: zc_id_prod-consulting; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-consulting" (
     id bigint NOT NULL
@@ -11471,9 +9846,6 @@ CREATE TABLE isahl."zc_id_prod-consulting" (
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-data");
 
 
---
--- Name: zc_id_prod-pub_affairs; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pub_affairs" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11508,9 +9880,6 @@ CREATE TABLE isahl."zc_id_prod-pub_affairs" (
 INHERITS (isahl.zc_id_production);
 
 
---
--- Name: zc_id_prod-customs-clearance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-customs-clearance" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11545,9 +9914,6 @@ CREATE TABLE isahl."zc_id_prod-customs-clearance" (
 INHERITS (isahl."zc_id_prod-pub_affairs");
 
 
---
--- Name: zc_id_prod-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11582,9 +9948,6 @@ CREATE TABLE isahl."zc_id_prod-purchase" (
 INHERITS (isahl.zc_id_production);
 
 
---
--- Name: zc_id_prod-customs_cle_fo-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-customs_cle_fo-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11620,9 +9983,6 @@ CREATE TABLE isahl."zc_id_prod-customs_cle_fo-purchase" (
 INHERITS (isahl."zc_id_prod-customs-clearance", isahl."zc_id_prod-purchase");
 
 
---
--- Name: zc_id_prod-customs_cle_fo-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-customs_cle_fo-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11658,9 +10018,6 @@ CREATE TABLE isahl."zc_id_prod-customs_cle_fo-sales" (
 INHERITS (isahl."zc_id_prod-customs-clearance");
 
 
---
--- Name: zc_id_prod-customs_declaration; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-customs_declaration" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11695,9 +10052,6 @@ CREATE TABLE isahl."zc_id_prod-customs_declaration" (
 INHERITS (isahl."zc_id_prod-pub_affairs");
 
 
---
--- Name: zc_id_prod-customs_dec_fo-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-customs_dec_fo-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11734,9 +10088,6 @@ CREATE TABLE isahl."zc_id_prod-customs_dec_fo-purchase" (
 INHERITS (isahl."zc_id_prod-customs_declaration", isahl."zc_id_prod-purchase");
 
 
---
--- Name: zc_id_prod-customs_dec_fo-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-customs_dec_fo-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11773,9 +10124,6 @@ CREATE TABLE isahl."zc_id_prod-customs_dec_fo-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-customs_declaration");
 
 
---
--- Name: zc_id_prod-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-made" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11810,9 +10158,6 @@ CREATE TABLE isahl."zc_id_prod-made" (
 INHERITS (isahl.zc_id_production);
 
 
---
--- Name: zc_id_prod-dev-tools-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-dev-tools-made" (
     id bigint NOT NULL
@@ -11820,9 +10165,6 @@ CREATE TABLE isahl."zc_id_prod-dev-tools-made" (
 INHERITS (isahl."zc_id_prod-made");
 
 
---
--- Name: zc_id_prod-digital_cert-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-digital_cert-sales" (
     id bigint NOT NULL
@@ -11830,9 +10172,6 @@ CREATE TABLE isahl."zc_id_prod-digital_cert-sales" (
 INHERITS (isahl."zc_id_prod-certificate", isahl."zc_id_prod-combine", isahl."zc_id_prod-sales");
 
 
---
--- Name: zc_id_prod-diploma-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-diploma-sales" (
     id bigint NOT NULL,
@@ -11841,9 +10180,6 @@ CREATE TABLE isahl."zc_id_prod-diploma-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-certificate");
 
 
---
--- Name: zc_id_prod-electric-eng-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-electric-eng-made" (
     id bigint NOT NULL
@@ -11851,9 +10187,6 @@ CREATE TABLE isahl."zc_id_prod-electric-eng-made" (
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-made");
 
 
---
--- Name: zc_id_prod-financial; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-financial" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11889,9 +10222,6 @@ CREATE TABLE isahl."zc_id_prod-financial" (
 INHERITS (isahl."zc_id_prod-lease");
 
 
---
--- Name: zc_id_prod-insurance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-insurance" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11927,9 +10257,6 @@ CREATE TABLE isahl."zc_id_prod-insurance" (
 INHERITS (isahl."zc_id_prod-lease");
 
 
---
--- Name: zc_id_prod-fo_insurance-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-fo_insurance-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11965,9 +10292,6 @@ CREATE TABLE isahl."zc_id_prod-fo_insurance-purchase" (
 INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-insurance");
 
 
---
--- Name: zc_id_prod-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12004,9 +10328,6 @@ CREATE TABLE isahl."zc_id_prod-request" (
 INHERITS (isahl.zc_id_production);
 
 
---
--- Name: zc_id_prod-fo_insurance-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-fo_insurance-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12043,9 +10364,6 @@ CREATE TABLE isahl."zc_id_prod-fo_insurance-request" (
 INHERITS (isahl."zc_id_prod-insurance", isahl."zc_id_prod-request");
 
 
---
--- Name: zc_id_prod-fo_insurance-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-fo_insurance-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12082,9 +10400,6 @@ CREATE TABLE isahl."zc_id_prod-fo_insurance-sales" (
 INHERITS (isahl."zc_id_prod-insurance", isahl."zc_id_prod-sales");
 
 
---
--- Name: zc_id_prod-traffic; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-traffic" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12126,9 +10441,6 @@ CREATE TABLE isahl."zc_id_prod-traffic" (
 INHERITS (isahl.zc_id_production);
 
 
---
--- Name: zc_id_prod-freight_air-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-freight_air-sales" (
     id bigint NOT NULL
@@ -12136,9 +10448,6 @@ CREATE TABLE isahl."zc_id_prod-freight_air-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-freight_inland-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-freight_inland-made" (
     id bigint NOT NULL
@@ -12146,9 +10455,6 @@ CREATE TABLE isahl."zc_id_prod-freight_inland-made" (
 INHERITS (isahl."zc_id_prod-traffic", isahl."zc_id_prod-made");
 
 
---
--- Name: zc_id_prod-freight_inland-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-freight_inland-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12191,9 +10497,6 @@ CREATE TABLE isahl."zc_id_prod-freight_inland-purchase" (
 INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-freight_inland-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-freight_inland-request" (
     id bigint NOT NULL
@@ -12201,9 +10504,6 @@ CREATE TABLE isahl."zc_id_prod-freight_inland-request" (
 INHERITS (isahl."zc_id_prod-traffic", isahl."zc_id_prod-request");
 
 
---
--- Name: zc_id_prod-freight_inland-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-freight_inland-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12247,9 +10547,6 @@ CREATE TABLE isahl."zc_id_prod-freight_inland-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-freight_ocean-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-freight_ocean-purchase" (
     id bigint NOT NULL
@@ -12257,9 +10554,6 @@ CREATE TABLE isahl."zc_id_prod-freight_ocean-purchase" (
 INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-freight_ocean-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-freight_ocean-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12303,9 +10597,6 @@ CREATE TABLE isahl."zc_id_prod-freight_ocean-request" (
 INHERITS (isahl."zc_id_prod-request", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-freight_ocean-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-freight_ocean-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12351,9 +10642,6 @@ CREATE TABLE isahl."zc_id_prod-freight_ocean-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-freight_rail-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-freight_rail-made" (
     id bigint NOT NULL
@@ -12361,9 +10649,6 @@ CREATE TABLE isahl."zc_id_prod-freight_rail-made" (
 INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-freight_rail-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-freight_rail-purchase" (
     id bigint NOT NULL
@@ -12371,9 +10656,6 @@ CREATE TABLE isahl."zc_id_prod-freight_rail-purchase" (
 INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-freight_rail-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-freight_rail-request" (
     id bigint NOT NULL
@@ -12381,9 +10663,6 @@ CREATE TABLE isahl."zc_id_prod-freight_rail-request" (
 INHERITS (isahl."zc_id_prod-request", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-freight_rail-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-freight_rail-sales" (
     id bigint NOT NULL
@@ -12391,9 +10670,6 @@ CREATE TABLE isahl."zc_id_prod-freight_rail-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-freight_road-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-freight_road-made" (
     id bigint NOT NULL
@@ -12401,9 +10677,6 @@ CREATE TABLE isahl."zc_id_prod-freight_road-made" (
 INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-freight_road-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-freight_road-purchase" (
     id bigint NOT NULL
@@ -12411,9 +10684,6 @@ CREATE TABLE isahl."zc_id_prod-freight_road-purchase" (
 INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-freight_road-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-freight_road-request" (
     id bigint NOT NULL
@@ -12421,9 +10691,6 @@ CREATE TABLE isahl."zc_id_prod-freight_road-request" (
 INHERITS (isahl."zc_id_prod-request", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-freight_road-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-freight_road-sales" (
     id bigint NOT NULL
@@ -12431,9 +10698,6 @@ CREATE TABLE isahl."zc_id_prod-freight_road-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-goods_r_hscode; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-goods_r_hscode" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12451,9 +10715,6 @@ CREATE TABLE isahl."zc_id_prod-goods_r_hscode" (
 INHERITS (isahl.zc_id_lifecycle_r_tags);
 
 
---
--- Name: zc_id_prod-insurance-license-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-insurance-license-sales" (
     id bigint NOT NULL
@@ -12461,9 +10722,6 @@ CREATE TABLE isahl."zc_id_prod-insurance-license-sales" (
 INHERITS (isahl."zc_id_prod-certificate", isahl."zc_id_prod-license", isahl."zc_id_prod-sales");
 
 
---
--- Name: zc_id_prod-legal_tender; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-legal_tender" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12498,9 +10756,6 @@ CREATE TABLE isahl."zc_id_prod-legal_tender" (
 INHERITS (isahl."zc_id_prod-pub_affairs");
 
 
---
--- Name: zc_id_prod-legal_tender-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-legal_tender-made" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12535,9 +10790,6 @@ CREATE TABLE isahl."zc_id_prod-legal_tender-made" (
 INHERITS (isahl."zc_id_prod-legal_tender", isahl."zc_id_prod-made");
 
 
---
--- Name: zc_id_prod-license-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-license-purchase" (
     qk_qty bigint
@@ -12545,9 +10797,6 @@ CREATE TABLE isahl."zc_id_prod-license-purchase" (
 INHERITS (isahl."zc_id_prod-license", isahl."zc_id_prod-purchase");
 
 
---
--- Name: zc_id_prod-license-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-license-sales" (
     id bigint NOT NULL
@@ -12555,9 +10804,6 @@ CREATE TABLE isahl."zc_id_prod-license-sales" (
 INHERITS (isahl."zc_id_prod-license");
 
 
---
--- Name: zc_id_prod-loading; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-loading" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12599,9 +10845,6 @@ CREATE TABLE isahl."zc_id_prod-loading" (
 INHERITS (isahl."zc_id_prod-combine");
 
 
---
--- Name: zc_id_prod-loading-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-loading-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12643,9 +10886,6 @@ CREATE TABLE isahl."zc_id_prod-loading-purchase" (
 INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-loading");
 
 
---
--- Name: zc_id_prod-loading-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-loading-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12687,9 +10927,6 @@ CREATE TABLE isahl."zc_id_prod-loading-request" (
 INHERITS (isahl."zc_id_prod-loading", isahl."zc_id_prod-request");
 
 
---
--- Name: zc_id_prod-loading-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-loading-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12732,9 +10969,6 @@ CREATE TABLE isahl."zc_id_prod-loading-sales" (
 INHERITS (isahl."zc_id_prod-loading", isahl."zc_id_prod-sales");
 
 
---
--- Name: zc_id_prod-loading_r_goods-tag; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-loading_r_goods-tag" (
     id bigint NOT NULL
@@ -12742,9 +10976,6 @@ CREATE TABLE isahl."zc_id_prod-loading_r_goods-tag" (
 INHERITS (isahl.zc_id_lifecycle_r_tags);
 
 
---
--- Name: zc_id_prod-made_rr_prod-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-made_rr_prod-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12762,9 +10993,6 @@ CREATE TABLE isahl."zc_id_prod-made_rr_prod-purchase" (
 INHERITS (isahl.zc_id_demand_rr_supply);
 
 
---
--- Name: zc_id_production_rr_project; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_production_rr_project (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12782,9 +11010,6 @@ CREATE TABLE isahl.zc_id_production_rr_project (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_prod-made_rr_project; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-made_rr_project" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12802,9 +11027,6 @@ CREATE TABLE isahl."zc_id_prod-made_rr_project" (
 INHERITS (isahl.zc_id_production_rr_project);
 
 
---
--- Name: zc_id_prod-made_rr_stor-place; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-made_rr_stor-place" (
     id bigint NOT NULL
@@ -12812,9 +11034,6 @@ CREATE TABLE isahl."zc_id_prod-made_rr_stor-place" (
 INHERITS (isahl.zc_id_production_rr_storage);
 
 
---
--- Name: zc_id_prod-marriage_cert-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-marriage_cert-sales" (
     id bigint NOT NULL
@@ -12822,9 +11041,6 @@ CREATE TABLE isahl."zc_id_prod-marriage_cert-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-certificate");
 
 
---
--- Name: zc_id_prod-transform; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-transform" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12859,9 +11075,6 @@ CREATE TABLE isahl."zc_id_prod-transform" (
 INHERITS (isahl.zc_id_production);
 
 
---
--- Name: zc_id_prod-material-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-material-made" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12899,9 +11112,6 @@ CREATE TABLE isahl."zc_id_prod-material-made" (
 INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-transform");
 
 
---
--- Name: zc_id_prod-openapi-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-openapi-made" (
     id bigint NOT NULL
@@ -12909,9 +11119,6 @@ CREATE TABLE isahl."zc_id_prod-openapi-made" (
 INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-data");
 
 
---
--- Name: zc_id_prod-openapi-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-openapi-purchase" (
     id bigint NOT NULL
@@ -12919,9 +11126,6 @@ CREATE TABLE isahl."zc_id_prod-openapi-purchase" (
 INHERITS (isahl."zc_id_prod-data", isahl."zc_id_prod-purchase");
 
 
---
--- Name: zc_id_prod-openapi-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-openapi-request" (
     id bigint NOT NULL
@@ -12929,9 +11133,6 @@ CREATE TABLE isahl."zc_id_prod-openapi-request" (
 INHERITS (isahl."zc_id_prod-data", isahl."zc_id_prod-request");
 
 
---
--- Name: zc_id_prod-openapi-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-openapi-sales" (
     id bigint NOT NULL
@@ -12939,9 +11140,6 @@ CREATE TABLE isahl."zc_id_prod-openapi-sales" (
 INHERITS (isahl."zc_id_prod-data", isahl."zc_id_prod-sales");
 
 
---
--- Name: zc_id_prod-payload; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-payload" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -12984,9 +11182,6 @@ CREATE TABLE isahl."zc_id_prod-payload" (
 INHERITS (isahl.zc_id_production);
 
 
---
--- Name: zc_id_prod-passenger; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-passenger" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13028,9 +11223,6 @@ CREATE TABLE isahl."zc_id_prod-passenger" (
 INHERITS (isahl."zc_id_prod-payload");
 
 
---
--- Name: zc_id_prod-payload_rr_stor-container; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-payload_rr_stor-container" (
     id bigint NOT NULL
@@ -13038,9 +11230,6 @@ CREATE TABLE isahl."zc_id_prod-payload_rr_stor-container" (
 INHERITS (isahl.zc_id_production_rr_storage);
 
 
---
--- Name: zc_id_prod-ports-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-ports-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13074,9 +11263,6 @@ CREATE TABLE isahl."zc_id_prod-ports-purchase" (
 INHERITS (isahl."zc_id_prod-purchase");
 
 
---
--- Name: zc_id_prod-ports-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-ports-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13111,9 +11297,6 @@ CREATE TABLE isahl."zc_id_prod-ports-request" (
 INHERITS (isahl."zc_id_prod-request");
 
 
---
--- Name: zc_id_prod-ports-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-ports-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13149,9 +11332,6 @@ CREATE TABLE isahl."zc_id_prod-ports-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-combine");
 
 
---
--- Name: zc_id_prod-prj_data-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-prj_data-made" (
     id bigint NOT NULL
@@ -13159,9 +11339,6 @@ CREATE TABLE isahl."zc_id_prod-prj_data-made" (
 INHERITS (isahl."zc_id_prod-data", isahl."zc_id_prod-made");
 
 
---
--- Name: zc_id_prod-prj_data-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-prj_data-purchase" (
     id bigint NOT NULL,
@@ -13170,9 +11347,6 @@ CREATE TABLE isahl."zc_id_prod-prj_data-purchase" (
 INHERITS (isahl."zc_id_prod-data", isahl."zc_id_prod-purchase");
 
 
---
--- Name: zc_id_prod-prj_data-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-prj_data-request" (
     id bigint NOT NULL,
@@ -13181,9 +11355,6 @@ CREATE TABLE isahl."zc_id_prod-prj_data-request" (
 INHERITS (isahl."zc_id_prod-data", isahl."zc_id_prod-request");
 
 
---
--- Name: zc_id_prod-prj_data-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-prj_data-sales" (
     id bigint NOT NULL
@@ -13191,9 +11362,6 @@ CREATE TABLE isahl."zc_id_prod-prj_data-sales" (
 INHERITS (isahl."zc_id_prod-data", isahl."zc_id_prod-sales");
 
 
---
--- Name: zc_id_prod-prj_data_rr_project; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-prj_data_rr_project" (
     id bigint NOT NULL
@@ -13201,9 +11369,6 @@ CREATE TABLE isahl."zc_id_prod-prj_data_rr_project" (
 INHERITS (isahl.zc_id_production_rr_project);
 
 
---
--- Name: zc_id_prod-prj_vcs_file-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-prj_vcs_file-made" (
     id bigint NOT NULL
@@ -13211,9 +11376,6 @@ CREATE TABLE isahl."zc_id_prod-prj_vcs_file-made" (
 INHERITS (isahl."zc_id_file-ver_ctrl", isahl."zc_id_prod-prj_data-made");
 
 
---
--- Name: zc_id_prod-prj_vcs_file-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-prj_vcs_file-purchase" (
     id bigint NOT NULL
@@ -13221,9 +11383,6 @@ CREATE TABLE isahl."zc_id_prod-prj_vcs_file-purchase" (
 INHERITS (isahl."zc_id_file-ver_ctrl", isahl."zc_id_prod-prj_data-purchase");
 
 
---
--- Name: zc_id_prod-prj_vcs_file-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-prj_vcs_file-request" (
     id bigint NOT NULL
@@ -13231,9 +11390,6 @@ CREATE TABLE isahl."zc_id_prod-prj_vcs_file-request" (
 INHERITS (isahl."zc_id_file-ver_ctrl", isahl."zc_id_prod-prj_data-request");
 
 
---
--- Name: zc_id_prod-prj_vcs_file-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-prj_vcs_file-sales" (
     id bigint NOT NULL
@@ -13241,9 +11397,6 @@ CREATE TABLE isahl."zc_id_prod-prj_vcs_file-sales" (
 INHERITS (isahl."zc_id_file-ver_ctrl", isahl."zc_id_prod-prj_data-sales");
 
 
---
--- Name: zc_id_prod-project-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-project-made" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13278,9 +11431,6 @@ CREATE TABLE isahl."zc_id_prod-project-made" (
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-made");
 
 
---
--- Name: zc_id_prod-project-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-project-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13314,9 +11464,6 @@ CREATE TABLE isahl."zc_id_prod-project-purchase" (
 INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-combine");
 
 
---
--- Name: zc_id_prod-project-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-project-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13351,9 +11498,6 @@ CREATE TABLE isahl."zc_id_prod-project-request" (
 INHERITS (isahl."zc_id_prod-request", isahl."zc_id_prod-combine");
 
 
---
--- Name: zc_id_prod-project-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-project-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13389,9 +11533,6 @@ CREATE TABLE isahl."zc_id_prod-project-sales" (
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-sales");
 
 
---
--- Name: zc_id_prod-proxy; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-proxy" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13426,9 +11567,6 @@ CREATE TABLE isahl."zc_id_prod-proxy" (
 INHERITS (isahl.zc_id_production);
 
 
---
--- Name: zc_id_prod-proxy_rr_principal; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-proxy_rr_principal" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13447,9 +11585,6 @@ CREATE TABLE isahl."zc_id_prod-proxy_rr_principal" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_prod-purchase_rr_project; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-purchase_rr_project" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13467,9 +11602,6 @@ CREATE TABLE isahl."zc_id_prod-purchase_rr_project" (
 INHERITS (isahl.zc_id_production_rr_project);
 
 
---
--- Name: zc_id_prod-pxy-auto_mfg-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-auto_mfg-made" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13504,9 +11636,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-auto_mfg-made" (
 INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-proxy");
 
 
---
--- Name: zc_id_prod-pxy-components-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-components-made" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13541,9 +11670,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-components-made" (
 INHERITS (isahl."zc_id_prod-proxy", isahl."zc_id_prod-made");
 
 
---
--- Name: zc_id_prod-pxy-fo_express-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-fo_express-made" (
     id bigint NOT NULL
@@ -13551,9 +11677,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_express-made" (
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-made", isahl."zc_id_prod-proxy", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-pxy-fo_express-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-fo_express-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13596,9 +11719,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_express-purchase" (
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-proxy", isahl."zc_id_prod-purchase", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-pxy-fo_express-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-fo_express-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13642,9 +11762,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_express-request" (
 INHERITS (isahl."zc_id_prod-traffic", isahl."zc_id_prod-proxy", isahl."zc_id_prod-combine", isahl."zc_id_prod-request");
 
 
---
--- Name: zc_id_prod-pxy-fo_express-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-fo_express-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13688,9 +11805,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_express-sales" (
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-sales", isahl."zc_id_prod-traffic", isahl."zc_id_prod-proxy");
 
 
---
--- Name: zc_id_prod-pxy-fo_fcl-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-fo_fcl-purchase" (
     fk_vessel bigint
@@ -13698,9 +11812,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_fcl-purchase" (
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-freight_ocean-purchase", isahl."zc_id_prod-proxy", isahl."zc_id_prod-purchase");
 
 
---
--- Name: zc_id_prod-pxy-fo_fcl-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-fo_fcl-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13745,9 +11856,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_fcl-request" (
 INHERITS (isahl."zc_id_prod-freight_ocean-request", isahl."zc_id_prod-proxy", isahl."zc_id_prod-combine");
 
 
---
--- Name: zc_id_prod-pxy-fo_fcl-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-fo_fcl-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13793,9 +11901,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_fcl-sales" (
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-proxy", isahl."zc_id_prod-freight_ocean-sales");
 
 
---
--- Name: zc_id_prod-pxy-fo_lcl-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-fo_lcl-purchase" (
     fk_vessel bigint
@@ -13803,9 +11908,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_lcl-purchase" (
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-freight_ocean-purchase", isahl."zc_id_prod-proxy", isahl."zc_id_prod-purchase");
 
 
---
--- Name: zc_id_prod-pxy-fo_lcl-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-fo_lcl-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13850,9 +11952,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_lcl-request" (
 INHERITS (isahl."zc_id_prod-freight_ocean-request", isahl."zc_id_prod-combine", isahl."zc_id_prod-proxy");
 
 
---
--- Name: zc_id_prod-pxy-fo_lcl-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-fo_lcl-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13898,9 +11997,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_lcl-sales" (
 INHERITS (isahl."zc_id_prod-freight_ocean-sales", isahl."zc_id_prod-proxy", isahl."zc_id_prod-combine");
 
 
---
--- Name: zc_id_prod-pxy-fo_ltl-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-fo_ltl-made" (
     id bigint NOT NULL
@@ -13908,9 +12004,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_ltl-made" (
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-made", isahl."zc_id_prod-proxy", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-pxy-fo_ltl-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-fo_ltl-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13953,9 +12046,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_ltl-purchase" (
 INHERITS (isahl."zc_id_prod-proxy", isahl."zc_id_prod-traffic", isahl."zc_id_prod-combine", isahl."zc_id_prod-purchase");
 
 
---
--- Name: zc_id_prod-pxy-fo_ltl-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-fo_ltl-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13999,9 +12089,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_ltl-request" (
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-proxy", isahl."zc_id_prod-request", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-pxy-fo_ltl-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-fo_ltl-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14045,9 +12132,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_ltl-sales" (
 INHERITS (isahl."zc_id_prod-proxy", isahl."zc_id_prod-combine", isahl."zc_id_prod-sales", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-pxy-insurance-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-insurance-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14083,9 +12167,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-insurance-purchase" (
 INHERITS (isahl."zc_id_prod-insurance", isahl."zc_id_prod-purchase", isahl."zc_id_prod-proxy");
 
 
---
--- Name: zc_id_prod-pxy-insurance-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-pxy-insurance-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14122,9 +12203,6 @@ CREATE TABLE isahl."zc_id_prod-pxy-insurance-sales" (
 INHERITS (isahl."zc_id_prod-proxy", isahl."zc_id_prod-insurance", isahl."zc_id_prod-sales");
 
 
---
--- Name: zc_id_prod-rdc_express-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-rdc_express-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14167,9 +12245,6 @@ CREATE TABLE isahl."zc_id_prod-rdc_express-purchase" (
 INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-rdc_express-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-rdc_express-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14213,9 +12288,6 @@ CREATE TABLE isahl."zc_id_prod-rdc_express-request" (
 INHERITS (isahl."zc_id_prod-request", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-rdc_express-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-rdc_express-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14258,9 +12330,6 @@ CREATE TABLE isahl."zc_id_prod-rdc_express-sales" (
 INHERITS (isahl."zc_id_prod-traffic", isahl."zc_id_prod-sales");
 
 
---
--- Name: zc_id_prod-rdc_pickup-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-rdc_pickup-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14303,9 +12372,6 @@ CREATE TABLE isahl."zc_id_prod-rdc_pickup-purchase" (
 INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-rdc_pickup-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-rdc_pickup-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14349,9 +12415,6 @@ CREATE TABLE isahl."zc_id_prod-rdc_pickup-request" (
 INHERITS (isahl."zc_id_prod-request", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-rdc_pickup-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-rdc_pickup-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14394,9 +12457,6 @@ CREATE TABLE isahl."zc_id_prod-rdc_pickup-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-request_rr_prod-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-request_rr_prod-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14414,9 +12474,6 @@ CREATE TABLE isahl."zc_id_prod-request_rr_prod-sales" (
 INHERITS (isahl.zc_id_demand_rr_supply);
 
 
---
--- Name: zc_id_prod-request_rr_project; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-request_rr_project" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14434,9 +12491,6 @@ CREATE TABLE isahl."zc_id_prod-request_rr_project" (
 INHERITS (isahl.zc_id_production_rr_project);
 
 
---
--- Name: zc_id_prod-retail-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-retail-made" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14479,9 +12533,6 @@ CREATE TABLE isahl."zc_id_prod-retail-made" (
 INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-combine", isahl."zc_id_prod-payload");
 
 
---
--- Name: zc_id_prod-retail-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-retail-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14524,9 +12575,6 @@ CREATE TABLE isahl."zc_id_prod-retail-purchase" (
 INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-combine", isahl."zc_id_prod-payload");
 
 
---
--- Name: zc_id_prod-retail-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-retail-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14570,9 +12618,6 @@ CREATE TABLE isahl."zc_id_prod-retail-request" (
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-payload", isahl."zc_id_prod-request");
 
 
---
--- Name: zc_id_prod-retail-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-retail-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14617,9 +12662,6 @@ CREATE TABLE isahl."zc_id_prod-retail-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-combine", isahl."zc_id_prod-payload");
 
 
---
--- Name: zc_id_prod-sales_rr_prod-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-sales_rr_prod-made" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14637,9 +12679,6 @@ CREATE TABLE isahl."zc_id_prod-sales_rr_prod-made" (
 INHERITS (isahl.zc_id_demand_rr_supply);
 
 
---
--- Name: zc_id_prod-sales_rr_project; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-sales_rr_project" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14657,9 +12696,6 @@ CREATE TABLE isahl."zc_id_prod-sales_rr_project" (
 INHERITS (isahl.zc_id_production_rr_project);
 
 
---
--- Name: zc_id_prod-sales_rr_stor-place; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-sales_rr_stor-place" (
     id bigint NOT NULL
@@ -14667,9 +12703,6 @@ CREATE TABLE isahl."zc_id_prod-sales_rr_stor-place" (
 INHERITS (isahl.zc_id_production_rr_storage);
 
 
---
--- Name: zc_id_prod-sovereign_currency-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-sovereign_currency-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14705,9 +12738,6 @@ CREATE TABLE isahl."zc_id_prod-sovereign_currency-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-legal_tender");
 
 
---
--- Name: zc_id_prod-storage; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-storage" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14744,9 +12774,6 @@ CREATE TABLE isahl."zc_id_prod-storage" (
 INHERITS (isahl."zc_id_prod-lease");
 
 
---
--- Name: zc_id_prod-stor_sorting-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-stor_sorting-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14784,9 +12811,6 @@ CREATE TABLE isahl."zc_id_prod-stor_sorting-purchase" (
 INHERITS (isahl."zc_id_prod-storage", isahl."zc_id_prod-purchase");
 
 
---
--- Name: zc_id_prod-stor_sorting-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-stor_sorting-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14825,9 +12849,6 @@ CREATE TABLE isahl."zc_id_prod-stor_sorting-request" (
 INHERITS (isahl."zc_id_prod-request", isahl."zc_id_prod-storage");
 
 
---
--- Name: zc_id_prod-stor_sorting-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-stor_sorting-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14866,9 +12887,6 @@ CREATE TABLE isahl."zc_id_prod-stor_sorting-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-storage");
 
 
---
--- Name: zc_id_prod-traffic_rr_contacts; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-traffic_rr_contacts" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14887,18 +12905,12 @@ CREATE TABLE isahl."zc_id_prod-traffic_rr_contacts" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_prod-traffic_rr_conveyance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-traffic_rr_conveyance" (
 )
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_prod-transfer_p2p-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-transfer_p2p-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14942,9 +12954,6 @@ CREATE TABLE isahl."zc_id_prod-transfer_p2p-purchase" (
 INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-transfer_p2p-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-transfer_p2p-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14988,9 +12997,6 @@ CREATE TABLE isahl."zc_id_prod-transfer_p2p-request" (
 INHERITS (isahl."zc_id_prod-traffic", isahl."zc_id_prod-request");
 
 
---
--- Name: zc_id_prod-transfer_p2p-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-transfer_p2p-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15035,9 +13041,6 @@ CREATE TABLE isahl."zc_id_prod-transfer_p2p-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-traffic");
 
 
---
--- Name: zc_id_prod-transport_rr_stop; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-transport_rr_stop" (
     id bigint NOT NULL,
@@ -15048,9 +13051,6 @@ CREATE TABLE isahl."zc_id_prod-transport_rr_stop" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_prod-tsp_land-license-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-tsp_land-license-sales" (
     id bigint NOT NULL
@@ -15058,9 +13058,6 @@ CREATE TABLE isahl."zc_id_prod-tsp_land-license-sales" (
 INHERITS (isahl."zc_id_prod-certificate", isahl."zc_id_prod-license", isahl."zc_id_prod-sales");
 
 
---
--- Name: zc_id_prod-type_cert-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prod-type_cert-sales" (
     id bigint NOT NULL
@@ -15068,9 +13065,6 @@ CREATE TABLE isahl."zc_id_prod-type_cert-sales" (
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-certificate");
 
 
---
--- Name: zc_id_production_r_log-status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_production_r_log-status" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15089,9 +13083,6 @@ CREATE TABLE isahl."zc_id_production_r_log-status" (
 INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
---
--- Name: zc_id_production_r_pricing; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_production_r_pricing (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15109,9 +13100,6 @@ CREATE TABLE isahl.zc_id_production_r_pricing (
 INHERITS (isahl.zc_id_lifecycle_r_tags);
 
 
---
--- Name: zc_id_production_r_period; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_production_r_period (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15129,9 +13117,6 @@ CREATE TABLE isahl.zc_id_production_r_period (
 INHERITS (isahl.zc_id_production_r_pricing);
 
 
---
--- Name: zc_id_production_r_transport-status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_production_r_transport-status" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15150,9 +13135,6 @@ CREATE TABLE isahl."zc_id_production_r_transport-status" (
 INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
---
--- Name: zc_id_production_r_ts_concomitant; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_production_r_ts_concomitant (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15171,9 +13153,6 @@ CREATE TABLE isahl.zc_id_production_r_ts_concomitant (
 INHERITS (isahl.zc_id_production_r_pricing);
 
 
---
--- Name: zc_id_production_r_zone; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_production_r_zone (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15192,9 +13171,6 @@ CREATE TABLE isahl.zc_id_production_r_zone (
 INHERITS (isahl.zc_id_production_r_pricing);
 
 
---
--- Name: zc_id_production_rr_bom; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_production_rr_bom (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15212,9 +13188,6 @@ CREATE TABLE isahl.zc_id_production_rr_bom (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_production_rr_manual; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_production_rr_manual (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15234,9 +13207,6 @@ CREATE TABLE isahl.zc_id_production_rr_manual (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_production_rr_process; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_production_rr_process (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15254,9 +13224,6 @@ CREATE TABLE isahl.zc_id_production_rr_process (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_production_rr_standard; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_production_rr_standard (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15276,9 +13243,6 @@ CREATE TABLE isahl.zc_id_production_rr_standard (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_project_r_milestone-tags; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_project_r_milestone-tags" (
     id bigint NOT NULL,
@@ -15288,9 +13252,6 @@ CREATE TABLE isahl."zc_id_project_r_milestone-tags" (
 INHERITS (isahl.zc_id_lifecycle_r_tags);
 
 
---
--- Name: zc_id_project_rr_dependency; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_project_rr_dependency (
     id bigint NOT NULL
@@ -15298,9 +13259,6 @@ CREATE TABLE isahl.zc_id_project_rr_dependency (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_project_rr_other; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_project_rr_other (
     id bigint NOT NULL
@@ -15308,9 +13266,6 @@ CREATE TABLE isahl.zc_id_project_rr_other (
 INHERITS (isahl.zc_id_lifecycle_rr_foreign);
 
 
---
--- Name: zc_id_project_rr_process; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_project_rr_process (
     id bigint NOT NULL
@@ -15318,9 +13273,6 @@ CREATE TABLE isahl.zc_id_project_rr_process (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_project_rr_task; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_project_rr_task (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15338,9 +13290,6 @@ CREATE TABLE isahl.zc_id_project_rr_task (
 INHERITS (isahl.zc_id_master_rr_slave);
 
 
---
--- Name: zc_id_protocol; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_protocol (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15366,9 +13315,6 @@ CREATE TABLE isahl.zc_id_protocol (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_prot-email_config; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prot-email_config" (
     settings jsonb
@@ -15376,18 +13322,12 @@ CREATE TABLE isahl."zc_id_prot-email_config" (
 INHERITS (isahl.zc_id_protocol);
 
 
---
--- Name: zc_id_prot-env_config; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prot-env_config" (
 )
 INHERITS (isahl.zc_id_protocol);
 
 
---
--- Name: zc_id_prot-im_config; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prot-im_config" (
     id bigint NOT NULL
@@ -15395,18 +13335,12 @@ CREATE TABLE isahl."zc_id_prot-im_config" (
 INHERITS (isahl.zc_id_protocol);
 
 
---
--- Name: zc_id_prot-iot_config; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prot-iot_config" (
 )
 INHERITS (isahl.zc_id_protocol);
 
 
---
--- Name: zc_id_prot-llm_config; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prot-llm_config" (
     settings jsonb
@@ -15414,9 +13348,6 @@ CREATE TABLE isahl."zc_id_prot-llm_config" (
 INHERITS (isahl.zc_id_protocol);
 
 
---
--- Name: zc_id_prot-openapi_config; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prot-openapi_config" (
     id bigint NOT NULL
@@ -15424,9 +13355,6 @@ CREATE TABLE isahl."zc_id_prot-openapi_config" (
 INHERITS (isahl.zc_id_protocol);
 
 
---
--- Name: zc_id_prot-oss_config; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prot-oss_config" (
     id bigint NOT NULL
@@ -15434,9 +13362,6 @@ CREATE TABLE isahl."zc_id_prot-oss_config" (
 INHERITS (isahl.zc_id_protocol);
 
 
---
--- Name: zc_id_prot-profile_config; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prot-profile_config" (
     fk_employee bigint
@@ -15444,9 +13369,6 @@ CREATE TABLE isahl."zc_id_prot-profile_config" (
 INHERITS (isahl.zc_id_protocol);
 
 
---
--- Name: zc_id_prot-sms_config; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prot-sms_config" (
     settings jsonb
@@ -15454,9 +13376,6 @@ CREATE TABLE isahl."zc_id_prot-sms_config" (
 INHERITS (isahl.zc_id_protocol);
 
 
---
--- Name: zc_id_prot-webhook_config; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_prot-webhook_config" (
     id bigint NOT NULL
@@ -15464,9 +13383,6 @@ CREATE TABLE isahl."zc_id_prot-webhook_config" (
 INHERITS (isahl.zc_id_protocol);
 
 
---
--- Name: zc_id_rate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_rate (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15491,9 +13407,6 @@ CREATE TABLE isahl.zc_id_rate (
 INHERITS (isahl."zc_id_eval-calculable");
 
 
---
--- Name: zc_id_rate-angle; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-angle" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15517,9 +13430,6 @@ CREATE TABLE isahl."zc_id_rate-angle" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-area; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-area" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15543,9 +13453,6 @@ CREATE TABLE isahl."zc_id_rate-area" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-container; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-container" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15569,9 +13476,6 @@ CREATE TABLE isahl."zc_id_rate-container" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-current; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-current" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15595,18 +13499,12 @@ CREATE TABLE isahl."zc_id_rate-current" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-custom; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-custom" (
 )
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-data; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-data" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15630,9 +13528,6 @@ CREATE TABLE isahl."zc_id_rate-data" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-density; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-density" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15656,9 +13551,6 @@ CREATE TABLE isahl."zc_id_rate-density" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-distance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-distance" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15682,9 +13574,6 @@ CREATE TABLE isahl."zc_id_rate-distance" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-duration; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-duration" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15708,18 +13597,12 @@ CREATE TABLE isahl."zc_id_rate-duration" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-energy; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-energy" (
 )
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-exchange; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-exchange" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15745,9 +13628,6 @@ CREATE TABLE isahl."zc_id_rate-exchange" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-frequency; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-frequency" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15771,9 +13651,6 @@ CREATE TABLE isahl."zc_id_rate-frequency" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-illuminance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-illuminance" (
     id bigint NOT NULL
@@ -15781,9 +13658,6 @@ CREATE TABLE isahl."zc_id_rate-illuminance" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-intensity; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-intensity" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15807,9 +13681,6 @@ CREATE TABLE isahl."zc_id_rate-intensity" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-luminance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-luminance" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15833,9 +13704,6 @@ CREATE TABLE isahl."zc_id_rate-luminance" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-magnetic_field_strength; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-magnetic_field_strength" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15859,9 +13727,6 @@ CREATE TABLE isahl."zc_id_rate-magnetic_field_strength" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-magnetic_flux; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-magnetic_flux" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15885,9 +13750,6 @@ CREATE TABLE isahl."zc_id_rate-magnetic_flux" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-power; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-power" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15911,9 +13773,6 @@ CREATE TABLE isahl."zc_id_rate-power" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-pressure; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-pressure" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15937,9 +13796,6 @@ CREATE TABLE isahl."zc_id_rate-pressure" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-radiation; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-radiation" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15963,9 +13819,6 @@ CREATE TABLE isahl."zc_id_rate-radiation" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-speed; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-speed" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15989,9 +13842,6 @@ CREATE TABLE isahl."zc_id_rate-speed" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-stress; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-stress" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16015,9 +13865,6 @@ CREATE TABLE isahl."zc_id_rate-stress" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-temperature; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-temperature" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16043,9 +13890,6 @@ CREATE TABLE isahl."zc_id_rate-temperature" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-voltage; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-voltage" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16069,9 +13913,6 @@ CREATE TABLE isahl."zc_id_rate-voltage" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-volume; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-volume" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16095,9 +13936,6 @@ CREATE TABLE isahl."zc_id_rate-volume" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_rate-weight; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rate-weight" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16121,9 +13959,6 @@ CREATE TABLE isahl."zc_id_rate-weight" (
 INHERITS (isahl.zc_id_rate);
 
 
---
--- Name: zc_id_ratio; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_ratio (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16145,9 +13980,6 @@ CREATE TABLE isahl.zc_id_ratio (
 INHERITS (isahl."zc_id_eval-calculable");
 
 
---
--- Name: zc_id_rati-discount; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rati-discount" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16169,9 +14001,6 @@ CREATE TABLE isahl."zc_id_rati-discount" (
 INHERITS (isahl.zc_id_ratio);
 
 
---
--- Name: zc_id_rati-formula; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rati-formula" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16193,18 +14022,12 @@ CREATE TABLE isahl."zc_id_rati-formula" (
 INHERITS (isahl.zc_id_ratio);
 
 
---
--- Name: zc_id_rati-progress; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rati-progress" (
 )
 INHERITS (isahl.zc_id_ratio);
 
 
---
--- Name: zc_id_rati-tax; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rati-tax" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16229,9 +14052,6 @@ CREATE TABLE isahl."zc_id_rati-tax" (
 INHERITS (isahl.zc_id_ratio);
 
 
---
--- Name: zc_id_rati-weight; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_rati-weight" (
     id bigint NOT NULL
@@ -16239,9 +14059,6 @@ CREATE TABLE isahl."zc_id_rati-weight" (
 INHERITS (isahl.zc_id_ratio);
 
 
---
--- Name: zc_id_relation-bom_item_r_tags; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_relation-bom_item_r_tags" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16259,9 +14076,6 @@ CREATE TABLE isahl."zc_id_relation-bom_item_r_tags" (
 INHERITS (isahl.zc_ad_relation_r_scalar);
 
 
---
--- Name: zc_id_relation-cooperation_r_evaluation; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_relation-cooperation_r_evaluation" (
     id bigint NOT NULL,
@@ -16271,9 +14085,6 @@ CREATE TABLE isahl."zc_id_relation-cooperation_r_evaluation" (
 INHERITS (isahl.zc_ad_relation_r_scalar);
 
 
---
--- Name: zc_id_relation-employ_r_duty-status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_relation-employ_r_duty-status" (
     id bigint NOT NULL
@@ -16281,9 +14092,6 @@ CREATE TABLE isahl."zc_id_relation-employ_r_duty-status" (
 INHERITS (isahl.zc_ad_relation_r_scalar);
 
 
---
--- Name: zc_id_relation-employee_r_skill-tags; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_relation-employee_r_skill-tags" (
     id bigint NOT NULL,
@@ -16292,9 +14100,6 @@ CREATE TABLE isahl."zc_id_relation-employee_r_skill-tags" (
 INHERITS (isahl.zc_ad_relation_r_scalar);
 
 
---
--- Name: zc_id_relation-plan_smt_r_tags; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_relation-plan_smt_r_tags" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16312,9 +14117,6 @@ CREATE TABLE isahl."zc_id_relation-plan_smt_r_tags" (
 INHERITS (isahl.zc_ad_relation_r_scalar);
 
 
---
--- Name: zc_id_relation-post_view_r_tags; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_relation-post_view_r_tags" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16332,9 +14134,6 @@ CREATE TABLE isahl."zc_id_relation-post_view_r_tags" (
 INHERITS (isahl.zc_ad_relation_r_scalar);
 
 
---
--- Name: zc_id_scal-amount; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-amount" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16356,9 +14155,6 @@ CREATE TABLE isahl."zc_id_scal-amount" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_scal-angle; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-angle" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16380,9 +14176,6 @@ CREATE TABLE isahl."zc_id_scal-angle" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_scal-area; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-area" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16404,9 +14197,6 @@ CREATE TABLE isahl."zc_id_scal-area" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_scal-common; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-common" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16428,9 +14218,6 @@ CREATE TABLE isahl."zc_id_scal-common" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_scal-container; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-container" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16452,9 +14239,6 @@ CREATE TABLE isahl."zc_id_scal-container" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_scal-data; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-data" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16476,9 +14260,6 @@ CREATE TABLE isahl."zc_id_scal-data" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_scal-distance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-distance" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16500,9 +14281,6 @@ CREATE TABLE isahl."zc_id_scal-distance" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_scal-duration; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-duration" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16524,9 +14302,6 @@ CREATE TABLE isahl."zc_id_scal-duration" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_scal-energy; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-energy" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16548,9 +14323,6 @@ CREATE TABLE isahl."zc_id_scal-energy" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_scal-frequency; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-frequency" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16572,9 +14344,6 @@ CREATE TABLE isahl."zc_id_scal-frequency" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_scal-momentum; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-momentum" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16596,9 +14365,6 @@ CREATE TABLE isahl."zc_id_scal-momentum" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_scal-price; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-price" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16620,9 +14386,6 @@ CREATE TABLE isahl."zc_id_scal-price" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_scal-speed; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-speed" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16644,9 +14407,6 @@ CREATE TABLE isahl."zc_id_scal-speed" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_scal-temperature; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-temperature" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16668,9 +14428,6 @@ CREATE TABLE isahl."zc_id_scal-temperature" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_scal-volume; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-volume" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16692,9 +14449,6 @@ CREATE TABLE isahl."zc_id_scal-volume" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_scal-weight; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_scal-weight" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16716,9 +14470,6 @@ CREATE TABLE isahl."zc_id_scal-weight" (
 INHERITS (isahl.zc_id_scale);
 
 
---
--- Name: zc_id_scene_o_number_seq; Type: SEQUENCE; Schema: isahl; Owner: -
---
 
 CREATE SEQUENCE isahl.zc_id_scene_o_number_seq
     START WITH 1
@@ -16728,9 +14479,6 @@ CREATE SEQUENCE isahl.zc_id_scene_o_number_seq
     CACHE 1;
 
 
---
--- Name: zc_id_scene; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_scene (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16748,9 +14496,6 @@ CREATE TABLE isahl.zc_id_scene (
 INHERITS (isahl.zc_id_object, isahl.zc_ad_dimension);
 
 
---
--- Name: zc_id_segm-amount; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_segm-amount" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16773,9 +14518,6 @@ CREATE TABLE isahl."zc_id_segm-amount" (
 INHERITS (isahl.zc_id_segment);
 
 
---
--- Name: zc_id_segm-area; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_segm-area" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16798,9 +14540,6 @@ CREATE TABLE isahl."zc_id_segm-area" (
 INHERITS (isahl.zc_id_segment);
 
 
---
--- Name: zc_id_segm-common; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_segm-common" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16823,9 +14562,6 @@ CREATE TABLE isahl."zc_id_segm-common" (
 INHERITS (isahl.zc_id_segment);
 
 
---
--- Name: zc_id_segm-container; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_segm-container" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16848,9 +14584,6 @@ CREATE TABLE isahl."zc_id_segm-container" (
 INHERITS (isahl.zc_id_segment);
 
 
---
--- Name: zc_id_segm-distance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_segm-distance" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16873,9 +14606,6 @@ CREATE TABLE isahl."zc_id_segm-distance" (
 INHERITS (isahl.zc_id_segment);
 
 
---
--- Name: zc_id_segm-duration; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_segm-duration" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16898,9 +14628,6 @@ CREATE TABLE isahl."zc_id_segm-duration" (
 INHERITS (isahl.zc_id_segment);
 
 
---
--- Name: zc_id_segm-frequency; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_segm-frequency" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16923,9 +14650,6 @@ CREATE TABLE isahl."zc_id_segm-frequency" (
 INHERITS (isahl.zc_id_segment);
 
 
---
--- Name: zc_id_segm-power; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_segm-power" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16948,9 +14672,6 @@ CREATE TABLE isahl."zc_id_segm-power" (
 INHERITS (isahl.zc_id_segment);
 
 
---
--- Name: zc_id_segm-speed; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_segm-speed" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16973,9 +14694,6 @@ CREATE TABLE isahl."zc_id_segm-speed" (
 INHERITS (isahl.zc_id_segment);
 
 
---
--- Name: zc_id_segm-temperature; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_segm-temperature" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16998,9 +14716,6 @@ CREATE TABLE isahl."zc_id_segm-temperature" (
 INHERITS (isahl.zc_id_segment);
 
 
---
--- Name: zc_id_segm-volume; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_segm-volume" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17023,9 +14738,6 @@ CREATE TABLE isahl."zc_id_segm-volume" (
 INHERITS (isahl.zc_id_segment);
 
 
---
--- Name: zc_id_segm-weight; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_segm-weight" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17048,9 +14760,6 @@ CREATE TABLE isahl."zc_id_segm-weight" (
 INHERITS (isahl.zc_id_segment);
 
 
---
--- Name: zc_id_standard; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_standard (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17079,9 +14788,6 @@ CREATE TABLE isahl.zc_id_standard (
 INHERITS (isahl.zc_id_version);
 
 
---
--- Name: zc_id_stan-air; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-air" (
     id bigint NOT NULL
@@ -17089,9 +14795,6 @@ CREATE TABLE isahl."zc_id_stan-air" (
 INHERITS (isahl.zc_id_standard);
 
 
---
--- Name: zc_id_stan-air-caac; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-air-caac" (
     fk_parent bigint
@@ -17099,18 +14802,12 @@ CREATE TABLE isahl."zc_id_stan-air-caac" (
 INHERITS (isahl."zc_id_stan-air");
 
 
---
--- Name: zc_id_stan-air-caac-article; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-air-caac-article" (
 )
 INHERITS (isahl."zc_id_stan-air-caac");
 
 
---
--- Name: zc_id_stan-air-easa; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-air-easa" (
     fk_parent bigint
@@ -17118,18 +14815,12 @@ CREATE TABLE isahl."zc_id_stan-air-easa" (
 INHERITS (isahl."zc_id_stan-air");
 
 
---
--- Name: zc_id_stan-air-easa-article; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-air-easa-article" (
 )
 INHERITS (isahl."zc_id_stan-air-easa");
 
 
---
--- Name: zc_id_stan-air-faa; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-air-faa" (
     fk_parent bigint
@@ -17137,18 +14828,12 @@ CREATE TABLE isahl."zc_id_stan-air-faa" (
 INHERITS (isahl."zc_id_stan-air");
 
 
---
--- Name: zc_id_stan-air-faa-article; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-air-faa-article" (
 )
 INHERITS (isahl."zc_id_stan-air-faa");
 
 
---
--- Name: zc_id_stan-air-icao; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-air-icao" (
     fk_parent bigint
@@ -17156,18 +14841,12 @@ CREATE TABLE isahl."zc_id_stan-air-icao" (
 INHERITS (isahl."zc_id_stan-air");
 
 
---
--- Name: zc_id_stan-air-icao-article; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-air-icao-article" (
 )
 INHERITS (isahl."zc_id_stan-air-icao");
 
 
---
--- Name: zc_id_stan-clause; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-clause" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17201,18 +14880,12 @@ CREATE TABLE isahl."zc_id_stan-clause" (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_stan-fin; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-fin" (
 )
 INHERITS (isahl.zc_id_standard);
 
 
---
--- Name: zc_id_stan-fin-cas; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-fin-cas" (
     fk_parent bigint
@@ -17220,18 +14893,12 @@ CREATE TABLE isahl."zc_id_stan-fin-cas" (
 INHERITS (isahl."zc_id_stan-fin");
 
 
---
--- Name: zc_id_stan-fin-cas-article; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-fin-cas-article" (
 )
 INHERITS (isahl."zc_id_stan-fin-cas");
 
 
---
--- Name: zc_id_stan-fin-gaap; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-fin-gaap" (
     fk_parent bigint
@@ -17239,18 +14906,12 @@ CREATE TABLE isahl."zc_id_stan-fin-gaap" (
 INHERITS (isahl."zc_id_stan-fin");
 
 
---
--- Name: zc_id_stan-fin-gaap-article; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-fin-gaap-article" (
 )
 INHERITS (isahl."zc_id_stan-fin-gaap");
 
 
---
--- Name: zc_id_stan-fin-ifrs; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-fin-ifrs" (
     fk_parent bigint
@@ -17258,18 +14919,12 @@ CREATE TABLE isahl."zc_id_stan-fin-ifrs" (
 INHERITS (isahl."zc_id_stan-fin");
 
 
---
--- Name: zc_id_stan-fin-ifrs-article; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-fin-ifrs-article" (
 )
 INHERITS (isahl."zc_id_stan-fin-ifrs");
 
 
---
--- Name: zc_id_stan-operation; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-operation" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17299,9 +14954,6 @@ CREATE TABLE isahl."zc_id_stan-operation" (
 INHERITS (isahl.zc_id_standard);
 
 
---
--- Name: zc_id_stan-prod_quality; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stan-prod_quality" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17329,9 +14981,6 @@ CREATE TABLE isahl."zc_id_stan-prod_quality" (
 INHERITS (isahl.zc_id_standard);
 
 
---
--- Name: zc_id_standard_r_formula; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_standard_r_formula (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17349,9 +14998,6 @@ CREATE TABLE isahl.zc_id_standard_r_formula (
 INHERITS (isahl.zc_ad_tensor_r_scalar);
 
 
---
--- Name: zc_id_standard_rr_law; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_standard_rr_law (
     id bigint NOT NULL
@@ -17359,9 +15005,6 @@ CREATE TABLE isahl.zc_id_standard_rr_law (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_standard_rr_reference; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_standard_rr_reference (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17379,9 +15022,6 @@ CREATE TABLE isahl.zc_id_standard_rr_reference (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_stat-appeal; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-appeal" (
     id bigint NOT NULL
@@ -17389,9 +15029,6 @@ CREATE TABLE isahl."zc_id_stat-appeal" (
 INHERITS (isahl.zc_id_statement);
 
 
---
--- Name: zc_id_stat-bok-voucher; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-bok-voucher" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17432,9 +15069,6 @@ CREATE TABLE isahl."zc_id_stat-bok-voucher" (
 INHERITS (isahl."zc_id_stat-sto-voucher");
 
 
---
--- Name: zc_id_stat-com-voucher; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-com-voucher" (
     id bigint NOT NULL,
@@ -17444,9 +15078,6 @@ CREATE TABLE isahl."zc_id_stat-com-voucher" (
 INHERITS (isahl."zc_id_stat-sto-voucher");
 
 
---
--- Name: zc_id_stat-inspection; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-inspection" (
     tk_batch_no bigint,
@@ -17457,9 +15088,6 @@ CREATE TABLE isahl."zc_id_stat-inspection" (
 INHERITS (isahl.zc_id_statement);
 
 
---
--- Name: zc_id_stat-maintenance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-maintenance" (
     id bigint NOT NULL,
@@ -17469,9 +15097,6 @@ CREATE TABLE isahl."zc_id_stat-maintenance" (
 INHERITS (isahl.zc_id_statement);
 
 
---
--- Name: zc_id_stat-slf-voucher; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-slf-voucher" (
     id bigint NOT NULL,
@@ -17481,9 +15106,6 @@ CREATE TABLE isahl."zc_id_stat-slf-voucher" (
 INHERITS (isahl."zc_id_stat-sto-voucher");
 
 
---
--- Name: zc_id_stat-smt-voucher; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-smt-voucher" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17522,9 +15144,6 @@ CREATE TABLE isahl."zc_id_stat-smt-voucher" (
 INHERITS (isahl."zc_id_stat-sto-voucher");
 
 
---
--- Name: zc_id_stat-smt-bank; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-smt-bank" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17563,9 +15182,6 @@ CREATE TABLE isahl."zc_id_stat-smt-bank" (
 INHERITS (isahl."zc_id_stat-smt-voucher");
 
 
---
--- Name: zc_id_stat-smt-cash; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-smt-cash" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17606,9 +15222,6 @@ CREATE TABLE isahl."zc_id_stat-smt-cash" (
 INHERITS (isahl."zc_id_stat-smt-voucher");
 
 
---
--- Name: zc_id_stat-smt-channel; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-smt-channel" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17649,9 +15262,6 @@ CREATE TABLE isahl."zc_id_stat-smt-channel" (
 INHERITS (isahl."zc_id_stat-smt-voucher");
 
 
---
--- Name: zc_id_stat-task; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-task" (
     id bigint NOT NULL,
@@ -17660,9 +15270,6 @@ CREATE TABLE isahl."zc_id_stat-task" (
 INHERITS (isahl.zc_id_statement);
 
 
---
--- Name: zc_id_stat-task_r_verify-status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-task_r_verify-status" (
     id bigint NOT NULL
@@ -17670,9 +15277,6 @@ CREATE TABLE isahl."zc_id_stat-task_r_verify-status" (
 INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
---
--- Name: zc_id_stat-task_rr_sto-voucher; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-task_rr_sto-voucher" (
     id bigint NOT NULL,
@@ -17681,9 +15285,6 @@ CREATE TABLE isahl."zc_id_stat-task_rr_sto-voucher" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_stat-task_rr_trade_order; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-task_rr_trade_order" (
     id bigint NOT NULL,
@@ -17692,9 +15293,6 @@ CREATE TABLE isahl."zc_id_stat-task_rr_trade_order" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_stat-training; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-training" (
     id bigint NOT NULL
@@ -17702,9 +15300,6 @@ CREATE TABLE isahl."zc_id_stat-training" (
 INHERITS (isahl.zc_id_statement);
 
 
---
--- Name: zc_id_stat-tsk-make; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-tsk-make" (
     id bigint NOT NULL
@@ -17712,9 +15307,6 @@ CREATE TABLE isahl."zc_id_stat-tsk-make" (
 INHERITS (isahl."zc_id_stat-task");
 
 
---
--- Name: zc_id_stat-tsk-requisition; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-tsk-requisition" (
     id bigint NOT NULL
@@ -17722,9 +15314,6 @@ CREATE TABLE isahl."zc_id_stat-tsk-requisition" (
 INHERITS (isahl."zc_id_stat-task");
 
 
---
--- Name: zc_id_stat-tsp-voucher; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-tsp-voucher" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17763,9 +15352,6 @@ CREATE TABLE isahl."zc_id_stat-tsp-voucher" (
 INHERITS (isahl."zc_id_stat-sto-voucher");
 
 
---
--- Name: zc_id_stat-volume; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-volume" (
     id bigint NOT NULL,
@@ -17775,9 +15361,6 @@ CREATE TABLE isahl."zc_id_stat-volume" (
 INHERITS (isahl.zc_id_statement);
 
 
---
--- Name: zc_id_stat-weight; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-weight" (
     id bigint NOT NULL,
@@ -17787,9 +15370,6 @@ CREATE TABLE isahl."zc_id_stat-weight" (
 INHERITS (isahl.zc_id_statement);
 
 
---
--- Name: zc_id_stat-whs-voucher; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stat-whs-voucher" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17828,9 +15408,6 @@ CREATE TABLE isahl."zc_id_stat-whs-voucher" (
 INHERITS (isahl."zc_id_stat-sto-voucher");
 
 
---
--- Name: zc_id_status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_status (
     created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_status_created_at_not_null1 NOT NULL,
@@ -17849,9 +15426,6 @@ CREATE TABLE isahl.zc_id_status (
 INHERITS (isahl.zc_id_object, isahl.zc_ad_scalar);
 
 
---
--- Name: zc_id_storage; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_storage (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17882,9 +15456,6 @@ CREATE TABLE isahl.zc_id_storage (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_stor-account; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-account" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17916,9 +15487,6 @@ CREATE TABLE isahl."zc_id_stor-account" (
 INHERITS (isahl.zc_id_storage);
 
 
---
--- Name: zc_id_stor-acc-bank; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-acc-bank" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17950,9 +15518,6 @@ CREATE TABLE isahl."zc_id_stor-acc-bank" (
 INHERITS (isahl."zc_id_stor-account");
 
 
---
--- Name: zc_id_stor-acc-business; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-acc-business" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17980,9 +15545,6 @@ CREATE TABLE isahl."zc_id_stor-acc-business" (
 INHERITS (isahl."zc_id_stor-account");
 
 
---
--- Name: zc_id_stor-acc-cash; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-acc-cash" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18010,9 +15572,6 @@ CREATE TABLE isahl."zc_id_stor-acc-cash" (
 INHERITS (isahl."zc_id_stor-account");
 
 
---
--- Name: zc_id_stor-acc-channel; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-acc-channel" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18040,9 +15599,6 @@ CREATE TABLE isahl."zc_id_stor-acc-channel" (
 INHERITS (isahl."zc_id_stor-account");
 
 
---
--- Name: zc_id_stor-acc-defect; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-acc-defect" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18070,9 +15626,6 @@ CREATE TABLE isahl."zc_id_stor-acc-defect" (
 INHERITS (isahl."zc_id_stor-account");
 
 
---
--- Name: zc_id_stor-acc-fund; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-acc-fund" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18100,9 +15653,6 @@ CREATE TABLE isahl."zc_id_stor-acc-fund" (
 INHERITS (isahl."zc_id_stor-account");
 
 
---
--- Name: zc_id_stor-acc-futures; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-acc-futures" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18130,9 +15680,6 @@ CREATE TABLE isahl."zc_id_stor-acc-futures" (
 INHERITS (isahl."zc_id_stor-account");
 
 
---
--- Name: zc_id_stor-acc-insurance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-acc-insurance" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18160,9 +15707,6 @@ CREATE TABLE isahl."zc_id_stor-acc-insurance" (
 INHERITS (isahl."zc_id_stor-account");
 
 
---
--- Name: zc_id_stor-acc-stock; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-acc-stock" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18190,9 +15734,6 @@ CREATE TABLE isahl."zc_id_stor-acc-stock" (
 INHERITS (isahl."zc_id_stor-account");
 
 
---
--- Name: zc_id_stor-container; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-container" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18220,9 +15761,6 @@ CREATE TABLE isahl."zc_id_stor-container" (
 INHERITS (isahl.zc_id_storage);
 
 
---
--- Name: zc_id_stor-container_r_tracking-status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-container_r_tracking-status" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18241,9 +15779,6 @@ CREATE TABLE isahl."zc_id_stor-container_r_tracking-status" (
 INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
---
--- Name: zc_id_stor-ctn-airplane; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-ctn-airplane" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18270,9 +15805,6 @@ CREATE TABLE isahl."zc_id_stor-ctn-airplane" (
 INHERITS (isahl."zc_id_stor-container");
 
 
---
--- Name: zc_id_stor-ctn-box; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-ctn-box" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18299,9 +15831,6 @@ CREATE TABLE isahl."zc_id_stor-ctn-box" (
 INHERITS (isahl."zc_id_stor-container");
 
 
---
--- Name: zc_id_stor-ctn-cargo; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-ctn-cargo" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18328,9 +15857,6 @@ CREATE TABLE isahl."zc_id_stor-ctn-cargo" (
 INHERITS (isahl."zc_id_stor-container");
 
 
---
--- Name: zc_id_stor-ctn-carton; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-ctn-carton" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18357,9 +15883,6 @@ CREATE TABLE isahl."zc_id_stor-ctn-carton" (
 INHERITS (isahl."zc_id_stor-container");
 
 
---
--- Name: zc_id_stor-data; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-data" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18387,9 +15910,6 @@ CREATE TABLE isahl."zc_id_stor-data" (
 INHERITS (isahl.zc_id_storage);
 
 
---
--- Name: zc_id_stor-ctn-fold; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-ctn-fold" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18416,9 +15936,6 @@ CREATE TABLE isahl."zc_id_stor-ctn-fold" (
 INHERITS (isahl."zc_id_stor-container", isahl."zc_id_stor-data");
 
 
---
--- Name: zc_id_stor-ctn-plate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-ctn-plate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18445,9 +15962,6 @@ CREATE TABLE isahl."zc_id_stor-ctn-plate" (
 INHERITS (isahl."zc_id_stor-container");
 
 
---
--- Name: zc_id_stor-ctn-railway; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-ctn-railway" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18474,9 +15988,6 @@ CREATE TABLE isahl."zc_id_stor-ctn-railway" (
 INHERITS (isahl."zc_id_stor-container");
 
 
---
--- Name: zc_id_stor-ctn-subj; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-ctn-subj" (
     id bigint NOT NULL,
@@ -18485,9 +15996,6 @@ CREATE TABLE isahl."zc_id_stor-ctn-subj" (
 INHERITS (isahl."zc_id_stor-container");
 
 
---
--- Name: zc_id_stor-ctn-tote; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-ctn-tote" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18514,9 +16022,6 @@ CREATE TABLE isahl."zc_id_stor-ctn-tote" (
 INHERITS (isahl."zc_id_stor-container");
 
 
---
--- Name: zc_id_stor-ctn-vehicle; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-ctn-vehicle" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18544,9 +16049,6 @@ CREATE TABLE isahl."zc_id_stor-ctn-vehicle" (
 INHERITS (isahl."zc_id_stor-container", isahl.zc_id_carrier);
 
 
---
--- Name: zc_id_stor-ctn-vessel; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-ctn-vessel" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18573,9 +16075,6 @@ CREATE TABLE isahl."zc_id_stor-ctn-vessel" (
 INHERITS (isahl."zc_id_stor-container");
 
 
---
--- Name: zc_id_stor-place; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-place" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18603,9 +16102,6 @@ CREATE TABLE isahl."zc_id_stor-place" (
 INHERITS (isahl.zc_id_place, isahl.zc_id_storage);
 
 
---
--- Name: zc_id_stor-plc-airport; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-plc-airport" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18632,9 +16128,6 @@ CREATE TABLE isahl."zc_id_stor-plc-airport" (
 INHERITS (isahl."zc_id_stor-place");
 
 
---
--- Name: zc_id_stor-plc-asset; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-plc-asset" (
     id bigint NOT NULL
@@ -18642,9 +16135,6 @@ CREATE TABLE isahl."zc_id_stor-plc-asset" (
 INHERITS (isahl."zc_id_stor-place");
 
 
---
--- Name: zc_id_stor-plc-bin; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-plc-bin" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18672,9 +16162,6 @@ CREATE TABLE isahl."zc_id_stor-plc-bin" (
 INHERITS (isahl."zc_id_stor-place");
 
 
---
--- Name: zc_id_stor-plc-channel; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-plc-channel" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18701,9 +16188,6 @@ CREATE TABLE isahl."zc_id_stor-plc-channel" (
 INHERITS (isahl."zc_id_stor-place");
 
 
---
--- Name: zc_id_stor-plc-division; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-plc-division" (
     id bigint NOT NULL
@@ -18711,9 +16195,6 @@ CREATE TABLE isahl."zc_id_stor-plc-division" (
 INHERITS (isahl."zc_id_stor-place");
 
 
---
--- Name: zc_id_stor-plc-dock; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-plc-dock" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18740,9 +16221,6 @@ CREATE TABLE isahl."zc_id_stor-plc-dock" (
 INHERITS (isahl."zc_id_stor-place");
 
 
---
--- Name: zc_id_stor-plc-garage; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-plc-garage" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18769,9 +16247,6 @@ CREATE TABLE isahl."zc_id_stor-plc-garage" (
 INHERITS (isahl."zc_id_stor-place");
 
 
---
--- Name: zc_id_stor-plc-path; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-plc-path" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18798,9 +16273,6 @@ CREATE TABLE isahl."zc_id_stor-plc-path" (
 INHERITS (isahl."zc_id_stor-data", isahl."zc_id_stor-place");
 
 
---
--- Name: zc_id_stor-plc-platform; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-plc-platform" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18827,9 +16299,6 @@ CREATE TABLE isahl."zc_id_stor-plc-platform" (
 INHERITS (isahl."zc_id_stor-place");
 
 
---
--- Name: zc_id_stor-plc-repository; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-plc-repository" (
     id bigint NOT NULL
@@ -18837,9 +16306,6 @@ CREATE TABLE isahl."zc_id_stor-plc-repository" (
 INHERITS (isahl."zc_id_stor-data", isahl."zc_id_stor-place");
 
 
---
--- Name: zc_id_stor-plc-shipping_port; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-plc-shipping_port" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18867,9 +16333,6 @@ CREATE TABLE isahl."zc_id_stor-plc-shipping_port" (
 INHERITS (isahl."zc_id_stor-place");
 
 
---
--- Name: zc_id_stor-plc-stop; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-plc-stop" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18896,9 +16359,6 @@ CREATE TABLE isahl."zc_id_stor-plc-stop" (
 INHERITS (isahl."zc_id_stor-place");
 
 
---
--- Name: zc_id_stor-plc-terminal; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-plc-terminal" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18925,9 +16385,6 @@ CREATE TABLE isahl."zc_id_stor-plc-terminal" (
 INHERITS (isahl."zc_id_stor-place");
 
 
---
--- Name: zc_id_stor-plc-url; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-plc-url" (
     created_at timestamp with time zone DEFAULT now(),
@@ -18939,9 +16396,6 @@ CREATE TABLE isahl."zc_id_stor-plc-url" (
 INHERITS (isahl.zc_id_place, isahl."zc_id_stor-data");
 
 
---
--- Name: zc_id_stor-plc-warehouse; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-plc-warehouse" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18968,9 +16422,6 @@ CREATE TABLE isahl."zc_id_stor-plc-warehouse" (
 INHERITS (isahl."zc_id_stor-place");
 
 
---
--- Name: zc_id_stor-plc-yard; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-plc-yard" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -18997,9 +16448,6 @@ CREATE TABLE isahl."zc_id_stor-plc-yard" (
 INHERITS (isahl."zc_id_stor-place");
 
 
---
--- Name: zc_id_stor-traffic_line; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-traffic_line" (
     id bigint NOT NULL,
@@ -19008,9 +16456,6 @@ CREATE TABLE isahl."zc_id_stor-traffic_line" (
 INHERITS (isahl.zc_id_storage);
 
 
---
--- Name: zc_id_stor-traffic_line_rr_stop; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stor-traffic_line_rr_stop" (
     id bigint NOT NULL,
@@ -19020,9 +16465,6 @@ CREATE TABLE isahl."zc_id_stor-traffic_line_rr_stop" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_storage_rr_stock-in; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_storage_rr_stock-in" (
     id bigint NOT NULL,
@@ -19031,9 +16473,6 @@ CREATE TABLE isahl."zc_id_storage_rr_stock-in" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_stus-storage; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-storage" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19052,9 +16491,6 @@ CREATE TABLE isahl."zc_id_stus-storage" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-account; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-account" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19073,9 +16509,6 @@ CREATE TABLE isahl."zc_id_stus-account" (
 INHERITS (isahl."zc_id_stus-storage");
 
 
---
--- Name: zc_id_stus-subject; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-subject" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19094,9 +16527,6 @@ CREATE TABLE isahl."zc_id_stus-subject" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-agent; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-agent" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19115,9 +16545,6 @@ CREATE TABLE isahl."zc_id_stus-agent" (
 INHERITS (isahl."zc_id_stus-subject");
 
 
---
--- Name: zc_id_stus-agreement; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-agreement" (
     id bigint NOT NULL
@@ -19125,9 +16552,6 @@ CREATE TABLE isahl."zc_id_stus-agreement" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-approve; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-approve" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19146,9 +16570,6 @@ CREATE TABLE isahl."zc_id_stus-approve" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-audit; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-audit" (
     id bigint NOT NULL
@@ -19156,9 +16577,6 @@ CREATE TABLE isahl."zc_id_stus-audit" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-bill; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-bill" (
     id bigint NOT NULL
@@ -19166,9 +16584,6 @@ CREATE TABLE isahl."zc_id_stus-bill" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-billing; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-billing" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19187,9 +16602,6 @@ CREATE TABLE isahl."zc_id_stus-billing" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-billing_verify; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-billing_verify" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19208,9 +16620,6 @@ CREATE TABLE isahl."zc_id_stus-billing_verify" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-bin_location; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-bin_location" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19229,9 +16638,6 @@ CREATE TABLE isahl."zc_id_stus-bin_location" (
 INHERITS (isahl."zc_id_stus-storage");
 
 
---
--- Name: zc_id_stus-bom; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-bom" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19250,9 +16656,6 @@ CREATE TABLE isahl."zc_id_stus-bom" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-certification; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-certification" (
     id bigint NOT NULL
@@ -19260,9 +16663,6 @@ CREATE TABLE isahl."zc_id_stus-certification" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-place; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-place" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19281,9 +16681,6 @@ CREATE TABLE isahl."zc_id_stus-place" (
 INHERITS (isahl."zc_id_stus-storage");
 
 
---
--- Name: zc_id_stus-channel; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-channel" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19302,9 +16699,6 @@ CREATE TABLE isahl."zc_id_stus-channel" (
 INHERITS (isahl."zc_id_stus-place");
 
 
---
--- Name: zc_id_stus-collect; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-collect" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19323,9 +16717,6 @@ CREATE TABLE isahl."zc_id_stus-collect" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-commit; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-commit" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19344,9 +16735,6 @@ CREATE TABLE isahl."zc_id_stus-commit" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-contact_infos; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-contact_infos" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19365,9 +16753,6 @@ CREATE TABLE isahl."zc_id_stus-contact_infos" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-contacts; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-contacts" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19386,9 +16771,6 @@ CREATE TABLE isahl."zc_id_stus-contacts" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-container; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-container" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19407,9 +16789,6 @@ CREATE TABLE isahl."zc_id_stus-container" (
 INHERITS (isahl."zc_id_stus-storage");
 
 
---
--- Name: zc_id_stus-contract; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-contract" (
     id bigint NOT NULL
@@ -19417,9 +16796,6 @@ CREATE TABLE isahl."zc_id_stus-contract" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-counting; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-counting" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19438,9 +16814,6 @@ CREATE TABLE isahl."zc_id_stus-counting" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-country; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-country" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19459,9 +16832,6 @@ CREATE TABLE isahl."zc_id_stus-country" (
 INHERITS (isahl."zc_id_stus-subject");
 
 
---
--- Name: zc_id_stus-org; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-org" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19480,9 +16850,6 @@ CREATE TABLE isahl."zc_id_stus-org" (
 INHERITS (isahl."zc_id_stus-subject");
 
 
---
--- Name: zc_id_stus-department; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-department" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19501,9 +16868,6 @@ CREATE TABLE isahl."zc_id_stus-department" (
 INHERITS (isahl."zc_id_stus-org");
 
 
---
--- Name: zc_id_stus-detail; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-detail" (
     id bigint NOT NULL
@@ -19511,9 +16875,6 @@ CREATE TABLE isahl."zc_id_stus-detail" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-device; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-device" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19532,9 +16893,6 @@ CREATE TABLE isahl."zc_id_stus-device" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-duty; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-duty" (
     id bigint NOT NULL
@@ -19542,9 +16900,6 @@ CREATE TABLE isahl."zc_id_stus-duty" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-employ; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-employ" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19563,9 +16918,6 @@ CREATE TABLE isahl."zc_id_stus-employ" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-entity; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-entity" (
     id bigint NOT NULL
@@ -19573,9 +16925,6 @@ CREATE TABLE isahl."zc_id_stus-entity" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-event; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-event" (
     id bigint NOT NULL
@@ -19583,9 +16932,6 @@ CREATE TABLE isahl."zc_id_stus-event" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-file; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-file" (
     id bigint NOT NULL
@@ -19593,9 +16939,6 @@ CREATE TABLE isahl."zc_id_stus-file" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-identity; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-identity" (
     id bigint NOT NULL
@@ -19603,18 +16946,12 @@ CREATE TABLE isahl."zc_id_stus-identity" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-inspection; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-inspection" (
 )
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-inv-voucher; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-inv-voucher" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19633,9 +16970,6 @@ CREATE TABLE isahl."zc_id_stus-inv-voucher" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-inventory; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-inventory" (
     id bigint NOT NULL
@@ -19643,9 +16977,6 @@ CREATE TABLE isahl."zc_id_stus-inventory" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-invoice_issue; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-invoice_issue" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19664,9 +16995,6 @@ CREATE TABLE isahl."zc_id_stus-invoice_issue" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-invoice_verify; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-invoice_verify" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19685,18 +17013,12 @@ CREATE TABLE isahl."zc_id_stus-invoice_verify" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-iot; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-iot" (
 )
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-legal_person; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-legal_person" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19715,9 +17037,6 @@ CREATE TABLE isahl."zc_id_stus-legal_person" (
 INHERITS (isahl."zc_id_stus-org");
 
 
---
--- Name: zc_id_stus-license; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-license" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19736,9 +17055,6 @@ CREATE TABLE isahl."zc_id_stus-license" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-marital; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-marital" (
     id bigint NOT NULL
@@ -19746,9 +17062,6 @@ CREATE TABLE isahl."zc_id_stus-marital" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-message; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-message" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19767,9 +17080,6 @@ CREATE TABLE isahl."zc_id_stus-message" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-ministry; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-ministry" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19788,9 +17098,6 @@ CREATE TABLE isahl."zc_id_stus-ministry" (
 INHERITS (isahl."zc_id_stus-subject");
 
 
---
--- Name: zc_id_stus-natural; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-natural" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19809,9 +17116,6 @@ CREATE TABLE isahl."zc_id_stus-natural" (
 INHERITS (isahl."zc_id_stus-subject");
 
 
---
--- Name: zc_id_stus-operation; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-operation" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19830,9 +17134,6 @@ CREATE TABLE isahl."zc_id_stus-operation" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-payment; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-payment" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19851,9 +17152,6 @@ CREATE TABLE isahl."zc_id_stus-payment" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-plan; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-plan" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19872,9 +17170,6 @@ CREATE TABLE isahl."zc_id_stus-plan" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-position; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-position" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19893,9 +17188,6 @@ CREATE TABLE isahl."zc_id_stus-position" (
 INHERITS (isahl."zc_id_stus-subject");
 
 
---
--- Name: zc_id_stus-pricing; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-pricing" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19914,9 +17206,6 @@ CREATE TABLE isahl."zc_id_stus-pricing" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-process; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-process" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19935,9 +17224,6 @@ CREATE TABLE isahl."zc_id_stus-process" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-production; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-production" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19956,9 +17242,6 @@ CREATE TABLE isahl."zc_id_stus-production" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-prod-made; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-prod-made" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19977,9 +17260,6 @@ CREATE TABLE isahl."zc_id_stus-prod-made" (
 INHERITS (isahl."zc_id_stus-production");
 
 
---
--- Name: zc_id_stus-prod-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-prod-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -19998,9 +17278,6 @@ CREATE TABLE isahl."zc_id_stus-prod-purchase" (
 INHERITS (isahl."zc_id_stus-production");
 
 
---
--- Name: zc_id_stus-prod-request; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-prod-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20019,9 +17296,6 @@ CREATE TABLE isahl."zc_id_stus-prod-request" (
 INHERITS (isahl."zc_id_stus-production");
 
 
---
--- Name: zc_id_stus-prod-sales; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-prod-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20040,9 +17314,6 @@ CREATE TABLE isahl."zc_id_stus-prod-sales" (
 INHERITS (isahl."zc_id_stus-production");
 
 
---
--- Name: zc_id_stus-project; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-project" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20061,9 +17332,6 @@ CREATE TABLE isahl."zc_id_stus-project" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-protocol; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-protocol" (
     id bigint NOT NULL
@@ -20071,9 +17339,6 @@ CREATE TABLE isahl."zc_id_stus-protocol" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-trade; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-trade" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20092,9 +17357,6 @@ CREATE TABLE isahl."zc_id_stus-trade" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-purchase; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20113,9 +17375,6 @@ CREATE TABLE isahl."zc_id_stus-purchase" (
 INHERITS (isahl."zc_id_stus-trade");
 
 
---
--- Name: zc_id_stus-retail; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-retail" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20134,9 +17393,6 @@ CREATE TABLE isahl."zc_id_stus-retail" (
 INHERITS (isahl."zc_id_stus-trade");
 
 
---
--- Name: zc_id_stus-service; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-service" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20155,9 +17411,6 @@ CREATE TABLE isahl."zc_id_stus-service" (
 INHERITS (isahl."zc_id_stus-trade");
 
 
---
--- Name: zc_id_stus-smt-voucher; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-smt-voucher" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20176,9 +17429,6 @@ CREATE TABLE isahl."zc_id_stus-smt-voucher" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-standard; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-standard" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20197,9 +17447,6 @@ CREATE TABLE isahl."zc_id_stus-standard" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-statement; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-statement" (
     id bigint NOT NULL
@@ -20207,9 +17454,6 @@ CREATE TABLE isahl."zc_id_stus-statement" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-supranational; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-supranational" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20228,9 +17472,6 @@ CREATE TABLE isahl."zc_id_stus-supranational" (
 INHERITS (isahl."zc_id_stus-subject");
 
 
---
--- Name: zc_id_stus-task; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-task" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20249,9 +17490,6 @@ CREATE TABLE isahl."zc_id_stus-task" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-template; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-template" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20270,9 +17508,6 @@ CREATE TABLE isahl."zc_id_stus-template" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-threads; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-threads" (
     id bigint NOT NULL
@@ -20280,9 +17515,6 @@ CREATE TABLE isahl."zc_id_stus-threads" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-tracking_log; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-tracking_log" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20301,9 +17533,6 @@ CREATE TABLE isahl."zc_id_stus-tracking_log" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-tracking_transport; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-tracking_transport" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20322,9 +17551,6 @@ CREATE TABLE isahl."zc_id_stus-tracking_transport" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-training; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-training" (
     id bigint NOT NULL
@@ -20332,9 +17558,6 @@ CREATE TABLE isahl."zc_id_stus-training" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-tsk_verify; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-tsk_verify" (
     id bigint NOT NULL
@@ -20342,9 +17565,6 @@ CREATE TABLE isahl."zc_id_stus-tsk_verify" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-vehicle; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-vehicle" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20363,9 +17583,6 @@ CREATE TABLE isahl."zc_id_stus-vehicle" (
 INHERITS (isahl."zc_id_stus-container");
 
 
---
--- Name: zc_id_stus-version; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-version" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20384,9 +17601,6 @@ CREATE TABLE isahl."zc_id_stus-version" (
 INHERITS (isahl.zc_id_status);
 
 
---
--- Name: zc_id_stus-vessel; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_stus-vessel" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20405,9 +17619,6 @@ CREATE TABLE isahl."zc_id_stus-vessel" (
 INHERITS (isahl."zc_id_stus-vehicle");
 
 
---
--- Name: zc_id_subj-sovereign; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-sovereign" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20435,9 +17646,6 @@ CREATE TABLE isahl."zc_id_subj-sovereign" (
 INHERITS (isahl.zc_id_subjects);
 
 
---
--- Name: zc_id_subj-country; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-country" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20470,9 +17678,6 @@ CREATE TABLE isahl."zc_id_subj-country" (
 INHERITS (isahl."zc_id_subj-sovereign");
 
 
---
--- Name: zc_id_subj-employee_r_employ-status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-employee_r_employ-status" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20491,9 +17696,6 @@ CREATE TABLE isahl."zc_id_subj-employee_r_employ-status" (
 INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
---
--- Name: zc_id_subj-employee_rr_client; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-employee_rr_client" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20512,9 +17714,6 @@ CREATE TABLE isahl."zc_id_subj-employee_rr_client" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_subj-group; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-group" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20542,9 +17741,6 @@ CREATE TABLE isahl."zc_id_subj-group" (
 INHERITS (isahl.zc_id_subjects);
 
 
---
--- Name: zc_id_subj-org_rr_member; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-org_rr_member" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20562,9 +17758,6 @@ CREATE TABLE isahl."zc_id_subj-org_rr_member" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_subj-group_rr_member; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-group_rr_member" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20584,9 +17777,6 @@ CREATE TABLE isahl."zc_id_subj-group_rr_member" (
 INHERITS (isahl."zc_id_subj-org_rr_member");
 
 
---
--- Name: zc_id_subj-group_rr_project; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-group_rr_project" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20604,9 +17794,6 @@ CREATE TABLE isahl."zc_id_subj-group_rr_project" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_subj-hierarchy_rr_subordinate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-hierarchy_rr_subordinate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20625,18 +17812,12 @@ CREATE TABLE isahl."zc_id_subj-hierarchy_rr_subordinate" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_subj-ministry_rr_servant; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-ministry_rr_servant" (
 )
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_subj-ministry_rr_subordinate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-ministry_rr_subordinate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20655,9 +17836,6 @@ CREATE TABLE isahl."zc_id_subj-ministry_rr_subordinate" (
 INHERITS (isahl."zc_id_subj-hierarchy_rr_subordinate");
 
 
---
--- Name: zc_id_subj-org_rr_employee; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-org_rr_employee" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20677,9 +17855,6 @@ CREATE TABLE isahl."zc_id_subj-org_rr_employee" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_subj-org_rr_position; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-org_rr_position" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20697,9 +17872,6 @@ CREATE TABLE isahl."zc_id_subj-org_rr_position" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_subj-org_rr_sharehold; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-org_rr_sharehold" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20717,9 +17889,6 @@ CREATE TABLE isahl."zc_id_subj-org_rr_sharehold" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_subj-org_rr_subordinate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-org_rr_subordinate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20739,9 +17908,6 @@ CREATE TABLE isahl."zc_id_subj-org_rr_subordinate" (
 INHERITS (isahl."zc_id_subj-hierarchy_rr_subordinate");
 
 
---
--- Name: zc_id_subj-position; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-position" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20771,9 +17937,6 @@ CREATE TABLE isahl."zc_id_subj-position" (
 INHERITS (isahl.zc_id_subjects);
 
 
---
--- Name: zc_id_subj-post_rr_employee; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-post_rr_employee" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20791,9 +17954,6 @@ CREATE TABLE isahl."zc_id_subj-post_rr_employee" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_subj-post_rr_subordinate; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-post_rr_subordinate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20814,9 +17974,6 @@ CREATE TABLE isahl."zc_id_subj-post_rr_subordinate" (
 INHERITS (isahl."zc_id_subj-hierarchy_rr_subordinate");
 
 
---
--- Name: zc_id_subj-post_rr_view; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-post_rr_view" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20834,18 +17991,12 @@ CREATE TABLE isahl."zc_id_subj-post_rr_view" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_subj-sovereign_rr_ministry; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-sovereign_rr_ministry" (
 )
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_subj-supranational; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_subj-supranational" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20873,9 +18024,6 @@ CREATE TABLE isahl."zc_id_subj-supranational" (
 INHERITS (isahl."zc_id_subj-sovereign");
 
 
---
--- Name: zc_id_subjects_rr_storage; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_subjects_rr_storage (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20895,9 +18043,6 @@ CREATE TABLE isahl.zc_id_subjects_rr_storage (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_subjects_rr_account; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_subjects_rr_account (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20916,9 +18061,6 @@ CREATE TABLE isahl.zc_id_subjects_rr_account (
 INHERITS (isahl.zc_id_subjects_rr_storage);
 
 
---
--- Name: zc_id_subjects_rr_container; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_subjects_rr_container (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20936,9 +18078,6 @@ CREATE TABLE isahl.zc_id_subjects_rr_container (
 INHERITS (isahl.zc_id_subjects_rr_storage);
 
 
---
--- Name: zc_id_subjects_rr_partner; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_subjects_rr_partner (
     id bigint NOT NULL
@@ -20946,9 +18085,6 @@ CREATE TABLE isahl.zc_id_subjects_rr_partner (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_subjects_rr_place; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_subjects_rr_place (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20966,9 +18102,6 @@ CREATE TABLE isahl.zc_id_subjects_rr_place (
 INHERITS (isahl.zc_id_subjects_rr_storage);
 
 
---
--- Name: zc_id_tags-baseline; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-baseline" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20988,9 +18121,6 @@ CREATE TABLE isahl."zc_id_tags-baseline" (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-batch; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-batch" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21011,9 +18141,6 @@ CREATE TABLE isahl."zc_id_tags-batch" (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-bom_item; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-bom_item" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21033,9 +18160,6 @@ CREATE TABLE isahl."zc_id_tags-bom_item" (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-channel; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-channel" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21055,9 +18179,6 @@ CREATE TABLE isahl."zc_id_tags-channel" (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-contacts; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-contacts" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21082,18 +18203,12 @@ CREATE TABLE isahl."zc_id_tags-contacts" (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-event; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-event" (
 )
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-finance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-finance" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21113,9 +18228,6 @@ CREATE TABLE isahl."zc_id_tags-finance" (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-hscode; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-hscode" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21135,9 +18247,6 @@ CREATE TABLE isahl."zc_id_tags-hscode" (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-info_title; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-info_title" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21157,9 +18266,6 @@ CREATE TABLE isahl."zc_id_tags-info_title" (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-milestone; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-milestone" (
     id bigint NOT NULL
@@ -21167,18 +18273,12 @@ CREATE TABLE isahl."zc_id_tags-milestone" (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-parties; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-parties" (
 )
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-plan_action; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-plan_action" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21198,9 +18298,6 @@ CREATE TABLE isahl."zc_id_tags-plan_action" (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-post_view; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-post_view" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21221,9 +18318,6 @@ CREATE TABLE isahl."zc_id_tags-post_view" (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-project; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-project" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21243,9 +18337,6 @@ CREATE TABLE isahl."zc_id_tags-project" (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-r-type; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-r-type" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21265,9 +18356,6 @@ CREATE TABLE isahl."zc_id_tags-r-type" (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-r-type-alias; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-r-type-alias" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21287,18 +18375,12 @@ CREATE TABLE isahl."zc_id_tags-r-type-alias" (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-skill; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-skill" (
 )
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-version; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-version" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21322,9 +18404,6 @@ CREATE TABLE isahl."zc_id_tags-version" (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags-warehousing; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tags-warehousing" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21344,9 +18423,6 @@ CREATE TABLE isahl."zc_id_tags-warehousing" (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_tags_poi; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_tags_poi (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21366,9 +18442,6 @@ CREATE TABLE isahl.zc_id_tags_poi (
 INHERITS (isahl.zc_id_tags);
 
 
---
--- Name: zc_id_task; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_task (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21401,18 +18474,12 @@ CREATE TABLE isahl.zc_id_task (
 INHERITS (isahl.zc_id_version, isahl."zc_id_proc-context");
 
 
---
--- Name: zc_id_task-commission; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_task-commission" (
 )
 INHERITS (isahl.zc_id_task);
 
 
---
--- Name: zc_id_task-design; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_task-design" (
     id bigint NOT NULL
@@ -21420,9 +18487,6 @@ CREATE TABLE isahl."zc_id_task-design" (
 INHERITS (isahl.zc_id_task);
 
 
---
--- Name: zc_id_task-develop; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_task-develop" (
     id bigint NOT NULL
@@ -21430,9 +18494,6 @@ CREATE TABLE isahl."zc_id_task-develop" (
 INHERITS (isahl.zc_id_task);
 
 
---
--- Name: zc_id_task-fix; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_task-fix" (
     id bigint NOT NULL
@@ -21440,9 +18501,6 @@ CREATE TABLE isahl."zc_id_task-fix" (
 INHERITS (isahl.zc_id_task);
 
 
---
--- Name: zc_id_task-pay; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_task-pay" (
     id bigint NOT NULL
@@ -21450,9 +18508,6 @@ CREATE TABLE isahl."zc_id_task-pay" (
 INHERITS (isahl.zc_id_task);
 
 
---
--- Name: zc_id_task-storage; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_task-storage" (
     id bigint NOT NULL
@@ -21460,9 +18515,6 @@ CREATE TABLE isahl."zc_id_task-storage" (
 INHERITS (isahl.zc_id_task);
 
 
---
--- Name: zc_id_task-testing; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_task-testing" (
     ck_category bigint
@@ -21470,9 +18522,6 @@ CREATE TABLE isahl."zc_id_task-testing" (
 INHERITS (isahl.zc_id_task);
 
 
---
--- Name: zc_id_task_rr_bill; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_task_rr_bill (
     id bigint NOT NULL
@@ -21480,9 +18529,6 @@ CREATE TABLE isahl.zc_id_task_rr_bill (
 INHERITS (isahl.zc_id_lifecycle_rr_foreign);
 
 
---
--- Name: zc_id_task_rr_dependency; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_task_rr_dependency (
     id bigint NOT NULL
@@ -21490,9 +18536,6 @@ CREATE TABLE isahl.zc_id_task_rr_dependency (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_task_rr_reason; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_task_rr_reason (
     id bigint NOT NULL
@@ -21500,9 +18543,6 @@ CREATE TABLE isahl.zc_id_task_rr_reason (
 INHERITS (isahl.zc_id_lifecycle_rr_foreign);
 
 
---
--- Name: zc_id_threads; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_threads (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21527,9 +18567,6 @@ CREATE TABLE isahl.zc_id_threads (
 INHERITS (isahl.zc_id_lifecycle);
 
 
---
--- Name: zc_id_thre-ai_session; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_thre-ai_session" (
     context jsonb,
@@ -21538,9 +18575,6 @@ CREATE TABLE isahl."zc_id_thre-ai_session" (
 INHERITS (isahl.zc_id_threads);
 
 
---
--- Name: zc_id_thre-meeting; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_thre-meeting" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21572,18 +18606,12 @@ CREATE TABLE isahl."zc_id_thre-meeting" (
 INHERITS (isahl.zc_id_threads, isahl.zc_id_plan);
 
 
---
--- Name: zc_id_thre-mq_topic; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_thre-mq_topic" (
 )
 INHERITS (isahl.zc_id_threads);
 
 
---
--- Name: zc_id_thread_rr_topic-x; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_thread_rr_topic-x" (
     id bigint NOT NULL
@@ -21591,9 +18619,6 @@ CREATE TABLE isahl."zc_id_thread_rr_topic-x" (
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
---
--- Name: zc_id_tick-pickup; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_tick-pickup" (
     id bigint NOT NULL
@@ -21601,9 +18626,6 @@ CREATE TABLE isahl."zc_id_tick-pickup" (
 INHERITS (isahl."zc_id_bill-ticket");
 
 
---
--- Name: zc_id_unit; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl.zc_id_unit (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21627,9 +18649,6 @@ CREATE TABLE isahl.zc_id_unit (
 INHERITS (isahl.zc_id_object, isahl.zc_ad_scalar);
 
 
---
--- Name: zc_id_unit-angle; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-angle" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21654,9 +18673,6 @@ CREATE TABLE isahl."zc_id_unit-angle" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-pricing; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-pricing" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21681,9 +18697,6 @@ CREATE TABLE isahl."zc_id_unit-pricing" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-area; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-area" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21708,9 +18721,6 @@ CREATE TABLE isahl."zc_id_unit-area" (
 INHERITS (isahl."zc_id_unit-pricing");
 
 
---
--- Name: zc_id_unit-common; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-common" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21735,9 +18745,6 @@ CREATE TABLE isahl."zc_id_unit-common" (
 INHERITS (isahl."zc_id_unit-pricing");
 
 
---
--- Name: zc_id_unit-container; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-container" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21762,9 +18769,6 @@ CREATE TABLE isahl."zc_id_unit-container" (
 INHERITS (isahl."zc_id_unit-pricing");
 
 
---
--- Name: zc_id_unit-currency; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-currency" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21789,9 +18793,6 @@ CREATE TABLE isahl."zc_id_unit-currency" (
 INHERITS (isahl."zc_id_unit-pricing");
 
 
---
--- Name: zc_id_unit-current; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-current" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21816,9 +18817,6 @@ CREATE TABLE isahl."zc_id_unit-current" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-data; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-data" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21843,9 +18841,6 @@ CREATE TABLE isahl."zc_id_unit-data" (
 INHERITS (isahl."zc_id_unit-pricing");
 
 
---
--- Name: zc_id_unit-density; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-density" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21870,9 +18865,6 @@ CREATE TABLE isahl."zc_id_unit-density" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-display; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-display" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21897,9 +18889,6 @@ CREATE TABLE isahl."zc_id_unit-display" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-distance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-distance" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21924,9 +18913,6 @@ CREATE TABLE isahl."zc_id_unit-distance" (
 INHERITS (isahl."zc_id_unit-pricing");
 
 
---
--- Name: zc_id_unit-duration; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-duration" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21951,9 +18937,6 @@ CREATE TABLE isahl."zc_id_unit-duration" (
 INHERITS (isahl."zc_id_unit-pricing");
 
 
---
--- Name: zc_id_unit-energy; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-energy" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21978,9 +18961,6 @@ CREATE TABLE isahl."zc_id_unit-energy" (
 INHERITS (isahl."zc_id_unit-pricing");
 
 
---
--- Name: zc_id_unit-frequency; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-frequency" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22005,9 +18985,6 @@ CREATE TABLE isahl."zc_id_unit-frequency" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-geo; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-geo" (
     id bigint NOT NULL
@@ -22015,9 +18992,6 @@ CREATE TABLE isahl."zc_id_unit-geo" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-illuminance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-illuminance" (
     id bigint NOT NULL
@@ -22025,9 +18999,6 @@ CREATE TABLE isahl."zc_id_unit-illuminance" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-intensity; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-intensity" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22052,9 +19023,6 @@ CREATE TABLE isahl."zc_id_unit-intensity" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-luminance; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-luminance" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22079,9 +19047,6 @@ CREATE TABLE isahl."zc_id_unit-luminance" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-magnetic_field_strength; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-magnetic_field_strength" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22106,9 +19071,6 @@ CREATE TABLE isahl."zc_id_unit-magnetic_field_strength" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-magnetic_flux; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-magnetic_flux" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22133,9 +19095,6 @@ CREATE TABLE isahl."zc_id_unit-magnetic_flux" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-power; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-power" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22160,9 +19119,6 @@ CREATE TABLE isahl."zc_id_unit-power" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-pressure; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-pressure" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22187,9 +19143,6 @@ CREATE TABLE isahl."zc_id_unit-pressure" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-price; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-price" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22214,9 +19167,6 @@ CREATE TABLE isahl."zc_id_unit-price" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-radiation; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-radiation" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22241,9 +19191,6 @@ CREATE TABLE isahl."zc_id_unit-radiation" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-speed; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-speed" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22268,9 +19215,6 @@ CREATE TABLE isahl."zc_id_unit-speed" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-stress; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-stress" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22295,9 +19239,6 @@ CREATE TABLE isahl."zc_id_unit-stress" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-temperature; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-temperature" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22322,9 +19263,6 @@ CREATE TABLE isahl."zc_id_unit-temperature" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-voltage; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-voltage" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22349,9 +19287,6 @@ CREATE TABLE isahl."zc_id_unit-voltage" (
 INHERITS (isahl.zc_id_unit);
 
 
---
--- Name: zc_id_unit-volume; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-volume" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22376,9 +19311,6 @@ CREATE TABLE isahl."zc_id_unit-volume" (
 INHERITS (isahl."zc_id_unit-pricing");
 
 
---
--- Name: zc_id_unit-weight; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-weight" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22403,9 +19335,6 @@ CREATE TABLE isahl."zc_id_unit-weight" (
 INHERITS (isahl."zc_id_unit-pricing");
 
 
---
--- Name: zc_id_unit-working; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_unit-working" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22430,9 +19359,6 @@ CREATE TABLE isahl."zc_id_unit-working" (
 INHERITS (isahl."zc_id_unit-pricing");
 
 
---
--- Name: zc_id_vers-context_r_baseline; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_vers-context_r_baseline" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22450,9 +19376,6 @@ CREATE TABLE isahl."zc_id_vers-context_r_baseline" (
 INHERITS (isahl.zc_id_lifecycle_r_tags);
 
 
---
--- Name: zc_id_vers-context_r_ver-status; Type: TABLE; Schema: isahl; Owner: -
---
 
 CREATE TABLE isahl."zc_id_vers-context_r_ver-status" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22471,9 +19394,6 @@ CREATE TABLE isahl."zc_id_vers-context_r_ver-status" (
 INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
---
--- Name: zuid_seq; Type: SEQUENCE; Schema: isahl; Owner: -
---
 
 CREATE SEQUENCE isahl.zuid_seq
     START WITH 1
@@ -22483,9 +19403,6 @@ CREATE SEQUENCE isahl.zuid_seq
     CACHE 1;
 
 
---
--- Name: zuid_sequence; Type: SEQUENCE; Schema: isahl; Owner: -
---
 
 CREATE SEQUENCE isahl.zuid_sequence
     START WITH 0
@@ -22496,22745 +19413,13394 @@ CREATE SEQUENCE isahl.zuid_sequence
     CYCLE;
 
 
---
--- Name: zc_id_agre-pricing created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_agre-pricing" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_agre-pricing updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_agre-pricing" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_agre-pricing id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_agre-pricing" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_agre-tolerance created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_agre-tolerance" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_agre-tolerance updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_agre-tolerance" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_agre-tolerance id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_agre-tolerance" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_agreement_r_calc created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_agreement_r_calc ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_agreement_r_calc updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_agreement_r_calc ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_agreement_r_term created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_agreement_r_term ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_agreement_r_term updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_agreement_r_term ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_agreement_r_term id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_agreement_r_term ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((216)::bigint);
 
 
---
--- Name: zc_id_appr-authorization created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-authorization" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_appr-authorization updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-authorization" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_appr-code-review created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-code-review" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_appr-code-review updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-code-review" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_appr-damage created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-damage" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_appr-damage updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-damage" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_appr-damage id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-damage" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_appr-payment created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-payment" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_appr-payment updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-payment" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_appr-payment_rr_invoice created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_invoice" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_appr-payment_rr_invoice updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_invoice" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_appr-payment_rr_smt-voucher created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_smt-voucher" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_appr-payment_rr_smt-voucher updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_smt-voucher" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_appr-process created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-process" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_appr-process updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-process" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_appr-process id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-process" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_attachment created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_attachment ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_attachment updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_attachment ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_audit created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_audit ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_audit updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_audit ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_audit_rr_auditee created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_audit_rr_auditee ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_audit_rr_auditee updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_audit_rr_auditee ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_audit_rr_conclusion created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_audit_rr_conclusion ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_audit_rr_conclusion updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_audit_rr_conclusion ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_bill-check_rr_plan-payment created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bill-check_rr_plan-payment" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_bill-check_rr_plan-payment updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bill-check_rr_plan-payment" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_bill-ticket created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bill-ticket" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_bill-ticket updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bill-ticket" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_bill_rr_process created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_bill_rr_process ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_bill_rr_process updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_bill_rr_process ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_bom-equipment created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-equipment" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_bom-equipment updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-equipment" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_bom-integration created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-integration" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_bom-integration updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-integration" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_bom-integration id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-integration" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_bom-output_rr_item created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-output_rr_item" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_bom-output_rr_item updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-output_rr_item" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_carrier created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_carrier ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_carrier updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_carrier ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-alert created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-alert" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-alert updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-alert" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-alert created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-alert" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-alert updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-alert" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-approve created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-approve" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-approve updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-approve" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-approve id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-approve" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((22)::bigint);
 
 
---
--- Name: zc_id_cate-approve created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-approve" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-approve updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-approve" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-approve_role created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-approve_role" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-approve_role updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-approve_role" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-approve_role id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-approve_role" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((23)::bigint);
 
 
---
--- Name: zc_id_cate-approve_role created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-approve_role" ALTER COLUMN created_by_id SET DEFAULT NULL;
 
 
---
--- Name: zc_id_cate-approve_role updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-approve_role" ALTER COLUMN updated_by_id SET DEFAULT NULL;
 
 
---
--- Name: zc_id_cate-auth created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-auth" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-auth updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-auth" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-auth id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-auth" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((24)::bigint);
 
 
---
--- Name: zc_id_cate-auth created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-auth" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-auth updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-auth" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-certification created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-certification" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-certification updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-certification" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-certification created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-certification" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-certification updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-certification" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-contact_role created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-contact_role" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-contact_role updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-contact_role" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-contact_role created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-contact_role" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-contact_role updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-contact_role" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-cooperation created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-cooperation" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-cooperation updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-cooperation" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-cooperation created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-cooperation" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-cooperation updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-cooperation" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-defect created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-defect" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-defect updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-defect" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-defect id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-defect" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((29)::bigint);
 
 
---
--- Name: zc_id_cate-defect created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-defect" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-defect updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-defect" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-employment created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-employment" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-employment updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-employment" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-employment id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-employment" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((30)::bigint);
 
 
---
--- Name: zc_id_cate-employment created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-employment" ALTER COLUMN created_by_id SET DEFAULT NULL;
 
 
---
--- Name: zc_id_cate-employment updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-employment" ALTER COLUMN updated_by_id SET DEFAULT NULL;
 
 
---
--- Name: zc_id_cate-file created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-file" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-file updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-file" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-file created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-file" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-file updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-file" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-inspection created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-inspection" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-inspection updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-inspection" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-inspection created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-inspection" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-inspection updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-inspection" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-inv-title-cm created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-inv-title-cm updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-inv-title-cm created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-inv-title-cm updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-log created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-log" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-log updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-log" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-log created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-log" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-log updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-log" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-maintain created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-maintain" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-maintain updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-maintain" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-maintain created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-maintain" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-maintain updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-maintain" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-modify created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-modify" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-modify updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-modify" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-modify created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-modify" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-modify updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-modify" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-ope-title-cm created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-ope-title-cm" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-ope-title-cm updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-ope-title-cm" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-ope-title-cm created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-ope-title-cm" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-ope-title-cm updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-ope-title-cm" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-project created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-project" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-project updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-project" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-project created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-project" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-project updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-project" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-real_rights created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-real_rights" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-real_rights updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-real_rights" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-real_rights created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-real_rights" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-real_rights updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-real_rights" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-seal created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-seal" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-seal updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-seal" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-seal created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-seal" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-seal updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-seal" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-testing created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-testing" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-testing updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-testing" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-testing id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-testing" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((47)::bigint);
 
 
---
--- Name: zc_id_cate-testing created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-testing" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-testing updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-testing" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-tracking created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tracking" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-tracking updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tracking" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-tracking created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tracking" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-tracking updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tracking" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-traffic created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-traffic" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-traffic updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-traffic" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-traffic created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-traffic" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-traffic updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-traffic" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-training created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-training" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-training updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-training" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-training created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-training" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-training updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-training" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-tsp created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tsp" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-tsp updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tsp" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-tsp id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tsp" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((51)::bigint);
 
 
---
--- Name: zc_id_cate-tsp created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tsp" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-tsp updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tsp" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-tsp-title-cm created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tsp-title-cm" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-tsp-title-cm updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tsp-title-cm" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cate-tsp-title-cm created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tsp-title-cm" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cate-tsp-title-cm updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tsp-title-cm" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cons-consanguinity-cate created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-consanguinity-cate" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cons-consanguinity-cate updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-consanguinity-cate" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cons-consanguinity-cate created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-consanguinity-cate" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cons-consanguinity-cate updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-consanguinity-cate" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cons-ethnic_group-cate created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cons-ethnic_group-cate updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cons-ethnic_group-cate created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cons-ethnic_group-cate updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cons-goods-tags created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-goods-tags" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cons-goods-tags updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-goods-tags" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cons-polity-cate created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-polity-cate" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cons-polity-cate updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-polity-cate" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cons-polity-cate created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-polity-cate" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cons-polity-cate updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-polity-cate" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cons-timezone-cate created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cons-timezone-cate updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cons-timezone-cate created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cons-timezone-cate updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_cont-cooperative created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-cooperative" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cont-cooperative updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-cooperative" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cont-joint_venture created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-joint_venture" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cont-joint_venture updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-joint_venture" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cont-marriage created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-marriage" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cont-marriage updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-marriage" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cont-partnership created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-partnership" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cont-partnership updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-partnership" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cont-request created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-request" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cont-request updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-request" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cont-transport-purchase created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-transport-purchase" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cont-transport-purchase updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-transport-purchase" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cont-transport-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-transport-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cont-transport-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-transport-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cont-transport_rr_stop created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-transport_rr_stop" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_cont-transport_rr_stop updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-transport_rr_stop" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_container_rr_device created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_container_rr_device ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_container_rr_device updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_container_rr_device ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_container_rr_device id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_container_rr_device ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((233)::bigint);
 
 
---
--- Name: zc_id_contract_r_calc created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_r_calc ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_contract_r_calc updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_r_calc ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_contract_rr_agreement created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_agreement ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_contract_rr_agreement updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_agreement ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_contract_rr_agreement id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_agreement ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((236)::bigint);
 
 
---
--- Name: zc_id_contract_rr_deal created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_deal ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_contract_rr_deal updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_deal ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_contract_rr_demand created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_demand ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_contract_rr_demand updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_demand ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_contract_rr_goods created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_goods ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_contract_rr_goods updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_goods ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_contract_rr_law created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_law ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_contract_rr_law updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_law ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_contract_rr_standard created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_standard ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_contract_rr_standard updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_standard ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_contract_rr_standard id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_standard ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((240)::bigint);
 
 
---
--- Name: zc_id_contract_rr_symmetry created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_symmetry ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_contract_rr_symmetry updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_symmetry ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_counting_r_cnt-status created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_counting_r_cnt-status" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_counting_r_cnt-status updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_counting_r_cnt-status" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-alert created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-alert" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-alert updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-alert" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-counting created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-counting" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-counting updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-counting" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-inspection created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-inspection" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-inspection updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-inspection" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-inspection id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-inspection" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_deta-maintenance created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-maintenance" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-maintenance updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-maintenance" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-plan created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-plan" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-plan updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-plan" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-task created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-task" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-task updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-task" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-training created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-training" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-training updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-training" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-training_rr_matter created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-training_rr_matter" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-training_rr_matter updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-training_rr_matter" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-tsk created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-tsk" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-tsk updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-tsk" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-tsk_r_verify-status created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-tsk_r_verify-status" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-tsk_r_verify-status updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-tsk_r_verify-status" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-tsp created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-tsp" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_deta-tsp updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-tsp" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_devi-seal created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_devi-seal" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_devi-seal updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_devi-seal" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_device_r_iot-status created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_device_r_iot-status" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_device_r_iot-status updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_device_r_iot-status" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_device_r_iot-status id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_device_r_iot-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((245)::bigint);
 
 
---
--- Name: zc_id_device_rr_protocol created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_device_rr_protocol ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_device_rr_protocol updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_device_rr_protocol ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_empl-agent_rr_llm-config created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_empl-agent_rr_llm-config" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_empl-agent_rr_llm-config updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_empl-agent_rr_llm-config" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_empl-natural_rr_consanguinity created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_empl-natural_rr_consanguinity" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_empl-natural_rr_consanguinity updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_empl-natural_rr_consanguinity" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_even-accident created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-accident" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_even-accident updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-accident" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_even-accident id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-accident" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_even-alert created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-alert" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_even-alert updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-alert" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_even-alert id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-alert" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_even-counting created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-counting" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_even-counting updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-counting" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_even-counting id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-counting" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_even-issue created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-issue" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_even-issue updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-issue" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_even-log created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-log" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_even-log updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-log" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_even-log id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-log" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_even-report created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-report" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_even-report updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-report" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_even-report id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-report" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_even-tracking created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-tracking" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_even-tracking updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-tracking" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_even-tracking id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-tracking" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_event_rr_bill created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_bill ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_event_rr_bill updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_bill ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_event_rr_container created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_container ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_event_rr_container updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_container ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_event_rr_matter created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_matter ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_event_rr_matter updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_matter ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_event_rr_reason created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_reason ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_event_rr_reason updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_reason ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_event_rr_standard created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_standard ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_event_rr_standard updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_standard ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-avatar created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-avatar" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-avatar updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-avatar" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-avatar encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-avatar" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_file-document created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-document" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-document updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-document" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-document encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-document" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_file-image created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-image" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-image updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-image" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-image encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-image" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_file-manual created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-manual" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-manual updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-manual" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-manual encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-manual" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_file-package created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-package" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-package updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-package" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-package encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-package" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_file-srm created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-srm" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-srm updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-srm" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-srm encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-srm" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_file-ver_ctrl created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-ver_ctrl" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-ver_ctrl updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-ver_ctrl" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-ver_ctrl encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-ver_ctrl" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_file-wbm created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-wbm" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-wbm updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-wbm" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file-wbm encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-wbm" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_file_rr_url created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_file_rr_url ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_file_rr_url updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_file_rr_url ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_form-access created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_form-access" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_form-access updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_form-access" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_form-billing created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_form-billing" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_form-billing updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_form-billing" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_form-billing id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_form-billing" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((337)::bigint);
 
 
---
--- Name: zc_id_form-pricing created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_form-pricing" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_form-pricing updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_form-pricing" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_form-pricing id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_form-pricing" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((339)::bigint);
 
 
---
--- Name: zc_id_form-term created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_form-term" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_form-term updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_form-term" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_form-term id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_form-term" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((340)::bigint);
 
 
---
--- Name: zc_id_info-url created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_info-url" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_info-url updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_info-url" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-civil created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-civil updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-civil-article created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil-article" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-civil-article updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil-article" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-civil-book created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil-book" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-civil-book updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil-book" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-civil-chapter created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil-chapter" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-civil-chapter updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil-chapter" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-civil-code created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil-code" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-civil-code updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil-code" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-civil-section created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil-section" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-civil-section updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil-section" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-common created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-common updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-common-case created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-case" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-common-case updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-case" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-common-chapter created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-chapter" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-common-chapter updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-chapter" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-common-holding created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-holding" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-common-holding updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-holding" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-common-section created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-section" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-common-section updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-section" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-common-statute created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-statute" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-common-statute updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-statute" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-common-title created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-title" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-common-title updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-title" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-intl created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-intl updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-intl-article created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl-article" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-intl-article updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl-article" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-intl-chapter created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl-chapter" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-intl-chapter updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl-chapter" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-intl-custom created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl-custom" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-intl-custom updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl-custom" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-intl-part created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl-part" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-intl-part updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl-part" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-intl-treaty created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl-treaty" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-intl-treaty updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl-treaty" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-mixed created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-mixed" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-mixed updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-mixed" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-religious created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-religious" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_law-religious updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-religious" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-applicable created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-applicable" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-applicable updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-applicable" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-diploma created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-diploma" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-diploma updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-diploma" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-health created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-health" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-health updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-health" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-health id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-health" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((349)::bigint);
 
 
---
--- Name: zc_id_leve-impact created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-impact" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-impact updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-impact" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-kpi created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-kpi" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-kpi updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-kpi" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-kpi id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-kpi" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((351)::bigint);
 
 
---
--- Name: zc_id_leve-log created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-log" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-log updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-log" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-plan created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-plan" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-plan updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-plan" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-proficiency created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-proficiency" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-proficiency updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-proficiency" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-proficiency id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-proficiency" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((354)::bigint);
 
 
---
--- Name: zc_id_leve-project created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-project" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-project updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-project" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-project id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-project" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((355)::bigint);
 
 
---
--- Name: zc_id_leve-qualification created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-qualification" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-qualification updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-qualification" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-risk created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-risk" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-risk updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-risk" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-risk id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-risk" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((356)::bigint);
 
 
---
--- Name: zc_id_leve-severity created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-severity" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-severity updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-severity" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-severity id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-severity" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((357)::bigint);
 
 
---
--- Name: zc_id_leve-standard created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-standard" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-standard updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-standard" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-standard id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-standard" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((358)::bigint);
 
 
---
--- Name: zc_id_leve-task created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-task" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-task updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-task" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-task id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-task" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((361)::bigint);
 
 
---
--- Name: zc_id_leve-urgent created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-urgent" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-urgent updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-urgent" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-urgent id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-urgent" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((362)::bigint);
 
 
---
--- Name: zc_id_leve-vote_weight created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-vote_weight" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-vote_weight updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-vote_weight" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_leve-vote_weight id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-vote_weight" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((363)::bigint);
 
 
---
--- Name: zc_id_message_rr_contact-info created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_message_rr_contact-info" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_message_rr_contact-info updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_message_rr_contact-info" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_message_rr_contact-info id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_message_rr_contact-info" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((264)::bigint);
 
 
---
--- Name: zc_id_message_rr_copy created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_message_rr_copy ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_message_rr_copy updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_message_rr_copy ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_message_rr_copy id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_message_rr_copy ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((364)::bigint);
 
 
---
--- Name: zc_id_message_rr_recipients created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_message_rr_recipients ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_message_rr_recipients updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_message_rr_recipients ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_message_rr_recipients id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_message_rr_recipients ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((365)::bigint);
 
 
---
--- Name: zc_id_oper-audit_acc created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-audit_acc" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_oper-audit_acc updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-audit_acc" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_oper-audit_prj created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-audit_prj" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_oper-audit_prj updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-audit_prj" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_oper-gate created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-gate" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_oper-gate updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-gate" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_oper-gate id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-gate" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_oper-move created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-move" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_oper-move updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-move" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_oper-move id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-move" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_oper-sign created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-sign" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_oper-sign updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-sign" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_oper-test created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-test" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_oper-test updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-test" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_oper-test id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-test" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_operation_rr_approve created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation_rr_approve ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_operation_rr_approve updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation_rr_approve ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_operation_rr_review created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation_rr_review ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_operation_rr_review updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation_rr_review ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_operation_rr_task created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation_rr_task ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_operation_rr_task updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation_rr_task ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_orde-lbl created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-lbl" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_orde-lbl updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-lbl" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_orde-payment created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-payment" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_orde-payment updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-payment" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_orde-rbl created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-rbl" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_orde-rbl updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-rbl" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_orde-traffic created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-traffic" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_orde-traffic updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-traffic" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_orde-traffic_rr_devi-seal created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-traffic_rr_devi-seal" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_orde-traffic_rr_devi-seal updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-traffic_rr_devi-seal" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_orde-traffic_rr_ticket created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-traffic_rr_ticket" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_orde-traffic_rr_ticket updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-traffic_rr_ticket" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_orde-traffic_rr_tsp-voucher created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-traffic_rr_tsp-voucher" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_orde-traffic_rr_tsp-voucher updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-traffic_rr_tsp-voucher" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_order-after_sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_order-after_sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_order-after_sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_order-after_sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_order_rr_contract created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_order_rr_contract ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_order_rr_contract updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_order_rr_contract ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_orga-department_rr_project created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orga-department_rr_project" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_orga-department_rr_project updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orga-department_rr_project" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_place_rr_address created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_place_rr_address ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_place_rr_address updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_place_rr_address ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-certification created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-certification" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-certification updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-certification" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-maintain created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-maintain" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-maintain updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-maintain" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-material_rr_material created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-material_rr_material" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-material_rr_material updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-material_rr_material" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-payment created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-payment" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-payment updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-payment" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-payment_rr_smt-voucher created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-payment_rr_smt-voucher" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-payment_rr_smt-voucher updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-payment_rr_smt-voucher" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-perform_rr_tsk-make created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_tsk-make" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-perform_rr_tsk-make updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_tsk-make" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-perform_rr_tsp-voucher created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_tsp-voucher" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-perform_rr_tsp-voucher updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_tsp-voucher" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-perform_rr_whs-voucher created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_whs-voucher" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-perform_rr_whs-voucher updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_whs-voucher" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-personal created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-personal" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-personal updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-personal" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan-personal id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-personal" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_plan_rr_dependency created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_plan_rr_dependency ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan_rr_dependency updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_plan_rr_dependency ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan_rr_dependency id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_plan_rr_dependency ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((278)::bigint);
 
 
---
--- Name: zc_id_plan_rr_event created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_plan_rr_event ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan_rr_event updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_plan_rr_event ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan_rr_task created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_plan_rr_task ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan_rr_task updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_plan_rr_task ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_plan_rr_task id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_plan_rr_task ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((282)::bigint);
 
 
---
--- Name: zc_id_proc-cicd created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_proc-cicd" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_proc-cicd updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_proc-cicd" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_proc-context created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_proc-context" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_proc-context updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_proc-context" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_process_rr_context created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_process_rr_context ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_process_rr_context updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_process_rr_context ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-air_cert-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-air_cert-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-air_cert-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-air_cert-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-air_cert-sales encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-air_cert-sales" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_prod-biz-license-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-biz-license-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-biz-license-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-biz-license-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-biz-license-sales encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-biz-license-sales" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_prod-conclusion created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-conclusion" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-conclusion updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-conclusion" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-consulting created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-consulting" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-consulting updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-consulting" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-dev-tools-made created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-dev-tools-made" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-dev-tools-made updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-dev-tools-made" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-digital_cert-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-digital_cert-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-digital_cert-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-digital_cert-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-digital_cert-sales encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-digital_cert-sales" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_prod-diploma-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-diploma-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-diploma-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-diploma-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-diploma-sales encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-diploma-sales" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_prod-electric-eng-made created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-electric-eng-made" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-electric-eng-made updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-electric-eng-made" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-file created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-file" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-file updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-file" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_air-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_air-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_air-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_air-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_inland-made created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_inland-made" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_inland-made updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_inland-made" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_inland-request created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_inland-request" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_inland-request updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_inland-request" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_ocean-purchase created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_ocean-purchase" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_ocean-purchase updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_ocean-purchase" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_rail-made created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_rail-made" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_rail-made updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_rail-made" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_rail-purchase created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_rail-purchase" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_rail-purchase updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_rail-purchase" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_rail-request created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_rail-request" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_rail-request updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_rail-request" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_rail-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_rail-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_rail-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_rail-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_road-made created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_road-made" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_road-made updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_road-made" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_road-purchase created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_road-purchase" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_road-purchase updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_road-purchase" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_road-request created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_road-request" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_road-request updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_road-request" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_road-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_road-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-freight_road-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_road-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-insurance-license-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-insurance-license-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-insurance-license-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-insurance-license-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-insurance-license-sales encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-insurance-license-sales" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_prod-license created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-license" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-license updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-license" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-license id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-license" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_prod-license-purchase created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-license-purchase" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-license-purchase updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-license-purchase" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-license-purchase id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-license-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_prod-license-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-license-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-license-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-license-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-loading_r_goods-tag created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-loading_r_goods-tag" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-loading_r_goods-tag updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-loading_r_goods-tag" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-made_rr_stor-place created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-made_rr_stor-place" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-made_rr_stor-place updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-made_rr_stor-place" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-marriage_cert-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-marriage_cert-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-marriage_cert-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-marriage_cert-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-marriage_cert-sales encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-marriage_cert-sales" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_prod-openapi-made created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-made" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-openapi-made updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-made" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-openapi-purchase created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-purchase" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-openapi-purchase updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-purchase" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-openapi-request created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-request" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-openapi-request updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-request" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-openapi-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-openapi-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-payload_rr_stor-container created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-payload_rr_stor-container" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-payload_rr_stor-container updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-payload_rr_stor-container" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_data-made created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_data-made" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_data-made updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_data-made" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_data-purchase created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_data-purchase" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_data-purchase updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_data-purchase" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_data-request created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_data-request" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_data-request updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_data-request" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_data-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_data-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_data-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_data-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_data_rr_project created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_data_rr_project" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_data_rr_project updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_data_rr_project" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_vcs_file-made created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-made" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_vcs_file-made updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-made" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_vcs_file-made encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-made" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_prod-prj_vcs_file-purchase created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-purchase" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_vcs_file-purchase updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-purchase" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_vcs_file-purchase encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-purchase" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_prod-prj_vcs_file-request created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-request" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_vcs_file-request updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-request" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_vcs_file-request encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-request" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_prod-prj_vcs_file-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_vcs_file-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-prj_vcs_file-sales encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-sales" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_prod-pxy-fo_express-made created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_express-made" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-pxy-fo_express-made updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_express-made" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-pxy-fo_fcl-purchase created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_fcl-purchase" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-pxy-fo_fcl-purchase updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_fcl-purchase" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-pxy-fo_fcl-purchase id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_fcl-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_prod-pxy-fo_lcl-purchase created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_lcl-purchase" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-pxy-fo_lcl-purchase updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_lcl-purchase" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-pxy-fo_lcl-purchase id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_lcl-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_prod-pxy-fo_ltl-made created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_ltl-made" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-pxy-fo_ltl-made updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_ltl-made" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-sales_rr_stor-place created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-sales_rr_stor-place" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-sales_rr_stor-place updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-sales_rr_stor-place" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-traffic_rr_conveyance created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-traffic_rr_conveyance" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-traffic_rr_conveyance updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-traffic_rr_conveyance" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-traffic_rr_conveyance id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-traffic_rr_conveyance" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((287)::bigint);
 
 
---
--- Name: zc_id_prod-transport_rr_stop created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-transport_rr_stop" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-transport_rr_stop updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-transport_rr_stop" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-tsp_land-license-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-tsp_land-license-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-tsp_land-license-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-tsp_land-license-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-tsp_land-license-sales encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-tsp_land-license-sales" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_prod-type_cert-sales created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-type_cert-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-type_cert-sales updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-type_cert-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prod-type_cert-sales encoding; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-type_cert-sales" ALTER COLUMN encoding SET DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum;
 
 
---
--- Name: zc_id_production_rr_storage created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_production_rr_storage ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_production_rr_storage updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_production_rr_storage ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_project_r_milestone-tags created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_project_r_milestone-tags" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_project_r_milestone-tags updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_project_r_milestone-tags" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_project_rr_dependency created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_project_rr_dependency ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_project_rr_dependency updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_project_rr_dependency ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_project_rr_other created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_project_rr_other ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_project_rr_other updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_project_rr_other ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_project_rr_process created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_project_rr_process ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_project_rr_process updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_project_rr_process ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-email_config created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-email_config" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-email_config updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-email_config" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-email_config id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-email_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_prot-env_config created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-env_config" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-env_config updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-env_config" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-env_config id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-env_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_prot-im_config created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-im_config" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-im_config updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-im_config" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-iot_config created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-iot_config" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-iot_config updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-iot_config" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-iot_config id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-iot_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_prot-llm_config created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-llm_config" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-llm_config updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-llm_config" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-llm_config id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-llm_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_prot-openapi_config created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-openapi_config" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-openapi_config updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-openapi_config" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-oss_config created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-oss_config" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-oss_config updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-oss_config" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-profile_config created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-profile_config" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-profile_config updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-profile_config" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-profile_config id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-profile_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_prot-sms_config created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-sms_config" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-sms_config updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-sms_config" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-sms_config id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-sms_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_prot-webhook_config created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-webhook_config" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_prot-webhook_config updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-webhook_config" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_rate-custom created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-custom" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_rate-custom updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-custom" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_rate-custom id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-custom" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((391)::bigint);
 
 
---
--- Name: zc_id_rate-custom intrinsic; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-custom" ALTER COLUMN intrinsic SET DEFAULT true;
 
 
---
--- Name: zc_id_rate-energy created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-energy" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_rate-energy updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-energy" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_rate-energy id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-energy" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((396)::bigint);
 
 
---
--- Name: zc_id_rate-energy intrinsic; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-energy" ALTER COLUMN intrinsic SET DEFAULT true;
 
 
---
--- Name: zc_id_rate-illuminance created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-illuminance" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_rate-illuminance updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-illuminance" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_rate-illuminance intrinsic; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-illuminance" ALTER COLUMN intrinsic SET DEFAULT true;
 
 
---
--- Name: zc_id_rati-progress created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rati-progress" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_rati-progress updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rati-progress" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_rati-progress id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rati-progress" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((414)::bigint);
 
 
---
--- Name: zc_id_rati-weight created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rati-weight" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_rati-weight updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rati-weight" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_relation-cooperation_r_evaluation created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_relation-cooperation_r_evaluation" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_relation-cooperation_r_evaluation updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_relation-cooperation_r_evaluation" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_relation-employ_r_duty-status created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_relation-employ_r_duty-status" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_relation-employ_r_duty-status updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_relation-employ_r_duty-status" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_relation-employee_r_skill-tags created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_relation-employee_r_skill-tags" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_relation-employee_r_skill-tags updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_relation-employee_r_skill-tags" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-caac created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-caac" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-caac updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-caac" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-caac id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-caac" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_stan-air-caac-article created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-caac-article" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-caac-article updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-caac-article" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-caac-article id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-caac-article" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_stan-air-easa created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-easa" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-easa updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-easa" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-easa id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-easa" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_stan-air-easa-article created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-easa-article" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-easa-article updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-easa-article" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-easa-article id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-easa-article" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_stan-air-faa created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-faa" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-faa updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-faa" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-faa id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-faa" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_stan-air-faa-article created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-faa-article" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-faa-article updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-faa-article" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-faa-article id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-faa-article" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_stan-air-icao created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-icao" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-icao updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-icao" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-icao id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-icao" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_stan-air-icao-article created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-icao-article" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-icao-article updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-icao-article" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-air-icao-article id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air-icao-article" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_stan-fin created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-fin updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-fin id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_stan-fin-cas created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-cas" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-fin-cas updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-cas" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-fin-cas id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-cas" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_stan-fin-cas-article created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-cas-article" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-fin-cas-article updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-cas-article" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-fin-cas-article id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-cas-article" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_stan-fin-gaap created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-gaap" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-fin-gaap updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-gaap" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-fin-gaap id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-gaap" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_stan-fin-gaap-article created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-gaap-article" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-fin-gaap-article updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-gaap-article" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-fin-gaap-article id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-gaap-article" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_stan-fin-ifrs created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-ifrs" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-fin-ifrs updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-ifrs" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-fin-ifrs id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-ifrs" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_stan-fin-ifrs-article created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-ifrs-article" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-fin-ifrs-article updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-ifrs-article" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stan-fin-ifrs-article id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-ifrs-article" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_standard_rr_law created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_standard_rr_law ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_standard_rr_law updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_standard_rr_law ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-appeal created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-appeal" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-appeal updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-appeal" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-com-voucher created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-com-voucher" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-com-voucher updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-com-voucher" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-inspection created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-inspection" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-inspection updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-inspection" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-inspection id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-inspection" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_stat-maintenance created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-maintenance" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-maintenance updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-maintenance" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-slf-voucher created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-slf-voucher" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-slf-voucher updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-slf-voucher" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-task created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-task" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-task updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-task" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-task_r_verify-status created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-task_r_verify-status updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-task_rr_sto-voucher created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-task_rr_sto-voucher" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-task_rr_sto-voucher updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-task_rr_sto-voucher" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-task_rr_trade_order created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-task_rr_trade_order" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-task_rr_trade_order updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-task_rr_trade_order" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-training created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-training" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-training updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-training" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-tsk-make created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-make" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-tsk-make updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-make" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-tsk-requisition created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-requisition" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-tsk-requisition updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-requisition" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-volume created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-volume" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-volume updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-volume" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-weight created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-weight" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stat-weight updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-weight" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stor-ctn-subj created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-subj" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stor-ctn-subj updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-subj" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stor-plc-asset created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-asset" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stor-plc-asset updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-asset" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stor-plc-division created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-division" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stor-plc-division updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-division" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stor-plc-repository created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-repository" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stor-plc-repository updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-repository" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stor-traffic_line created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-traffic_line" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stor-traffic_line updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-traffic_line" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stor-traffic_line_rr_stop created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-traffic_line_rr_stop" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stor-traffic_line_rr_stop updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-traffic_line_rr_stop" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_storage_rr_stock-in created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_storage_rr_stock-in" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_storage_rr_stock-in updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_storage_rr_stock-in" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-agreement created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-agreement" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-agreement updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-agreement" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-agreement created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-agreement" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-agreement updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-agreement" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-audit created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-audit" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-audit updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-audit" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-audit created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-audit" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-audit updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-audit" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-bill created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-bill" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-bill updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-bill" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-bill created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-bill" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-bill updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-bill" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-certification created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-certification" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-certification updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-certification" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-certification created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-certification" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-certification updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-certification" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-contract created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-contract" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-contract updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-contract" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-contract created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-contract" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-contract updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-contract" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-detail created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-detail" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-detail updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-detail" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-detail created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-detail" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-detail updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-detail" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-duty created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-duty" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-duty updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-duty" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-duty created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-duty" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-duty updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-duty" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-entity created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-entity" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-entity updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-entity" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-entity created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-entity" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-entity updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-entity" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-event created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-event" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-event updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-event" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-event created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-event" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-event updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-event" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-file created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-file" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-file updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-file" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-file created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-file" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-file updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-file" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-identity created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-identity" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-identity updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-identity" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-identity created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-identity" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-identity updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-identity" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-inspection created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-inspection" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-inspection updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-inspection" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-inspection id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-inspection" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((92)::bigint);
 
 
---
--- Name: zc_id_stus-inspection created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-inspection" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-inspection updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-inspection" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-inventory created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-inventory" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-inventory updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-inventory" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-inventory created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-inventory" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-inventory updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-inventory" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-iot created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-iot" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-iot updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-iot" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-iot id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-iot" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((97)::bigint);
 
 
---
--- Name: zc_id_stus-iot created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-iot" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-iot updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-iot" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-marital created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-marital" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-marital updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-marital" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-marital created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-marital" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-marital updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-marital" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-protocol created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-protocol" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-protocol updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-protocol" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-protocol created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-protocol" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-protocol updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-protocol" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-statement created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-statement" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-statement updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-statement" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-statement created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-statement" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-statement updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-statement" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-threads created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-threads" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-threads updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-threads" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-threads created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-threads" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-threads updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-threads" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-training created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-training" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-training updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-training" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-training created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-training" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-training updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-training" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-tsk_verify created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-tsk_verify updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_stus-tsk_verify created_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN created_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_stus-tsk_verify updated_by_id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN updated_by_id SET DEFAULT 1;
 
 
---
--- Name: zc_id_subj-ministry_rr_servant created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-ministry_rr_servant" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_subj-ministry_rr_servant updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-ministry_rr_servant" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_subj-ministry_rr_servant id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-ministry_rr_servant" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((314)::bigint);
 
 
---
--- Name: zc_id_subj-sovereign_rr_ministry created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-sovereign_rr_ministry" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_subj-sovereign_rr_ministry updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-sovereign_rr_ministry" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_subj-sovereign_rr_ministry id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-sovereign_rr_ministry" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((321)::bigint);
 
 
---
--- Name: zc_id_subjects_rr_partner created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_subjects_rr_partner ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_subjects_rr_partner updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_subjects_rr_partner ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_tags-event created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-event" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_tags-event updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-event" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_tags-event id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-event" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((126)::bigint);
 
 
---
--- Name: zc_id_tags-milestone created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-milestone" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_tags-milestone updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-milestone" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_tags-parties created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-parties" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_tags-parties updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-parties" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_tags-parties id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-parties" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((131)::bigint);
 
 
---
--- Name: zc_id_tags-skill created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-skill" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_tags-skill updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-skill" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_tags-skill id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-skill" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((137)::bigint);
 
 
---
--- Name: zc_id_task-commission created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-commission" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task-commission updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-commission" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task-commission id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-commission" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_task-design created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-design" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task-design updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-design" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task-develop created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-develop" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task-develop updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-develop" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task-fix created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-fix" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task-fix updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-fix" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task-pay created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-pay" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task-pay updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-pay" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task-storage created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-storage" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task-storage updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-storage" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task-testing created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-testing" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task-testing updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-testing" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task-testing id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-testing" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_task_rr_bill created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_task_rr_bill ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task_rr_bill updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_task_rr_bill ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task_rr_dependency created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_task_rr_dependency ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task_rr_dependency updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_task_rr_dependency ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task_rr_reason created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_task_rr_reason ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_task_rr_reason updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_task_rr_reason ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_thre-ai_session created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_thre-ai_session" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_thre-ai_session updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_thre-ai_session" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_thre-ai_session id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_thre-ai_session" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_thre-mq_topic created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_thre-mq_topic" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_thre-mq_topic updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_thre-mq_topic" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_thre-mq_topic id; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_thre-mq_topic" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
---
--- Name: zc_id_thread_rr_topic-x created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_thread_rr_topic-x" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_thread_rr_topic-x updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_thread_rr_topic-x" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_tick-pickup created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tick-pickup" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_tick-pickup updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tick-pickup" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_unit-geo created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-geo" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_unit-geo updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-geo" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_id_unit-illuminance created_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-illuminance" ALTER COLUMN created_at SET DEFAULT now();
 
 
---
--- Name: zc_id_unit-illuminance updated_at; Type: DEFAULT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-illuminance" ALTER COLUMN updated_at SET DEFAULT now();
 
 
---
--- Name: zc_ad_dimension zc_ad_dimension_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_ad_dimension
     ADD CONSTRAINT zc_ad_dimension_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_ad_object zc_ad_object_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_ad_object
     ADD CONSTRAINT zc_ad_object_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_ad_relation zc_ad_relation_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_ad_relation
     ADD CONSTRAINT zc_ad_relation_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_ad_relation_r_isolate-tensor zc_ad_relation_r_isolate-tensor_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_ad_relation_r_isolate-tensor"
     ADD CONSTRAINT "zc_ad_relation_r_isolate-tensor_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_ad_relation_r_scalar zc_ad_relation_r_scalar_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_ad_relation_r_scalar
     ADD CONSTRAINT zc_ad_relation_r_scalar_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_ad_relation_rr_non_self-ref zc_ad_relation_rr_non_self-ref_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_ad_relation_rr_non_self-ref"
     ADD CONSTRAINT "zc_ad_relation_rr_non_self-ref_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_ad_scalar zc_ad_scalar_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_ad_scalar
     ADD CONSTRAINT zc_ad_scalar_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_ad_tensor zc_ad_tensor_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_ad_tensor
     ADD CONSTRAINT zc_ad_tensor_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_ad_tensor_r_dimension zc_ad_tensor_r_dimension_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_ad_tensor_r_dimension
     ADD CONSTRAINT zc_ad_tensor_r_dimension_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_ad_tensor_r_scalar zc_ad_tensor_r_scalar_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_ad_tensor_r_scalar
     ADD CONSTRAINT zc_ad_tensor_r_scalar_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_ad_tensor_rr_non_self-ref zc_ad_tensor_rr_non_self-ref_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_ad_tensor_rr_non_self-ref"
     ADD CONSTRAINT "zc_ad_tensor_rr_non_self-ref_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_ad_variable zc_ad_variable_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_ad_variable
     ADD CONSTRAINT zc_ad_variable_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_ad_vector zc_ad_vector_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_ad_vector
     ADD CONSTRAINT zc_ad_vector_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_agre-pricing zc_id_agre-pricing_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_agre-pricing"
     ADD CONSTRAINT "zc_id_agre-pricing_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_agre-tolerance zc_id_agre-tolerance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_agre-tolerance"
     ADD CONSTRAINT "zc_id_agre-tolerance_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_agreement zc_id_agreement_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_agreement
     ADD CONSTRAINT zc_id_agreement_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_agreement_r_calc zc_id_agreement_r_calc_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_agreement_r_calc
     ADD CONSTRAINT zc_id_agreement_r_calc_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-authorization zc_id_appr-authorization_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-authorization"
     ADD CONSTRAINT "zc_id_appr-authorization_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-bid-evaluation zc_id_appr-bid-evaluation_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-bid-evaluation"
     ADD CONSTRAINT "zc_id_appr-bid-evaluation_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-code-review zc_id_appr-code-review_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-code-review"
     ADD CONSTRAINT "zc_id_appr-code-review_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-damage zc_id_appr-damage_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-damage"
     ADD CONSTRAINT "zc_id_appr-damage_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-org-structure zc_id_appr-org-structure_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-org-structure"
     ADD CONSTRAINT "zc_id_appr-org-structure_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-payment zc_id_appr-payment_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-payment"
     ADD CONSTRAINT "zc_id_appr-payment_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-payment_rr_invoice zc_id_appr-payment_rr_invoice_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_invoice"
     ADD CONSTRAINT "zc_id_appr-payment_rr_invoice_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-payment_rr_smt-voucher zc_id_appr-payment_rr_smt-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_smt-voucher"
     ADD CONSTRAINT "zc_id_appr-payment_rr_smt-voucher_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-pricing zc_id_appr-pricing_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-pricing"
     ADD CONSTRAINT "zc_id_appr-pricing_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-prj-initiation zc_id_appr-prj-initiation_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-prj-initiation"
     ADD CONSTRAINT "zc_id_appr-prj-initiation_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-prj_doc-push zc_id_appr-prj_doc-push_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-prj_doc-push"
     ADD CONSTRAINT "zc_id_appr-prj_doc-push_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-prj_made-push zc_id_appr-prj_made-push_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-prj_made-push"
     ADD CONSTRAINT "zc_id_appr-prj_made-push_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-prj_request-push zc_id_appr-prj_request-push_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-prj_request-push"
     ADD CONSTRAINT "zc_id_appr-prj_request-push_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-prj_sales-push zc_id_appr-prj_sales-push_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-prj_sales-push"
     ADD CONSTRAINT "zc_id_appr-prj_sales-push_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-process zc_id_appr-process_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-process"
     ADD CONSTRAINT "zc_id_appr-process_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-project-push zc_id_appr-project-push_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-project-push"
     ADD CONSTRAINT "zc_id_appr-project-push_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-purchase zc_id_appr-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-purchase"
     ADD CONSTRAINT "zc_id_appr-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-recruitment zc_id_appr-recruitment_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-recruitment"
     ADD CONSTRAINT "zc_id_appr-recruitment_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-req-time_off zc_id_appr-req-time_off_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-req-time_off"
     ADD CONSTRAINT "zc_id_appr-req-time_off_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_appr-user_verify zc_id_appr-user_verify_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_appr-user_verify"
     ADD CONSTRAINT "zc_id_appr-user_verify_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_attachment zc_id_attachment_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_attachment
     ADD CONSTRAINT zc_id_attachment_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_audit zc_id_audit_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_audit
     ADD CONSTRAINT zc_id_audit_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_audit_rr_auditee zc_id_audit_rr_auditee_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_audit_rr_auditee
     ADD CONSTRAINT zc_id_audit_rr_auditee_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_audit_rr_conclusion zc_id_audit_rr_conclusion_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_audit_rr_conclusion
     ADD CONSTRAINT zc_id_audit_rr_conclusion_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bank-commercial zc_id_bank-commercial_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bank-commercial"
     ADD CONSTRAINT "zc_id_bank-commercial_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bill-check zc_id_bill-check_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bill-check"
     ADD CONSTRAINT "zc_id_bill-check_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bill-check_r_verify-status zc_id_bill-check_r_verify-status_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bill-check_r_verify-status"
     ADD CONSTRAINT "zc_id_bill-check_r_verify-status_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bill-check_r_verify-status zc_id_bill-check_r_verify-status_ref_left_key; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bill-check_r_verify-status"
     ADD CONSTRAINT "zc_id_bill-check_r_verify-status_ref_left_key" UNIQUE (ref_left);
 
 
---
--- Name: zc_id_bill-check_rr_invoice zc_id_bill-check_rr_invoice_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bill-check_rr_invoice"
     ADD CONSTRAINT "zc_id_bill-check_rr_invoice_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bill-check_rr_plan-payment zc_id_bill-check_rr_plan-payment_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bill-check_rr_plan-payment"
     ADD CONSTRAINT "zc_id_bill-check_rr_plan-payment_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bill-check_rr_smt-voucher zc_id_bill-check_rr_smt-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bill-check_rr_smt-voucher"
     ADD CONSTRAINT "zc_id_bill-check_rr_smt-voucher_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bill-check_rr_trade_order zc_id_bill-check_rr_trade_order_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bill-check_rr_trade_order"
     ADD CONSTRAINT "zc_id_bill-check_rr_trade_order_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bill-pricing zc_id_bill-pricing_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bill-pricing"
     ADD CONSTRAINT "zc_id_bill-pricing_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bill-ticket zc_id_bill-ticket_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bill-ticket"
     ADD CONSTRAINT "zc_id_bill-ticket_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bill zc_id_bill_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_bill
     ADD CONSTRAINT zc_id_bill_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bill_rr_process zc_id_bill_rr_process_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_bill_rr_process
     ADD CONSTRAINT zc_id_bill_rr_process_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bill_rr_recipients zc_id_bill_rr_recipients_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_bill_rr_recipients
     ADD CONSTRAINT zc_id_bill_rr_recipients_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom-assemble zc_id_bom-assemble_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-assemble"
     ADD CONSTRAINT "zc_id_bom-assemble_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom-combine zc_id_bom-combine_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-combine"
     ADD CONSTRAINT "zc_id_bom-combine_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom-equipment zc_id_bom-equipment_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-equipment"
     ADD CONSTRAINT "zc_id_bom-equipment_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom-file zc_id_bom-file_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-file"
     ADD CONSTRAINT "zc_id_bom-file_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom-gift_set zc_id_bom-gift_set_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-gift_set"
     ADD CONSTRAINT "zc_id_bom-gift_set_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom-inbound zc_id_bom-inbound_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-inbound"
     ADD CONSTRAINT "zc_id_bom-inbound_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom-input_item_r_substitution zc_id_bom-input_item_r_substitution_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-input_item_r_substitution"
     ADD CONSTRAINT "zc_id_bom-input_item_r_substitution_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom-input_rr_item zc_id_bom-input_rr_item_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-input_rr_item"
     ADD CONSTRAINT "zc_id_bom-input_rr_item_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom-integration zc_id_bom-integration_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-integration"
     ADD CONSTRAINT "zc_id_bom-integration_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom-loading zc_id_bom-loading_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-loading"
     ADD CONSTRAINT "zc_id_bom-loading_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom-outbound zc_id_bom-outbound_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-outbound"
     ADD CONSTRAINT "zc_id_bom-outbound_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom-output_rr_item zc_id_bom-output_rr_item_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-output_rr_item"
     ADD CONSTRAINT "zc_id_bom-output_rr_item_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom-pickup zc_id_bom-pickup_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-pickup"
     ADD CONSTRAINT "zc_id_bom-pickup_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom-shelve zc_id_bom-shelve_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-shelve"
     ADD CONSTRAINT "zc_id_bom-shelve_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom-shipment zc_id_bom-shipment_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-shipment"
     ADD CONSTRAINT "zc_id_bom-shipment_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom-solution zc_id_bom-solution_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_bom-solution"
     ADD CONSTRAINT "zc_id_bom-solution_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom zc_id_bom_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_bom
     ADD CONSTRAINT zc_id_bom_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_bom_rr_item zc_id_bom_rr_item_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_bom_rr_item
     ADD CONSTRAINT zc_id_bom_rr_item_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_calc-prod_pricing zc_id_calc-prod_pricing_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_calc-prod_pricing"
     ADD CONSTRAINT "zc_id_calc-prod_pricing_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_calc-sales_bonus zc_id_calc-sales_bonus_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_calc-sales_bonus"
     ADD CONSTRAINT "zc_id_calc-sales_bonus_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_calc-zone_qty zc_id_calc-zone_qty_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_calc-zone_qty"
     ADD CONSTRAINT "zc_id_calc-zone_qty_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_carrier zc_id_carrier_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_carrier
     ADD CONSTRAINT zc_id_carrier_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-acc-title zc_id_cate-acc-title_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-acc-title"
     ADD CONSTRAINT "zc_id_cate-acc-title_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-agent zc_id_cate-agent_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-agent"
     ADD CONSTRAINT "zc_id_cate-agent_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-alert zc_id_cate-alert_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-alert"
     ADD CONSTRAINT "zc_id_cate-alert_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-approve zc_id_cate-approve_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-approve"
     ADD CONSTRAINT "zc_id_cate-approve_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-auth zc_id_cate-auth_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-auth"
     ADD CONSTRAINT "zc_id_cate-auth_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-bom-item zc_id_cate-bom-item_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-bom-item"
     ADD CONSTRAINT "zc_id_cate-bom-item_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-certification zc_id_cate-certification_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-certification"
     ADD CONSTRAINT "zc_id_cate-certification_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-clause zc_id_cate-clause_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-clause"
     ADD CONSTRAINT "zc_id_cate-clause_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-contact_role zc_id_cate-contact_role_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-contact_role"
     ADD CONSTRAINT "zc_id_cate-contact_role_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-contacts zc_id_cate-contacts_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-contacts"
     ADD CONSTRAINT "zc_id_cate-contacts_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-cooperation zc_id_cate-cooperation_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-cooperation"
     ADD CONSTRAINT "zc_id_cate-cooperation_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-defect zc_id_cate-defect_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-defect"
     ADD CONSTRAINT "zc_id_cate-defect_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-department zc_id_cate-department_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-department"
     ADD CONSTRAINT "zc_id_cate-department_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-file zc_id_cate-file_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-file"
     ADD CONSTRAINT "zc_id_cate-file_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-group_member zc_id_cate-group_member_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-group_member"
     ADD CONSTRAINT "zc_id_cate-group_member_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-group zc_id_cate-group_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-group"
     ADD CONSTRAINT "zc_id_cate-group_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-identity zc_id_cate-identity_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-identity"
     ADD CONSTRAINT "zc_id_cate-identity_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-inspection zc_id_cate-inspection_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-inspection"
     ADD CONSTRAINT "zc_id_cate-inspection_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-inv-title-cm zc_id_cate-inv-title-cm_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm"
     ADD CONSTRAINT "zc_id_cate-inv-title-cm_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-inv-title-ns zc_id_cate-inv-title-ns_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-inv-title-ns"
     ADD CONSTRAINT "zc_id_cate-inv-title-ns_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-inv-title zc_id_cate-inv-title_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-inv-title"
     ADD CONSTRAINT "zc_id_cate-inv-title_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-inve-trasnfer zc_id_cate-inve-trasnfer_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-inve-trasnfer"
     ADD CONSTRAINT "zc_id_cate-inve-trasnfer_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-log zc_id_cate-log_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-log"
     ADD CONSTRAINT "zc_id_cate-log_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-maintain zc_id_cate-maintain_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-maintain"
     ADD CONSTRAINT "zc_id_cate-maintain_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-modify zc_id_cate-modify_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-modify"
     ADD CONSTRAINT "zc_id_cate-modify_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-op_standard zc_id_cate-op_standard_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-op_standard"
     ADD CONSTRAINT "zc_id_cate-op_standard_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-ope-title-cm zc_id_cate-ope-title-cm_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-ope-title-cm"
     ADD CONSTRAINT "zc_id_cate-ope-title-cm_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-ope-title-ns zc_id_cate-ope-title-ns_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-ope-title-ns"
     ADD CONSTRAINT "zc_id_cate-ope-title-ns_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-ope-title zc_id_cate-ope-title_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-ope-title"
     ADD CONSTRAINT "zc_id_cate-ope-title_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-org_system zc_id_cate-org_system_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-org_system"
     ADD CONSTRAINT "zc_id_cate-org_system_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-position zc_id_cate-position_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-position"
     ADD CONSTRAINT "zc_id_cate-position_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-proc_op zc_id_cate-proc_op_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-proc_op"
     ADD CONSTRAINT "zc_id_cate-proc_op_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-process zc_id_cate-process_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-process"
     ADD CONSTRAINT "zc_id_cate-process_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-project zc_id_cate-project_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-project"
     ADD CONSTRAINT "zc_id_cate-project_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-real_rights zc_id_cate-real_rights_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-real_rights"
     ADD CONSTRAINT "zc_id_cate-real_rights_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-seal zc_id_cate-seal_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-seal"
     ADD CONSTRAINT "zc_id_cate-seal_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-society zc_id_cate-society_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-society"
     ADD CONSTRAINT "zc_id_cate-society_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-sto-title zc_id_cate-sto-title_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-sto-title"
     ADD CONSTRAINT "zc_id_cate-sto-title_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-subject zc_id_cate-subject_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-subject"
     ADD CONSTRAINT "zc_id_cate-subject_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-tax-title zc_id_cate-tax-title_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tax-title"
     ADD CONSTRAINT "zc_id_cate-tax-title_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-testing zc_id_cate-testing_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-testing"
     ADD CONSTRAINT "zc_id_cate-testing_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-tracking zc_id_cate-tracking_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tracking"
     ADD CONSTRAINT "zc_id_cate-tracking_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-traffic zc_id_cate-traffic_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-traffic"
     ADD CONSTRAINT "zc_id_cate-traffic_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-training zc_id_cate-training_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-training"
     ADD CONSTRAINT "zc_id_cate-training_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-tsp-title-cm zc_id_cate-tsp-title-cm_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tsp-title-cm"
     ADD CONSTRAINT "zc_id_cate-tsp-title-cm_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-tsp-title-ns zc_id_cate-tsp-title-ns_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tsp-title-ns"
     ADD CONSTRAINT "zc_id_cate-tsp-title-ns_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-tsp-title zc_id_cate-tsp-title_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-tsp-title"
     ADD CONSTRAINT "zc_id_cate-tsp-title_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-ver_branch zc_id_cate-ver_branch_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-ver_branch"
     ADD CONSTRAINT "zc_id_cate-ver_branch_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-warehouse zc_id_cate-warehouse_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-warehouse"
     ADD CONSTRAINT "zc_id_cate-warehouse_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cate-wh-title zc_id_cate-wh-title_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cate-wh-title"
     ADD CONSTRAINT "zc_id_cate-wh-title_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_category zc_id_category_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_category
     ADD CONSTRAINT zc_id_category_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cons-consanguinity-cate zc_id_cons-consanguinity-cate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-consanguinity-cate"
     ADD CONSTRAINT "zc_id_cons-consanguinity-cate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cons-cron-cate zc_id_cons-cron-cate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-cron-cate"
     ADD CONSTRAINT "zc_id_cons-cron-cate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cons-ethnic_group-cate zc_id_cons-ethnic_group-cate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate"
     ADD CONSTRAINT "zc_id_cons-ethnic_group-cate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cons-goods-tags zc_id_cons-goods-tags_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-goods-tags"
     ADD CONSTRAINT "zc_id_cons-goods-tags_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cons-industry-cate zc_id_cons-industry-cate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-industry-cate"
     ADD CONSTRAINT "zc_id_cons-industry-cate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cons-license-cate zc_id_cons-license-cate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-license-cate"
     ADD CONSTRAINT "zc_id_cons-license-cate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cons-packing-cate zc_id_cons-packing-cate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-packing-cate"
     ADD CONSTRAINT "zc_id_cons-packing-cate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cons-polity-cate zc_id_cons-polity-cate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-polity-cate"
     ADD CONSTRAINT "zc_id_cons-polity-cate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cons-r-type-cate zc_id_cons-r-type-cate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-r-type-cate"
     ADD CONSTRAINT "zc_id_cons-r-type-cate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cons-timezone-cate zc_id_cons-timezone-cate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate"
     ADD CONSTRAINT "zc_id_cons-timezone-cate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cons-ts_concomitant-tags zc_id_cons-ts_concomitant-tags_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-ts_concomitant-tags"
     ADD CONSTRAINT "zc_id_cons-ts_concomitant-tags_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cons-zone-tags zc_id_cons-zone-tags_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cons-zone-tags"
     ADD CONSTRAINT "zc_id_cons-zone-tags_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_consensus zc_id_consensus_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_consensus
     ADD CONSTRAINT zc_id_consensus_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cont-cooperative zc_id_cont-cooperative_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-cooperative"
     ADD CONSTRAINT "zc_id_cont-cooperative_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cont-guarantee zc_id_cont-guarantee_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-guarantee"
     ADD CONSTRAINT "zc_id_cont-guarantee_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cont-insurance zc_id_cont-insurance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-insurance"
     ADD CONSTRAINT "zc_id_cont-insurance_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cont-joint_venture zc_id_cont-joint_venture_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-joint_venture"
     ADD CONSTRAINT "zc_id_cont-joint_venture_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cont-marriage zc_id_cont-marriage_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-marriage"
     ADD CONSTRAINT "zc_id_cont-marriage_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cont-partnership zc_id_cont-partnership_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-partnership"
     ADD CONSTRAINT "zc_id_cont-partnership_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cont-proxy zc_id_cont-proxy_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-proxy"
     ADD CONSTRAINT "zc_id_cont-proxy_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cont-purchase zc_id_cont-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-purchase"
     ADD CONSTRAINT "zc_id_cont-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cont-request zc_id_cont-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-request"
     ADD CONSTRAINT "zc_id_cont-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cont-sales zc_id_cont-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-sales"
     ADD CONSTRAINT "zc_id_cont-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cont-transport-purchase zc_id_cont-transport-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-transport-purchase"
     ADD CONSTRAINT "zc_id_cont-transport-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cont-transport-sales zc_id_cont-transport-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-transport-sales"
     ADD CONSTRAINT "zc_id_cont-transport-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_cont-transport_rr_stop zc_id_cont-transport_rr_stop_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_cont-transport_rr_stop"
     ADD CONSTRAINT "zc_id_cont-transport_rr_stop_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_contact_infos zc_id_contact_infos_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contact_infos
     ADD CONSTRAINT zc_id_contact_infos_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_contacts zc_id_contacts_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contacts
     ADD CONSTRAINT zc_id_contacts_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_contacts_rr_infos zc_id_contacts_rr_infos_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contacts_rr_infos
     ADD CONSTRAINT zc_id_contacts_rr_infos_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_contract zc_id_contract_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract
     ADD CONSTRAINT zc_id_contract_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_contract_r_calc zc_id_contract_r_calc_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_r_calc
     ADD CONSTRAINT zc_id_contract_r_calc_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_contract_r_term zc_id_contract_r_term_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_r_term
     ADD CONSTRAINT zc_id_contract_r_term_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_contract_rr_deal zc_id_contract_rr_deal_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_deal
     ADD CONSTRAINT zc_id_contract_rr_deal_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_contract_rr_demand zc_id_contract_rr_demand_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_demand
     ADD CONSTRAINT zc_id_contract_rr_demand_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_contract_rr_goods zc_id_contract_rr_goods_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_goods
     ADD CONSTRAINT zc_id_contract_rr_goods_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_contract_rr_law zc_id_contract_rr_law_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_law
     ADD CONSTRAINT zc_id_contract_rr_law_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_contract_rr_matter zc_id_contract_rr_matter_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_matter
     ADD CONSTRAINT zc_id_contract_rr_matter_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_contract_rr_party zc_id_contract_rr_party_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_party
     ADD CONSTRAINT zc_id_contract_rr_party_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_contract_rr_symmetry zc_id_contract_rr_symmetry_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_contract_rr_symmetry
     ADD CONSTRAINT zc_id_contract_rr_symmetry_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_counting_r_cnt-status zc_id_counting_r_cnt-status_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_counting_r_cnt-status"
     ADD CONSTRAINT "zc_id_counting_r_cnt-status_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_demand_rr_supply zc_id_demand_rr_supply_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_demand_rr_supply
     ADD CONSTRAINT zc_id_demand_rr_supply_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-alert zc_id_deta-alert_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-alert"
     ADD CONSTRAINT "zc_id_deta-alert_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-appeal zc_id_deta-appeal_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-appeal"
     ADD CONSTRAINT "zc_id_deta-appeal_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-approve zc_id_deta-approve_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-approve"
     ADD CONSTRAINT "zc_id_deta-approve_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-bill-check zc_id_deta-bill-check_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-bill-check"
     ADD CONSTRAINT "zc_id_deta-bill-check_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-bill-check_r_verify-status zc_id_deta-bill-check_r_verify-status_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-bill-check_r_verify-status"
     ADD CONSTRAINT "zc_id_deta-bill-check_r_verify-status_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-bill-check_r_verify-status zc_id_deta-bill-check_r_verify-status_ref_left_key; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-bill-check_r_verify-status"
     ADD CONSTRAINT "zc_id_deta-bill-check_r_verify-status_ref_left_key" UNIQUE (ref_left);
 
 
---
--- Name: zc_id_deta-bill-pricing zc_id_deta-bill-pricing_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-bill-pricing"
     ADD CONSTRAINT "zc_id_deta-bill-pricing_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-commit zc_id_deta-commit_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-commit"
     ADD CONSTRAINT "zc_id_deta-commit_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-counting zc_id_deta-counting_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-counting"
     ADD CONSTRAINT "zc_id_deta-counting_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-inspection zc_id_deta-inspection_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-inspection"
     ADD CONSTRAINT "zc_id_deta-inspection_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-invoice zc_id_deta-invoice_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-invoice"
     ADD CONSTRAINT "zc_id_deta-invoice_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-maintenance zc_id_deta-maintenance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-maintenance"
     ADD CONSTRAINT "zc_id_deta-maintenance_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-opinion zc_id_deta-opinion_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-opinion"
     ADD CONSTRAINT "zc_id_deta-opinion_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-plan zc_id_deta-plan_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-plan"
     ADD CONSTRAINT "zc_id_deta-plan_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-task zc_id_deta-task_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-task"
     ADD CONSTRAINT "zc_id_deta-task_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-trade_order zc_id_deta-trade_order_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-trade_order"
     ADD CONSTRAINT "zc_id_deta-trade_order_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-training zc_id_deta-training_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-training"
     ADD CONSTRAINT "zc_id_deta-training_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-training_rr_matter zc_id_deta-training_rr_matter_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-training_rr_matter"
     ADD CONSTRAINT "zc_id_deta-training_rr_matter_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-tsk zc_id_deta-tsk_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-tsk"
     ADD CONSTRAINT "zc_id_deta-tsk_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-tsk_r_verify-status zc_id_deta-tsk_r_verify-status_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-tsk_r_verify-status"
     ADD CONSTRAINT "zc_id_deta-tsk_r_verify-status_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_deta-tsp zc_id_deta-tsp_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_deta-tsp"
     ADD CONSTRAINT "zc_id_deta-tsp_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_detail zc_id_detail_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_detail
     ADD CONSTRAINT zc_id_detail_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_devi-camera zc_id_devi-camera_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_devi-camera"
     ADD CONSTRAINT "zc_id_devi-camera_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_devi-chess zc_id_devi-chess_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_devi-chess"
     ADD CONSTRAINT "zc_id_devi-chess_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_devi-control_board zc_id_devi-control_board_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_devi-control_board"
     ADD CONSTRAINT "zc_id_devi-control_board_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_devi-display zc_id_devi-display_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_devi-display"
     ADD CONSTRAINT "zc_id_devi-display_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_devi-measure zc_id_devi-measure_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_devi-measure"
     ADD CONSTRAINT "zc_id_devi-measure_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_devi-seal zc_id_devi-seal_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_devi-seal"
     ADD CONSTRAINT "zc_id_devi-seal_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_devi-sensor zc_id_devi-sensor_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_devi-sensor"
     ADD CONSTRAINT "zc_id_devi-sensor_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_device zc_id_device_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_device
     ADD CONSTRAINT zc_id_device_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_device_r_iot-status zc_id_device_r_iot-status_ref_left_key; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_device_r_iot-status"
     ADD CONSTRAINT "zc_id_device_r_iot-status_ref_left_key" UNIQUE (ref_left);
 
 
---
--- Name: zc_id_device_rr_protocol zc_id_device_rr_protocol_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_device_rr_protocol
     ADD CONSTRAINT zc_id_device_rr_protocol_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_docu-accounting zc_id_docu-accounting_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_docu-accounting"
     ADD CONSTRAINT "zc_id_docu-accounting_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_document zc_id_document_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_document
     ADD CONSTRAINT zc_id_document_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_empl-agent zc_id_empl-agent_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_empl-agent"
     ADD CONSTRAINT "zc_id_empl-agent_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_empl-agent_rr_llm-config zc_id_empl-agent_rr_llm-config_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_empl-agent_rr_llm-config"
     ADD CONSTRAINT "zc_id_empl-agent_rr_llm-config_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_empl-natural zc_id_empl-natural_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_empl-natural"
     ADD CONSTRAINT "zc_id_empl-natural_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_empl-natural_r_marital-status zc_id_empl-natural_r_marital-status_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_empl-natural_r_marital-status"
     ADD CONSTRAINT "zc_id_empl-natural_r_marital-status_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_empl-natural_r_marital-status zc_id_empl-natural_r_marital-status_ref_left_key; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_empl-natural_r_marital-status"
     ADD CONSTRAINT "zc_id_empl-natural_r_marital-status_ref_left_key" UNIQUE (ref_left);
 
 
---
--- Name: zc_id_empl-natural_rr_consanguinity zc_id_empl-natural_rr_consanguinity_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_empl-natural_rr_consanguinity"
     ADD CONSTRAINT "zc_id_empl-natural_rr_consanguinity_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_empl-natural_rr_country zc_id_empl-natural_rr_country_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_empl-natural_rr_country"
     ADD CONSTRAINT "zc_id_empl-natural_rr_country_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_entity zc_id_entity_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_entity
     ADD CONSTRAINT zc_id_entity_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_entity_rr_contacts zc_id_entity_rr_contacts_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_entity_rr_contacts
     ADD CONSTRAINT zc_id_entity_rr_contacts_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_entity_rr_identity zc_id_entity_rr_identity_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_entity_rr_identity
     ADD CONSTRAINT zc_id_entity_rr_identity_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_eval-calculable zc_id_eval-calculable_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_eval-calculable"
     ADD CONSTRAINT "zc_id_eval-calculable_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_eval-comparable zc_id_eval-comparable_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_eval-comparable"
     ADD CONSTRAINT "zc_id_eval-comparable_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_evaluation zc_id_evaluation_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_evaluation
     ADD CONSTRAINT zc_id_evaluation_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_even-accident zc_id_even-accident_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-accident"
     ADD CONSTRAINT "zc_id_even-accident_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_even-alert zc_id_even-alert_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-alert"
     ADD CONSTRAINT "zc_id_even-alert_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_even-approve zc_id_even-approve_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-approve"
     ADD CONSTRAINT "zc_id_even-approve_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_even-counting zc_id_even-counting_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-counting"
     ADD CONSTRAINT "zc_id_even-counting_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_even-log zc_id_even-log_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-log"
     ADD CONSTRAINT "zc_id_even-log_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_even-modify zc_id_even-modify_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-modify"
     ADD CONSTRAINT "zc_id_even-modify_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_even-report zc_id_even-report_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_even-report"
     ADD CONSTRAINT "zc_id_even-report_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_event zc_id_event_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_event
     ADD CONSTRAINT zc_id_event_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_event_rr_bill zc_id_event_rr_bill_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_bill
     ADD CONSTRAINT zc_id_event_rr_bill_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_event_rr_container zc_id_event_rr_container_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_container
     ADD CONSTRAINT zc_id_event_rr_container_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_event_rr_matter zc_id_event_rr_matter_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_matter
     ADD CONSTRAINT zc_id_event_rr_matter_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_event_rr_reason zc_id_event_rr_reason_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_reason
     ADD CONSTRAINT zc_id_event_rr_reason_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_event_rr_standard zc_id_event_rr_standard_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_standard
     ADD CONSTRAINT zc_id_event_rr_standard_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_factor zc_id_factor_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_factor
     ADD CONSTRAINT zc_id_factor_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_file-avatar zc_id_file-avatar_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-avatar"
     ADD CONSTRAINT "zc_id_file-avatar_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_file-document zc_id_file-document_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-document"
     ADD CONSTRAINT "zc_id_file-document_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_file-image zc_id_file-image_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-image"
     ADD CONSTRAINT "zc_id_file-image_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_file-manual zc_id_file-manual_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-manual"
     ADD CONSTRAINT "zc_id_file-manual_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_file-package zc_id_file-package_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-package"
     ADD CONSTRAINT "zc_id_file-package_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_file-srm zc_id_file-srm_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-srm"
     ADD CONSTRAINT "zc_id_file-srm_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_file-ver_ctrl zc_id_file-ver_ctrl_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-ver_ctrl"
     ADD CONSTRAINT "zc_id_file-ver_ctrl_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_file-wbm zc_id_file-wbm_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_file-wbm"
     ADD CONSTRAINT "zc_id_file-wbm_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_file_rr_url zc_id_file_rr_url_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_file_rr_url
     ADD CONSTRAINT zc_id_file_rr_url_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_form-access zc_id_form-access_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_form-access"
     ADD CONSTRAINT "zc_id_form-access_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_form-calc_tax zc_id_form-calc_tax_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_form-calc_tax"
     ADD CONSTRAINT "zc_id_form-calc_tax_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_form-calculation zc_id_form-calculation_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_form-calculation"
     ADD CONSTRAINT "zc_id_form-calculation_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_form-condition zc_id_form-condition_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_form-condition"
     ADD CONSTRAINT "zc_id_form-condition_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_form-mapping zc_id_form-mapping_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_form-mapping"
     ADD CONSTRAINT "zc_id_form-mapping_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_formula zc_id_formula_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_formula
     ADD CONSTRAINT zc_id_formula_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_function zc_id_function_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_function
     ADD CONSTRAINT zc_id_function_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_geog-area zc_id_geog-area_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_geog-area"
     ADD CONSTRAINT "zc_id_geog-area_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_geog-circle zc_id_geog-circle_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_geog-circle"
     ADD CONSTRAINT "zc_id_geog-circle_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_geog-path zc_id_geog-path_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_geog-path"
     ADD CONSTRAINT "zc_id_geog-path_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_geog-point zc_id_geog-point_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_geog-point"
     ADD CONSTRAINT "zc_id_geog-point_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_geog-polygon zc_id_geog-polygon_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_geog-polygon"
     ADD CONSTRAINT "zc_id_geog-polygon_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_geom-area zc_id_geom-area_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_geom-area"
     ADD CONSTRAINT "zc_id_geom-area_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_geom-circle zc_id_geom-circle_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_geom-circle"
     ADD CONSTRAINT "zc_id_geom-circle_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_geom-coordinate zc_id_geom-coordinate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_geom-coordinate"
     ADD CONSTRAINT "zc_id_geom-coordinate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_geom-path zc_id_geom-path_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_geom-path"
     ADD CONSTRAINT "zc_id_geom-path_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_geom-polygon zc_id_geom-polygon_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_geom-polygon"
     ADD CONSTRAINT "zc_id_geom-polygon_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_geometry zc_id_geometry_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_geometry
     ADD CONSTRAINT zc_id_geometry_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_identity zc_id_identity_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_identity
     ADD CONSTRAINT zc_id_identity_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_identity_rr_country zc_id_identity_rr_country_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_identity_rr_country
     ADD CONSTRAINT zc_id_identity_rr_country_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_info-email zc_id_info-email_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_info-email"
     ADD CONSTRAINT "zc_id_info-email_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_info-im zc_id_info-im_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_info-im"
     ADD CONSTRAINT "zc_id_info-im_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_info-isahl zc_id_info-isahl_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_info-isahl"
     ADD CONSTRAINT "zc_id_info-isahl_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_info-postal zc_id_info-postal_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_info-postal"
     ADD CONSTRAINT "zc_id_info-postal_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_info-telephone zc_id_info-telephone_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_info-telephone"
     ADD CONSTRAINT "zc_id_info-telephone_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_info-url zc_id_info-url_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_info-url"
     ADD CONSTRAINT "zc_id_info-url_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_info-zipcode zc_id_info-zipcode_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_info-zipcode"
     ADD CONSTRAINT "zc_id_info-zipcode_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_invo-electric zc_id_invo-electric_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_invo-electric"
     ADD CONSTRAINT "zc_id_invo-electric_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_invo-form zc_id_invo-form_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_invo-form"
     ADD CONSTRAINT "zc_id_invo-form_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_invo-proforma zc_id_invo-proforma_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_invo-proforma"
     ADD CONSTRAINT "zc_id_invo-proforma_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_invo-tax-list zc_id_invo-tax-list_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_invo-tax-list"
     ADD CONSTRAINT "zc_id_invo-tax-list_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_invoice zc_id_invoice_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_invoice
     ADD CONSTRAINT zc_id_invoice_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_invoice_r_verify-status zc_id_invoice_r_verify-status_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_invoice_r_verify-status"
     ADD CONSTRAINT "zc_id_invoice_r_verify-status_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_invoice_r_verify-status zc_id_invoice_r_verify-status_ref_left_key; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_invoice_r_verify-status"
     ADD CONSTRAINT "zc_id_invoice_r_verify-status_ref_left_key" UNIQUE (ref_left);
 
 
---
--- Name: zc_id_law-civil-article zc_id_law-civil-article_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil-article"
     ADD CONSTRAINT "zc_id_law-civil-article_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-civil-book zc_id_law-civil-book_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil-book"
     ADD CONSTRAINT "zc_id_law-civil-book_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-civil-chapter zc_id_law-civil-chapter_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil-chapter"
     ADD CONSTRAINT "zc_id_law-civil-chapter_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-civil-code zc_id_law-civil-code_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil-code"
     ADD CONSTRAINT "zc_id_law-civil-code_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-civil-section zc_id_law-civil-section_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil-section"
     ADD CONSTRAINT "zc_id_law-civil-section_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-civil zc_id_law-civil_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-civil"
     ADD CONSTRAINT "zc_id_law-civil_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-common-case zc_id_law-common-case_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-case"
     ADD CONSTRAINT "zc_id_law-common-case_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-common-chapter zc_id_law-common-chapter_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-chapter"
     ADD CONSTRAINT "zc_id_law-common-chapter_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-common-holding zc_id_law-common-holding_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-holding"
     ADD CONSTRAINT "zc_id_law-common-holding_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-common-section zc_id_law-common-section_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-section"
     ADD CONSTRAINT "zc_id_law-common-section_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-common-statute zc_id_law-common-statute_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-statute"
     ADD CONSTRAINT "zc_id_law-common-statute_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-common-title zc_id_law-common-title_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common-title"
     ADD CONSTRAINT "zc_id_law-common-title_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-common zc_id_law-common_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-common"
     ADD CONSTRAINT "zc_id_law-common_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-intl-article zc_id_law-intl-article_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl-article"
     ADD CONSTRAINT "zc_id_law-intl-article_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-intl-chapter zc_id_law-intl-chapter_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl-chapter"
     ADD CONSTRAINT "zc_id_law-intl-chapter_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-intl-custom zc_id_law-intl-custom_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl-custom"
     ADD CONSTRAINT "zc_id_law-intl-custom_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-intl-part zc_id_law-intl-part_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl-part"
     ADD CONSTRAINT "zc_id_law-intl-part_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-intl-treaty zc_id_law-intl-treaty_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl-treaty"
     ADD CONSTRAINT "zc_id_law-intl-treaty_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-intl zc_id_law-intl_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-intl"
     ADD CONSTRAINT "zc_id_law-intl_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-mixed zc_id_law-mixed_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-mixed"
     ADD CONSTRAINT "zc_id_law-mixed_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law-religious zc_id_law-religious_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_law-religious"
     ADD CONSTRAINT "zc_id_law-religious_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_law zc_id_law_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_law
     ADD CONSTRAINT zc_id_law_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_leve-applicable zc_id_leve-applicable_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-applicable"
     ADD CONSTRAINT "zc_id_leve-applicable_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_leve-bom_satisfy zc_id_leve-bom_satisfy_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-bom_satisfy"
     ADD CONSTRAINT "zc_id_leve-bom_satisfy_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_leve-diploma zc_id_leve-diploma_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-diploma"
     ADD CONSTRAINT "zc_id_leve-diploma_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_leve-impact zc_id_leve-impact_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-impact"
     ADD CONSTRAINT "zc_id_leve-impact_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_leve-log zc_id_leve-log_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-log"
     ADD CONSTRAINT "zc_id_leve-log_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_leve-plan zc_id_leve-plan_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-plan"
     ADD CONSTRAINT "zc_id_leve-plan_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_leve-project zc_id_leve-project_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-project"
     ADD CONSTRAINT "zc_id_leve-project_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_leve-qualification zc_id_leve-qualification_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-qualification"
     ADD CONSTRAINT "zc_id_leve-qualification_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_leve-severity zc_id_leve-severity_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-severity"
     ADD CONSTRAINT "zc_id_leve-severity_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_leve-standard zc_id_leve-standard_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-standard"
     ADD CONSTRAINT "zc_id_leve-standard_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_leve-structure zc_id_leve-structure_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-structure"
     ADD CONSTRAINT "zc_id_leve-structure_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_leve-task zc_id_leve-task_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-task"
     ADD CONSTRAINT "zc_id_leve-task_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_leve-urgent zc_id_leve-urgent_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_leve-urgent"
     ADD CONSTRAINT "zc_id_leve-urgent_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_level zc_id_level_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_level
     ADD CONSTRAINT zc_id_level_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_lifecycle zc_id_lifecycle_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_lifecycle
     ADD CONSTRAINT zc_id_lifecycle_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_lifecycle_r_category zc_id_lifecycle_r_category_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_lifecycle_r_category
     ADD CONSTRAINT zc_id_lifecycle_r_category_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_lifecycle_r_evaluation zc_id_lifecycle_r_evaluation_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_lifecycle_r_evaluation
     ADD CONSTRAINT zc_id_lifecycle_r_evaluation_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_lifecycle_r_primary-status zc_id_lifecycle_r_primary-status_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_primary-status"
     ADD CONSTRAINT "zc_id_lifecycle_r_primary-status_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_lifecycle_r_primary-status zc_id_lifecycle_r_primary-status_ref_left_key; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_primary-status"
     ADD CONSTRAINT "zc_id_lifecycle_r_primary-status_ref_left_key" UNIQUE (ref_left);
 
 
---
--- Name: zc_id_lifecycle_r_status zc_id_lifecycle_r_status_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_lifecycle_r_status
     ADD CONSTRAINT zc_id_lifecycle_r_status_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_lifecycle_r_status zc_id_lifecycle_r_status_ref_left_key; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_lifecycle_r_status
     ADD CONSTRAINT zc_id_lifecycle_r_status_ref_left_key UNIQUE (ref_left);
 
 
---
--- Name: zc_id_lifecycle_r_tags zc_id_lifecycle_r_tags_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_lifecycle_r_tags
     ADD CONSTRAINT zc_id_lifecycle_r_tags_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_lifecycle_rr_foreign zc_id_lifecycle_rr_foreign_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_lifecycle_rr_foreign
     ADD CONSTRAINT zc_id_lifecycle_rr_foreign_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_lifecycle_rr_form zc_id_lifecycle_rr_form_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_lifecycle_rr_form
     ADD CONSTRAINT zc_id_lifecycle_rr_form_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_lifecycle_rr_non_self zc_id_lifecycle_rr_non_self_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_lifecycle_rr_non_self
     ADD CONSTRAINT zc_id_lifecycle_rr_non_self_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_master_rr_slave zc_id_master_rr_slave_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_master_rr_slave
     ADD CONSTRAINT zc_id_master_rr_slave_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_message zc_id_message_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_message
     ADD CONSTRAINT zc_id_message_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_message_rr_contact-info zc_id_message_rr_contact-info_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_message_rr_contact-info"
     ADD CONSTRAINT "zc_id_message_rr_contact-info_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_message_rr_copy zc_id_message_rr_copy_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_message_rr_copy
     ADD CONSTRAINT zc_id_message_rr_copy_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_message_rr_recipients zc_id_message_rr_recipients_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_message_rr_recipients
     ADD CONSTRAINT zc_id_message_rr_recipients_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_msgs-chat_ai zc_id_msgs-chat-ai_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_msgs-chat_ai"
     ADD CONSTRAINT "zc_id_msgs-chat-ai_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_msgs-comments zc_id_msgs-comments_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_msgs-comments"
     ADD CONSTRAINT "zc_id_msgs-comments_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_msgs-email zc_id_msgs-email_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_msgs-email"
     ADD CONSTRAINT "zc_id_msgs-email_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_msgs-feedback zc_id_msgs-feedback_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_msgs-feedback"
     ADD CONSTRAINT "zc_id_msgs-feedback_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_msgs-im zc_id_msgs-im_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_msgs-im"
     ADD CONSTRAINT "zc_id_msgs-im_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_msgs-review zc_id_msgs-review_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_msgs-review"
     ADD CONSTRAINT "zc_id_msgs-review_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_msgs-system zc_id_msgs-system_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_msgs-system"
     ADD CONSTRAINT "zc_id_msgs-system_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_msgs-telephone zc_id_msgs-telephone_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_msgs-telephone"
     ADD CONSTRAINT "zc_id_msgs-telephone_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_msgs-zchat zc_id_msgs-zchat_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_msgs-zchat"
     ADD CONSTRAINT "zc_id_msgs-zchat_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_object zc_id_object_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_object
     ADD CONSTRAINT zc_id_object_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-action zc_id_oper-action_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-action"
     ADD CONSTRAINT "zc_id_oper-action_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-approve zc_id_oper-approve_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-approve"
     ADD CONSTRAINT "zc_id_oper-approve_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-audit_acc zc_id_oper-audit_acc_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-audit_acc"
     ADD CONSTRAINT "zc_id_oper-audit_acc_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-audit_prj zc_id_oper-audit_prj_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-audit_prj"
     ADD CONSTRAINT "zc_id_oper-audit_prj_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-check_bill zc_id_oper-check_bill_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-check_bill"
     ADD CONSTRAINT "zc_id_oper-check_bill_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-check zc_id_oper-check_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-check"
     ADD CONSTRAINT "zc_id_oper-check_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-clearance_import zc_id_oper-clearance_import_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-clearance_import"
     ADD CONSTRAINT "zc_id_oper-clearance_import_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-confirm_bill zc_id_oper-confirm_bill_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-confirm_bill"
     ADD CONSTRAINT "zc_id_oper-confirm_bill_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-decide zc_id_oper-decide_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-decide"
     ADD CONSTRAINT "zc_id_oper-decide_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-declaration_export zc_id_oper-declaration_export_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-declaration_export"
     ADD CONSTRAINT "zc_id_oper-declaration_export_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-delivery zc_id_oper-delivery_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-delivery"
     ADD CONSTRAINT "zc_id_oper-delivery_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-fo_booking zc_id_oper-fo_booking_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-fo_booking"
     ADD CONSTRAINT "zc_id_oper-fo_booking_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-gate zc_id_oper-gate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-gate"
     ADD CONSTRAINT "zc_id_oper-gate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-lading zc_id_oper-lading_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-lading"
     ADD CONSTRAINT "zc_id_oper-lading_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-merchandise_on zc_id_oper-merchandise_on_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-merchandise_on"
     ADD CONSTRAINT "zc_id_oper-merchandise_on_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-observe zc_id_oper-observe_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-observe"
     ADD CONSTRAINT "zc_id_oper-observe_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-orient zc_id_oper-orient_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-orient"
     ADD CONSTRAINT "zc_id_oper-orient_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-payment zc_id_oper-payment_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-payment"
     ADD CONSTRAINT "zc_id_oper-payment_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-planing zc_id_oper-planing_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-planing"
     ADD CONSTRAINT "zc_id_oper-planing_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-put_in_stock zc_id_oper-put_in_stock_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-put_in_stock"
     ADD CONSTRAINT "zc_id_oper-put_in_stock_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-register zc_id_oper-register_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-register"
     ADD CONSTRAINT "zc_id_oper-register_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-resp_inquiry zc_id_oper-resp_inquiry_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-resp_inquiry"
     ADD CONSTRAINT "zc_id_oper-resp_inquiry_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-sales_order zc_id_oper-sales_order_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-sales_order"
     ADD CONSTRAINT "zc_id_oper-sales_order_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-sign zc_id_oper-sign_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-sign"
     ADD CONSTRAINT "zc_id_oper-sign_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-sign_rr_agreement zc_id_oper-sign_rr_agreement_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-sign_rr_agreement"
     ADD CONSTRAINT "zc_id_oper-sign_rr_agreement_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-sign_rr_contract zc_id_oper-sign_rr_contract_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-sign_rr_contract"
     ADD CONSTRAINT "zc_id_oper-sign_rr_contract_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-smtv_review zc_id_oper-smtv_review_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-smtv_review"
     ADD CONSTRAINT "zc_id_oper-smtv_review_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-storage zc_id_oper-storage_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-storage"
     ADD CONSTRAINT "zc_id_oper-storage_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-take_off_stock zc_id_oper-take_off_stock_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-take_off_stock"
     ADD CONSTRAINT "zc_id_oper-take_off_stock_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-test zc_id_oper-test_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-test"
     ADD CONSTRAINT "zc_id_oper-test_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-trailer zc_id_oper-trailer_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-trailer"
     ADD CONSTRAINT "zc_id_oper-trailer_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_oper-transport_tracking zc_id_oper-transport_tracking_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_oper-transport_tracking"
     ADD CONSTRAINT "zc_id_oper-transport_tracking_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_operation zc_id_operation_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation
     ADD CONSTRAINT zc_id_operation_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_operation_rr_approve zc_id_operation_rr_approve_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation_rr_approve
     ADD CONSTRAINT zc_id_operation_rr_approve_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_operation_rr_bill zc_id_operation_rr_bill_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation_rr_bill
     ADD CONSTRAINT zc_id_operation_rr_bill_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_operation_rr_bom zc_id_operation_rr_bom_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation_rr_bom
     ADD CONSTRAINT zc_id_operation_rr_bom_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_operation_rr_dependency zc_id_operation_rr_dependency_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation_rr_dependency
     ADD CONSTRAINT zc_id_operation_rr_dependency_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_operation_rr_event zc_id_operation_rr_event_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation_rr_event
     ADD CONSTRAINT zc_id_operation_rr_event_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_operation_rr_post zc_id_operation_rr_post_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation_rr_post
     ADD CONSTRAINT zc_id_operation_rr_post_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_operation_rr_review zc_id_operation_rr_review_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation_rr_review
     ADD CONSTRAINT zc_id_operation_rr_review_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_operation_rr_standard zc_id_operation_rr_standard_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation_rr_standard
     ADD CONSTRAINT zc_id_operation_rr_standard_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_operation_rr_statement zc_id_operation_rr_statement_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation_rr_statement
     ADD CONSTRAINT zc_id_operation_rr_statement_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_operation_rr_task zc_id_operation_rr_task_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_operation_rr_task
     ADD CONSTRAINT zc_id_operation_rr_task_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orde-ahbl zc_id_orde-ahbl_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-ahbl"
     ADD CONSTRAINT "zc_id_orde-ahbl_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orde-airlift zc_id_orde-airlift_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-airlift"
     ADD CONSTRAINT "zc_id_orde-airlift_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orde-consult zc_id_orde-consult_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-consult"
     ADD CONSTRAINT "zc_id_orde-consult_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orde-hbl zc_id_orde-hbl_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-hbl"
     ADD CONSTRAINT "zc_id_orde-hbl_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orde-land zc_id_orde-land_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-land"
     ADD CONSTRAINT "zc_id_orde-land_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orde-lbl zc_id_orde-lbl_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-lbl"
     ADD CONSTRAINT "zc_id_orde-lbl_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orde-payment zc_id_orde-payment_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-payment"
     ADD CONSTRAINT "zc_id_orde-payment_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orde-railway zc_id_orde-railway_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-railway"
     ADD CONSTRAINT "zc_id_orde-railway_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orde-rbl zc_id_orde-rbl_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-rbl"
     ADD CONSTRAINT "zc_id_orde-rbl_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orde-retail zc_id_orde-retail_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-retail"
     ADD CONSTRAINT "zc_id_orde-retail_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orde-shipping zc_id_orde-shipping_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-shipping"
     ADD CONSTRAINT "zc_id_orde-shipping_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orde-storage zc_id_orde-storage_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-storage"
     ADD CONSTRAINT "zc_id_orde-storage_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orde-traffic zc_id_orde-traffic_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-traffic"
     ADD CONSTRAINT "zc_id_orde-traffic_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orde-traffic_rr_devi-seal zc_id_orde-traffic_rr_devi-seal_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-traffic_rr_devi-seal"
     ADD CONSTRAINT "zc_id_orde-traffic_rr_devi-seal_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orde-traffic_rr_ticket zc_id_orde-traffic_rr_ticket_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-traffic_rr_ticket"
     ADD CONSTRAINT "zc_id_orde-traffic_rr_ticket_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orde-traffic_rr_tsp-voucher zc_id_orde-traffic_rr_tsp-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orde-traffic_rr_tsp-voucher"
     ADD CONSTRAINT "zc_id_orde-traffic_rr_tsp-voucher_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_order-after_sales zc_id_order-after_sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_order-after_sales"
     ADD CONSTRAINT "zc_id_order-after_sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_order_rr_contract zc_id_order_rr_contract_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_order_rr_contract
     ADD CONSTRAINT zc_id_order_rr_contract_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_order_rr_demand zc_id_order_rr_demand_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_order_rr_demand
     ADD CONSTRAINT zc_id_order_rr_demand_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_order_rr_foreign zc_id_order_rr_foreign_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_order_rr_foreign
     ADD CONSTRAINT zc_id_order_rr_foreign_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_order_rr_issue_invoice zc_id_order_rr_issue_invoice_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_order_rr_issue_invoice
     ADD CONSTRAINT zc_id_order_rr_issue_invoice_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_order_rr_obj-rep zc_id_order_rr_obj-rep_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_order_rr_obj-rep"
     ADD CONSTRAINT "zc_id_order_rr_obj-rep_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_order_rr_recv_invoice zc_id_order_rr_recv_invoice_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_order_rr_recv_invoice
     ADD CONSTRAINT zc_id_order_rr_recv_invoice_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_order_rr_subj-rep zc_id_order_rr_subj-rep_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_order_rr_subj-rep"
     ADD CONSTRAINT "zc_id_order_rr_subj-rep_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orga-department zc_id_orga-department_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orga-department"
     ADD CONSTRAINT "zc_id_orga-department_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orga-department_rr_project zc_id_orga-department_rr_project_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orga-department_rr_project"
     ADD CONSTRAINT "zc_id_orga-department_rr_project_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orga-legal zc_id_orga-legal_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orga-legal"
     ADD CONSTRAINT "zc_id_orga-legal_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_orga-non-banking-legal zc_id_orga-non-banking-legal_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_orga-non-banking-legal"
     ADD CONSTRAINT "zc_id_orga-non-banking-legal_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_place zc_id_place_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_place
     ADD CONSTRAINT zc_id_place_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_place_rr_address zc_id_place_rr_address_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_place_rr_address
     ADD CONSTRAINT zc_id_place_rr_address_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_place_rr_contacts zc_id_place_rr_contacts_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_place_rr_contacts
     ADD CONSTRAINT zc_id_place_rr_contacts_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-certification zc_id_plan-certification_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-certification"
     ADD CONSTRAINT "zc_id_plan-certification_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-delivery zc_id_plan-delivery_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-delivery"
     ADD CONSTRAINT "zc_id_plan-delivery_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-inbound zc_id_plan-inbound_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-inbound"
     ADD CONSTRAINT "zc_id_plan-inbound_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-maintain zc_id_plan-maintain_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-maintain"
     ADD CONSTRAINT "zc_id_plan-maintain_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-making zc_id_plan-making_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-making"
     ADD CONSTRAINT "zc_id_plan-making_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-making_rr_prod zc_id_plan-making_rr_prod_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-making_rr_prod"
     ADD CONSTRAINT "zc_id_plan-making_rr_prod_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-material zc_id_plan-material_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-material"
     ADD CONSTRAINT "zc_id_plan-material_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-material_rr_material zc_id_plan-material_rr_material_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-material_rr_material"
     ADD CONSTRAINT "zc_id_plan-material_rr_material_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-outbound zc_id_plan-outbound_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-outbound"
     ADD CONSTRAINT "zc_id_plan-outbound_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-payment zc_id_plan-payment_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-payment"
     ADD CONSTRAINT "zc_id_plan-payment_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-payment_rr_smt-voucher zc_id_plan-payment_rr_smt-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-payment_rr_smt-voucher"
     ADD CONSTRAINT "zc_id_plan-payment_rr_smt-voucher_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-perform zc_id_plan-perform_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-perform"
     ADD CONSTRAINT "zc_id_plan-perform_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-perform_rr_tsk-make zc_id_plan-perform_rr_tsk-make_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_tsk-make"
     ADD CONSTRAINT "zc_id_plan-perform_rr_tsk-make_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-perform_rr_tsp-voucher zc_id_plan-perform_rr_tsp-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_tsp-voucher"
     ADD CONSTRAINT "zc_id_plan-perform_rr_tsp-voucher_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-perform_rr_whs-voucher zc_id_plan-perform_rr_whs-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_whs-voucher"
     ADD CONSTRAINT "zc_id_plan-perform_rr_whs-voucher_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-personal zc_id_plan-personal_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-personal"
     ADD CONSTRAINT "zc_id_plan-personal_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-project zc_id_plan-project_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-project"
     ADD CONSTRAINT "zc_id_plan-project_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-promotion zc_id_plan-promotion_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-promotion"
     ADD CONSTRAINT "zc_id_plan-promotion_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-purchase_items_r_prod zc_id_plan-purchase_items_r_prod_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-purchase_items_r_prod"
     ADD CONSTRAINT "zc_id_plan-purchase_items_r_prod_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-purchase zc_id_plan-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-purchase"
     ADD CONSTRAINT "zc_id_plan-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-purchase_rr_material zc_id_plan-purchase_rr_material_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-purchase_rr_material"
     ADD CONSTRAINT "zc_id_plan-purchase_rr_material_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan-recruitment zc_id_plan-recruitment_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_plan-recruitment"
     ADD CONSTRAINT "zc_id_plan-recruitment_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan zc_id_plan_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_plan
     ADD CONSTRAINT zc_id_plan_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan_rr_event zc_id_plan_rr_event_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_plan_rr_event
     ADD CONSTRAINT zc_id_plan_rr_event_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan_rr_participants zc_id_plan_rr_participants_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_plan_rr_participants
     ADD CONSTRAINT zc_id_plan_rr_participants_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan_rr_statement zc_id_plan_rr_statement_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_plan_rr_statement
     ADD CONSTRAINT zc_id_plan_rr_statement_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_plan_rr_task zc_id_plan_rr_task_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_plan_rr_task
     ADD CONSTRAINT zc_id_plan_rr_task_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prjt-proc_ctrl zc_id_prjt-proc_ctrl_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prjt-proc_ctrl"
     ADD CONSTRAINT "zc_id_prjt-proc_ctrl_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_proc-approve zc_id_proc-approve_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_proc-approve"
     ADD CONSTRAINT "zc_id_proc-approve_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_proc-cicd zc_id_proc-cicd_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_proc-cicd"
     ADD CONSTRAINT "zc_id_proc-cicd_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_proc-context zc_id_proc-context_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_proc-context"
     ADD CONSTRAINT "zc_id_proc-context_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_proc-loading zc_id_proc-loading_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_proc-loading"
     ADD CONSTRAINT "zc_id_proc-loading_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_proc-make zc_id_proc-make_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_proc-make"
     ADD CONSTRAINT "zc_id_proc-make_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_proc-project zc_id_proc-project_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_proc-project"
     ADD CONSTRAINT "zc_id_proc-project_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_proc-purchase zc_id_proc-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_proc-purchase"
     ADD CONSTRAINT "zc_id_proc-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_proc-service zc_id_proc-service_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_proc-service"
     ADD CONSTRAINT "zc_id_proc-service_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_process zc_id_process_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_process
     ADD CONSTRAINT zc_id_process_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_process_rr_context zc_id_process_rr_context_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_process_rr_context
     ADD CONSTRAINT zc_id_process_rr_context_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_process_rr_operation zc_id_process_rr_operation_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_process_rr_operation
     ADD CONSTRAINT zc_id_process_rr_operation_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-air_cert-sales zc_id_prod-air_cert-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-air_cert-sales"
     ADD CONSTRAINT "zc_id_prod-air_cert-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-biz-license-sales zc_id_prod-biz-license-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-biz-license-sales"
     ADD CONSTRAINT "zc_id_prod-biz-license-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-certificate zc_id_prod-certificate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-certificate"
     ADD CONSTRAINT "zc_id_prod-certificate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-channel_cost-sales zc_id_prod-channel_cost-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-channel_cost-sales"
     ADD CONSTRAINT "zc_id_prod-channel_cost-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-combine zc_id_prod-combine_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-combine"
     ADD CONSTRAINT "zc_id_prod-combine_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-conclusion zc_id_prod-conclusion_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-conclusion"
     ADD CONSTRAINT "zc_id_prod-conclusion_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-consulting zc_id_prod-consulting_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-consulting"
     ADD CONSTRAINT "zc_id_prod-consulting_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-customs-clearance zc_id_prod-customs-clearance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-customs-clearance"
     ADD CONSTRAINT "zc_id_prod-customs-clearance_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-customs_cle_fo-purchase zc_id_prod-customs_cle_fo-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-customs_cle_fo-purchase"
     ADD CONSTRAINT "zc_id_prod-customs_cle_fo-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-customs_cle_fo-sales zc_id_prod-customs_cle_fo-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-customs_cle_fo-sales"
     ADD CONSTRAINT "zc_id_prod-customs_cle_fo-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-customs_dec_fo-purchase zc_id_prod-customs_dec_fo-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-customs_dec_fo-purchase"
     ADD CONSTRAINT "zc_id_prod-customs_dec_fo-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-customs_dec_fo-sales zc_id_prod-customs_dec_fo-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-customs_dec_fo-sales"
     ADD CONSTRAINT "zc_id_prod-customs_dec_fo-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-customs_declaration zc_id_prod-customs_declaration_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-customs_declaration"
     ADD CONSTRAINT "zc_id_prod-customs_declaration_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-data zc_id_prod-data_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-data"
     ADD CONSTRAINT "zc_id_prod-data_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-dev-tools-made zc_id_prod-dev-tools-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-dev-tools-made"
     ADD CONSTRAINT "zc_id_prod-dev-tools-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-digital_cert-sales zc_id_prod-digital_cert-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-digital_cert-sales"
     ADD CONSTRAINT "zc_id_prod-digital_cert-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-diploma-sales zc_id_prod-diploma-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-diploma-sales"
     ADD CONSTRAINT "zc_id_prod-diploma-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-electric-eng-made zc_id_prod-electric-eng-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-electric-eng-made"
     ADD CONSTRAINT "zc_id_prod-electric-eng-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-file zc_id_prod-file_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-file"
     ADD CONSTRAINT "zc_id_prod-file_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-financial zc_id_prod-financial_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-financial"
     ADD CONSTRAINT "zc_id_prod-financial_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-fo_insurance-purchase zc_id_prod-fo_insurance-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-fo_insurance-purchase"
     ADD CONSTRAINT "zc_id_prod-fo_insurance-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-fo_insurance-request zc_id_prod-fo_insurance-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-fo_insurance-request"
     ADD CONSTRAINT "zc_id_prod-fo_insurance-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-fo_insurance-sales zc_id_prod-fo_insurance-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-fo_insurance-sales"
     ADD CONSTRAINT "zc_id_prod-fo_insurance-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-freight_air-sales zc_id_prod-freight_air-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_air-sales"
     ADD CONSTRAINT "zc_id_prod-freight_air-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-freight_inland-made zc_id_prod-freight_inland-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_inland-made"
     ADD CONSTRAINT "zc_id_prod-freight_inland-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-freight_inland-purchase zc_id_prod-freight_inland-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_inland-purchase"
     ADD CONSTRAINT "zc_id_prod-freight_inland-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-freight_inland-request zc_id_prod-freight_inland-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_inland-request"
     ADD CONSTRAINT "zc_id_prod-freight_inland-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-freight_inland-sales zc_id_prod-freight_inland-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_inland-sales"
     ADD CONSTRAINT "zc_id_prod-freight_inland-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-freight_ocean-purchase zc_id_prod-freight_ocean-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_ocean-purchase"
     ADD CONSTRAINT "zc_id_prod-freight_ocean-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-freight_ocean-request zc_id_prod-freight_ocean-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_ocean-request"
     ADD CONSTRAINT "zc_id_prod-freight_ocean-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-freight_ocean-sales zc_id_prod-freight_ocean-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_ocean-sales"
     ADD CONSTRAINT "zc_id_prod-freight_ocean-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-freight_rail-made zc_id_prod-freight_rail-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_rail-made"
     ADD CONSTRAINT "zc_id_prod-freight_rail-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-freight_rail-purchase zc_id_prod-freight_rail-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_rail-purchase"
     ADD CONSTRAINT "zc_id_prod-freight_rail-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-freight_rail-request zc_id_prod-freight_rail-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_rail-request"
     ADD CONSTRAINT "zc_id_prod-freight_rail-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-freight_rail-sales zc_id_prod-freight_rail-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_rail-sales"
     ADD CONSTRAINT "zc_id_prod-freight_rail-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-freight_road-made zc_id_prod-freight_road-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_road-made"
     ADD CONSTRAINT "zc_id_prod-freight_road-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-freight_road-purchase zc_id_prod-freight_road-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_road-purchase"
     ADD CONSTRAINT "zc_id_prod-freight_road-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-freight_road-request zc_id_prod-freight_road-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_road-request"
     ADD CONSTRAINT "zc_id_prod-freight_road-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-freight_road-sales zc_id_prod-freight_road-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-freight_road-sales"
     ADD CONSTRAINT "zc_id_prod-freight_road-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-goods_r_hscode zc_id_prod-goods_r_hscode_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-goods_r_hscode"
     ADD CONSTRAINT "zc_id_prod-goods_r_hscode_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-insurance-license-sales zc_id_prod-insurance-license-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-insurance-license-sales"
     ADD CONSTRAINT "zc_id_prod-insurance-license-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-insurance zc_id_prod-insurance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-insurance"
     ADD CONSTRAINT "zc_id_prod-insurance_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-lease zc_id_prod-lease_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-lease"
     ADD CONSTRAINT "zc_id_prod-lease_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-legal_tender-made zc_id_prod-legal_tender-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-legal_tender-made"
     ADD CONSTRAINT "zc_id_prod-legal_tender-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-legal_tender zc_id_prod-legal_tender_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-legal_tender"
     ADD CONSTRAINT "zc_id_prod-legal_tender_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-license-purchase zc_id_prod-license-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-license-purchase"
     ADD CONSTRAINT "zc_id_prod-license-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-license-sales zc_id_prod-license-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-license-sales"
     ADD CONSTRAINT "zc_id_prod-license-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-license zc_id_prod-license_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-license"
     ADD CONSTRAINT "zc_id_prod-license_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-loading-purchase zc_id_prod-loading-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-loading-purchase"
     ADD CONSTRAINT "zc_id_prod-loading-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-loading-request zc_id_prod-loading-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-loading-request"
     ADD CONSTRAINT "zc_id_prod-loading-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-loading-sales zc_id_prod-loading-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-loading-sales"
     ADD CONSTRAINT "zc_id_prod-loading-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-loading zc_id_prod-loading_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-loading"
     ADD CONSTRAINT "zc_id_prod-loading_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-loading_r_goods-tag zc_id_prod-loading_r_goods-tag_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-loading_r_goods-tag"
     ADD CONSTRAINT "zc_id_prod-loading_r_goods-tag_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-made zc_id_prod-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-made"
     ADD CONSTRAINT "zc_id_prod-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-made_rr_prod-purchase zc_id_prod-made_rr_prod-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-made_rr_prod-purchase"
     ADD CONSTRAINT "zc_id_prod-made_rr_prod-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-made_rr_project zc_id_prod-made_rr_project_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-made_rr_project"
     ADD CONSTRAINT "zc_id_prod-made_rr_project_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-made_rr_stor-place zc_id_prod-made_rr_stor-place_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-made_rr_stor-place"
     ADD CONSTRAINT "zc_id_prod-made_rr_stor-place_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-marriage_cert-sales zc_id_prod-marriage_cert-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-marriage_cert-sales"
     ADD CONSTRAINT "zc_id_prod-marriage_cert-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-material-made zc_id_prod-material-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-material-made"
     ADD CONSTRAINT "zc_id_prod-material-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-openapi-made zc_id_prod-openapi-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-made"
     ADD CONSTRAINT "zc_id_prod-openapi-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-openapi-purchase zc_id_prod-openapi-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-purchase"
     ADD CONSTRAINT "zc_id_prod-openapi-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-openapi-request zc_id_prod-openapi-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-request"
     ADD CONSTRAINT "zc_id_prod-openapi-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-openapi-sales zc_id_prod-openapi-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-sales"
     ADD CONSTRAINT "zc_id_prod-openapi-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-passenger zc_id_prod-passenger_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-passenger"
     ADD CONSTRAINT "zc_id_prod-passenger_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-payload zc_id_prod-payload_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-payload"
     ADD CONSTRAINT "zc_id_prod-payload_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-payload_rr_stor-container zc_id_prod-payload_rr_stor-container_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-payload_rr_stor-container"
     ADD CONSTRAINT "zc_id_prod-payload_rr_stor-container_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-ports-purchase zc_id_prod-ports-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-ports-purchase"
     ADD CONSTRAINT "zc_id_prod-ports-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-ports-request zc_id_prod-ports-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-ports-request"
     ADD CONSTRAINT "zc_id_prod-ports-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-ports-sales zc_id_prod-ports-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-ports-sales"
     ADD CONSTRAINT "zc_id_prod-ports-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-prj_data-made zc_id_prod-prj_data-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_data-made"
     ADD CONSTRAINT "zc_id_prod-prj_data-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-prj_data-purchase zc_id_prod-prj_data-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_data-purchase"
     ADD CONSTRAINT "zc_id_prod-prj_data-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-prj_data-request zc_id_prod-prj_data-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_data-request"
     ADD CONSTRAINT "zc_id_prod-prj_data-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-prj_data-sales zc_id_prod-prj_data-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_data-sales"
     ADD CONSTRAINT "zc_id_prod-prj_data-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-prj_data_rr_project zc_id_prod-prj_data_rr_project_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_data_rr_project"
     ADD CONSTRAINT "zc_id_prod-prj_data_rr_project_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-prj_vcs_file-made zc_id_prod-prj_vcs_file-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-made"
     ADD CONSTRAINT "zc_id_prod-prj_vcs_file-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-prj_vcs_file-purchase zc_id_prod-prj_vcs_file-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-purchase"
     ADD CONSTRAINT "zc_id_prod-prj_vcs_file-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-prj_vcs_file-request zc_id_prod-prj_vcs_file-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-request"
     ADD CONSTRAINT "zc_id_prod-prj_vcs_file-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-prj_vcs_file-sales zc_id_prod-prj_vcs_file-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-sales"
     ADD CONSTRAINT "zc_id_prod-prj_vcs_file-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-project-made zc_id_prod-project-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-project-made"
     ADD CONSTRAINT "zc_id_prod-project-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-project-purchase zc_id_prod-project-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-project-purchase"
     ADD CONSTRAINT "zc_id_prod-project-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-project-request zc_id_prod-project-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-project-request"
     ADD CONSTRAINT "zc_id_prod-project-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-project-sales zc_id_prod-project-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-project-sales"
     ADD CONSTRAINT "zc_id_prod-project-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-proxy zc_id_prod-proxy_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-proxy"
     ADD CONSTRAINT "zc_id_prod-proxy_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-proxy_rr_principal zc_id_prod-proxy_rr_principal_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-proxy_rr_principal"
     ADD CONSTRAINT "zc_id_prod-proxy_rr_principal_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pub_affairs zc_id_prod-pub_affairs_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pub_affairs"
     ADD CONSTRAINT "zc_id_prod-pub_affairs_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-purchase zc_id_prod-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-purchase"
     ADD CONSTRAINT "zc_id_prod-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-purchase_rr_project zc_id_prod-purchase_rr_project_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-purchase_rr_project"
     ADD CONSTRAINT "zc_id_prod-purchase_rr_project_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-auto_mfg-made zc_id_prod-pxy-auto_mfg-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-auto_mfg-made"
     ADD CONSTRAINT "zc_id_prod-pxy-auto_mfg-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-components-made zc_id_prod-pxy-components-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-components-made"
     ADD CONSTRAINT "zc_id_prod-pxy-components-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-fo_express-made zc_id_prod-pxy-fo_express-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_express-made"
     ADD CONSTRAINT "zc_id_prod-pxy-fo_express-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-fo_express-purchase zc_id_prod-pxy-fo_express-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_express-purchase"
     ADD CONSTRAINT "zc_id_prod-pxy-fo_express-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-fo_express-request zc_id_prod-pxy-fo_express-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_express-request"
     ADD CONSTRAINT "zc_id_prod-pxy-fo_express-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-fo_express-sales zc_id_prod-pxy-fo_express-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_express-sales"
     ADD CONSTRAINT "zc_id_prod-pxy-fo_express-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-fo_fcl-purchase zc_id_prod-pxy-fo_fcl-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_fcl-purchase"
     ADD CONSTRAINT "zc_id_prod-pxy-fo_fcl-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-fo_fcl-request zc_id_prod-pxy-fo_fcl-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_fcl-request"
     ADD CONSTRAINT "zc_id_prod-pxy-fo_fcl-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-fo_fcl-sales zc_id_prod-pxy-fo_fcl-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_fcl-sales"
     ADD CONSTRAINT "zc_id_prod-pxy-fo_fcl-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-fo_lcl-purchase zc_id_prod-pxy-fo_lcl-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_lcl-purchase"
     ADD CONSTRAINT "zc_id_prod-pxy-fo_lcl-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-fo_lcl-request zc_id_prod-pxy-fo_lcl-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_lcl-request"
     ADD CONSTRAINT "zc_id_prod-pxy-fo_lcl-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-fo_lcl-sales zc_id_prod-pxy-fo_lcl-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_lcl-sales"
     ADD CONSTRAINT "zc_id_prod-pxy-fo_lcl-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-fo_ltl-made zc_id_prod-pxy-fo_ltl-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_ltl-made"
     ADD CONSTRAINT "zc_id_prod-pxy-fo_ltl-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-fo_ltl-purchase zc_id_prod-pxy-fo_ltl-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_ltl-purchase"
     ADD CONSTRAINT "zc_id_prod-pxy-fo_ltl-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-fo_ltl-request zc_id_prod-pxy-fo_ltl-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_ltl-request"
     ADD CONSTRAINT "zc_id_prod-pxy-fo_ltl-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-fo_ltl-sales zc_id_prod-pxy-fo_ltl-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_ltl-sales"
     ADD CONSTRAINT "zc_id_prod-pxy-fo_ltl-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-insurance-purchase zc_id_prod-pxy-insurance-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-insurance-purchase"
     ADD CONSTRAINT "zc_id_prod-pxy-insurance-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-pxy-insurance-sales zc_id_prod-pxy-insurance-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-insurance-sales"
     ADD CONSTRAINT "zc_id_prod-pxy-insurance-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-rdc_express-purchase zc_id_prod-rdc_express-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-rdc_express-purchase"
     ADD CONSTRAINT "zc_id_prod-rdc_express-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-rdc_express-request zc_id_prod-rdc_express-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-rdc_express-request"
     ADD CONSTRAINT "zc_id_prod-rdc_express-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-rdc_express-sales zc_id_prod-rdc_express-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-rdc_express-sales"
     ADD CONSTRAINT "zc_id_prod-rdc_express-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-rdc_pickup-purchase zc_id_prod-rdc_pickup-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-rdc_pickup-purchase"
     ADD CONSTRAINT "zc_id_prod-rdc_pickup-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-rdc_pickup-request zc_id_prod-rdc_pickup-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-rdc_pickup-request"
     ADD CONSTRAINT "zc_id_prod-rdc_pickup-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-rdc_pickup-sales zc_id_prod-rdc_pickup-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-rdc_pickup-sales"
     ADD CONSTRAINT "zc_id_prod-rdc_pickup-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-request zc_id_prod-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-request"
     ADD CONSTRAINT "zc_id_prod-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-request_rr_prod-sales zc_id_prod-request_rr_prod-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-request_rr_prod-sales"
     ADD CONSTRAINT "zc_id_prod-request_rr_prod-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-request_rr_project zc_id_prod-request_rr_project_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-request_rr_project"
     ADD CONSTRAINT "zc_id_prod-request_rr_project_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-retail-made zc_id_prod-retail-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-retail-made"
     ADD CONSTRAINT "zc_id_prod-retail-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-retail-purchase zc_id_prod-retail-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-retail-purchase"
     ADD CONSTRAINT "zc_id_prod-retail-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-retail-request zc_id_prod-retail-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-retail-request"
     ADD CONSTRAINT "zc_id_prod-retail-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-retail-sales zc_id_prod-retail-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-retail-sales"
     ADD CONSTRAINT "zc_id_prod-retail-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-sales zc_id_prod-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-sales"
     ADD CONSTRAINT "zc_id_prod-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-sales_rr_prod-made zc_id_prod-sales_rr_prod-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-sales_rr_prod-made"
     ADD CONSTRAINT "zc_id_prod-sales_rr_prod-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-sales_rr_project zc_id_prod-sales_rr_project_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-sales_rr_project"
     ADD CONSTRAINT "zc_id_prod-sales_rr_project_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-sales_rr_stor-place zc_id_prod-sales_rr_stor-place_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-sales_rr_stor-place"
     ADD CONSTRAINT "zc_id_prod-sales_rr_stor-place_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-sovereign_currency-sales zc_id_prod-sovereign_currency-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-sovereign_currency-sales"
     ADD CONSTRAINT "zc_id_prod-sovereign_currency-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-stor_sorting-purchase zc_id_prod-stor_sorting-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-purchase"
     ADD CONSTRAINT "zc_id_prod-stor_sorting-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-stor_sorting-request zc_id_prod-stor_sorting-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-request"
     ADD CONSTRAINT "zc_id_prod-stor_sorting-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-stor_sorting-sales zc_id_prod-stor_sorting-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-sales"
     ADD CONSTRAINT "zc_id_prod-stor_sorting-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-storage zc_id_prod-storage_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-storage"
     ADD CONSTRAINT "zc_id_prod-storage_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-traffic zc_id_prod-traffic_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-traffic"
     ADD CONSTRAINT "zc_id_prod-traffic_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-traffic_rr_contacts zc_id_prod-traffic_rr_contacts_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-traffic_rr_contacts"
     ADD CONSTRAINT "zc_id_prod-traffic_rr_contacts_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-traffic_rr_conveyance zc_id_prod-traffic_rr_conveyance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-traffic_rr_conveyance"
     ADD CONSTRAINT "zc_id_prod-traffic_rr_conveyance_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-transfer_p2p-purchase zc_id_prod-transfer_p2p-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-transfer_p2p-purchase"
     ADD CONSTRAINT "zc_id_prod-transfer_p2p-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-transfer_p2p-request zc_id_prod-transfer_p2p-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-transfer_p2p-request"
     ADD CONSTRAINT "zc_id_prod-transfer_p2p-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-transfer_p2p-sales zc_id_prod-transfer_p2p-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-transfer_p2p-sales"
     ADD CONSTRAINT "zc_id_prod-transfer_p2p-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-transform zc_id_prod-transform_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-transform"
     ADD CONSTRAINT "zc_id_prod-transform_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-transport_rr_stop zc_id_prod-transport_rr_stop_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-transport_rr_stop"
     ADD CONSTRAINT "zc_id_prod-transport_rr_stop_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-tsp_land-license-sales zc_id_prod-tsp_land-license-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-tsp_land-license-sales"
     ADD CONSTRAINT "zc_id_prod-tsp_land-license-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prod-type_cert-sales zc_id_prod-type_cert-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prod-type_cert-sales"
     ADD CONSTRAINT "zc_id_prod-type_cert-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_production zc_id_production_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_production
     ADD CONSTRAINT zc_id_production_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_production_r_log-status zc_id_production_r_log-status_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_production_r_log-status"
     ADD CONSTRAINT "zc_id_production_r_log-status_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_production_r_log-status zc_id_production_r_log-status_ref_left_key; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_production_r_log-status"
     ADD CONSTRAINT "zc_id_production_r_log-status_ref_left_key" UNIQUE (ref_left);
 
 
---
--- Name: zc_id_production_r_period zc_id_production_r_period_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_production_r_period
     ADD CONSTRAINT zc_id_production_r_period_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_production_r_pricing zc_id_production_r_pricing_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_production_r_pricing
     ADD CONSTRAINT zc_id_production_r_pricing_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_production_r_transport-status zc_id_production_r_transport-status_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_production_r_transport-status"
     ADD CONSTRAINT "zc_id_production_r_transport-status_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_production_r_transport-status zc_id_production_r_transport-status_ref_left_key; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_production_r_transport-status"
     ADD CONSTRAINT "zc_id_production_r_transport-status_ref_left_key" UNIQUE (ref_left);
 
 
---
--- Name: zc_id_production_r_ts_concomitant zc_id_production_r_ts_concomitant_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_production_r_ts_concomitant
     ADD CONSTRAINT zc_id_production_r_ts_concomitant_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_production_r_zone zc_id_production_r_zone_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_production_r_zone
     ADD CONSTRAINT zc_id_production_r_zone_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_production_rr_bom zc_id_production_rr_bom_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_production_rr_bom
     ADD CONSTRAINT zc_id_production_rr_bom_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_production_rr_manual zc_id_production_rr_manual_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_production_rr_manual
     ADD CONSTRAINT zc_id_production_rr_manual_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_production_rr_process zc_id_production_rr_process_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_production_rr_process
     ADD CONSTRAINT zc_id_production_rr_process_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_production_rr_project zc_id_production_rr_project_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_production_rr_project
     ADD CONSTRAINT zc_id_production_rr_project_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_production_rr_standard zc_id_production_rr_standard_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_production_rr_standard
     ADD CONSTRAINT zc_id_production_rr_standard_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_production_rr_storage zc_id_production_rr_storage_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_production_rr_storage
     ADD CONSTRAINT zc_id_production_rr_storage_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_project zc_id_project_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_project
     ADD CONSTRAINT zc_id_project_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_project_r_milestone-tags zc_id_project_r_milestone-tags_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_project_r_milestone-tags"
     ADD CONSTRAINT "zc_id_project_r_milestone-tags_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_project_rr_dependency zc_id_project_rr_dependency_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_project_rr_dependency
     ADD CONSTRAINT zc_id_project_rr_dependency_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_project_rr_other zc_id_project_rr_other_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_project_rr_other
     ADD CONSTRAINT zc_id_project_rr_other_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_project_rr_process zc_id_project_rr_process_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_project_rr_process
     ADD CONSTRAINT zc_id_project_rr_process_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_project_rr_task zc_id_project_rr_task_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_project_rr_task
     ADD CONSTRAINT zc_id_project_rr_task_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prot-email_config zc_id_prot-email_config_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-email_config"
     ADD CONSTRAINT "zc_id_prot-email_config_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prot-env_config zc_id_prot-env_config_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-env_config"
     ADD CONSTRAINT "zc_id_prot-env_config_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prot-im_config zc_id_prot-im_config_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-im_config"
     ADD CONSTRAINT "zc_id_prot-im_config_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prot-iot_config zc_id_prot-iot_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-iot_config"
     ADD CONSTRAINT "zc_id_prot-iot_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prot-llm_config zc_id_prot-llm_config_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-llm_config"
     ADD CONSTRAINT "zc_id_prot-llm_config_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prot-openapi_config zc_id_prot-openapi_config_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-openapi_config"
     ADD CONSTRAINT "zc_id_prot-openapi_config_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prot-oss_config zc_id_prot-oss_config_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-oss_config"
     ADD CONSTRAINT "zc_id_prot-oss_config_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prot-profile_config zc_id_prot-profile_config_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-profile_config"
     ADD CONSTRAINT "zc_id_prot-profile_config_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_prot-webhook_config zc_id_prot-webhook_config_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_prot-webhook_config"
     ADD CONSTRAINT "zc_id_prot-webhook_config_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_protocol zc_id_protocol_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_protocol
     ADD CONSTRAINT zc_id_protocol_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-angle zc_id_rate-angle_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-angle"
     ADD CONSTRAINT "zc_id_rate-angle_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-area zc_id_rate-area_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-area"
     ADD CONSTRAINT "zc_id_rate-area_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-container zc_id_rate-container_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-container"
     ADD CONSTRAINT "zc_id_rate-container_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-current zc_id_rate-current_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-current"
     ADD CONSTRAINT "zc_id_rate-current_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-custom zc_id_rate-custom_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-custom"
     ADD CONSTRAINT "zc_id_rate-custom_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-data zc_id_rate-data_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-data"
     ADD CONSTRAINT "zc_id_rate-data_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-density zc_id_rate-density_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-density"
     ADD CONSTRAINT "zc_id_rate-density_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-exchange zc_id_rate-exchange_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-exchange"
     ADD CONSTRAINT "zc_id_rate-exchange_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-frequency zc_id_rate-frequency_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-frequency"
     ADD CONSTRAINT "zc_id_rate-frequency_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-illuminance zc_id_rate-illuminance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-illuminance"
     ADD CONSTRAINT "zc_id_rate-illuminance_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-intensity zc_id_rate-intensity_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-intensity"
     ADD CONSTRAINT "zc_id_rate-intensity_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-luminance zc_id_rate-luminance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-luminance"
     ADD CONSTRAINT "zc_id_rate-luminance_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-magnetic_field_strength zc_id_rate-magnetic_field_strength_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-magnetic_field_strength"
     ADD CONSTRAINT "zc_id_rate-magnetic_field_strength_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-magnetic_flux zc_id_rate-magnetic_flux_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-magnetic_flux"
     ADD CONSTRAINT "zc_id_rate-magnetic_flux_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-power zc_id_rate-power_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-power"
     ADD CONSTRAINT "zc_id_rate-power_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-pressure zc_id_rate-pressure_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-pressure"
     ADD CONSTRAINT "zc_id_rate-pressure_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-radiation zc_id_rate-radiation_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-radiation"
     ADD CONSTRAINT "zc_id_rate-radiation_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-speed zc_id_rate-speed_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-speed"
     ADD CONSTRAINT "zc_id_rate-speed_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-stress zc_id_rate-stress_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-stress"
     ADD CONSTRAINT "zc_id_rate-stress_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-temperature zc_id_rate-temperature_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-temperature"
     ADD CONSTRAINT "zc_id_rate-temperature_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-voltage zc_id_rate-voltage_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-voltage"
     ADD CONSTRAINT "zc_id_rate-voltage_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-volume zc_id_rate-volume_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-volume"
     ADD CONSTRAINT "zc_id_rate-volume_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate-weight zc_id_rate-weight_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rate-weight"
     ADD CONSTRAINT "zc_id_rate-weight_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rate zc_id_rate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_rate
     ADD CONSTRAINT zc_id_rate_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rati-discount zc_id_rati-discount_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rati-discount"
     ADD CONSTRAINT "zc_id_rati-discount_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rati-formula zc_id_rati-formula_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rati-formula"
     ADD CONSTRAINT "zc_id_rati-formula_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rati-tax zc_id_rati-tax_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rati-tax"
     ADD CONSTRAINT "zc_id_rati-tax_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_rati-weight zc_id_rati-weight_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_rati-weight"
     ADD CONSTRAINT "zc_id_rati-weight_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_ratio zc_id_ratio_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_ratio
     ADD CONSTRAINT zc_id_ratio_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_relation-bom_item_r_tags zc_id_relation-bom_item_r_tags_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_relation-bom_item_r_tags"
     ADD CONSTRAINT "zc_id_relation-bom_item_r_tags_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_relation-cooperation_r_evaluation zc_id_relation-cooperation_r_evaluation_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_relation-cooperation_r_evaluation"
     ADD CONSTRAINT "zc_id_relation-cooperation_r_evaluation_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_relation-employ_r_duty-status zc_id_relation-employ_r_duty-status_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_relation-employ_r_duty-status"
     ADD CONSTRAINT "zc_id_relation-employ_r_duty-status_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_relation-employee_r_skill-tags zc_id_relation-employee_r_skill-tags_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_relation-employee_r_skill-tags"
     ADD CONSTRAINT "zc_id_relation-employee_r_skill-tags_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_relation-plan_smt_r_tags zc_id_relation-plan_smt_r_tags_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_relation-plan_smt_r_tags"
     ADD CONSTRAINT "zc_id_relation-plan_smt_r_tags_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_relation-post_view_r_tags zc_id_relation-post_view_r_tags_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_relation-post_view_r_tags"
     ADD CONSTRAINT "zc_id_relation-post_view_r_tags_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-amount zc_id_scal-amount_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-amount"
     ADD CONSTRAINT "zc_id_scal-amount_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-angle zc_id_scal-angle_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-angle"
     ADD CONSTRAINT "zc_id_scal-angle_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-area zc_id_scal-area_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-area"
     ADD CONSTRAINT "zc_id_scal-area_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-common zc_id_scal-common_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-common"
     ADD CONSTRAINT "zc_id_scal-common_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-container zc_id_scal-container_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-container"
     ADD CONSTRAINT "zc_id_scal-container_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-data zc_id_scal-data_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-data"
     ADD CONSTRAINT "zc_id_scal-data_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-date zc_id_scal-date_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-date"
     ADD CONSTRAINT "zc_id_scal-date_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-distance zc_id_scal-distance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-distance"
     ADD CONSTRAINT "zc_id_scal-distance_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-duration zc_id_scal-duration_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-duration"
     ADD CONSTRAINT "zc_id_scal-duration_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-energy zc_id_scal-energy_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-energy"
     ADD CONSTRAINT "zc_id_scal-energy_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-frequency zc_id_scal-frequency_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-frequency"
     ADD CONSTRAINT "zc_id_scal-frequency_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-momentum zc_id_scal-momentum_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-momentum"
     ADD CONSTRAINT "zc_id_scal-momentum_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-price zc_id_scal-price_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-price"
     ADD CONSTRAINT "zc_id_scal-price_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-speed zc_id_scal-speed_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-speed"
     ADD CONSTRAINT "zc_id_scal-speed_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-temperature zc_id_scal-temperature_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-temperature"
     ADD CONSTRAINT "zc_id_scal-temperature_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-volume zc_id_scal-volume_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-volume"
     ADD CONSTRAINT "zc_id_scal-volume_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scal-weight zc_id_scal-weight_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_scal-weight"
     ADD CONSTRAINT "zc_id_scal-weight_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scale zc_id_scale_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_scale
     ADD CONSTRAINT zc_id_scale_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_scene zc_id_scene_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_scene
     ADD CONSTRAINT zc_id_scene_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_segm-amount zc_id_segm-amount_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_segm-amount"
     ADD CONSTRAINT "zc_id_segm-amount_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_segm-area zc_id_segm-area_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_segm-area"
     ADD CONSTRAINT "zc_id_segm-area_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_segm-common zc_id_segm-common_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_segm-common"
     ADD CONSTRAINT "zc_id_segm-common_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_segm-container zc_id_segm-container_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_segm-container"
     ADD CONSTRAINT "zc_id_segm-container_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_segm-date zc_id_segm-date_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_segm-date"
     ADD CONSTRAINT "zc_id_segm-date_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_segm-distance zc_id_segm-distance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_segm-distance"
     ADD CONSTRAINT "zc_id_segm-distance_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_segm-duration zc_id_segm-duration_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_segm-duration"
     ADD CONSTRAINT "zc_id_segm-duration_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_segm-frequency zc_id_segm-frequency_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_segm-frequency"
     ADD CONSTRAINT "zc_id_segm-frequency_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_segm-power zc_id_segm-power_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_segm-power"
     ADD CONSTRAINT "zc_id_segm-power_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_segm-speed zc_id_segm-speed_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_segm-speed"
     ADD CONSTRAINT "zc_id_segm-speed_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_segm-temperature zc_id_segm-temperature_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_segm-temperature"
     ADD CONSTRAINT "zc_id_segm-temperature_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_segm-volume zc_id_segm-volume_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_segm-volume"
     ADD CONSTRAINT "zc_id_segm-volume_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_segm-weight zc_id_segm-weight_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_segm-weight"
     ADD CONSTRAINT "zc_id_segm-weight_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_segment zc_id_segment_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_segment
     ADD CONSTRAINT zc_id_segment_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stan-air zc_id_stan-air_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-air"
     ADD CONSTRAINT "zc_id_stan-air_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stan-clause zc_id_stan-clause_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-clause"
     ADD CONSTRAINT "zc_id_stan-clause_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stan-operation zc_id_stan-operation_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-operation"
     ADD CONSTRAINT "zc_id_stan-operation_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stan-prod_quality zc_id_stan-prod_quality_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stan-prod_quality"
     ADD CONSTRAINT "zc_id_stan-prod_quality_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_standard zc_id_standard_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_standard
     ADD CONSTRAINT zc_id_standard_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_standard_r_formula zc_id_standard_r_formula_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_standard_r_formula
     ADD CONSTRAINT zc_id_standard_r_formula_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_standard_rr_law zc_id_standard_rr_law_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_standard_rr_law
     ADD CONSTRAINT zc_id_standard_rr_law_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_standard_rr_reference zc_id_standard_rr_reference_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_standard_rr_reference
     ADD CONSTRAINT zc_id_standard_rr_reference_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-appeal zc_id_stat-appeal_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-appeal"
     ADD CONSTRAINT "zc_id_stat-appeal_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-com-voucher zc_id_stat-com-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-com-voucher"
     ADD CONSTRAINT "zc_id_stat-com-voucher_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-inspection zc_id_stat-inspection_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-inspection"
     ADD CONSTRAINT "zc_id_stat-inspection_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-maintenance zc_id_stat-maintenance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-maintenance"
     ADD CONSTRAINT "zc_id_stat-maintenance_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-slf-voucher zc_id_stat-slf-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-slf-voucher"
     ADD CONSTRAINT "zc_id_stat-slf-voucher_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-smt-bank zc_id_stat-smt-bank_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-smt-bank"
     ADD CONSTRAINT "zc_id_stat-smt-bank_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-smt-cash zc_id_stat-smt-cash_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-smt-cash"
     ADD CONSTRAINT "zc_id_stat-smt-cash_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-smt-channel zc_id_stat-smt-channel_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-smt-channel"
     ADD CONSTRAINT "zc_id_stat-smt-channel_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-smt-voucher zc_id_stat-smt-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-smt-voucher"
     ADD CONSTRAINT "zc_id_stat-smt-voucher_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-sto-voucher zc_id_stat-sto-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher"
     ADD CONSTRAINT "zc_id_stat-sto-voucher_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-task zc_id_stat-task_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-task"
     ADD CONSTRAINT "zc_id_stat-task_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-task_r_verify-status zc_id_stat-task_r_verify-status_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status"
     ADD CONSTRAINT "zc_id_stat-task_r_verify-status_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-task_rr_sto-voucher zc_id_stat-task_rr_sto-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-task_rr_sto-voucher"
     ADD CONSTRAINT "zc_id_stat-task_rr_sto-voucher_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-task_rr_trade_order zc_id_stat-task_rr_trade_order_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-task_rr_trade_order"
     ADD CONSTRAINT "zc_id_stat-task_rr_trade_order_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-trade_order zc_id_stat-trade_order_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-trade_order"
     ADD CONSTRAINT "zc_id_stat-trade_order_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-training zc_id_stat-training_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-training"
     ADD CONSTRAINT "zc_id_stat-training_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-tsk-make zc_id_stat-tsk-make_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-make"
     ADD CONSTRAINT "zc_id_stat-tsk-make_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-tsk-requisition zc_id_stat-tsk-requisition_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-requisition"
     ADD CONSTRAINT "zc_id_stat-tsk-requisition_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-tsp-voucher zc_id_stat-tsp-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-tsp-voucher"
     ADD CONSTRAINT "zc_id_stat-tsp-voucher_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-volume zc_id_stat-volume_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-volume"
     ADD CONSTRAINT "zc_id_stat-volume_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-weight zc_id_stat-weight_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-weight"
     ADD CONSTRAINT "zc_id_stat-weight_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stat-whs-voucher zc_id_stat-whs-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stat-whs-voucher"
     ADD CONSTRAINT "zc_id_stat-whs-voucher_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_statement zc_id_statement_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_statement
     ADD CONSTRAINT zc_id_statement_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_statement_rr_reason zc_id_statement_rr_reason_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_statement_rr_reason
     ADD CONSTRAINT zc_id_statement_rr_reason_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_status zc_id_status_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_status
     ADD CONSTRAINT zc_id_status_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-acc-bank zc_id_stor-acc-bank_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-acc-bank"
     ADD CONSTRAINT "zc_id_stor-acc-bank_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-acc-business zc_id_stor-acc-business_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-acc-business"
     ADD CONSTRAINT "zc_id_stor-acc-business_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-acc-cash zc_id_stor-acc-cash_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-acc-cash"
     ADD CONSTRAINT "zc_id_stor-acc-cash_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-acc-channel zc_id_stor-acc-channel_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-acc-channel"
     ADD CONSTRAINT "zc_id_stor-acc-channel_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-acc-defect zc_id_stor-acc-defect_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-acc-defect"
     ADD CONSTRAINT "zc_id_stor-acc-defect_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-acc-fund zc_id_stor-acc-fund_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-acc-fund"
     ADD CONSTRAINT "zc_id_stor-acc-fund_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-acc-futures zc_id_stor-acc-futures_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-acc-futures"
     ADD CONSTRAINT "zc_id_stor-acc-futures_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-acc-insurance zc_id_stor-acc-insurance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-acc-insurance"
     ADD CONSTRAINT "zc_id_stor-acc-insurance_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-acc-stock zc_id_stor-acc-stock_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-acc-stock"
     ADD CONSTRAINT "zc_id_stor-acc-stock_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-account zc_id_stor-account_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-account"
     ADD CONSTRAINT "zc_id_stor-account_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-container zc_id_stor-container_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-container"
     ADD CONSTRAINT "zc_id_stor-container_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-container_r_tracking-status zc_id_stor-container_r_tracking-status_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-container_r_tracking-status"
     ADD CONSTRAINT "zc_id_stor-container_r_tracking-status_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-container_r_tracking-status zc_id_stor-container_r_tracking-status_ref_left_key; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-container_r_tracking-status"
     ADD CONSTRAINT "zc_id_stor-container_r_tracking-status_ref_left_key" UNIQUE (ref_left);
 
 
---
--- Name: zc_id_stor-ctn-airplane zc_id_stor-ctn-airplane_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-airplane"
     ADD CONSTRAINT "zc_id_stor-ctn-airplane_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-ctn-box zc_id_stor-ctn-box_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-box"
     ADD CONSTRAINT "zc_id_stor-ctn-box_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-ctn-cargo zc_id_stor-ctn-cargo_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-cargo"
     ADD CONSTRAINT "zc_id_stor-ctn-cargo_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-ctn-carton zc_id_stor-ctn-carton_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-carton"
     ADD CONSTRAINT "zc_id_stor-ctn-carton_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-ctn-fold zc_id_stor-ctn-fold_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-fold"
     ADD CONSTRAINT "zc_id_stor-ctn-fold_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-ctn-plate zc_id_stor-ctn-plate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-plate"
     ADD CONSTRAINT "zc_id_stor-ctn-plate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-ctn-railway zc_id_stor-ctn-railway_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-railway"
     ADD CONSTRAINT "zc_id_stor-ctn-railway_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-ctn-subj zc_id_stor-ctn-subj_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-subj"
     ADD CONSTRAINT "zc_id_stor-ctn-subj_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-ctn-tote zc_id_stor-ctn-tote_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-tote"
     ADD CONSTRAINT "zc_id_stor-ctn-tote_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-ctn-vehicle zc_id_stor-ctn-vehicle_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-vehicle"
     ADD CONSTRAINT "zc_id_stor-ctn-vehicle_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-ctn-vessel zc_id_stor-ctn-vessel_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-vessel"
     ADD CONSTRAINT "zc_id_stor-ctn-vessel_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-data zc_id_stor-data_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-data"
     ADD CONSTRAINT "zc_id_stor-data_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-place zc_id_stor-place_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-place"
     ADD CONSTRAINT "zc_id_stor-place_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-plc-airport zc_id_stor-plc-airport_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-airport"
     ADD CONSTRAINT "zc_id_stor-plc-airport_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-plc-asset zc_id_stor-plc-asset_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-asset"
     ADD CONSTRAINT "zc_id_stor-plc-asset_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-plc-bin zc_id_stor-plc-bin_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-bin"
     ADD CONSTRAINT "zc_id_stor-plc-bin_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-plc-channel zc_id_stor-plc-channel_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-channel"
     ADD CONSTRAINT "zc_id_stor-plc-channel_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-plc-division zc_id_stor-plc-division_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-division"
     ADD CONSTRAINT "zc_id_stor-plc-division_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-plc-dock zc_id_stor-plc-dock_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-dock"
     ADD CONSTRAINT "zc_id_stor-plc-dock_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-plc-garage zc_id_stor-plc-garage_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-garage"
     ADD CONSTRAINT "zc_id_stor-plc-garage_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-plc-path zc_id_stor-plc-path_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-path"
     ADD CONSTRAINT "zc_id_stor-plc-path_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-plc-platform zc_id_stor-plc-platform_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-platform"
     ADD CONSTRAINT "zc_id_stor-plc-platform_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-plc-repository zc_id_stor-plc-repository_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-repository"
     ADD CONSTRAINT "zc_id_stor-plc-repository_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-plc-shipping_port zc_id_stor-plc-shipping_port_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-shipping_port"
     ADD CONSTRAINT "zc_id_stor-plc-shipping_port_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-plc-stop zc_id_stor-plc-stop_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-stop"
     ADD CONSTRAINT "zc_id_stor-plc-stop_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-plc-terminal zc_id_stor-plc-terminal_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-terminal"
     ADD CONSTRAINT "zc_id_stor-plc-terminal_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-plc-url zc_id_stor-plc-url_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-url"
     ADD CONSTRAINT "zc_id_stor-plc-url_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-plc-warehouse zc_id_stor-plc-warehouse_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-warehouse"
     ADD CONSTRAINT "zc_id_stor-plc-warehouse_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-plc-yard zc_id_stor-plc-yard_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-plc-yard"
     ADD CONSTRAINT "zc_id_stor-plc-yard_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-traffic_line zc_id_stor-traffic_line_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-traffic_line"
     ADD CONSTRAINT "zc_id_stor-traffic_line_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stor-traffic_line_rr_stop zc_id_stor-traffic_line_rr_stop_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stor-traffic_line_rr_stop"
     ADD CONSTRAINT "zc_id_stor-traffic_line_rr_stop_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_storage zc_id_storage_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_storage
     ADD CONSTRAINT zc_id_storage_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_storage_rr_stock-in zc_id_storage_rr_stock-in_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_storage_rr_stock-in"
     ADD CONSTRAINT "zc_id_storage_rr_stock-in_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-account zc_id_stus-account_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-account"
     ADD CONSTRAINT "zc_id_stus-account_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-agent zc_id_stus-agent_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-agent"
     ADD CONSTRAINT "zc_id_stus-agent_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-agreement zc_id_stus-agreement_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-agreement"
     ADD CONSTRAINT "zc_id_stus-agreement_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-approve zc_id_stus-approve_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-approve"
     ADD CONSTRAINT "zc_id_stus-approve_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-audit zc_id_stus-audit_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-audit"
     ADD CONSTRAINT "zc_id_stus-audit_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-bill zc_id_stus-bill_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-bill"
     ADD CONSTRAINT "zc_id_stus-bill_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-billing zc_id_stus-billing_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-billing"
     ADD CONSTRAINT "zc_id_stus-billing_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-billing_verify zc_id_stus-billing_verify_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-billing_verify"
     ADD CONSTRAINT "zc_id_stus-billing_verify_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-bin_location zc_id_stus-bin_location_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-bin_location"
     ADD CONSTRAINT "zc_id_stus-bin_location_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-bom zc_id_stus-bom_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-bom"
     ADD CONSTRAINT "zc_id_stus-bom_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-certification zc_id_stus-certification_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-certification"
     ADD CONSTRAINT "zc_id_stus-certification_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-channel zc_id_stus-channel_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-channel"
     ADD CONSTRAINT "zc_id_stus-channel_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-collect zc_id_stus-collect_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-collect"
     ADD CONSTRAINT "zc_id_stus-collect_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-commit zc_id_stus-commit_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-commit"
     ADD CONSTRAINT "zc_id_stus-commit_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-contact_infos zc_id_stus-contact_infos_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-contact_infos"
     ADD CONSTRAINT "zc_id_stus-contact_infos_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-contacts zc_id_stus-contacts_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-contacts"
     ADD CONSTRAINT "zc_id_stus-contacts_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-container zc_id_stus-container_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-container"
     ADD CONSTRAINT "zc_id_stus-container_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-contract zc_id_stus-contract_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-contract"
     ADD CONSTRAINT "zc_id_stus-contract_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-counting zc_id_stus-counting_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-counting"
     ADD CONSTRAINT "zc_id_stus-counting_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-department zc_id_stus-department_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-department"
     ADD CONSTRAINT "zc_id_stus-department_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-detail zc_id_stus-detail_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-detail"
     ADD CONSTRAINT "zc_id_stus-detail_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-device zc_id_stus-device_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-device"
     ADD CONSTRAINT "zc_id_stus-device_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-duty zc_id_stus-duty_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-duty"
     ADD CONSTRAINT "zc_id_stus-duty_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-employ zc_id_stus-employ_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-employ"
     ADD CONSTRAINT "zc_id_stus-employ_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-entity zc_id_stus-entity_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-entity"
     ADD CONSTRAINT "zc_id_stus-entity_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-event zc_id_stus-event_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-event"
     ADD CONSTRAINT "zc_id_stus-event_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-file zc_id_stus-file_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-file"
     ADD CONSTRAINT "zc_id_stus-file_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-identity zc_id_stus-identity_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-identity"
     ADD CONSTRAINT "zc_id_stus-identity_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-inspection zc_id_stus-inspection_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-inspection"
     ADD CONSTRAINT "zc_id_stus-inspection_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-inv-voucher zc_id_stus-inv-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-inv-voucher"
     ADD CONSTRAINT "zc_id_stus-inv-voucher_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-inventory zc_id_stus-inventory_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-inventory"
     ADD CONSTRAINT "zc_id_stus-inventory_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-invoice_issue zc_id_stus-invoice_issue_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-invoice_issue"
     ADD CONSTRAINT "zc_id_stus-invoice_issue_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-invoice_verify zc_id_stus-invoice_verify_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-invoice_verify"
     ADD CONSTRAINT "zc_id_stus-invoice_verify_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-legal_person zc_id_stus-legal_person_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-legal_person"
     ADD CONSTRAINT "zc_id_stus-legal_person_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-license zc_id_stus-license_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-license"
     ADD CONSTRAINT "zc_id_stus-license_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-marital zc_id_stus-marital_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-marital"
     ADD CONSTRAINT "zc_id_stus-marital_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-message zc_id_stus-message_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-message"
     ADD CONSTRAINT "zc_id_stus-message_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-ministry zc_id_stus-ministry_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-ministry"
     ADD CONSTRAINT "zc_id_stus-ministry_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-natural zc_id_stus-natural_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-natural"
     ADD CONSTRAINT "zc_id_stus-natural_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-operation zc_id_stus-operation_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-operation"
     ADD CONSTRAINT "zc_id_stus-operation_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-org zc_id_stus-org_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-org"
     ADD CONSTRAINT "zc_id_stus-org_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-payment zc_id_stus-payment_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-payment"
     ADD CONSTRAINT "zc_id_stus-payment_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-place zc_id_stus-place_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-place"
     ADD CONSTRAINT "zc_id_stus-place_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-plan zc_id_stus-plan_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-plan"
     ADD CONSTRAINT "zc_id_stus-plan_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-position zc_id_stus-position_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-position"
     ADD CONSTRAINT "zc_id_stus-position_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-pricing zc_id_stus-pricing_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-pricing"
     ADD CONSTRAINT "zc_id_stus-pricing_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-process zc_id_stus-process_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-process"
     ADD CONSTRAINT "zc_id_stus-process_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-prod-made zc_id_stus-prod-made_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-prod-made"
     ADD CONSTRAINT "zc_id_stus-prod-made_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-prod-purchase zc_id_stus-prod-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-prod-purchase"
     ADD CONSTRAINT "zc_id_stus-prod-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-prod-request zc_id_stus-prod-request_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-prod-request"
     ADD CONSTRAINT "zc_id_stus-prod-request_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-prod-sales zc_id_stus-prod-sales_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-prod-sales"
     ADD CONSTRAINT "zc_id_stus-prod-sales_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-production zc_id_stus-production_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-production"
     ADD CONSTRAINT "zc_id_stus-production_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-project zc_id_stus-project_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-project"
     ADD CONSTRAINT "zc_id_stus-project_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-protocol zc_id_stus-protocol_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-protocol"
     ADD CONSTRAINT "zc_id_stus-protocol_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-purchase zc_id_stus-purchase_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-purchase"
     ADD CONSTRAINT "zc_id_stus-purchase_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-retail zc_id_stus-retail_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-retail"
     ADD CONSTRAINT "zc_id_stus-retail_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-service zc_id_stus-service_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-service"
     ADD CONSTRAINT "zc_id_stus-service_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-smt-voucher zc_id_stus-smt-voucher_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-smt-voucher"
     ADD CONSTRAINT "zc_id_stus-smt-voucher_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-standard zc_id_stus-standard_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-standard"
     ADD CONSTRAINT "zc_id_stus-standard_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-statement zc_id_stus-statement_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-statement"
     ADD CONSTRAINT "zc_id_stus-statement_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-storage zc_id_stus-storage_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-storage"
     ADD CONSTRAINT "zc_id_stus-storage_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-supranational zc_id_stus-supranational_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-supranational"
     ADD CONSTRAINT "zc_id_stus-supranational_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-task zc_id_stus-task_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-task"
     ADD CONSTRAINT "zc_id_stus-task_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-template zc_id_stus-template_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-template"
     ADD CONSTRAINT "zc_id_stus-template_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-threads zc_id_stus-threads_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-threads"
     ADD CONSTRAINT "zc_id_stus-threads_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-tracking_log zc_id_stus-tracking_log_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-tracking_log"
     ADD CONSTRAINT "zc_id_stus-tracking_log_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-trade zc_id_stus-trade_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-trade"
     ADD CONSTRAINT "zc_id_stus-trade_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-training zc_id_stus-training_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-training"
     ADD CONSTRAINT "zc_id_stus-training_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-tsk_verify zc_id_stus-tsk_verify_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify"
     ADD CONSTRAINT "zc_id_stus-tsk_verify_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-vehicle zc_id_stus-vehicle_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-vehicle"
     ADD CONSTRAINT "zc_id_stus-vehicle_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-version zc_id_stus-version_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-version"
     ADD CONSTRAINT "zc_id_stus-version_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_stus-vessel zc_id_stus-vessel_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_stus-vessel"
     ADD CONSTRAINT "zc_id_stus-vessel_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-bank zc_id_subj-bank_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-bank"
     ADD CONSTRAINT "zc_id_subj-bank_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-employee zc_id_subj-employee_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-employee"
     ADD CONSTRAINT "zc_id_subj-employee_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-employee_r_employ-status zc_id_subj-employee_r_employ-status_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-employee_r_employ-status"
     ADD CONSTRAINT "zc_id_subj-employee_r_employ-status_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-employee_r_employ-status zc_id_subj-employee_r_employ-status_ref_left_key; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-employee_r_employ-status"
     ADD CONSTRAINT "zc_id_subj-employee_r_employ-status_ref_left_key" UNIQUE (ref_left);
 
 
---
--- Name: zc_id_subj-employee_rr_client zc_id_subj-employee_rr_client_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-employee_rr_client"
     ADD CONSTRAINT "zc_id_subj-employee_rr_client_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-group zc_id_subj-group_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-group"
     ADD CONSTRAINT "zc_id_subj-group_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-group_rr_member zc_id_subj-group_rr_member_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-group_rr_member"
     ADD CONSTRAINT "zc_id_subj-group_rr_member_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-group_rr_project zc_id_subj-group_rr_project_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-group_rr_project"
     ADD CONSTRAINT "zc_id_subj-group_rr_project_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-hierarchy zc_id_subj-hierarchy_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-hierarchy"
     ADD CONSTRAINT "zc_id_subj-hierarchy_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-hierarchy_rr_subordinate zc_id_subj-hierarchy_rr_subordinate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-hierarchy_rr_subordinate"
     ADD CONSTRAINT "zc_id_subj-hierarchy_rr_subordinate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-ministry zc_id_subj-ministry_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-ministry"
     ADD CONSTRAINT "zc_id_subj-ministry_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-ministry_rr_servant zc_id_subj-ministry_rr_servant_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-ministry_rr_servant"
     ADD CONSTRAINT "zc_id_subj-ministry_rr_servant_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-ministry_rr_subordinate zc_id_subj-ministry_rr_subordinate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-ministry_rr_subordinate"
     ADD CONSTRAINT "zc_id_subj-ministry_rr_subordinate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-org zc_id_subj-org_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-org"
     ADD CONSTRAINT "zc_id_subj-org_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-org_rr_employee zc_id_subj-org_rr_employee_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-org_rr_employee"
     ADD CONSTRAINT "zc_id_subj-org_rr_employee_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-org_rr_member zc_id_subj-org_rr_member_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-org_rr_member"
     ADD CONSTRAINT "zc_id_subj-org_rr_member_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-org_rr_position zc_id_subj-org_rr_position_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-org_rr_position"
     ADD CONSTRAINT "zc_id_subj-org_rr_position_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-org_rr_sharehold zc_id_subj-org_rr_sharehold_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-org_rr_sharehold"
     ADD CONSTRAINT "zc_id_subj-org_rr_sharehold_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-org_rr_subordinate zc_id_subj-org_rr_subordinate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-org_rr_subordinate"
     ADD CONSTRAINT "zc_id_subj-org_rr_subordinate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-position zc_id_subj-position_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-position"
     ADD CONSTRAINT "zc_id_subj-position_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-post_rr_employee zc_id_subj-post_rr_employee_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-post_rr_employee"
     ADD CONSTRAINT "zc_id_subj-post_rr_employee_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-post_rr_subordinate zc_id_subj-post_rr_subordinate_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-post_rr_subordinate"
     ADD CONSTRAINT "zc_id_subj-post_rr_subordinate_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-post_rr_view zc_id_subj-post_rr_view_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-post_rr_view"
     ADD CONSTRAINT "zc_id_subj-post_rr_view_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subj-supranational zc_id_subj-supranational_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_subj-supranational"
     ADD CONSTRAINT "zc_id_subj-supranational_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subjects zc_id_subjects_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_subjects
     ADD CONSTRAINT zc_id_subjects_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subjects_rr_account zc_id_subjects_rr_account_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_subjects_rr_account
     ADD CONSTRAINT zc_id_subjects_rr_account_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subjects_rr_container zc_id_subjects_rr_container_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_subjects_rr_container
     ADD CONSTRAINT zc_id_subjects_rr_container_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subjects_rr_partner zc_id_subjects_rr_partner_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_subjects_rr_partner
     ADD CONSTRAINT zc_id_subjects_rr_partner_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subjects_rr_place zc_id_subjects_rr_place_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_subjects_rr_place
     ADD CONSTRAINT zc_id_subjects_rr_place_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_subjects_rr_storage zc_id_subjects_rr_storage_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_subjects_rr_storage
     ADD CONSTRAINT zc_id_subjects_rr_storage_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_tags-baseline zc_id_tags-baseline_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-baseline"
     ADD CONSTRAINT "zc_id_tags-baseline_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_tags-bom_item zc_id_tags-bom_item_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-bom_item"
     ADD CONSTRAINT "zc_id_tags-bom_item_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_tags-contacts zc_id_tags-contacts_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-contacts"
     ADD CONSTRAINT "zc_id_tags-contacts_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_tags-event zc_id_tags-event_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-event"
     ADD CONSTRAINT "zc_id_tags-event_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_tags-finance zc_id_tags-finance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-finance"
     ADD CONSTRAINT "zc_id_tags-finance_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_tags-hscode zc_id_tags-hscode_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-hscode"
     ADD CONSTRAINT "zc_id_tags-hscode_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_tags-milestone zc_id_tags-milestone_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-milestone"
     ADD CONSTRAINT "zc_id_tags-milestone_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_tags-plan_action zc_id_tags-plan_action_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-plan_action"
     ADD CONSTRAINT "zc_id_tags-plan_action_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_tags-project zc_id_tags-project_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-project"
     ADD CONSTRAINT "zc_id_tags-project_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_tags-r-type-alias zc_id_tags-r-type-alias_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-r-type-alias"
     ADD CONSTRAINT "zc_id_tags-r-type-alias_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_tags-warehousing zc_id_tags-warehousing_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tags-warehousing"
     ADD CONSTRAINT "zc_id_tags-warehousing_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_tags zc_id_tags_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_tags
     ADD CONSTRAINT zc_id_tags_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_tags_poi zc_id_tags_poi_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_tags_poi
     ADD CONSTRAINT zc_id_tags_poi_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_task-pay zc_id_task-pay_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-pay"
     ADD CONSTRAINT "zc_id_task-pay_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_task-storage zc_id_task-storage_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-storage"
     ADD CONSTRAINT "zc_id_task-storage_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_task-testing zc_id_task-testing_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_task-testing"
     ADD CONSTRAINT "zc_id_task-testing_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_task zc_id_task_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_task
     ADD CONSTRAINT zc_id_task_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_task_rr_bill zc_id_task_rr_bill_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_task_rr_bill
     ADD CONSTRAINT zc_id_task_rr_bill_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_task_rr_dependency zc_id_task_rr_dependency_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_task_rr_dependency
     ADD CONSTRAINT zc_id_task_rr_dependency_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_task_rr_reason zc_id_task_rr_reason_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_task_rr_reason
     ADD CONSTRAINT zc_id_task_rr_reason_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_thre-ai_session zc_id_thre-ai_session_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_thre-ai_session"
     ADD CONSTRAINT "zc_id_thre-ai_session_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_thre-meeting zc_id_thre-meeting_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_thre-meeting"
     ADD CONSTRAINT "zc_id_thre-meeting_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_thread_rr_topic-x zc_id_thread_rr_topic-x_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_thread_rr_topic-x"
     ADD CONSTRAINT "zc_id_thread_rr_topic-x_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_threads zc_id_threads_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_threads
     ADD CONSTRAINT zc_id_threads_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_tick-pickup zc_id_tick-pickup_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_tick-pickup"
     ADD CONSTRAINT "zc_id_tick-pickup_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-angle zc_id_unit-angle_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-angle"
     ADD CONSTRAINT "zc_id_unit-angle_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-area zc_id_unit-area_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-area"
     ADD CONSTRAINT "zc_id_unit-area_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-container zc_id_unit-container_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-container"
     ADD CONSTRAINT "zc_id_unit-container_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-current zc_id_unit-current_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-current"
     ADD CONSTRAINT "zc_id_unit-current_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-data zc_id_unit-data_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-data"
     ADD CONSTRAINT "zc_id_unit-data_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-density zc_id_unit-density_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-density"
     ADD CONSTRAINT "zc_id_unit-density_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-display zc_id_unit-display_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-display"
     ADD CONSTRAINT "zc_id_unit-display_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-distance zc_id_unit-distance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-distance"
     ADD CONSTRAINT "zc_id_unit-distance_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-duration zc_id_unit-duration_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-duration"
     ADD CONSTRAINT "zc_id_unit-duration_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-energy zc_id_unit-energy_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-energy"
     ADD CONSTRAINT "zc_id_unit-energy_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-frequency zc_id_unit-frequency_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-frequency"
     ADD CONSTRAINT "zc_id_unit-frequency_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-geo zc_id_unit-geo_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-geo"
     ADD CONSTRAINT "zc_id_unit-geo_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-illuminance zc_id_unit-illuminance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-illuminance"
     ADD CONSTRAINT "zc_id_unit-illuminance_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-intensity zc_id_unit-intensity_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-intensity"
     ADD CONSTRAINT "zc_id_unit-intensity_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-luminance zc_id_unit-luminance_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-luminance"
     ADD CONSTRAINT "zc_id_unit-luminance_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-magnetic_field_strength zc_id_unit-magnetic_field_strength_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-magnetic_field_strength"
     ADD CONSTRAINT "zc_id_unit-magnetic_field_strength_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-magnetic_flux zc_id_unit-magnetic_flux_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-magnetic_flux"
     ADD CONSTRAINT "zc_id_unit-magnetic_flux_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-power zc_id_unit-power_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-power"
     ADD CONSTRAINT "zc_id_unit-power_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-pressure zc_id_unit-pressure_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-pressure"
     ADD CONSTRAINT "zc_id_unit-pressure_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-price zc_id_unit-price_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-price"
     ADD CONSTRAINT "zc_id_unit-price_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-pricing zc_id_unit-pricing_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-pricing"
     ADD CONSTRAINT "zc_id_unit-pricing_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-radiation zc_id_unit-radiation_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-radiation"
     ADD CONSTRAINT "zc_id_unit-radiation_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-speed zc_id_unit-speed_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-speed"
     ADD CONSTRAINT "zc_id_unit-speed_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-stress zc_id_unit-stress_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-stress"
     ADD CONSTRAINT "zc_id_unit-stress_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-temperature zc_id_unit-temperature_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-temperature"
     ADD CONSTRAINT "zc_id_unit-temperature_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-voltage zc_id_unit-voltage_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-voltage"
     ADD CONSTRAINT "zc_id_unit-voltage_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-volume zc_id_unit-volume_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-volume"
     ADD CONSTRAINT "zc_id_unit-volume_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-weight zc_id_unit-weight_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-weight"
     ADD CONSTRAINT "zc_id_unit-weight_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit-working zc_id_unit-working_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_unit-working"
     ADD CONSTRAINT "zc_id_unit-working_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_unit zc_id_unit_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_unit
     ADD CONSTRAINT zc_id_unit_pkey PRIMARY KEY (id);
 
 
---
--- Name: zc_id_vers-context zc_id_vers-context_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_vers-context"
     ADD CONSTRAINT "zc_id_vers-context_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_vers-context_r_baseline zc_id_vers-context_r_baseline_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_vers-context_r_baseline"
     ADD CONSTRAINT "zc_id_vers-context_r_baseline_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_vers-context_r_ver-status zc_id_vers-context_r_ver-status_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_vers-context_r_ver-status"
     ADD CONSTRAINT "zc_id_vers-context_r_ver-status_pkey" PRIMARY KEY (id);
 
 
---
--- Name: zc_id_vers-context_r_ver-status zc_id_vers-context_r_ver-status_ref_left_key; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl."zc_id_vers-context_r_ver-status"
     ADD CONSTRAINT "zc_id_vers-context_r_ver-status_ref_left_key" UNIQUE (ref_left);
 
 
---
--- Name: zc_id_version zc_id_version_pkey; Type: CONSTRAINT; Schema: isahl; Owner: -
---
 
 ALTER TABLE ONLY isahl.zc_id_version
     ADD CONSTRAINT zc_id_version_pkey PRIMARY KEY (id);
 
 
---
--- Name: idx_mv_inventory_id; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX idx_mv_inventory_id ON isahl.mv_inventory USING btree (id);
 
 
---
--- Name: idx_mv_inventory_prod_storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_mv_inventory_prod_storage ON isahl.mv_inventory USING btree (production_id, storage_id);
 
 
---
--- Name: idx_mv_title_ownership_prod; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_mv_title_ownership_prod ON isahl.mv_title_ownership USING btree (production_id);
 
 
---
--- Name: idx_mv_title_ownership_subj_prod; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX idx_mv_title_ownership_subj_prod ON isahl.mv_title_ownership USING btree (subject_id, production_id);
 
 
---
--- Name: idx_zc_id_appr-bid-evaluation_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-bid-evaluation_fk_object" ON isahl."zc_id_appr-bid-evaluation" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_appr-bid-evaluation_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-bid-evaluation_fk_place" ON isahl."zc_id_appr-bid-evaluation" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_appr-bid-evaluation_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-bid-evaluation_fk_subject" ON isahl."zc_id_appr-bid-evaluation" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_appr-org-structure_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-org-structure_fk_object" ON isahl."zc_id_appr-org-structure" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_appr-org-structure_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-org-structure_fk_place" ON isahl."zc_id_appr-org-structure" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_appr-org-structure_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-org-structure_fk_subject" ON isahl."zc_id_appr-org-structure" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_appr-pricing_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-pricing_fk_object" ON isahl."zc_id_appr-pricing" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_appr-pricing_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-pricing_fk_place" ON isahl."zc_id_appr-pricing" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_appr-pricing_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-pricing_fk_subject" ON isahl."zc_id_appr-pricing" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_appr-prj-initiation_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-prj-initiation_fk_object" ON isahl."zc_id_appr-prj-initiation" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_appr-prj-initiation_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-prj-initiation_fk_place" ON isahl."zc_id_appr-prj-initiation" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_appr-prj-initiation_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-prj-initiation_fk_subject" ON isahl."zc_id_appr-prj-initiation" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_appr-prj_doc-push_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-prj_doc-push_fk_object" ON isahl."zc_id_appr-prj_doc-push" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_appr-prj_doc-push_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-prj_doc-push_fk_place" ON isahl."zc_id_appr-prj_doc-push" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_appr-prj_doc-push_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-prj_doc-push_fk_subject" ON isahl."zc_id_appr-prj_doc-push" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_appr-prj_made-push_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-prj_made-push_fk_object" ON isahl."zc_id_appr-prj_made-push" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_appr-prj_made-push_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-prj_made-push_fk_place" ON isahl."zc_id_appr-prj_made-push" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_appr-prj_made-push_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-prj_made-push_fk_subject" ON isahl."zc_id_appr-prj_made-push" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_appr-prj_request-push_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-prj_request-push_fk_object" ON isahl."zc_id_appr-prj_request-push" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_appr-prj_request-push_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-prj_request-push_fk_place" ON isahl."zc_id_appr-prj_request-push" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_appr-prj_request-push_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-prj_request-push_fk_subject" ON isahl."zc_id_appr-prj_request-push" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_appr-prj_sales-push_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-prj_sales-push_fk_object" ON isahl."zc_id_appr-prj_sales-push" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_appr-prj_sales-push_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-prj_sales-push_fk_place" ON isahl."zc_id_appr-prj_sales-push" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_appr-prj_sales-push_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-prj_sales-push_fk_subject" ON isahl."zc_id_appr-prj_sales-push" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_appr-process_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-process_fk_place" ON isahl."zc_id_appr-process" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_appr-process_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-process_fk_subject" ON isahl."zc_id_appr-process" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_appr-project-push_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-project-push_fk_object" ON isahl."zc_id_appr-project-push" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_appr-project-push_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-project-push_fk_place" ON isahl."zc_id_appr-project-push" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_appr-project-push_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-project-push_fk_subject" ON isahl."zc_id_appr-project-push" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_appr-purchase_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-purchase_fk_object" ON isahl."zc_id_appr-purchase" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_appr-purchase_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-purchase_fk_place" ON isahl."zc_id_appr-purchase" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_appr-purchase_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-purchase_fk_subject" ON isahl."zc_id_appr-purchase" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_appr-recruitment_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-recruitment_fk_object" ON isahl."zc_id_appr-recruitment" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_appr-recruitment_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-recruitment_fk_place" ON isahl."zc_id_appr-recruitment" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_appr-recruitment_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-recruitment_fk_subject" ON isahl."zc_id_appr-recruitment" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_appr-req-time_off_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-req-time_off_fk_object" ON isahl."zc_id_appr-req-time_off" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_appr-req-time_off_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-req-time_off_fk_place" ON isahl."zc_id_appr-req-time_off" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_appr-req-time_off_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-req-time_off_fk_subject" ON isahl."zc_id_appr-req-time_off" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_appr-user_verify_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-user_verify_fk_object" ON isahl."zc_id_appr-user_verify" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_appr-user_verify_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-user_verify_fk_place" ON isahl."zc_id_appr-user_verify" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_appr-user_verify_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_appr-user_verify_fk_subject" ON isahl."zc_id_appr-user_verify" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_bank-commercial_fk_country; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bank-commercial_fk_country" ON isahl."zc_id_bank-commercial" USING btree (fk_country);
 
 
---
--- Name: idx_zc_id_bank-commercial_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bank-commercial_fk_user" ON isahl."zc_id_bank-commercial" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_bill-check_fk_account; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bill-check_fk_account" ON isahl."zc_id_bill-check" USING btree (fk_account);
 
 
---
--- Name: idx_zc_id_bill-check_fk_settle; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bill-check_fk_settle" ON isahl."zc_id_bill-check" USING btree (fk_settle);
 
 
---
--- Name: idx_zc_id_bill-check_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bill-check_fk_subject" ON isahl."zc_id_bill-check" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_bill-pricing_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bill-pricing_fk_subject" ON isahl."zc_id_bill-pricing" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_bill_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_bill_fk_subject ON isahl.zc_id_bill USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_bom-assemble_fk_editor; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-assemble_fk_editor" ON isahl."zc_id_bom-assemble" USING btree (fk_editor);
 
 
---
--- Name: idx_zc_id_bom-assemble_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-assemble_fk_previous" ON isahl."zc_id_bom-assemble" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_bom-combine_fk_editor; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-combine_fk_editor" ON isahl."zc_id_bom-combine" USING btree (fk_editor);
 
 
---
--- Name: idx_zc_id_bom-combine_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-combine_fk_previous" ON isahl."zc_id_bom-combine" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_bom-file_fk_editor; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-file_fk_editor" ON isahl."zc_id_bom-file" USING btree (fk_editor);
 
 
---
--- Name: idx_zc_id_bom-file_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-file_fk_previous" ON isahl."zc_id_bom-file" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_bom-gift_set_fk_editor; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-gift_set_fk_editor" ON isahl."zc_id_bom-gift_set" USING btree (fk_editor);
 
 
---
--- Name: idx_zc_id_bom-gift_set_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-gift_set_fk_previous" ON isahl."zc_id_bom-gift_set" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_bom-inbound_fk_editor; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-inbound_fk_editor" ON isahl."zc_id_bom-inbound" USING btree (fk_editor);
 
 
---
--- Name: idx_zc_id_bom-inbound_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-inbound_fk_previous" ON isahl."zc_id_bom-inbound" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_bom-input_rr_item_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-input_rr_item_fk_place" ON isahl."zc_id_bom-input_rr_item" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_bom-input_rr_item_fk_qc_std; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-input_rr_item_fk_qc_std" ON isahl."zc_id_bom-input_rr_item" USING btree (fk_qc_std);
 
 
---
--- Name: idx_zc_id_bom-loading_fk_editor; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-loading_fk_editor" ON isahl."zc_id_bom-loading" USING btree (fk_editor);
 
 
---
--- Name: idx_zc_id_bom-loading_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-loading_fk_previous" ON isahl."zc_id_bom-loading" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_bom-outbound_fk_editor; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-outbound_fk_editor" ON isahl."zc_id_bom-outbound" USING btree (fk_editor);
 
 
---
--- Name: idx_zc_id_bom-outbound_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-outbound_fk_previous" ON isahl."zc_id_bom-outbound" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_bom-pickup_fk_editor; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-pickup_fk_editor" ON isahl."zc_id_bom-pickup" USING btree (fk_editor);
 
 
---
--- Name: idx_zc_id_bom-pickup_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-pickup_fk_previous" ON isahl."zc_id_bom-pickup" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_bom-shelve_fk_editor; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-shelve_fk_editor" ON isahl."zc_id_bom-shelve" USING btree (fk_editor);
 
 
---
--- Name: idx_zc_id_bom-shelve_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-shelve_fk_previous" ON isahl."zc_id_bom-shelve" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_bom-shipment_fk_editor; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-shipment_fk_editor" ON isahl."zc_id_bom-shipment" USING btree (fk_editor);
 
 
---
--- Name: idx_zc_id_bom-shipment_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-shipment_fk_previous" ON isahl."zc_id_bom-shipment" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_bom-solution_fk_editor; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-solution_fk_editor" ON isahl."zc_id_bom-solution" USING btree (fk_editor);
 
 
---
--- Name: idx_zc_id_bom-solution_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_bom-solution_fk_previous" ON isahl."zc_id_bom-solution" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_bom_fk_editor; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_bom_fk_editor ON isahl.zc_id_bom USING btree (fk_editor);
 
 
---
--- Name: idx_zc_id_bom_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_bom_fk_previous ON isahl.zc_id_bom USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_bom_rr_item_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_bom_rr_item_fk_place ON isahl.zc_id_bom_rr_item USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_bom_rr_item_fk_qc_std; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_bom_rr_item_fk_qc_std ON isahl.zc_id_bom_rr_item USING btree (fk_qc_std);
 
 
---
--- Name: idx_zc_id_cate-tax-title_fk_country; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_cate-tax-title_fk_country" ON isahl."zc_id_cate-tax-title" USING btree (fk_country);
 
 
---
--- Name: idx_zc_id_deta-appeal_fk_list; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_deta-appeal_fk_list" ON isahl."zc_id_deta-appeal" USING btree (fk_list);
 
 
---
--- Name: idx_zc_id_deta-approve_fk_list; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_deta-approve_fk_list" ON isahl."zc_id_deta-approve" USING btree (fk_list);
 
 
---
--- Name: idx_zc_id_deta-approve_fk_payload; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_deta-approve_fk_payload" ON isahl."zc_id_deta-approve" USING btree (fk_payload);
 
 
---
--- Name: idx_zc_id_deta-bill-check_fk_list; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_deta-bill-check_fk_list" ON isahl."zc_id_deta-bill-check" USING btree (fk_list);
 
 
---
--- Name: idx_zc_id_deta-bill-pricing_fk_goods; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_deta-bill-pricing_fk_goods" ON isahl."zc_id_deta-bill-pricing" USING btree (fk_goods);
 
 
---
--- Name: idx_zc_id_deta-bill-pricing_fk_list; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_deta-bill-pricing_fk_list" ON isahl."zc_id_deta-bill-pricing" USING btree (fk_list);
 
 
---
--- Name: idx_zc_id_deta-commit_fk_list; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_deta-commit_fk_list" ON isahl."zc_id_deta-commit" USING btree (fk_list);
 
 
---
--- Name: idx_zc_id_deta-commit_fk_modify; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_deta-commit_fk_modify" ON isahl."zc_id_deta-commit" USING btree (fk_modify);
 
 
---
--- Name: idx_zc_id_deta-invoice_fk_list; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_deta-invoice_fk_list" ON isahl."zc_id_deta-invoice" USING btree (fk_list);
 
 
---
--- Name: idx_zc_id_deta-opinion_fk_list; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_deta-opinion_fk_list" ON isahl."zc_id_deta-opinion" USING btree (fk_list);
 
 
---
--- Name: idx_zc_id_deta-trade_order_fk_deal; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_deta-trade_order_fk_deal" ON isahl."zc_id_deta-trade_order" USING btree (fk_deal);
 
 
---
--- Name: idx_zc_id_deta-trade_order_fk_delivery; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_deta-trade_order_fk_delivery" ON isahl."zc_id_deta-trade_order" USING btree (fk_delivery);
 
 
---
--- Name: idx_zc_id_deta-trade_order_fk_demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_deta-trade_order_fk_demand" ON isahl."zc_id_deta-trade_order" USING btree (fk_demand);
 
 
---
--- Name: idx_zc_id_deta-trade_order_fk_goods; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_deta-trade_order_fk_goods" ON isahl."zc_id_deta-trade_order" USING btree (fk_goods);
 
 
---
--- Name: idx_zc_id_deta-trade_order_fk_list; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_deta-trade_order_fk_list" ON isahl."zc_id_deta-trade_order" USING btree (fk_list);
 
 
---
--- Name: idx_zc_id_deta-trade_order_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_deta-trade_order_fk_subject" ON isahl."zc_id_deta-trade_order" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_detail_fk_list; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_detail_fk_list ON isahl.zc_id_detail USING btree (fk_list);
 
 
---
--- Name: idx_zc_id_devi-camera_fk_owner; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_devi-camera_fk_owner" ON isahl."zc_id_devi-camera" USING btree (fk_owner);
 
 
---
--- Name: idx_zc_id_devi-camera_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_devi-camera_fk_user" ON isahl."zc_id_devi-camera" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_devi-chess_fk_owner; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_devi-chess_fk_owner" ON isahl."zc_id_devi-chess" USING btree (fk_owner);
 
 
---
--- Name: idx_zc_id_devi-chess_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_devi-chess_fk_user" ON isahl."zc_id_devi-chess" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_devi-control_board_fk_owner; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_devi-control_board_fk_owner" ON isahl."zc_id_devi-control_board" USING btree (fk_owner);
 
 
---
--- Name: idx_zc_id_devi-control_board_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_devi-control_board_fk_user" ON isahl."zc_id_devi-control_board" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_devi-display_fk_owner; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_devi-display_fk_owner" ON isahl."zc_id_devi-display" USING btree (fk_owner);
 
 
---
--- Name: idx_zc_id_devi-display_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_devi-display_fk_user" ON isahl."zc_id_devi-display" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_devi-measure_fk_owner; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_devi-measure_fk_owner" ON isahl."zc_id_devi-measure" USING btree (fk_owner);
 
 
---
--- Name: idx_zc_id_devi-measure_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_devi-measure_fk_user" ON isahl."zc_id_devi-measure" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_devi-sensor_fk_owner; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_devi-sensor_fk_owner" ON isahl."zc_id_devi-sensor" USING btree (fk_owner);
 
 
---
--- Name: idx_zc_id_devi-sensor_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_devi-sensor_fk_user" ON isahl."zc_id_devi-sensor" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_device_fk_owner; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_device_fk_owner ON isahl.zc_id_device USING btree (fk_owner);
 
 
---
--- Name: idx_zc_id_device_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_device_fk_user ON isahl.zc_id_device USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_docu-accounting_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_docu-accounting_fk_previous" ON isahl."zc_id_docu-accounting" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_document_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_document_fk_previous ON isahl.zc_id_document USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_empl-agent_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_empl-agent_fk_user" ON isahl."zc_id_empl-agent" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_empl-natural_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_empl-natural_fk_user" ON isahl."zc_id_empl-natural" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_entity_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_entity_fk_user ON isahl.zc_id_entity USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_even-approve_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_even-approve_fk_place" ON isahl."zc_id_even-approve" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_even-approve_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_even-approve_fk_subject" ON isahl."zc_id_even-approve" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_even-modify_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_even-modify_fk_place" ON isahl."zc_id_even-modify" USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_even-modify_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_even-modify_fk_subject" ON isahl."zc_id_even-modify" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_even-modify_fk_ver-fork; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_even-modify_fk_ver-fork" ON isahl."zc_id_even-modify" USING btree ("fk_ver-fork");
 
 
---
--- Name: idx_zc_id_event_fk_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_event_fk_place ON isahl.zc_id_event USING btree (fk_place);
 
 
---
--- Name: idx_zc_id_event_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_event_fk_subject ON isahl.zc_id_event USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_info-postal_fk_country; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_info-postal_fk_country" ON isahl."zc_id_info-postal" USING btree (fk_country);
 
 
---
--- Name: idx_zc_id_invo-electric_fk_recipient; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_invo-electric_fk_recipient" ON isahl."zc_id_invo-electric" USING btree (fk_recipient);
 
 
---
--- Name: idx_zc_id_invo-electric_fk_sender; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_invo-electric_fk_sender" ON isahl."zc_id_invo-electric" USING btree (fk_sender);
 
 
---
--- Name: idx_zc_id_invo-form_fk_recipient; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_invo-form_fk_recipient" ON isahl."zc_id_invo-form" USING btree (fk_recipient);
 
 
---
--- Name: idx_zc_id_invo-form_fk_sender; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_invo-form_fk_sender" ON isahl."zc_id_invo-form" USING btree (fk_sender);
 
 
---
--- Name: idx_zc_id_invo-proforma_fk_recipient; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_invo-proforma_fk_recipient" ON isahl."zc_id_invo-proforma" USING btree (fk_recipient);
 
 
---
--- Name: idx_zc_id_invo-proforma_fk_sender; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_invo-proforma_fk_sender" ON isahl."zc_id_invo-proforma" USING btree (fk_sender);
 
 
---
--- Name: idx_zc_id_invo-tax-list_fk_recipient; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_invo-tax-list_fk_recipient" ON isahl."zc_id_invo-tax-list" USING btree (fk_recipient);
 
 
---
--- Name: idx_zc_id_invo-tax-list_fk_sender; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_invo-tax-list_fk_sender" ON isahl."zc_id_invo-tax-list" USING btree (fk_sender);
 
 
---
--- Name: idx_zc_id_invoice_fk_recipient; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_invoice_fk_recipient ON isahl.zc_id_invoice USING btree (fk_recipient);
 
 
---
--- Name: idx_zc_id_invoice_fk_sender; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_invoice_fk_sender ON isahl.zc_id_invoice USING btree (fk_sender);
 
 
---
--- Name: idx_zc_id_law_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_law_fk_previous ON isahl.zc_id_law USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_message_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_message_fk_previous ON isahl.zc_id_message USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_message_fk_sender-addr; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_message_fk_sender-addr" ON isahl.zc_id_message USING btree ("fk_sender-addr");
 
 
---
--- Name: idx_zc_id_message_fk_thread; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_message_fk_thread ON isahl.zc_id_message USING btree (fk_thread);
 
 
---
--- Name: idx_zc_id_msgs-chat_ai_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-chat_ai_fk_previous" ON isahl."zc_id_msgs-chat_ai" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_msgs-chat_ai_fk_sender-addr; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-chat_ai_fk_sender-addr" ON isahl."zc_id_msgs-chat_ai" USING btree ("fk_sender-addr");
 
 
---
--- Name: idx_zc_id_msgs-chat_ai_fk_thread; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-chat_ai_fk_thread" ON isahl."zc_id_msgs-chat_ai" USING btree (fk_thread);
 
 
---
--- Name: idx_zc_id_msgs-comments_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-comments_fk_previous" ON isahl."zc_id_msgs-comments" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_msgs-comments_fk_sender-addr; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-comments_fk_sender-addr" ON isahl."zc_id_msgs-comments" USING btree ("fk_sender-addr");
 
 
---
--- Name: idx_zc_id_msgs-comments_fk_thread; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-comments_fk_thread" ON isahl."zc_id_msgs-comments" USING btree (fk_thread);
 
 
---
--- Name: idx_zc_id_msgs-comments_fk_topic; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-comments_fk_topic" ON isahl."zc_id_msgs-comments" USING btree (fk_topic);
 
 
---
--- Name: idx_zc_id_msgs-email_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-email_fk_previous" ON isahl."zc_id_msgs-email" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_msgs-email_fk_sender-addr; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-email_fk_sender-addr" ON isahl."zc_id_msgs-email" USING btree ("fk_sender-addr");
 
 
---
--- Name: idx_zc_id_msgs-email_fk_thread; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-email_fk_thread" ON isahl."zc_id_msgs-email" USING btree (fk_thread);
 
 
---
--- Name: idx_zc_id_msgs-feedback_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-feedback_fk_previous" ON isahl."zc_id_msgs-feedback" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_msgs-feedback_fk_sender-addr; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-feedback_fk_sender-addr" ON isahl."zc_id_msgs-feedback" USING btree ("fk_sender-addr");
 
 
---
--- Name: idx_zc_id_msgs-feedback_fk_thread; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-feedback_fk_thread" ON isahl."zc_id_msgs-feedback" USING btree (fk_thread);
 
 
---
--- Name: idx_zc_id_msgs-im_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-im_fk_previous" ON isahl."zc_id_msgs-im" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_msgs-im_fk_sender-addr; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-im_fk_sender-addr" ON isahl."zc_id_msgs-im" USING btree ("fk_sender-addr");
 
 
---
--- Name: idx_zc_id_msgs-im_fk_thread; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-im_fk_thread" ON isahl."zc_id_msgs-im" USING btree (fk_thread);
 
 
---
--- Name: idx_zc_id_msgs-review_fk_approve; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-review_fk_approve" ON isahl."zc_id_msgs-review" USING btree (fk_approve);
 
 
---
--- Name: idx_zc_id_msgs-review_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-review_fk_previous" ON isahl."zc_id_msgs-review" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_msgs-review_fk_sender-addr; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-review_fk_sender-addr" ON isahl."zc_id_msgs-review" USING btree ("fk_sender-addr");
 
 
---
--- Name: idx_zc_id_msgs-review_fk_thread; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-review_fk_thread" ON isahl."zc_id_msgs-review" USING btree (fk_thread);
 
 
---
--- Name: idx_zc_id_msgs-system_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-system_fk_previous" ON isahl."zc_id_msgs-system" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_msgs-system_fk_sender-addr; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-system_fk_sender-addr" ON isahl."zc_id_msgs-system" USING btree ("fk_sender-addr");
 
 
---
--- Name: idx_zc_id_msgs-system_fk_thread; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-system_fk_thread" ON isahl."zc_id_msgs-system" USING btree (fk_thread);
 
 
---
--- Name: idx_zc_id_msgs-telephone_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-telephone_fk_previous" ON isahl."zc_id_msgs-telephone" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_msgs-telephone_fk_sender-addr; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-telephone_fk_sender-addr" ON isahl."zc_id_msgs-telephone" USING btree ("fk_sender-addr");
 
 
---
--- Name: idx_zc_id_msgs-telephone_fk_thread; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-telephone_fk_thread" ON isahl."zc_id_msgs-telephone" USING btree (fk_thread);
 
 
---
--- Name: idx_zc_id_msgs-zchat_fk_origin; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-zchat_fk_origin" ON isahl."zc_id_msgs-zchat" USING btree (fk_origin);
 
 
---
--- Name: idx_zc_id_msgs-zchat_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-zchat_fk_previous" ON isahl."zc_id_msgs-zchat" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_msgs-zchat_fk_sender-addr; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-zchat_fk_sender-addr" ON isahl."zc_id_msgs-zchat" USING btree ("fk_sender-addr");
 
 
---
--- Name: idx_zc_id_msgs-zchat_fk_thread; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_msgs-zchat_fk_thread" ON isahl."zc_id_msgs-zchat" USING btree (fk_thread);
 
 
---
--- Name: idx_zc_id_oper-action_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-action_fk_operator" ON isahl."zc_id_oper-action" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-action_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-action_fk_previous" ON isahl."zc_id_oper-action" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-action_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-action_fk_subject" ON isahl."zc_id_oper-action" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-approve_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-approve_fk_operator" ON isahl."zc_id_oper-approve" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-approve_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-approve_fk_previous" ON isahl."zc_id_oper-approve" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-approve_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-approve_fk_subject" ON isahl."zc_id_oper-approve" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-check_bill_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-check_bill_fk_operator" ON isahl."zc_id_oper-check_bill" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-check_bill_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-check_bill_fk_previous" ON isahl."zc_id_oper-check_bill" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-check_bill_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-check_bill_fk_subject" ON isahl."zc_id_oper-check_bill" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-check_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-check_fk_operator" ON isahl."zc_id_oper-check" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-check_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-check_fk_previous" ON isahl."zc_id_oper-check" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-check_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-check_fk_subject" ON isahl."zc_id_oper-check" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-clearance_import_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-clearance_import_fk_operator" ON isahl."zc_id_oper-clearance_import" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-clearance_import_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-clearance_import_fk_previous" ON isahl."zc_id_oper-clearance_import" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-clearance_import_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-clearance_import_fk_subject" ON isahl."zc_id_oper-clearance_import" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-confirm_bill_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-confirm_bill_fk_operator" ON isahl."zc_id_oper-confirm_bill" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-confirm_bill_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-confirm_bill_fk_previous" ON isahl."zc_id_oper-confirm_bill" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-confirm_bill_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-confirm_bill_fk_subject" ON isahl."zc_id_oper-confirm_bill" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-decide_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-decide_fk_operator" ON isahl."zc_id_oper-decide" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-decide_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-decide_fk_previous" ON isahl."zc_id_oper-decide" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-decide_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-decide_fk_subject" ON isahl."zc_id_oper-decide" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-declaration_export_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-declaration_export_fk_operator" ON isahl."zc_id_oper-declaration_export" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-declaration_export_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-declaration_export_fk_previous" ON isahl."zc_id_oper-declaration_export" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-declaration_export_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-declaration_export_fk_subject" ON isahl."zc_id_oper-declaration_export" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-delivery_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-delivery_fk_operator" ON isahl."zc_id_oper-delivery" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-delivery_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-delivery_fk_previous" ON isahl."zc_id_oper-delivery" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-delivery_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-delivery_fk_subject" ON isahl."zc_id_oper-delivery" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-fo_booking_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-fo_booking_fk_operator" ON isahl."zc_id_oper-fo_booking" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-fo_booking_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-fo_booking_fk_previous" ON isahl."zc_id_oper-fo_booking" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-fo_booking_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-fo_booking_fk_subject" ON isahl."zc_id_oper-fo_booking" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-lading_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-lading_fk_operator" ON isahl."zc_id_oper-lading" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-lading_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-lading_fk_previous" ON isahl."zc_id_oper-lading" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-lading_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-lading_fk_subject" ON isahl."zc_id_oper-lading" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-merchandise_on_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-merchandise_on_fk_operator" ON isahl."zc_id_oper-merchandise_on" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-merchandise_on_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-merchandise_on_fk_previous" ON isahl."zc_id_oper-merchandise_on" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-merchandise_on_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-merchandise_on_fk_subject" ON isahl."zc_id_oper-merchandise_on" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-observe_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-observe_fk_operator" ON isahl."zc_id_oper-observe" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-observe_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-observe_fk_previous" ON isahl."zc_id_oper-observe" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-observe_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-observe_fk_subject" ON isahl."zc_id_oper-observe" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-orient_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-orient_fk_operator" ON isahl."zc_id_oper-orient" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-orient_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-orient_fk_previous" ON isahl."zc_id_oper-orient" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-orient_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-orient_fk_subject" ON isahl."zc_id_oper-orient" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-payment_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-payment_fk_operator" ON isahl."zc_id_oper-payment" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-payment_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-payment_fk_previous" ON isahl."zc_id_oper-payment" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-payment_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-payment_fk_subject" ON isahl."zc_id_oper-payment" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-planing_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-planing_fk_operator" ON isahl."zc_id_oper-planing" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-planing_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-planing_fk_previous" ON isahl."zc_id_oper-planing" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-planing_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-planing_fk_subject" ON isahl."zc_id_oper-planing" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-put_in_stock_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-put_in_stock_fk_operator" ON isahl."zc_id_oper-put_in_stock" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-put_in_stock_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-put_in_stock_fk_previous" ON isahl."zc_id_oper-put_in_stock" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-put_in_stock_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-put_in_stock_fk_subject" ON isahl."zc_id_oper-put_in_stock" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-register_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-register_fk_operator" ON isahl."zc_id_oper-register" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-register_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-register_fk_previous" ON isahl."zc_id_oper-register" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-register_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-register_fk_subject" ON isahl."zc_id_oper-register" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-resp_inquiry_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-resp_inquiry_fk_operator" ON isahl."zc_id_oper-resp_inquiry" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-resp_inquiry_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-resp_inquiry_fk_previous" ON isahl."zc_id_oper-resp_inquiry" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-resp_inquiry_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-resp_inquiry_fk_subject" ON isahl."zc_id_oper-resp_inquiry" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-sales_order_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-sales_order_fk_operator" ON isahl."zc_id_oper-sales_order" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-sales_order_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-sales_order_fk_previous" ON isahl."zc_id_oper-sales_order" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-sales_order_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-sales_order_fk_subject" ON isahl."zc_id_oper-sales_order" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-smtv_review_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-smtv_review_fk_operator" ON isahl."zc_id_oper-smtv_review" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-smtv_review_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-smtv_review_fk_previous" ON isahl."zc_id_oper-smtv_review" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-smtv_review_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-smtv_review_fk_subject" ON isahl."zc_id_oper-smtv_review" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-storage_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-storage_fk_operator" ON isahl."zc_id_oper-storage" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-storage_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-storage_fk_previous" ON isahl."zc_id_oper-storage" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-storage_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-storage_fk_subject" ON isahl."zc_id_oper-storage" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-take_off_stock_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-take_off_stock_fk_operator" ON isahl."zc_id_oper-take_off_stock" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-take_off_stock_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-take_off_stock_fk_previous" ON isahl."zc_id_oper-take_off_stock" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-take_off_stock_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-take_off_stock_fk_subject" ON isahl."zc_id_oper-take_off_stock" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-trailer_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-trailer_fk_operator" ON isahl."zc_id_oper-trailer" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-trailer_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-trailer_fk_previous" ON isahl."zc_id_oper-trailer" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-trailer_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-trailer_fk_subject" ON isahl."zc_id_oper-trailer" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_oper-transport_tracking_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-transport_tracking_fk_operator" ON isahl."zc_id_oper-transport_tracking" USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_oper-transport_tracking_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-transport_tracking_fk_previous" ON isahl."zc_id_oper-transport_tracking" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_oper-transport_tracking_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_oper-transport_tracking_fk_subject" ON isahl."zc_id_oper-transport_tracking" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_operation_fk_operator; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_operation_fk_operator ON isahl.zc_id_operation USING btree (fk_operator);
 
 
---
--- Name: idx_zc_id_operation_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_operation_fk_previous ON isahl.zc_id_operation USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_operation_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_operation_fk_subject ON isahl.zc_id_operation USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_orde-ahbl_fk_contract; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-ahbl_fk_contract" ON isahl."zc_id_orde-ahbl" USING btree (fk_contract);
 
 
---
--- Name: idx_zc_id_orde-ahbl_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-ahbl_fk_object" ON isahl."zc_id_orde-ahbl" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_orde-ahbl_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-ahbl_fk_subject" ON isahl."zc_id_orde-ahbl" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_orde-airlift_fk_contract; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-airlift_fk_contract" ON isahl."zc_id_orde-airlift" USING btree (fk_contract);
 
 
---
--- Name: idx_zc_id_orde-airlift_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-airlift_fk_object" ON isahl."zc_id_orde-airlift" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_orde-airlift_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-airlift_fk_subject" ON isahl."zc_id_orde-airlift" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_orde-consult_fk_contract; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-consult_fk_contract" ON isahl."zc_id_orde-consult" USING btree (fk_contract);
 
 
---
--- Name: idx_zc_id_orde-consult_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-consult_fk_object" ON isahl."zc_id_orde-consult" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_orde-consult_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-consult_fk_subject" ON isahl."zc_id_orde-consult" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_orde-hbl_fk_contract; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-hbl_fk_contract" ON isahl."zc_id_orde-hbl" USING btree (fk_contract);
 
 
---
--- Name: idx_zc_id_orde-hbl_fk_mbl; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-hbl_fk_mbl" ON isahl."zc_id_orde-hbl" USING btree (fk_mbl);
 
 
---
--- Name: idx_zc_id_orde-hbl_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-hbl_fk_object" ON isahl."zc_id_orde-hbl" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_orde-hbl_fk_prod-pfos; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-hbl_fk_prod-pfos" ON isahl."zc_id_orde-hbl" USING btree ("fk_prod-pfos");
 
 
---
--- Name: idx_zc_id_orde-hbl_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-hbl_fk_subject" ON isahl."zc_id_orde-hbl" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_orde-land_fk_contract; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-land_fk_contract" ON isahl."zc_id_orde-land" USING btree (fk_contract);
 
 
---
--- Name: idx_zc_id_orde-land_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-land_fk_object" ON isahl."zc_id_orde-land" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_orde-land_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-land_fk_subject" ON isahl."zc_id_orde-land" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_orde-railway_fk_contract; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-railway_fk_contract" ON isahl."zc_id_orde-railway" USING btree (fk_contract);
 
 
---
--- Name: idx_zc_id_orde-railway_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-railway_fk_object" ON isahl."zc_id_orde-railway" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_orde-railway_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-railway_fk_subject" ON isahl."zc_id_orde-railway" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_orde-retail_fk_contract; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-retail_fk_contract" ON isahl."zc_id_orde-retail" USING btree (fk_contract);
 
 
---
--- Name: idx_zc_id_orde-retail_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-retail_fk_object" ON isahl."zc_id_orde-retail" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_orde-retail_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-retail_fk_subject" ON isahl."zc_id_orde-retail" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_orde-shipping_fk_contract; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-shipping_fk_contract" ON isahl."zc_id_orde-shipping" USING btree (fk_contract);
 
 
---
--- Name: idx_zc_id_orde-shipping_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-shipping_fk_object" ON isahl."zc_id_orde-shipping" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_orde-shipping_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orde-shipping_fk_subject" ON isahl."zc_id_orde-shipping" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_orga-department_fk_country; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orga-department_fk_country" ON isahl."zc_id_orga-department" USING btree (fk_country);
 
 
---
--- Name: idx_zc_id_orga-department_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orga-department_fk_user" ON isahl."zc_id_orga-department" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_orga-legal_fk_country; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orga-legal_fk_country" ON isahl."zc_id_orga-legal" USING btree (fk_country);
 
 
---
--- Name: idx_zc_id_orga-legal_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orga-legal_fk_user" ON isahl."zc_id_orga-legal" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_orga-non-banking-legal_fk_country; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orga-non-banking-legal_fk_country" ON isahl."zc_id_orga-non-banking-legal" USING btree (fk_country);
 
 
---
--- Name: idx_zc_id_orga-non-banking-legal_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_orga-non-banking-legal_fk_user" ON isahl."zc_id_orga-non-banking-legal" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_plan-project_fk_project; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_plan-project_fk_project" ON isahl."zc_id_plan-project" USING btree (fk_project);
 
 
---
--- Name: idx_zc_id_prjt-proc_ctrl_fk_group; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prjt-proc_ctrl_fk_group" ON isahl."zc_id_prjt-proc_ctrl" USING btree (fk_group);
 
 
---
--- Name: idx_zc_id_prjt-proc_ctrl_fk_launcher; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prjt-proc_ctrl_fk_launcher" ON isahl."zc_id_prjt-proc_ctrl" USING btree (fk_launcher);
 
 
---
--- Name: idx_zc_id_prjt-proc_ctrl_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prjt-proc_ctrl_fk_previous" ON isahl."zc_id_prjt-proc_ctrl" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_proc-approve_ck_category; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-approve_ck_category" ON isahl."zc_id_proc-approve" USING btree (ck_category);
 
 
---
--- Name: idx_zc_id_proc-approve_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-approve_fk_previous" ON isahl."zc_id_proc-approve" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_proc-approve_fk_subj-define; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-approve_fk_subj-define" ON isahl."zc_id_proc-approve" USING btree ("fk_subj-define");
 
 
---
--- Name: idx_zc_id_proc-approve_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-approve_fk_subject" ON isahl."zc_id_proc-approve" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_proc-loading_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-loading_fk_previous" ON isahl."zc_id_proc-loading" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_proc-loading_fk_subj-define; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-loading_fk_subj-define" ON isahl."zc_id_proc-loading" USING btree ("fk_subj-define");
 
 
---
--- Name: idx_zc_id_proc-loading_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-loading_fk_subject" ON isahl."zc_id_proc-loading" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_proc-make_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-make_fk_previous" ON isahl."zc_id_proc-make" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_proc-make_fk_subj-define; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-make_fk_subj-define" ON isahl."zc_id_proc-make" USING btree ("fk_subj-define");
 
 
---
--- Name: idx_zc_id_proc-make_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-make_fk_subject" ON isahl."zc_id_proc-make" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_proc-project_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-project_fk_previous" ON isahl."zc_id_proc-project" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_proc-project_fk_subj-define; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-project_fk_subj-define" ON isahl."zc_id_proc-project" USING btree ("fk_subj-define");
 
 
---
--- Name: idx_zc_id_proc-project_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-project_fk_subject" ON isahl."zc_id_proc-project" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_proc-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-purchase_fk_previous" ON isahl."zc_id_proc-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_proc-purchase_fk_subj-define; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-purchase_fk_subj-define" ON isahl."zc_id_proc-purchase" USING btree ("fk_subj-define");
 
 
---
--- Name: idx_zc_id_proc-purchase_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-purchase_fk_subject" ON isahl."zc_id_proc-purchase" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_proc-service_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-service_fk_previous" ON isahl."zc_id_proc-service" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_proc-service_fk_subj-define; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-service_fk_subj-define" ON isahl."zc_id_proc-service" USING btree ("fk_subj-define");
 
 
---
--- Name: idx_zc_id_proc-service_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_proc-service_fk_subject" ON isahl."zc_id_proc-service" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_process_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_process_fk_previous ON isahl.zc_id_process USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_process_fk_subj-define; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_process_fk_subj-define" ON isahl.zc_id_process USING btree ("fk_subj-define");
 
 
---
--- Name: idx_zc_id_process_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_process_fk_subject ON isahl.zc_id_process USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_prod-channel_cost-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-channel_cost-sales_fk_previous" ON isahl."zc_id_prod-channel_cost-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-channel_cost-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-channel_cost-sales_fk_process" ON isahl."zc_id_prod-channel_cost-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-channel_cost-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-channel_cost-sales_fk_subj-demand" ON isahl."zc_id_prod-channel_cost-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-channel_cost-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-channel_cost-sales_fk_subj-provider" ON isahl."zc_id_prod-channel_cost-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-combine_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-combine_fk_previous" ON isahl."zc_id_prod-combine" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-combine_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-combine_fk_process" ON isahl."zc_id_prod-combine" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-combine_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-combine_fk_subj-demand" ON isahl."zc_id_prod-combine" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-combine_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-combine_fk_subj-provider" ON isahl."zc_id_prod-combine" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-customs-clearance_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs-clearance_fk_previous" ON isahl."zc_id_prod-customs-clearance" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-customs-clearance_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs-clearance_fk_process" ON isahl."zc_id_prod-customs-clearance" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-customs-clearance_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs-clearance_fk_subj-demand" ON isahl."zc_id_prod-customs-clearance" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-customs-clearance_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs-clearance_fk_subj-provider" ON isahl."zc_id_prod-customs-clearance" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-customs_cle_fo-purchase_fk_mbl; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_cle_fo-purchase_fk_mbl" ON isahl."zc_id_prod-customs_cle_fo-purchase" USING btree (fk_mbl);
 
 
---
--- Name: idx_zc_id_prod-customs_cle_fo-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_cle_fo-purchase_fk_previous" ON isahl."zc_id_prod-customs_cle_fo-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-customs_cle_fo-purchase_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_cle_fo-purchase_fk_process" ON isahl."zc_id_prod-customs_cle_fo-purchase" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-customs_cle_fo-purchase_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_cle_fo-purchase_fk_subj-demand" ON isahl."zc_id_prod-customs_cle_fo-purchase" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-customs_cle_fo-purchase_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_cle_fo-purchase_fk_subj-provider" ON isahl."zc_id_prod-customs_cle_fo-purchase" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-customs_cle_fo-sales_fk_mbl; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_cle_fo-sales_fk_mbl" ON isahl."zc_id_prod-customs_cle_fo-sales" USING btree (fk_mbl);
 
 
---
--- Name: idx_zc_id_prod-customs_cle_fo-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_cle_fo-sales_fk_previous" ON isahl."zc_id_prod-customs_cle_fo-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-customs_cle_fo-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_cle_fo-sales_fk_process" ON isahl."zc_id_prod-customs_cle_fo-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-customs_cle_fo-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_cle_fo-sales_fk_subj-demand" ON isahl."zc_id_prod-customs_cle_fo-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-customs_cle_fo-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_cle_fo-sales_fk_subj-provider" ON isahl."zc_id_prod-customs_cle_fo-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-customs_dec_fo-purchase_fk_mbl; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_dec_fo-purchase_fk_mbl" ON isahl."zc_id_prod-customs_dec_fo-purchase" USING btree (fk_mbl);
 
 
---
--- Name: idx_zc_id_prod-customs_dec_fo-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_dec_fo-purchase_fk_previous" ON isahl."zc_id_prod-customs_dec_fo-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-customs_dec_fo-purchase_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_dec_fo-purchase_fk_process" ON isahl."zc_id_prod-customs_dec_fo-purchase" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-customs_dec_fo-purchase_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_dec_fo-purchase_fk_subj-demand" ON isahl."zc_id_prod-customs_dec_fo-purchase" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-customs_dec_fo-purchase_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_dec_fo-purchase_fk_subj-provider" ON isahl."zc_id_prod-customs_dec_fo-purchase" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-customs_dec_fo-sales_fk_mbl; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_dec_fo-sales_fk_mbl" ON isahl."zc_id_prod-customs_dec_fo-sales" USING btree (fk_mbl);
 
 
---
--- Name: idx_zc_id_prod-customs_dec_fo-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_dec_fo-sales_fk_previous" ON isahl."zc_id_prod-customs_dec_fo-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-customs_dec_fo-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_dec_fo-sales_fk_process" ON isahl."zc_id_prod-customs_dec_fo-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-customs_dec_fo-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_dec_fo-sales_fk_subj-demand" ON isahl."zc_id_prod-customs_dec_fo-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-customs_dec_fo-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_dec_fo-sales_fk_subj-provider" ON isahl."zc_id_prod-customs_dec_fo-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-customs_declaration_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_declaration_fk_previous" ON isahl."zc_id_prod-customs_declaration" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-customs_declaration_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_declaration_fk_process" ON isahl."zc_id_prod-customs_declaration" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-customs_declaration_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_declaration_fk_subj-demand" ON isahl."zc_id_prod-customs_declaration" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-customs_declaration_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-customs_declaration_fk_subj-provider" ON isahl."zc_id_prod-customs_declaration" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-data_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-data_fk_previous" ON isahl."zc_id_prod-data" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-data_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-data_fk_process" ON isahl."zc_id_prod-data" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-data_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-data_fk_subj-demand" ON isahl."zc_id_prod-data" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-data_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-data_fk_subj-provider" ON isahl."zc_id_prod-data" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-financial_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-financial_fk_previous" ON isahl."zc_id_prod-financial" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-financial_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-financial_fk_process" ON isahl."zc_id_prod-financial" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-financial_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-financial_fk_subj-demand" ON isahl."zc_id_prod-financial" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-financial_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-financial_fk_subj-provider" ON isahl."zc_id_prod-financial" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-fo_insurance-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-fo_insurance-purchase_fk_previous" ON isahl."zc_id_prod-fo_insurance-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-fo_insurance-purchase_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-fo_insurance-purchase_fk_process" ON isahl."zc_id_prod-fo_insurance-purchase" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-fo_insurance-purchase_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-fo_insurance-purchase_fk_subj-demand" ON isahl."zc_id_prod-fo_insurance-purchase" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-fo_insurance-purchase_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-fo_insurance-purchase_fk_subj-provider" ON isahl."zc_id_prod-fo_insurance-purchase" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-fo_insurance-request_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-fo_insurance-request_fk_previous" ON isahl."zc_id_prod-fo_insurance-request" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-fo_insurance-request_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-fo_insurance-request_fk_process" ON isahl."zc_id_prod-fo_insurance-request" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-fo_insurance-request_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-fo_insurance-request_fk_subj-demand" ON isahl."zc_id_prod-fo_insurance-request" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-fo_insurance-request_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-fo_insurance-request_fk_subj-provider" ON isahl."zc_id_prod-fo_insurance-request" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-fo_insurance-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-fo_insurance-sales_fk_previous" ON isahl."zc_id_prod-fo_insurance-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-fo_insurance-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-fo_insurance-sales_fk_process" ON isahl."zc_id_prod-fo_insurance-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-fo_insurance-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-fo_insurance-sales_fk_subj-demand" ON isahl."zc_id_prod-fo_insurance-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-fo_insurance-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-fo_insurance-sales_fk_subj-provider" ON isahl."zc_id_prod-fo_insurance-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-freight_inland-purchase_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_inland-purchase_fk_departure" ON isahl."zc_id_prod-freight_inland-purchase" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-freight_inland-purchase_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_inland-purchase_fk_destination" ON isahl."zc_id_prod-freight_inland-purchase" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-freight_inland-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_inland-purchase_fk_previous" ON isahl."zc_id_prod-freight_inland-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-freight_inland-purchase_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_inland-purchase_fk_process" ON isahl."zc_id_prod-freight_inland-purchase" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-freight_inland-purchase_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_inland-purchase_fk_subj-demand" ON isahl."zc_id_prod-freight_inland-purchase" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-freight_inland-purchase_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_inland-purchase_fk_subj-provider" ON isahl."zc_id_prod-freight_inland-purchase" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-freight_inland-sales_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_inland-sales_fk_departure" ON isahl."zc_id_prod-freight_inland-sales" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-freight_inland-sales_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_inland-sales_fk_destination" ON isahl."zc_id_prod-freight_inland-sales" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-freight_inland-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_inland-sales_fk_previous" ON isahl."zc_id_prod-freight_inland-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-freight_inland-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_inland-sales_fk_process" ON isahl."zc_id_prod-freight_inland-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-freight_inland-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_inland-sales_fk_subj-demand" ON isahl."zc_id_prod-freight_inland-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-freight_inland-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_inland-sales_fk_subj-provider" ON isahl."zc_id_prod-freight_inland-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-freight_ocean-request_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_ocean-request_fk_departure" ON isahl."zc_id_prod-freight_ocean-request" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-freight_ocean-request_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_ocean-request_fk_destination" ON isahl."zc_id_prod-freight_ocean-request" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-freight_ocean-request_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_ocean-request_fk_previous" ON isahl."zc_id_prod-freight_ocean-request" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-freight_ocean-request_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_ocean-request_fk_process" ON isahl."zc_id_prod-freight_ocean-request" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-freight_ocean-request_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_ocean-request_fk_subj-demand" ON isahl."zc_id_prod-freight_ocean-request" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-freight_ocean-request_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_ocean-request_fk_subj-provider" ON isahl."zc_id_prod-freight_ocean-request" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-freight_ocean-request_fk_vessel; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_ocean-request_fk_vessel" ON isahl."zc_id_prod-freight_ocean-request" USING btree (fk_vessel);
 
 
---
--- Name: idx_zc_id_prod-freight_ocean-sales_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_ocean-sales_fk_departure" ON isahl."zc_id_prod-freight_ocean-sales" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-freight_ocean-sales_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_ocean-sales_fk_destination" ON isahl."zc_id_prod-freight_ocean-sales" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-freight_ocean-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_ocean-sales_fk_previous" ON isahl."zc_id_prod-freight_ocean-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-freight_ocean-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_ocean-sales_fk_process" ON isahl."zc_id_prod-freight_ocean-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-freight_ocean-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_ocean-sales_fk_subj-demand" ON isahl."zc_id_prod-freight_ocean-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-freight_ocean-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_ocean-sales_fk_subj-provider" ON isahl."zc_id_prod-freight_ocean-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-freight_ocean-sales_fk_vessel; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-freight_ocean-sales_fk_vessel" ON isahl."zc_id_prod-freight_ocean-sales" USING btree (fk_vessel);
 
 
---
--- Name: idx_zc_id_prod-insurance_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-insurance_fk_previous" ON isahl."zc_id_prod-insurance" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-insurance_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-insurance_fk_process" ON isahl."zc_id_prod-insurance" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-insurance_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-insurance_fk_subj-demand" ON isahl."zc_id_prod-insurance" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-insurance_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-insurance_fk_subj-provider" ON isahl."zc_id_prod-insurance" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-lease_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-lease_fk_previous" ON isahl."zc_id_prod-lease" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-lease_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-lease_fk_process" ON isahl."zc_id_prod-lease" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-lease_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-lease_fk_subj-demand" ON isahl."zc_id_prod-lease" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-lease_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-lease_fk_subj-provider" ON isahl."zc_id_prod-lease" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-legal_tender-made_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-legal_tender-made_fk_previous" ON isahl."zc_id_prod-legal_tender-made" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-legal_tender-made_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-legal_tender-made_fk_process" ON isahl."zc_id_prod-legal_tender-made" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-legal_tender-made_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-legal_tender-made_fk_subj-demand" ON isahl."zc_id_prod-legal_tender-made" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-legal_tender-made_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-legal_tender-made_fk_subj-provider" ON isahl."zc_id_prod-legal_tender-made" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-legal_tender_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-legal_tender_fk_previous" ON isahl."zc_id_prod-legal_tender" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-legal_tender_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-legal_tender_fk_process" ON isahl."zc_id_prod-legal_tender" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-legal_tender_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-legal_tender_fk_subj-demand" ON isahl."zc_id_prod-legal_tender" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-legal_tender_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-legal_tender_fk_subj-provider" ON isahl."zc_id_prod-legal_tender" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-loading-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading-purchase_fk_previous" ON isahl."zc_id_prod-loading-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-loading-purchase_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading-purchase_fk_process" ON isahl."zc_id_prod-loading-purchase" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-loading-purchase_fk_receptacle; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading-purchase_fk_receptacle" ON isahl."zc_id_prod-loading-purchase" USING btree (fk_receptacle);
 
 
---
--- Name: idx_zc_id_prod-loading-purchase_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading-purchase_fk_subj-demand" ON isahl."zc_id_prod-loading-purchase" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-loading-purchase_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading-purchase_fk_subj-provider" ON isahl."zc_id_prod-loading-purchase" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-loading-request_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading-request_fk_previous" ON isahl."zc_id_prod-loading-request" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-loading-request_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading-request_fk_process" ON isahl."zc_id_prod-loading-request" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-loading-request_fk_receptacle; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading-request_fk_receptacle" ON isahl."zc_id_prod-loading-request" USING btree (fk_receptacle);
 
 
---
--- Name: idx_zc_id_prod-loading-request_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading-request_fk_subj-demand" ON isahl."zc_id_prod-loading-request" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-loading-request_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading-request_fk_subj-provider" ON isahl."zc_id_prod-loading-request" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-loading-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading-sales_fk_previous" ON isahl."zc_id_prod-loading-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-loading-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading-sales_fk_process" ON isahl."zc_id_prod-loading-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-loading-sales_fk_receptacle; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading-sales_fk_receptacle" ON isahl."zc_id_prod-loading-sales" USING btree (fk_receptacle);
 
 
---
--- Name: idx_zc_id_prod-loading-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading-sales_fk_subj-demand" ON isahl."zc_id_prod-loading-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-loading-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading-sales_fk_subj-provider" ON isahl."zc_id_prod-loading-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-loading_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading_fk_previous" ON isahl."zc_id_prod-loading" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-loading_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading_fk_process" ON isahl."zc_id_prod-loading" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-loading_fk_receptacle; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading_fk_receptacle" ON isahl."zc_id_prod-loading" USING btree (fk_receptacle);
 
 
---
--- Name: idx_zc_id_prod-loading_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading_fk_subj-demand" ON isahl."zc_id_prod-loading" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-loading_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-loading_fk_subj-provider" ON isahl."zc_id_prod-loading" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-made_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-made_fk_previous" ON isahl."zc_id_prod-made" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-made_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-made_fk_process" ON isahl."zc_id_prod-made" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-made_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-made_fk_subj-demand" ON isahl."zc_id_prod-made" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-made_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-made_fk_subj-provider" ON isahl."zc_id_prod-made" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-material-made_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-material-made_fk_previous" ON isahl."zc_id_prod-material-made" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-material-made_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-material-made_fk_process" ON isahl."zc_id_prod-material-made" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-material-made_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-material-made_fk_subj-demand" ON isahl."zc_id_prod-material-made" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-material-made_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-material-made_fk_subj-provider" ON isahl."zc_id_prod-material-made" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-passenger_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-passenger_fk_previous" ON isahl."zc_id_prod-passenger" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-passenger_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-passenger_fk_process" ON isahl."zc_id_prod-passenger" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-passenger_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-passenger_fk_subj-demand" ON isahl."zc_id_prod-passenger" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-passenger_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-passenger_fk_subj-provider" ON isahl."zc_id_prod-passenger" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-payload_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-payload_fk_previous" ON isahl."zc_id_prod-payload" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-payload_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-payload_fk_process" ON isahl."zc_id_prod-payload" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-payload_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-payload_fk_subj-demand" ON isahl."zc_id_prod-payload" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-payload_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-payload_fk_subj-provider" ON isahl."zc_id_prod-payload" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-ports-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-ports-purchase_fk_previous" ON isahl."zc_id_prod-ports-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-ports-purchase_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-ports-purchase_fk_process" ON isahl."zc_id_prod-ports-purchase" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-ports-purchase_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-ports-purchase_fk_subj-demand" ON isahl."zc_id_prod-ports-purchase" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-ports-purchase_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-ports-purchase_fk_subj-provider" ON isahl."zc_id_prod-ports-purchase" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-ports-request_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-ports-request_fk_previous" ON isahl."zc_id_prod-ports-request" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-ports-request_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-ports-request_fk_process" ON isahl."zc_id_prod-ports-request" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-ports-request_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-ports-request_fk_subj-demand" ON isahl."zc_id_prod-ports-request" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-ports-request_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-ports-request_fk_subj-provider" ON isahl."zc_id_prod-ports-request" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-ports-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-ports-sales_fk_previous" ON isahl."zc_id_prod-ports-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-ports-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-ports-sales_fk_process" ON isahl."zc_id_prod-ports-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-ports-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-ports-sales_fk_subj-demand" ON isahl."zc_id_prod-ports-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-ports-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-ports-sales_fk_subj-provider" ON isahl."zc_id_prod-ports-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-project-made_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-project-made_fk_previous" ON isahl."zc_id_prod-project-made" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-project-made_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-project-made_fk_process" ON isahl."zc_id_prod-project-made" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-project-made_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-project-made_fk_subj-demand" ON isahl."zc_id_prod-project-made" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-project-made_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-project-made_fk_subj-provider" ON isahl."zc_id_prod-project-made" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-project-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-project-purchase_fk_previous" ON isahl."zc_id_prod-project-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-project-purchase_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-project-purchase_fk_process" ON isahl."zc_id_prod-project-purchase" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-project-purchase_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-project-purchase_fk_subj-demand" ON isahl."zc_id_prod-project-purchase" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-project-purchase_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-project-purchase_fk_subj-provider" ON isahl."zc_id_prod-project-purchase" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-project-request_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-project-request_fk_previous" ON isahl."zc_id_prod-project-request" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-project-request_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-project-request_fk_process" ON isahl."zc_id_prod-project-request" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-project-request_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-project-request_fk_subj-demand" ON isahl."zc_id_prod-project-request" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-project-request_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-project-request_fk_subj-provider" ON isahl."zc_id_prod-project-request" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-project-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-project-sales_fk_previous" ON isahl."zc_id_prod-project-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-project-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-project-sales_fk_process" ON isahl."zc_id_prod-project-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-project-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-project-sales_fk_subj-demand" ON isahl."zc_id_prod-project-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-project-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-project-sales_fk_subj-provider" ON isahl."zc_id_prod-project-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-proxy_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-proxy_fk_previous" ON isahl."zc_id_prod-proxy" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-proxy_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-proxy_fk_process" ON isahl."zc_id_prod-proxy" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-proxy_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-proxy_fk_subj-demand" ON isahl."zc_id_prod-proxy" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-proxy_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-proxy_fk_subj-provider" ON isahl."zc_id_prod-proxy" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-proxy_rr_principal_fk_src-prod; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-proxy_rr_principal_fk_src-prod" ON isahl."zc_id_prod-proxy_rr_principal" USING btree ("fk_src-prod");
 
 
---
--- Name: idx_zc_id_prod-pub_affairs_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pub_affairs_fk_previous" ON isahl."zc_id_prod-pub_affairs" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-pub_affairs_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pub_affairs_fk_process" ON isahl."zc_id_prod-pub_affairs" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-pub_affairs_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pub_affairs_fk_subj-demand" ON isahl."zc_id_prod-pub_affairs" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-pub_affairs_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pub_affairs_fk_subj-provider" ON isahl."zc_id_prod-pub_affairs" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-purchase_fk_previous" ON isahl."zc_id_prod-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-purchase_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-purchase_fk_process" ON isahl."zc_id_prod-purchase" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-purchase_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-purchase_fk_subj-demand" ON isahl."zc_id_prod-purchase" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-purchase_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-purchase_fk_subj-provider" ON isahl."zc_id_prod-purchase" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-pxy-auto_mfg-made_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-auto_mfg-made_fk_previous" ON isahl."zc_id_prod-pxy-auto_mfg-made" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-pxy-auto_mfg-made_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-auto_mfg-made_fk_process" ON isahl."zc_id_prod-pxy-auto_mfg-made" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-pxy-auto_mfg-made_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-auto_mfg-made_fk_subj-demand" ON isahl."zc_id_prod-pxy-auto_mfg-made" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-pxy-auto_mfg-made_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-auto_mfg-made_fk_subj-provider" ON isahl."zc_id_prod-pxy-auto_mfg-made" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-pxy-components-made_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-components-made_fk_previous" ON isahl."zc_id_prod-pxy-components-made" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-pxy-components-made_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-components-made_fk_process" ON isahl."zc_id_prod-pxy-components-made" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-pxy-components-made_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-components-made_fk_subj-demand" ON isahl."zc_id_prod-pxy-components-made" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-pxy-components-made_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-components-made_fk_subj-provider" ON isahl."zc_id_prod-pxy-components-made" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-purchase_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-purchase_fk_departure" ON isahl."zc_id_prod-pxy-fo_express-purchase" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-purchase_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-purchase_fk_destination" ON isahl."zc_id_prod-pxy-fo_express-purchase" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-purchase_fk_previous" ON isahl."zc_id_prod-pxy-fo_express-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-purchase_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-purchase_fk_process" ON isahl."zc_id_prod-pxy-fo_express-purchase" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-purchase_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-purchase_fk_subj-demand" ON isahl."zc_id_prod-pxy-fo_express-purchase" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-purchase_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-purchase_fk_subj-provider" ON isahl."zc_id_prod-pxy-fo_express-purchase" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-request_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-request_fk_departure" ON isahl."zc_id_prod-pxy-fo_express-request" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-request_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-request_fk_destination" ON isahl."zc_id_prod-pxy-fo_express-request" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-request_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-request_fk_previous" ON isahl."zc_id_prod-pxy-fo_express-request" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-request_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-request_fk_process" ON isahl."zc_id_prod-pxy-fo_express-request" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-request_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-request_fk_subj-demand" ON isahl."zc_id_prod-pxy-fo_express-request" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-request_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-request_fk_subj-provider" ON isahl."zc_id_prod-pxy-fo_express-request" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-sales_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-sales_fk_departure" ON isahl."zc_id_prod-pxy-fo_express-sales" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-sales_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-sales_fk_destination" ON isahl."zc_id_prod-pxy-fo_express-sales" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-sales_fk_previous" ON isahl."zc_id_prod-pxy-fo_express-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-sales_fk_process" ON isahl."zc_id_prod-pxy-fo_express-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-sales_fk_subj-demand" ON isahl."zc_id_prod-pxy-fo_express-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_express-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_express-sales_fk_subj-provider" ON isahl."zc_id_prod-pxy-fo_express-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_fcl-request_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_fcl-request_fk_departure" ON isahl."zc_id_prod-pxy-fo_fcl-request" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_fcl-request_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_fcl-request_fk_destination" ON isahl."zc_id_prod-pxy-fo_fcl-request" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_fcl-request_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_fcl-request_fk_previous" ON isahl."zc_id_prod-pxy-fo_fcl-request" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_fcl-request_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_fcl-request_fk_process" ON isahl."zc_id_prod-pxy-fo_fcl-request" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_fcl-request_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_fcl-request_fk_subj-demand" ON isahl."zc_id_prod-pxy-fo_fcl-request" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_fcl-request_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_fcl-request_fk_subj-provider" ON isahl."zc_id_prod-pxy-fo_fcl-request" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_fcl-request_fk_vessel; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_fcl-request_fk_vessel" ON isahl."zc_id_prod-pxy-fo_fcl-request" USING btree (fk_vessel);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_fcl-sales_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_fcl-sales_fk_departure" ON isahl."zc_id_prod-pxy-fo_fcl-sales" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_fcl-sales_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_fcl-sales_fk_destination" ON isahl."zc_id_prod-pxy-fo_fcl-sales" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_fcl-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_fcl-sales_fk_previous" ON isahl."zc_id_prod-pxy-fo_fcl-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_fcl-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_fcl-sales_fk_process" ON isahl."zc_id_prod-pxy-fo_fcl-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_fcl-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_fcl-sales_fk_subj-demand" ON isahl."zc_id_prod-pxy-fo_fcl-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_fcl-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_fcl-sales_fk_subj-provider" ON isahl."zc_id_prod-pxy-fo_fcl-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_fcl-sales_fk_vessel; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_fcl-sales_fk_vessel" ON isahl."zc_id_prod-pxy-fo_fcl-sales" USING btree (fk_vessel);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_lcl-request_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_lcl-request_fk_departure" ON isahl."zc_id_prod-pxy-fo_lcl-request" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_lcl-request_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_lcl-request_fk_destination" ON isahl."zc_id_prod-pxy-fo_lcl-request" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_lcl-request_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_lcl-request_fk_previous" ON isahl."zc_id_prod-pxy-fo_lcl-request" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_lcl-request_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_lcl-request_fk_process" ON isahl."zc_id_prod-pxy-fo_lcl-request" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_lcl-request_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_lcl-request_fk_subj-demand" ON isahl."zc_id_prod-pxy-fo_lcl-request" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_lcl-request_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_lcl-request_fk_subj-provider" ON isahl."zc_id_prod-pxy-fo_lcl-request" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_lcl-request_fk_vessel; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_lcl-request_fk_vessel" ON isahl."zc_id_prod-pxy-fo_lcl-request" USING btree (fk_vessel);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_lcl-sales_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_lcl-sales_fk_departure" ON isahl."zc_id_prod-pxy-fo_lcl-sales" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_lcl-sales_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_lcl-sales_fk_destination" ON isahl."zc_id_prod-pxy-fo_lcl-sales" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_lcl-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_lcl-sales_fk_previous" ON isahl."zc_id_prod-pxy-fo_lcl-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_lcl-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_lcl-sales_fk_process" ON isahl."zc_id_prod-pxy-fo_lcl-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_lcl-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_lcl-sales_fk_subj-demand" ON isahl."zc_id_prod-pxy-fo_lcl-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_lcl-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_lcl-sales_fk_subj-provider" ON isahl."zc_id_prod-pxy-fo_lcl-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_lcl-sales_fk_vessel; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_lcl-sales_fk_vessel" ON isahl."zc_id_prod-pxy-fo_lcl-sales" USING btree (fk_vessel);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-purchase_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-purchase_fk_departure" ON isahl."zc_id_prod-pxy-fo_ltl-purchase" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-purchase_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-purchase_fk_destination" ON isahl."zc_id_prod-pxy-fo_ltl-purchase" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-purchase_fk_previous" ON isahl."zc_id_prod-pxy-fo_ltl-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-purchase_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-purchase_fk_process" ON isahl."zc_id_prod-pxy-fo_ltl-purchase" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-purchase_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-purchase_fk_subj-demand" ON isahl."zc_id_prod-pxy-fo_ltl-purchase" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-purchase_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-purchase_fk_subj-provider" ON isahl."zc_id_prod-pxy-fo_ltl-purchase" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-request_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-request_fk_departure" ON isahl."zc_id_prod-pxy-fo_ltl-request" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-request_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-request_fk_destination" ON isahl."zc_id_prod-pxy-fo_ltl-request" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-request_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-request_fk_previous" ON isahl."zc_id_prod-pxy-fo_ltl-request" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-request_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-request_fk_process" ON isahl."zc_id_prod-pxy-fo_ltl-request" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-request_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-request_fk_subj-demand" ON isahl."zc_id_prod-pxy-fo_ltl-request" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-request_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-request_fk_subj-provider" ON isahl."zc_id_prod-pxy-fo_ltl-request" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-sales_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-sales_fk_departure" ON isahl."zc_id_prod-pxy-fo_ltl-sales" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-sales_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-sales_fk_destination" ON isahl."zc_id_prod-pxy-fo_ltl-sales" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-sales_fk_previous" ON isahl."zc_id_prod-pxy-fo_ltl-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-sales_fk_process" ON isahl."zc_id_prod-pxy-fo_ltl-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-sales_fk_subj-demand" ON isahl."zc_id_prod-pxy-fo_ltl-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-pxy-fo_ltl-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-fo_ltl-sales_fk_subj-provider" ON isahl."zc_id_prod-pxy-fo_ltl-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-pxy-insurance-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-insurance-purchase_fk_previous" ON isahl."zc_id_prod-pxy-insurance-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-pxy-insurance-purchase_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-insurance-purchase_fk_process" ON isahl."zc_id_prod-pxy-insurance-purchase" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-pxy-insurance-purchase_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-insurance-purchase_fk_subj-demand" ON isahl."zc_id_prod-pxy-insurance-purchase" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-pxy-insurance-purchase_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-insurance-purchase_fk_subj-provider" ON isahl."zc_id_prod-pxy-insurance-purchase" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-pxy-insurance-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-insurance-sales_fk_previous" ON isahl."zc_id_prod-pxy-insurance-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-pxy-insurance-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-insurance-sales_fk_process" ON isahl."zc_id_prod-pxy-insurance-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-pxy-insurance-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-insurance-sales_fk_subj-demand" ON isahl."zc_id_prod-pxy-insurance-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-pxy-insurance-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-pxy-insurance-sales_fk_subj-provider" ON isahl."zc_id_prod-pxy-insurance-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-rdc_express-purchase_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-purchase_fk_departure" ON isahl."zc_id_prod-rdc_express-purchase" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-rdc_express-purchase_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-purchase_fk_destination" ON isahl."zc_id_prod-rdc_express-purchase" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-rdc_express-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-purchase_fk_previous" ON isahl."zc_id_prod-rdc_express-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-rdc_express-purchase_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-purchase_fk_process" ON isahl."zc_id_prod-rdc_express-purchase" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-rdc_express-purchase_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-purchase_fk_subj-demand" ON isahl."zc_id_prod-rdc_express-purchase" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-rdc_express-purchase_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-purchase_fk_subj-provider" ON isahl."zc_id_prod-rdc_express-purchase" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-rdc_express-request_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-request_fk_departure" ON isahl."zc_id_prod-rdc_express-request" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-rdc_express-request_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-request_fk_destination" ON isahl."zc_id_prod-rdc_express-request" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-rdc_express-request_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-request_fk_previous" ON isahl."zc_id_prod-rdc_express-request" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-rdc_express-request_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-request_fk_process" ON isahl."zc_id_prod-rdc_express-request" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-rdc_express-request_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-request_fk_subj-demand" ON isahl."zc_id_prod-rdc_express-request" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-rdc_express-request_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-request_fk_subj-provider" ON isahl."zc_id_prod-rdc_express-request" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-rdc_express-sales_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-sales_fk_departure" ON isahl."zc_id_prod-rdc_express-sales" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-rdc_express-sales_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-sales_fk_destination" ON isahl."zc_id_prod-rdc_express-sales" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-rdc_express-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-sales_fk_previous" ON isahl."zc_id_prod-rdc_express-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-rdc_express-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-sales_fk_process" ON isahl."zc_id_prod-rdc_express-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-rdc_express-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-sales_fk_subj-demand" ON isahl."zc_id_prod-rdc_express-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-rdc_express-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_express-sales_fk_subj-provider" ON isahl."zc_id_prod-rdc_express-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-purchase_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-purchase_fk_departure" ON isahl."zc_id_prod-rdc_pickup-purchase" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-purchase_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-purchase_fk_destination" ON isahl."zc_id_prod-rdc_pickup-purchase" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-purchase_fk_previous" ON isahl."zc_id_prod-rdc_pickup-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-purchase_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-purchase_fk_process" ON isahl."zc_id_prod-rdc_pickup-purchase" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-purchase_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-purchase_fk_subj-demand" ON isahl."zc_id_prod-rdc_pickup-purchase" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-purchase_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-purchase_fk_subj-provider" ON isahl."zc_id_prod-rdc_pickup-purchase" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-request_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-request_fk_departure" ON isahl."zc_id_prod-rdc_pickup-request" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-request_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-request_fk_destination" ON isahl."zc_id_prod-rdc_pickup-request" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-request_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-request_fk_previous" ON isahl."zc_id_prod-rdc_pickup-request" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-request_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-request_fk_process" ON isahl."zc_id_prod-rdc_pickup-request" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-request_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-request_fk_subj-demand" ON isahl."zc_id_prod-rdc_pickup-request" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-request_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-request_fk_subj-provider" ON isahl."zc_id_prod-rdc_pickup-request" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-sales_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-sales_fk_departure" ON isahl."zc_id_prod-rdc_pickup-sales" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-sales_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-sales_fk_destination" ON isahl."zc_id_prod-rdc_pickup-sales" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-sales_fk_previous" ON isahl."zc_id_prod-rdc_pickup-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-sales_fk_process" ON isahl."zc_id_prod-rdc_pickup-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-sales_fk_subj-demand" ON isahl."zc_id_prod-rdc_pickup-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-rdc_pickup-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-rdc_pickup-sales_fk_subj-provider" ON isahl."zc_id_prod-rdc_pickup-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-request_dk; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-request_dk" ON isahl."zc_id_prod-request" USING btree (dk_scene, dk_factor, dk_function, deleted_at);
 
 
---
--- Name: idx_zc_id_prod-request_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-request_fk_previous" ON isahl."zc_id_prod-request" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-request_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-request_fk_process" ON isahl."zc_id_prod-request" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-request_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-request_fk_subj-demand" ON isahl."zc_id_prod-request" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-request_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-request_fk_subj-provider" ON isahl."zc_id_prod-request" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-retail-made_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-retail-made_fk_previous" ON isahl."zc_id_prod-retail-made" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-retail-made_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-retail-made_fk_process" ON isahl."zc_id_prod-retail-made" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-retail-made_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-retail-made_fk_subj-demand" ON isahl."zc_id_prod-retail-made" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-retail-made_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-retail-made_fk_subj-provider" ON isahl."zc_id_prod-retail-made" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-retail-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-retail-purchase_fk_previous" ON isahl."zc_id_prod-retail-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-retail-purchase_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-retail-purchase_fk_process" ON isahl."zc_id_prod-retail-purchase" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-retail-purchase_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-retail-purchase_fk_subj-demand" ON isahl."zc_id_prod-retail-purchase" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-retail-purchase_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-retail-purchase_fk_subj-provider" ON isahl."zc_id_prod-retail-purchase" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-retail-request_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-retail-request_fk_previous" ON isahl."zc_id_prod-retail-request" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-retail-request_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-retail-request_fk_process" ON isahl."zc_id_prod-retail-request" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-retail-request_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-retail-request_fk_subj-demand" ON isahl."zc_id_prod-retail-request" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-retail-request_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-retail-request_fk_subj-provider" ON isahl."zc_id_prod-retail-request" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-retail-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-retail-sales_fk_previous" ON isahl."zc_id_prod-retail-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-retail-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-retail-sales_fk_process" ON isahl."zc_id_prod-retail-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-retail-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-retail-sales_fk_subj-demand" ON isahl."zc_id_prod-retail-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-retail-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-retail-sales_fk_subj-provider" ON isahl."zc_id_prod-retail-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-sales_fk_previous" ON isahl."zc_id_prod-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-sales_fk_process" ON isahl."zc_id_prod-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-sales_fk_subj-demand" ON isahl."zc_id_prod-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-sales_fk_subj-provider" ON isahl."zc_id_prod-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-sovereign_currency-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-sovereign_currency-sales_fk_previous" ON isahl."zc_id_prod-sovereign_currency-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-sovereign_currency-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-sovereign_currency-sales_fk_process" ON isahl."zc_id_prod-sovereign_currency-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-sovereign_currency-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-sovereign_currency-sales_fk_subj-demand" ON isahl."zc_id_prod-sovereign_currency-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-sovereign_currency-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-sovereign_currency-sales_fk_subj-provider" ON isahl."zc_id_prod-sovereign_currency-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-purchase_fk_previous" ON isahl."zc_id_prod-stor_sorting-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-purchase_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-purchase_fk_process" ON isahl."zc_id_prod-stor_sorting-purchase" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-purchase_fk_storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-purchase_fk_storage" ON isahl."zc_id_prod-stor_sorting-purchase" USING btree (fk_storage);
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-purchase_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-purchase_fk_subj-demand" ON isahl."zc_id_prod-stor_sorting-purchase" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-purchase_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-purchase_fk_subj-provider" ON isahl."zc_id_prod-stor_sorting-purchase" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-purchase_fk_warehouse; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-purchase_fk_warehouse" ON isahl."zc_id_prod-stor_sorting-purchase" USING btree (fk_warehouse);
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-request_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-request_fk_previous" ON isahl."zc_id_prod-stor_sorting-request" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-request_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-request_fk_process" ON isahl."zc_id_prod-stor_sorting-request" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-request_fk_storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-request_fk_storage" ON isahl."zc_id_prod-stor_sorting-request" USING btree (fk_storage);
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-request_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-request_fk_subj-demand" ON isahl."zc_id_prod-stor_sorting-request" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-request_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-request_fk_subj-provider" ON isahl."zc_id_prod-stor_sorting-request" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-request_fk_warehouse; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-request_fk_warehouse" ON isahl."zc_id_prod-stor_sorting-request" USING btree (fk_warehouse);
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-sales_fk_previous" ON isahl."zc_id_prod-stor_sorting-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-sales_fk_process" ON isahl."zc_id_prod-stor_sorting-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-sales_fk_storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-sales_fk_storage" ON isahl."zc_id_prod-stor_sorting-sales" USING btree (fk_storage);
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-sales_fk_subj-demand" ON isahl."zc_id_prod-stor_sorting-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-sales_fk_subj-provider" ON isahl."zc_id_prod-stor_sorting-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-stor_sorting-sales_fk_warehouse; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-stor_sorting-sales_fk_warehouse" ON isahl."zc_id_prod-stor_sorting-sales" USING btree (fk_warehouse);
 
 
---
--- Name: idx_zc_id_prod-storage_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-storage_fk_previous" ON isahl."zc_id_prod-storage" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-storage_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-storage_fk_process" ON isahl."zc_id_prod-storage" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-storage_fk_storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-storage_fk_storage" ON isahl."zc_id_prod-storage" USING btree (fk_storage);
 
 
---
--- Name: idx_zc_id_prod-storage_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-storage_fk_subj-demand" ON isahl."zc_id_prod-storage" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-storage_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-storage_fk_subj-provider" ON isahl."zc_id_prod-storage" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-storage_fk_warehouse; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-storage_fk_warehouse" ON isahl."zc_id_prod-storage" USING btree (fk_warehouse);
 
 
---
--- Name: idx_zc_id_prod-traffic_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-traffic_fk_previous" ON isahl."zc_id_prod-traffic" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-traffic_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-traffic_fk_process" ON isahl."zc_id_prod-traffic" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-traffic_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-traffic_fk_subj-demand" ON isahl."zc_id_prod-traffic" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-traffic_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-traffic_fk_subj-provider" ON isahl."zc_id_prod-traffic" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-purchase_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-purchase_fk_departure" ON isahl."zc_id_prod-transfer_p2p-purchase" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-purchase_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-purchase_fk_destination" ON isahl."zc_id_prod-transfer_p2p-purchase" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-purchase_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-purchase_fk_previous" ON isahl."zc_id_prod-transfer_p2p-purchase" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-purchase_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-purchase_fk_process" ON isahl."zc_id_prod-transfer_p2p-purchase" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-purchase_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-purchase_fk_subj-demand" ON isahl."zc_id_prod-transfer_p2p-purchase" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-purchase_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-purchase_fk_subj-provider" ON isahl."zc_id_prod-transfer_p2p-purchase" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-request_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-request_fk_departure" ON isahl."zc_id_prod-transfer_p2p-request" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-request_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-request_fk_destination" ON isahl."zc_id_prod-transfer_p2p-request" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-request_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-request_fk_previous" ON isahl."zc_id_prod-transfer_p2p-request" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-request_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-request_fk_process" ON isahl."zc_id_prod-transfer_p2p-request" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-request_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-request_fk_subj-demand" ON isahl."zc_id_prod-transfer_p2p-request" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-request_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-request_fk_subj-provider" ON isahl."zc_id_prod-transfer_p2p-request" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-sales_fk_departure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-sales_fk_departure" ON isahl."zc_id_prod-transfer_p2p-sales" USING btree (fk_departure);
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-sales_fk_destination; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-sales_fk_destination" ON isahl."zc_id_prod-transfer_p2p-sales" USING btree (fk_destination);
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-sales_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-sales_fk_previous" ON isahl."zc_id_prod-transfer_p2p-sales" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-sales_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-sales_fk_process" ON isahl."zc_id_prod-transfer_p2p-sales" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-sales_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-sales_fk_subj-demand" ON isahl."zc_id_prod-transfer_p2p-sales" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-transfer_p2p-sales_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-sales_fk_subj-provider" ON isahl."zc_id_prod-transfer_p2p-sales" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_prod-transform_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transform_fk_previous" ON isahl."zc_id_prod-transform" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_prod-transform_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transform_fk_process" ON isahl."zc_id_prod-transform" USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_prod-transform_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transform_fk_subj-demand" ON isahl."zc_id_prod-transform" USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_prod-transform_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_prod-transform_fk_subj-provider" ON isahl."zc_id_prod-transform" USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_production_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_production_fk_previous ON isahl.zc_id_production USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_production_fk_process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_production_fk_process ON isahl.zc_id_production USING btree (fk_process);
 
 
---
--- Name: idx_zc_id_production_fk_subj-demand; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_production_fk_subj-demand" ON isahl.zc_id_production USING btree ("fk_subj-demand");
 
 
---
--- Name: idx_zc_id_production_fk_subj-provider; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_production_fk_subj-provider" ON isahl.zc_id_production USING btree ("fk_subj-provider");
 
 
---
--- Name: idx_zc_id_production_r_zone_fk_formula-pricing; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_production_r_zone_fk_formula-pricing" ON isahl.zc_id_production_r_zone USING btree ("fk_formula-pricing");
 
 
---
--- Name: idx_zc_id_project_fk_group; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_project_fk_group ON isahl.zc_id_project USING btree (fk_group);
 
 
---
--- Name: idx_zc_id_project_fk_launcher; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_project_fk_launcher ON isahl.zc_id_project USING btree (fk_launcher);
 
 
---
--- Name: idx_zc_id_project_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_project_fk_previous ON isahl.zc_id_project USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_stan-clause_code; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stan-clause_code" ON isahl."zc_id_stan-clause" USING btree (code) WHERE (deleted_at IS NULL);
 
 
---
--- Name: idx_zc_id_stan-clause_fk_parent; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stan-clause_fk_parent" ON isahl."zc_id_stan-clause" USING btree (fk_parent) WHERE (deleted_at IS NULL);
 
 
---
--- Name: idx_zc_id_stan-clause_fk_standard; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stan-clause_fk_standard" ON isahl."zc_id_stan-clause" USING btree (fk_standard) WHERE (deleted_at IS NULL);
 
 
---
--- Name: idx_zc_id_stan-operation_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stan-operation_fk_previous" ON isahl."zc_id_stan-operation" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_standard_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_standard_fk_previous ON isahl.zc_id_standard USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_stat-smt-bank_fk_obj-storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-bank_fk_obj-storage" ON isahl."zc_id_stat-smt-bank" USING btree ("fk_obj-storage");
 
 
---
--- Name: idx_zc_id_stat-smt-bank_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-bank_fk_object" ON isahl."zc_id_stat-smt-bank" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_stat-smt-bank_fk_production; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-bank_fk_production" ON isahl."zc_id_stat-smt-bank" USING btree (fk_production);
 
 
---
--- Name: idx_zc_id_stat-smt-bank_fk_subj-storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-bank_fk_subj-storage" ON isahl."zc_id_stat-smt-bank" USING btree ("fk_subj-storage");
 
 
---
--- Name: idx_zc_id_stat-smt-bank_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-bank_fk_subject" ON isahl."zc_id_stat-smt-bank" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_stat-smt-cash_fk_obj-storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-cash_fk_obj-storage" ON isahl."zc_id_stat-smt-cash" USING btree ("fk_obj-storage");
 
 
---
--- Name: idx_zc_id_stat-smt-cash_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-cash_fk_object" ON isahl."zc_id_stat-smt-cash" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_stat-smt-cash_fk_production; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-cash_fk_production" ON isahl."zc_id_stat-smt-cash" USING btree (fk_production);
 
 
---
--- Name: idx_zc_id_stat-smt-cash_fk_subj-storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-cash_fk_subj-storage" ON isahl."zc_id_stat-smt-cash" USING btree ("fk_subj-storage");
 
 
---
--- Name: idx_zc_id_stat-smt-cash_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-cash_fk_subject" ON isahl."zc_id_stat-smt-cash" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_stat-smt-channel_fk_obj-storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-channel_fk_obj-storage" ON isahl."zc_id_stat-smt-channel" USING btree ("fk_obj-storage");
 
 
---
--- Name: idx_zc_id_stat-smt-channel_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-channel_fk_object" ON isahl."zc_id_stat-smt-channel" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_stat-smt-channel_fk_production; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-channel_fk_production" ON isahl."zc_id_stat-smt-channel" USING btree (fk_production);
 
 
---
--- Name: idx_zc_id_stat-smt-channel_fk_subj-storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-channel_fk_subj-storage" ON isahl."zc_id_stat-smt-channel" USING btree ("fk_subj-storage");
 
 
---
--- Name: idx_zc_id_stat-smt-channel_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-channel_fk_subject" ON isahl."zc_id_stat-smt-channel" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_stat-smt-voucher_fk_obj-storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-voucher_fk_obj-storage" ON isahl."zc_id_stat-smt-voucher" USING btree ("fk_obj-storage");
 
 
---
--- Name: idx_zc_id_stat-smt-voucher_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-voucher_fk_object" ON isahl."zc_id_stat-smt-voucher" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_stat-smt-voucher_fk_production; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-voucher_fk_production" ON isahl."zc_id_stat-smt-voucher" USING btree (fk_production);
 
 
---
--- Name: idx_zc_id_stat-smt-voucher_fk_subj-storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-voucher_fk_subj-storage" ON isahl."zc_id_stat-smt-voucher" USING btree ("fk_subj-storage");
 
 
---
--- Name: idx_zc_id_stat-smt-voucher_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-smt-voucher_fk_subject" ON isahl."zc_id_stat-smt-voucher" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_stat-sto-voucher_fk_obj-storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-sto-voucher_fk_obj-storage" ON isahl."zc_id_stat-sto-voucher" USING btree ("fk_obj-storage");
 
 
---
--- Name: idx_zc_id_stat-sto-voucher_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-sto-voucher_fk_object" ON isahl."zc_id_stat-sto-voucher" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_stat-sto-voucher_fk_subj-storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-sto-voucher_fk_subj-storage" ON isahl."zc_id_stat-sto-voucher" USING btree ("fk_subj-storage");
 
 
---
--- Name: idx_zc_id_stat-sto-voucher_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-sto-voucher_fk_subject" ON isahl."zc_id_stat-sto-voucher" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_stat-trade_order_fk_contract; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-trade_order_fk_contract" ON isahl."zc_id_stat-trade_order" USING btree (fk_contract);
 
 
---
--- Name: idx_zc_id_stat-trade_order_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-trade_order_fk_object" ON isahl."zc_id_stat-trade_order" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_stat-trade_order_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-trade_order_fk_subject" ON isahl."zc_id_stat-trade_order" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_stat-tsp-voucher_fk_obj-storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-tsp-voucher_fk_obj-storage" ON isahl."zc_id_stat-tsp-voucher" USING btree ("fk_obj-storage");
 
 
---
--- Name: idx_zc_id_stat-tsp-voucher_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-tsp-voucher_fk_object" ON isahl."zc_id_stat-tsp-voucher" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_stat-tsp-voucher_fk_subj-storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-tsp-voucher_fk_subj-storage" ON isahl."zc_id_stat-tsp-voucher" USING btree ("fk_subj-storage");
 
 
---
--- Name: idx_zc_id_stat-tsp-voucher_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-tsp-voucher_fk_subject" ON isahl."zc_id_stat-tsp-voucher" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_stat-whs-voucher_fk_obj-storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-whs-voucher_fk_obj-storage" ON isahl."zc_id_stat-whs-voucher" USING btree ("fk_obj-storage");
 
 
---
--- Name: idx_zc_id_stat-whs-voucher_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-whs-voucher_fk_object" ON isahl."zc_id_stat-whs-voucher" USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_stat-whs-voucher_fk_production; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-whs-voucher_fk_production" ON isahl."zc_id_stat-whs-voucher" USING btree (fk_production);
 
 
---
--- Name: idx_zc_id_stat-whs-voucher_fk_subj-storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-whs-voucher_fk_subj-storage" ON isahl."zc_id_stat-whs-voucher" USING btree ("fk_subj-storage");
 
 
---
--- Name: idx_zc_id_stat-whs-voucher_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stat-whs-voucher_fk_subject" ON isahl."zc_id_stat-whs-voucher" USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_statement_fk_object; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_statement_fk_object ON isahl.zc_id_statement USING btree (fk_object);
 
 
---
--- Name: idx_zc_id_statement_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_statement_fk_subject ON isahl.zc_id_statement USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_stor-acc-bank_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-acc-bank_fk_trustee" ON isahl."zc_id_stor-acc-bank" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-acc-business_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-acc-business_fk_trustee" ON isahl."zc_id_stor-acc-business" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-acc-cash_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-acc-cash_fk_trustee" ON isahl."zc_id_stor-acc-cash" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-acc-channel_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-acc-channel_fk_trustee" ON isahl."zc_id_stor-acc-channel" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-acc-defect_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-acc-defect_fk_trustee" ON isahl."zc_id_stor-acc-defect" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-acc-fund_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-acc-fund_fk_trustee" ON isahl."zc_id_stor-acc-fund" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-acc-futures_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-acc-futures_fk_trustee" ON isahl."zc_id_stor-acc-futures" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-acc-insurance_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-acc-insurance_fk_trustee" ON isahl."zc_id_stor-acc-insurance" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-acc-stock_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-acc-stock_fk_trustee" ON isahl."zc_id_stor-acc-stock" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-account_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-account_fk_trustee" ON isahl."zc_id_stor-account" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-container_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-container_fk_trustee" ON isahl."zc_id_stor-container" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-ctn-airplane_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-ctn-airplane_fk_trustee" ON isahl."zc_id_stor-ctn-airplane" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-ctn-box_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-ctn-box_fk_trustee" ON isahl."zc_id_stor-ctn-box" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-ctn-cargo_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-ctn-cargo_fk_trustee" ON isahl."zc_id_stor-ctn-cargo" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-ctn-carton_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-ctn-carton_fk_trustee" ON isahl."zc_id_stor-ctn-carton" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-ctn-fold_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-ctn-fold_fk_trustee" ON isahl."zc_id_stor-ctn-fold" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-ctn-plate_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-ctn-plate_fk_trustee" ON isahl."zc_id_stor-ctn-plate" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-ctn-railway_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-ctn-railway_fk_trustee" ON isahl."zc_id_stor-ctn-railway" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-ctn-tote_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-ctn-tote_fk_trustee" ON isahl."zc_id_stor-ctn-tote" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-ctn-vehicle_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-ctn-vehicle_fk_trustee" ON isahl."zc_id_stor-ctn-vehicle" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-ctn-vessel_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-ctn-vessel_fk_trustee" ON isahl."zc_id_stor-ctn-vessel" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-data_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-data_fk_trustee" ON isahl."zc_id_stor-data" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-place_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-place_fk_trustee" ON isahl."zc_id_stor-place" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-plc-airport_fk_address; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-airport_fk_address" ON isahl."zc_id_stor-plc-airport" USING btree (fk_address);
 
 
---
--- Name: idx_zc_id_stor-plc-airport_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-airport_fk_trustee" ON isahl."zc_id_stor-plc-airport" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-plc-bin_fk_address; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-bin_fk_address" ON isahl."zc_id_stor-plc-bin" USING btree (fk_address);
 
 
---
--- Name: idx_zc_id_stor-plc-bin_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-bin_fk_trustee" ON isahl."zc_id_stor-plc-bin" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-plc-bin_fk_warehouse; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-bin_fk_warehouse" ON isahl."zc_id_stor-plc-bin" USING btree (fk_warehouse);
 
 
---
--- Name: idx_zc_id_stor-plc-channel_fk_address; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-channel_fk_address" ON isahl."zc_id_stor-plc-channel" USING btree (fk_address);
 
 
---
--- Name: idx_zc_id_stor-plc-channel_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-channel_fk_trustee" ON isahl."zc_id_stor-plc-channel" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-plc-dock_fk_address; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-dock_fk_address" ON isahl."zc_id_stor-plc-dock" USING btree (fk_address);
 
 
---
--- Name: idx_zc_id_stor-plc-dock_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-dock_fk_trustee" ON isahl."zc_id_stor-plc-dock" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-plc-garage_fk_address; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-garage_fk_address" ON isahl."zc_id_stor-plc-garage" USING btree (fk_address);
 
 
---
--- Name: idx_zc_id_stor-plc-garage_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-garage_fk_trustee" ON isahl."zc_id_stor-plc-garage" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-plc-path_fk_address; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-path_fk_address" ON isahl."zc_id_stor-plc-path" USING btree (fk_address);
 
 
---
--- Name: idx_zc_id_stor-plc-path_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-path_fk_trustee" ON isahl."zc_id_stor-plc-path" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-plc-platform_fk_address; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-platform_fk_address" ON isahl."zc_id_stor-plc-platform" USING btree (fk_address);
 
 
---
--- Name: idx_zc_id_stor-plc-platform_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-platform_fk_trustee" ON isahl."zc_id_stor-plc-platform" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-plc-shipping_port_fk_address; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-shipping_port_fk_address" ON isahl."zc_id_stor-plc-shipping_port" USING btree (fk_address);
 
 
---
--- Name: idx_zc_id_stor-plc-shipping_port_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-shipping_port_fk_trustee" ON isahl."zc_id_stor-plc-shipping_port" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-plc-stop_fk_address; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-stop_fk_address" ON isahl."zc_id_stor-plc-stop" USING btree (fk_address);
 
 
---
--- Name: idx_zc_id_stor-plc-stop_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-stop_fk_trustee" ON isahl."zc_id_stor-plc-stop" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-plc-terminal_fk_address; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-terminal_fk_address" ON isahl."zc_id_stor-plc-terminal" USING btree (fk_address);
 
 
---
--- Name: idx_zc_id_stor-plc-terminal_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-terminal_fk_trustee" ON isahl."zc_id_stor-plc-terminal" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-plc-url_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-url_fk_trustee" ON isahl."zc_id_stor-plc-url" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-plc-warehouse_fk_address; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-warehouse_fk_address" ON isahl."zc_id_stor-plc-warehouse" USING btree (fk_address);
 
 
---
--- Name: idx_zc_id_stor-plc-warehouse_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-warehouse_fk_trustee" ON isahl."zc_id_stor-plc-warehouse" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_stor-plc-yard_fk_address; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-yard_fk_address" ON isahl."zc_id_stor-plc-yard" USING btree (fk_address);
 
 
---
--- Name: idx_zc_id_stor-plc-yard_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_stor-plc-yard_fk_trustee" ON isahl."zc_id_stor-plc-yard" USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_storage_fk_trustee; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_storage_fk_trustee ON isahl.zc_id_storage USING btree (fk_trustee);
 
 
---
--- Name: idx_zc_id_subj-bank_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_subj-bank_fk_user" ON isahl."zc_id_subj-bank" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_subj-employee_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_subj-employee_fk_user" ON isahl."zc_id_subj-employee" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_subj-group_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_subj-group_fk_user" ON isahl."zc_id_subj-group" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_subj-hierarchy_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_subj-hierarchy_fk_user" ON isahl."zc_id_subj-hierarchy" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_subj-ministry_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_subj-ministry_fk_user" ON isahl."zc_id_subj-ministry" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_subj-org_fk_country; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_subj-org_fk_country" ON isahl."zc_id_subj-org" USING btree (fk_country);
 
 
---
--- Name: idx_zc_id_subj-org_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_subj-org_fk_user" ON isahl."zc_id_subj-org" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_subj-position_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_subj-position_fk_user" ON isahl."zc_id_subj-position" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_subj-supranational_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_subj-supranational_fk_user" ON isahl."zc_id_subj-supranational" USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_subjects_fk_user; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_subjects_fk_user ON isahl.zc_id_subjects USING btree (fk_user);
 
 
---
--- Name: idx_zc_id_task_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_task_fk_previous ON isahl.zc_id_task USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_task_fk_subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_task_fk_subject ON isahl.zc_id_task USING btree (fk_subject);
 
 
---
--- Name: idx_zc_id_unit-angle_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-angle_fk_prefix" ON isahl."zc_id_unit-angle" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-angle_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-angle_fk_suffix" ON isahl."zc_id_unit-angle" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-area_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-area_fk_prefix" ON isahl."zc_id_unit-area" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-area_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-area_fk_suffix" ON isahl."zc_id_unit-area" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-container_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-container_fk_prefix" ON isahl."zc_id_unit-container" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-container_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-container_fk_suffix" ON isahl."zc_id_unit-container" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-current_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-current_fk_prefix" ON isahl."zc_id_unit-current" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-current_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-current_fk_suffix" ON isahl."zc_id_unit-current" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-data_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-data_fk_prefix" ON isahl."zc_id_unit-data" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-data_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-data_fk_suffix" ON isahl."zc_id_unit-data" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-density_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-density_fk_prefix" ON isahl."zc_id_unit-density" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-density_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-density_fk_suffix" ON isahl."zc_id_unit-density" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-display_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-display_fk_prefix" ON isahl."zc_id_unit-display" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-display_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-display_fk_suffix" ON isahl."zc_id_unit-display" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-distance_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-distance_fk_prefix" ON isahl."zc_id_unit-distance" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-distance_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-distance_fk_suffix" ON isahl."zc_id_unit-distance" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-duration_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-duration_fk_prefix" ON isahl."zc_id_unit-duration" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-duration_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-duration_fk_suffix" ON isahl."zc_id_unit-duration" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-energy_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-energy_fk_prefix" ON isahl."zc_id_unit-energy" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-energy_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-energy_fk_suffix" ON isahl."zc_id_unit-energy" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-frequency_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-frequency_fk_prefix" ON isahl."zc_id_unit-frequency" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-frequency_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-frequency_fk_suffix" ON isahl."zc_id_unit-frequency" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-intensity_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-intensity_fk_prefix" ON isahl."zc_id_unit-intensity" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-intensity_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-intensity_fk_suffix" ON isahl."zc_id_unit-intensity" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-luminance_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-luminance_fk_prefix" ON isahl."zc_id_unit-luminance" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-luminance_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-luminance_fk_suffix" ON isahl."zc_id_unit-luminance" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-magnetic_field_strength_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-magnetic_field_strength_fk_prefix" ON isahl."zc_id_unit-magnetic_field_strength" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-magnetic_field_strength_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-magnetic_field_strength_fk_suffix" ON isahl."zc_id_unit-magnetic_field_strength" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-magnetic_flux_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-magnetic_flux_fk_prefix" ON isahl."zc_id_unit-magnetic_flux" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-magnetic_flux_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-magnetic_flux_fk_suffix" ON isahl."zc_id_unit-magnetic_flux" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-power_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-power_fk_prefix" ON isahl."zc_id_unit-power" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-power_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-power_fk_suffix" ON isahl."zc_id_unit-power" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-pressure_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-pressure_fk_prefix" ON isahl."zc_id_unit-pressure" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-pressure_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-pressure_fk_suffix" ON isahl."zc_id_unit-pressure" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-price_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-price_fk_prefix" ON isahl."zc_id_unit-price" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-price_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-price_fk_suffix" ON isahl."zc_id_unit-price" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-pricing_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-pricing_fk_prefix" ON isahl."zc_id_unit-pricing" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-pricing_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-pricing_fk_suffix" ON isahl."zc_id_unit-pricing" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-radiation_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-radiation_fk_prefix" ON isahl."zc_id_unit-radiation" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-radiation_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-radiation_fk_suffix" ON isahl."zc_id_unit-radiation" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-speed_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-speed_fk_prefix" ON isahl."zc_id_unit-speed" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-speed_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-speed_fk_suffix" ON isahl."zc_id_unit-speed" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-stress_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-stress_fk_prefix" ON isahl."zc_id_unit-stress" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-stress_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-stress_fk_suffix" ON isahl."zc_id_unit-stress" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-temperature_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-temperature_fk_prefix" ON isahl."zc_id_unit-temperature" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-temperature_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-temperature_fk_suffix" ON isahl."zc_id_unit-temperature" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-voltage_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-voltage_fk_prefix" ON isahl."zc_id_unit-voltage" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-voltage_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-voltage_fk_suffix" ON isahl."zc_id_unit-voltage" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-volume_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-volume_fk_prefix" ON isahl."zc_id_unit-volume" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-volume_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-volume_fk_suffix" ON isahl."zc_id_unit-volume" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-weight_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-weight_fk_prefix" ON isahl."zc_id_unit-weight" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-weight_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-weight_fk_suffix" ON isahl."zc_id_unit-weight" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit-working_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-working_fk_prefix" ON isahl."zc_id_unit-working" USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit-working_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_unit-working_fk_suffix" ON isahl."zc_id_unit-working" USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_unit_fk_prefix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_unit_fk_prefix ON isahl.zc_id_unit USING btree (fk_prefix);
 
 
---
--- Name: idx_zc_id_unit_fk_suffix; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_unit_fk_suffix ON isahl.zc_id_unit USING btree (fk_suffix);
 
 
---
--- Name: idx_zc_id_vers-context_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX "idx_zc_id_vers-context_fk_previous" ON isahl."zc_id_vers-context" USING btree (fk_previous);
 
 
---
--- Name: idx_zc_id_version_fk_previous; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE INDEX idx_zc_id_version_fk_previous ON isahl.zc_id_version USING btree (fk_previous);
 
 
---
--- Name: uq_mv_inventory_material_place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_mv_inventory_material_place ON isahl.mv_inventory USING btree (production_id, storage_id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-acc-title; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-acc-title" ON isahl."zc_id_cate-acc-title" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-agent; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-agent" ON isahl."zc_id_cate-agent" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-alert; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-alert" ON isahl."zc_id_cate-alert" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-approve; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-approve" ON isahl."zc_id_cate-approve" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-approve_role; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-approve_role" ON isahl."zc_id_cate-approve_role" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-auth; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-auth" ON isahl."zc_id_cate-auth" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-bom-item; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-bom-item" ON isahl."zc_id_cate-bom-item" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-certification; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-certification" ON isahl."zc_id_cate-certification" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-clause; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-clause" ON isahl."zc_id_cate-clause" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-contacts; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-contacts" ON isahl."zc_id_cate-contacts" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-cooperation; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-cooperation" ON isahl."zc_id_cate-cooperation" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-defect; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-defect" ON isahl."zc_id_cate-defect" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-department; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-department" ON isahl."zc_id_cate-department" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-employment; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-employment" ON isahl."zc_id_cate-employment" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-file; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-file" ON isahl."zc_id_cate-file" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-group; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-group" ON isahl."zc_id_cate-group" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-group_member; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-group_member" ON isahl."zc_id_cate-group_member" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-identity; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-identity" ON isahl."zc_id_cate-identity" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-inspection; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-inspection" ON isahl."zc_id_cate-inspection" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-inv-title; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-inv-title" ON isahl."zc_id_cate-inv-title" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-inv-title-cm; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-inv-title-cm" ON isahl."zc_id_cate-inv-title-cm" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-inv-title-ns; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-inv-title-ns" ON isahl."zc_id_cate-inv-title-ns" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-inve-trasnfer; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-inve-trasnfer" ON isahl."zc_id_cate-inve-trasnfer" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-log; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-log" ON isahl."zc_id_cate-log" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-maintain; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-maintain" ON isahl."zc_id_cate-maintain" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-modify; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-modify" ON isahl."zc_id_cate-modify" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-op_standard; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-op_standard" ON isahl."zc_id_cate-op_standard" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-ope-title; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-ope-title" ON isahl."zc_id_cate-ope-title" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-ope-title-cm; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-ope-title-cm" ON isahl."zc_id_cate-ope-title-cm" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-ope-title-ns; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-ope-title-ns" ON isahl."zc_id_cate-ope-title-ns" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-org_system; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-org_system" ON isahl."zc_id_cate-org_system" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-organization; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-organization" ON isahl."zc_id_cate-organization" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-position; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-position" ON isahl."zc_id_cate-position" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-proc_op; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-proc_op" ON isahl."zc_id_cate-proc_op" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-process" ON isahl."zc_id_cate-process" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-project; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-project" ON isahl."zc_id_cate-project" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-real_rights; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-real_rights" ON isahl."zc_id_cate-real_rights" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-seal; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-seal" ON isahl."zc_id_cate-seal" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-society; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-society" ON isahl."zc_id_cate-society" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-sto-title; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-sto-title" ON isahl."zc_id_cate-sto-title" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-subject" ON isahl."zc_id_cate-subject" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-tax-title; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-tax-title" ON isahl."zc_id_cate-tax-title" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-testing; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-testing" ON isahl."zc_id_cate-testing" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-tracking; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-tracking" ON isahl."zc_id_cate-tracking" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-traffic; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-traffic" ON isahl."zc_id_cate-traffic" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-training; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-training" ON isahl."zc_id_cate-training" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-tsp; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-tsp" ON isahl."zc_id_cate-tsp" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-tsp-title; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-tsp-title" ON isahl."zc_id_cate-tsp-title" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-tsp-title-cm; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-tsp-title-cm" ON isahl."zc_id_cate-tsp-title-cm" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-tsp-title-ns; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-tsp-title-ns" ON isahl."zc_id_cate-tsp-title-ns" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-ver_branch; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-ver_branch" ON isahl."zc_id_cate-ver_branch" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-warehouse; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-warehouse" ON isahl."zc_id_cate-warehouse" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cate-wh-title; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-wh-title" ON isahl."zc_id_cate-wh-title" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_category; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_seed_id_zc_id_category ON isahl.zc_id_category USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cons-consanguinity-cate; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-consanguinity-cate" ON isahl."zc_id_cons-consanguinity-cate" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cons-cron-cate; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-cron-cate" ON isahl."zc_id_cons-cron-cate" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cons-date-tags; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-date-tags" ON isahl."zc_id_cons-date-tags" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cons-ethnic_group-cate; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-ethnic_group-cate" ON isahl."zc_id_cons-ethnic_group-cate" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cons-factor-cate; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-factor-cate" ON isahl."zc_id_cons-factor-cate" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cons-function-cate; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-function-cate" ON isahl."zc_id_cons-function-cate" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cons-goods-tags; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-goods-tags" ON isahl."zc_id_cons-goods-tags" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cons-industry-cate; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-industry-cate" ON isahl."zc_id_cons-industry-cate" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cons-license-cate; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-license-cate" ON isahl."zc_id_cons-license-cate" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cons-packing-cate; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-packing-cate" ON isahl."zc_id_cons-packing-cate" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cons-polity-cate; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-polity-cate" ON isahl."zc_id_cons-polity-cate" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cons-r-type-cate; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-r-type-cate" ON isahl."zc_id_cons-r-type-cate" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cons-timezone-cate; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-timezone-cate" ON isahl."zc_id_cons-timezone-cate" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cons-ts_concomitant-tags; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-ts_concomitant-tags" ON isahl."zc_id_cons-ts_concomitant-tags" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_cons-zone-tags; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-zone-tags" ON isahl."zc_id_cons-zone-tags" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_factor; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_seed_id_zc_id_factor ON isahl.zc_id_factor USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_function; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_seed_id_zc_id_function ON isahl.zc_id_function USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-applicable; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-applicable" ON isahl."zc_id_leve-applicable" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-bom_satisfy; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-bom_satisfy" ON isahl."zc_id_leve-bom_satisfy" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-diploma; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-diploma" ON isahl."zc_id_leve-diploma" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-group_member; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-group_member" ON isahl."zc_id_leve-group_member" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-health; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-health" ON isahl."zc_id_leve-health" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-impact; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-impact" ON isahl."zc_id_leve-impact" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-kpi; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-kpi" ON isahl."zc_id_leve-kpi" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-log; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-log" ON isahl."zc_id_leve-log" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-org; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-org" ON isahl."zc_id_leve-org" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-plan; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-plan" ON isahl."zc_id_leve-plan" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-post-resp; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-post-resp" ON isahl."zc_id_leve-post-resp" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-post-seq; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-post-seq" ON isahl."zc_id_leve-post-seq" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-proficiency; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-proficiency" ON isahl."zc_id_leve-proficiency" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-project; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-project" ON isahl."zc_id_leve-project" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-qualification; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-qualification" ON isahl."zc_id_leve-qualification" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-risk; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-risk" ON isahl."zc_id_leve-risk" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-severity; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-severity" ON isahl."zc_id_leve-severity" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-standard; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-standard" ON isahl."zc_id_leve-standard" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-structure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-structure" ON isahl."zc_id_leve-structure" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-substitute; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-substitute" ON isahl."zc_id_leve-substitute" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-task; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-task" ON isahl."zc_id_leve-task" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-urgent; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-urgent" ON isahl."zc_id_leve-urgent" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_leve-vote_weight; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-vote_weight" ON isahl."zc_id_leve-vote_weight" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_level; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_seed_id_zc_id_level ON isahl.zc_id_level USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_lifecycle; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_seed_id_zc_id_lifecycle ON isahl.zc_id_lifecycle USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_seed_id_zc_id_rate ON isahl.zc_id_rate USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-angle; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-angle" ON isahl."zc_id_rate-angle" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-area; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-area" ON isahl."zc_id_rate-area" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-container; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-container" ON isahl."zc_id_rate-container" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-current; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-current" ON isahl."zc_id_rate-current" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-custom; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-custom" ON isahl."zc_id_rate-custom" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-data; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-data" ON isahl."zc_id_rate-data" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-density; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-density" ON isahl."zc_id_rate-density" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-distance; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-distance" ON isahl."zc_id_rate-distance" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-duration; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-duration" ON isahl."zc_id_rate-duration" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-energy; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-energy" ON isahl."zc_id_rate-energy" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-exchange; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-exchange" ON isahl."zc_id_rate-exchange" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-frequency; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-frequency" ON isahl."zc_id_rate-frequency" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-illuminance; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-illuminance" ON isahl."zc_id_rate-illuminance" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-intensity; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-intensity" ON isahl."zc_id_rate-intensity" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-luminance; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-luminance" ON isahl."zc_id_rate-luminance" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-magnetic_field_strength; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-magnetic_field_strength" ON isahl."zc_id_rate-magnetic_field_strength" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-magnetic_flux; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-magnetic_flux" ON isahl."zc_id_rate-magnetic_flux" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-power; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-power" ON isahl."zc_id_rate-power" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-pressure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-pressure" ON isahl."zc_id_rate-pressure" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-radiation; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-radiation" ON isahl."zc_id_rate-radiation" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-speed; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-speed" ON isahl."zc_id_rate-speed" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-stress; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-stress" ON isahl."zc_id_rate-stress" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-temperature; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-temperature" ON isahl."zc_id_rate-temperature" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-voltage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-voltage" ON isahl."zc_id_rate-voltage" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-volume; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-volume" ON isahl."zc_id_rate-volume" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rate-weight; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-weight" ON isahl."zc_id_rate-weight" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rati-discount; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rati-discount" ON isahl."zc_id_rati-discount" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rati-formula; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rati-formula" ON isahl."zc_id_rati-formula" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rati-progress; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rati-progress" ON isahl."zc_id_rati-progress" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rati-tax; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rati-tax" ON isahl."zc_id_rati-tax" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_rati-weight; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rati-weight" ON isahl."zc_id_rati-weight" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_ratio; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_seed_id_zc_id_ratio ON isahl.zc_id_ratio USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_scene; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_seed_id_zc_id_scene ON isahl.zc_id_scene USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_status; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_seed_id_zc_id_status ON isahl.zc_id_status USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-account; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-account" ON isahl."zc_id_stus-account" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-agent; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-agent" ON isahl."zc_id_stus-agent" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-agreement; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-agreement" ON isahl."zc_id_stus-agreement" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-approve; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-approve" ON isahl."zc_id_stus-approve" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-audit; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-audit" ON isahl."zc_id_stus-audit" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-bill; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-bill" ON isahl."zc_id_stus-bill" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-billing; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-billing" ON isahl."zc_id_stus-billing" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-billing_verify; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-billing_verify" ON isahl."zc_id_stus-billing_verify" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-bin_location; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-bin_location" ON isahl."zc_id_stus-bin_location" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-bom; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-bom" ON isahl."zc_id_stus-bom" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-certification; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-certification" ON isahl."zc_id_stus-certification" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-channel; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-channel" ON isahl."zc_id_stus-channel" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-collect; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-collect" ON isahl."zc_id_stus-collect" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-commit; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-commit" ON isahl."zc_id_stus-commit" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-contact_infos; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-contact_infos" ON isahl."zc_id_stus-contact_infos" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-contacts; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-contacts" ON isahl."zc_id_stus-contacts" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-container; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-container" ON isahl."zc_id_stus-container" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-contract; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-contract" ON isahl."zc_id_stus-contract" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-counting; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-counting" ON isahl."zc_id_stus-counting" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-country; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-country" ON isahl."zc_id_stus-country" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-department; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-department" ON isahl."zc_id_stus-department" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-detail; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-detail" ON isahl."zc_id_stus-detail" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-device; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-device" ON isahl."zc_id_stus-device" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-duty; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-duty" ON isahl."zc_id_stus-duty" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-employ; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-employ" ON isahl."zc_id_stus-employ" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-entity; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-entity" ON isahl."zc_id_stus-entity" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-event; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-event" ON isahl."zc_id_stus-event" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-file; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-file" ON isahl."zc_id_stus-file" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-identity; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-identity" ON isahl."zc_id_stus-identity" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-inspection; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-inspection" ON isahl."zc_id_stus-inspection" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-inv-voucher; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-inv-voucher" ON isahl."zc_id_stus-inv-voucher" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-inventory; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-inventory" ON isahl."zc_id_stus-inventory" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-invoice_issue; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-invoice_issue" ON isahl."zc_id_stus-invoice_issue" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-invoice_verify; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-invoice_verify" ON isahl."zc_id_stus-invoice_verify" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-iot; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-iot" ON isahl."zc_id_stus-iot" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-legal_person; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-legal_person" ON isahl."zc_id_stus-legal_person" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-license; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-license" ON isahl."zc_id_stus-license" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-marital; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-marital" ON isahl."zc_id_stus-marital" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-message; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-message" ON isahl."zc_id_stus-message" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-ministry; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-ministry" ON isahl."zc_id_stus-ministry" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-natural; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-natural" ON isahl."zc_id_stus-natural" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-operation; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-operation" ON isahl."zc_id_stus-operation" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-org; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-org" ON isahl."zc_id_stus-org" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-payment; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-payment" ON isahl."zc_id_stus-payment" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-place; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-place" ON isahl."zc_id_stus-place" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-plan; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-plan" ON isahl."zc_id_stus-plan" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-position; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-position" ON isahl."zc_id_stus-position" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-pricing; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-pricing" ON isahl."zc_id_stus-pricing" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-process; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-process" ON isahl."zc_id_stus-process" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-prod-made; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-prod-made" ON isahl."zc_id_stus-prod-made" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-prod-purchase; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-prod-purchase" ON isahl."zc_id_stus-prod-purchase" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-prod-request; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-prod-request" ON isahl."zc_id_stus-prod-request" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-prod-sales; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-prod-sales" ON isahl."zc_id_stus-prod-sales" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-production; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-production" ON isahl."zc_id_stus-production" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-project; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-project" ON isahl."zc_id_stus-project" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-protocol; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-protocol" ON isahl."zc_id_stus-protocol" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-purchase; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-purchase" ON isahl."zc_id_stus-purchase" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-retail; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-retail" ON isahl."zc_id_stus-retail" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-service; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-service" ON isahl."zc_id_stus-service" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-smt-voucher; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-smt-voucher" ON isahl."zc_id_stus-smt-voucher" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-standard; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-standard" ON isahl."zc_id_stus-standard" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-statement; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-statement" ON isahl."zc_id_stus-statement" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-storage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-storage" ON isahl."zc_id_stus-storage" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-subject; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-subject" ON isahl."zc_id_stus-subject" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-supranational; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-supranational" ON isahl."zc_id_stus-supranational" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-task; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-task" ON isahl."zc_id_stus-task" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-template; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-template" ON isahl."zc_id_stus-template" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-threads; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-threads" ON isahl."zc_id_stus-threads" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-tracking_log; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-tracking_log" ON isahl."zc_id_stus-tracking_log" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-tracking_transport; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-tracking_transport" ON isahl."zc_id_stus-tracking_transport" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-trade; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-trade" ON isahl."zc_id_stus-trade" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-training; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-training" ON isahl."zc_id_stus-training" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-vehicle; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-vehicle" ON isahl."zc_id_stus-vehicle" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-version; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-version" ON isahl."zc_id_stus-version" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_stus-vessel; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-vessel" ON isahl."zc_id_stus-vessel" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_subjects; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_seed_id_zc_id_subjects ON isahl.zc_id_subjects USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_seed_id_zc_id_tags ON isahl.zc_id_tags USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-baseline; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-baseline" ON isahl."zc_id_tags-baseline" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-batch; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-batch" ON isahl."zc_id_tags-batch" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-bom_item; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-bom_item" ON isahl."zc_id_tags-bom_item" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-channel; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-channel" ON isahl."zc_id_tags-channel" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-contacts; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-contacts" ON isahl."zc_id_tags-contacts" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-event; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-event" ON isahl."zc_id_tags-event" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-finance; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-finance" ON isahl."zc_id_tags-finance" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-hscode; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-hscode" ON isahl."zc_id_tags-hscode" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-info_title; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-info_title" ON isahl."zc_id_tags-info_title" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-milestone; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-milestone" ON isahl."zc_id_tags-milestone" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-parties; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-parties" ON isahl."zc_id_tags-parties" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-plan_action; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-plan_action" ON isahl."zc_id_tags-plan_action" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-post_view; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-post_view" ON isahl."zc_id_tags-post_view" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-project; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-project" ON isahl."zc_id_tags-project" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-r-type; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-r-type" ON isahl."zc_id_tags-r-type" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-r-type-alias; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-r-type-alias" ON isahl."zc_id_tags-r-type-alias" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-skill; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-skill" ON isahl."zc_id_tags-skill" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-version; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-version" ON isahl."zc_id_tags-version" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags-warehousing; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-warehousing" ON isahl."zc_id_tags-warehousing" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_tags_poi; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_seed_id_zc_id_tags_poi ON isahl.zc_id_tags_poi USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_seed_id_zc_id_unit ON isahl.zc_id_unit USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-angle; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-angle" ON isahl."zc_id_unit-angle" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-area; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-area" ON isahl."zc_id_unit-area" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-common; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-common" ON isahl."zc_id_unit-common" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-container; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-container" ON isahl."zc_id_unit-container" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-currency; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-currency" ON isahl."zc_id_unit-currency" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-current; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-current" ON isahl."zc_id_unit-current" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-data; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-data" ON isahl."zc_id_unit-data" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-density; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-density" ON isahl."zc_id_unit-density" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-display; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-display" ON isahl."zc_id_unit-display" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-distance; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-distance" ON isahl."zc_id_unit-distance" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-duration; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-duration" ON isahl."zc_id_unit-duration" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-energy; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-energy" ON isahl."zc_id_unit-energy" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-frequency; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-frequency" ON isahl."zc_id_unit-frequency" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-geo; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-geo" ON isahl."zc_id_unit-geo" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-illuminance; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-illuminance" ON isahl."zc_id_unit-illuminance" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-intensity; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-intensity" ON isahl."zc_id_unit-intensity" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-luminance; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-luminance" ON isahl."zc_id_unit-luminance" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-magnetic_field_strength; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-magnetic_field_strength" ON isahl."zc_id_unit-magnetic_field_strength" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-magnetic_flux; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-magnetic_flux" ON isahl."zc_id_unit-magnetic_flux" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-power; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-power" ON isahl."zc_id_unit-power" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-pressure; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-pressure" ON isahl."zc_id_unit-pressure" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-price; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-price" ON isahl."zc_id_unit-price" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-pricing; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-pricing" ON isahl."zc_id_unit-pricing" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-radiation; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-radiation" ON isahl."zc_id_unit-radiation" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-speed; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-speed" ON isahl."zc_id_unit-speed" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-stress; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-stress" ON isahl."zc_id_unit-stress" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-temperature; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-temperature" ON isahl."zc_id_unit-temperature" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-voltage; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-voltage" ON isahl."zc_id_unit-voltage" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-volume; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-volume" ON isahl."zc_id_unit-volume" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-weight; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-weight" ON isahl."zc_id_unit-weight" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_unit-working; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_unit-working" ON isahl."zc_id_unit-working" USING btree (id);
 
 
---
--- Name: uq_seed_id_zc_id_version; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_seed_id_zc_id_version ON isahl.zc_id_version USING btree (id);
 
 
---
--- Name: uq_zc_ad_relation_r_isolate-tensor_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_ad_relation_r_isolate-tensor_ref_left_ref_right" ON isahl."zc_ad_relation_r_isolate-tensor" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_ad_relation_r_scalar_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_ad_relation_r_scalar_ref_left_ref_right ON isahl.zc_ad_relation_r_scalar USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_ad_relation_rr_non_self-ref_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_ad_relation_rr_non_self-ref_ref_left_ref_right" ON isahl."zc_ad_relation_rr_non_self-ref" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_ad_tensor_r_dimension_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_ad_tensor_r_dimension_ref_left_ref_right ON isahl.zc_ad_tensor_r_dimension USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_ad_tensor_r_scalar_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_ad_tensor_r_scalar_ref_left_ref_right ON isahl.zc_ad_tensor_r_scalar USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_ad_tensor_rr_non_self-ref_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_ad_tensor_rr_non_self-ref_ref_left_ref_right" ON isahl."zc_ad_tensor_rr_non_self-ref" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_agreement_r_calc_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_agreement_r_calc_ref_left_ref_right ON isahl.zc_id_agreement_r_calc USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_agreement_r_term_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_agreement_r_term_ref_left_ref_right ON isahl.zc_id_agreement_r_term USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_appr-payment_rr_invoice_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_appr-payment_rr_invoice_ref_left_ref_right_qk_period" ON isahl."zc_id_appr-payment_rr_invoice" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_appr-payment_rr_smt-voucher_ref_left_ref_right_qk_peri; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_appr-payment_rr_smt-voucher_ref_left_ref_right_qk_peri" ON isahl."zc_id_appr-payment_rr_smt-voucher" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_audit_rr_auditee_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_audit_rr_auditee_ref_left_ref_right_qk_period ON isahl.zc_id_audit_rr_auditee USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_audit_rr_conclusion_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_audit_rr_conclusion_ref_left_ref_right_qk_period ON isahl.zc_id_audit_rr_conclusion USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_bill-check_r_verify-status_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_bill-check_r_verify-status_ref_left_ref_right" ON isahl."zc_id_bill-check_r_verify-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_bill-check_rr_invoice_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_bill-check_rr_invoice_ref_left_ref_right_qk_period" ON isahl."zc_id_bill-check_rr_invoice" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_bill-check_rr_plan-payment_ref_left_ref_right_qk_perio; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_bill-check_rr_plan-payment_ref_left_ref_right_qk_perio" ON isahl."zc_id_bill-check_rr_plan-payment" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_bill-check_rr_smt-voucher_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_bill-check_rr_smt-voucher_ref_left_ref_right_qk_period" ON isahl."zc_id_bill-check_rr_smt-voucher" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_bill-check_rr_trade_order_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_bill-check_rr_trade_order_ref_left_ref_right_qk_period" ON isahl."zc_id_bill-check_rr_trade_order" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_bill_rr_process_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_bill_rr_process_ref_left_ref_right_qk_period ON isahl.zc_id_bill_rr_process USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_bill_rr_recipients_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_bill_rr_recipients_ref_left_ref_right_qk_period ON isahl.zc_id_bill_rr_recipients USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_bom-input_item_r_substitution_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_bom-input_item_r_substitution_ref_left_ref_right" ON isahl."zc_id_bom-input_item_r_substitution" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_bom-input_rr_item_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_bom-input_rr_item_ref_left_ref_right_qk_period" ON isahl."zc_id_bom-input_rr_item" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_bom-output_rr_item_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_bom-output_rr_item_ref_left_ref_right_qk_period" ON isahl."zc_id_bom-output_rr_item" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_bom_rr_item_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_bom_rr_item_ref_left_ref_right_qk_period ON isahl.zc_id_bom_rr_item USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_cont-transport_rr_stop_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_cont-transport_rr_stop_ref_left_ref_right_qk_period" ON isahl."zc_id_cont-transport_rr_stop" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_contacts_rr_infos_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_contacts_rr_infos_ref_left_ref_right_qk_period ON isahl.zc_id_contacts_rr_infos USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_container_rr_device_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_container_rr_device_ref_left_ref_right_qk_period ON isahl.zc_id_container_rr_device USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_contract_r_calc_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_contract_r_calc_ref_left_ref_right ON isahl.zc_id_contract_r_calc USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_contract_r_term_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_contract_r_term_ref_left_ref_right ON isahl.zc_id_contract_r_term USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_contract_rr_agreement_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_contract_rr_agreement_ref_left_ref_right_qk_period ON isahl.zc_id_contract_rr_agreement USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_contract_rr_deal_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_contract_rr_deal_ref_left_ref_right_qk_period ON isahl.zc_id_contract_rr_deal USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_contract_rr_demand_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_contract_rr_demand_ref_left_ref_right_qk_period ON isahl.zc_id_contract_rr_demand USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_contract_rr_goods_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_contract_rr_goods_ref_left_ref_right_qk_period ON isahl.zc_id_contract_rr_goods USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_contract_rr_law_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_contract_rr_law_ref_left_ref_right_qk_period ON isahl.zc_id_contract_rr_law USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_contract_rr_matter_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_contract_rr_matter_ref_left_ref_right_qk_period ON isahl.zc_id_contract_rr_matter USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_contract_rr_party_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_contract_rr_party_ref_left_ref_right_qk_period ON isahl.zc_id_contract_rr_party USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_contract_rr_standard_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_contract_rr_standard_ref_left_ref_right_qk_period ON isahl.zc_id_contract_rr_standard USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_contract_rr_symmetry_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_contract_rr_symmetry_ref_left_ref_right_qk_period ON isahl.zc_id_contract_rr_symmetry USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_counting_r_cnt-status_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_counting_r_cnt-status_ref_left_ref_right" ON isahl."zc_id_counting_r_cnt-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_demand_rr_supply_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_demand_rr_supply_ref_left_ref_right_qk_period ON isahl.zc_id_demand_rr_supply USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_deta-bill-check_r_verify-status_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_deta-bill-check_r_verify-status_ref_left_ref_right" ON isahl."zc_id_deta-bill-check_r_verify-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_deta-training_rr_matter_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_deta-training_rr_matter_ref_left_ref_right_qk_period" ON isahl."zc_id_deta-training_rr_matter" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_deta-tsk_r_verify-status_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_deta-tsk_r_verify-status_ref_left_ref_right" ON isahl."zc_id_deta-tsk_r_verify-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_device_r_iot-status_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_device_r_iot-status_ref_left_ref_right" ON isahl."zc_id_device_r_iot-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_device_rr_protocol_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_device_rr_protocol_ref_left_ref_right_qk_period ON isahl.zc_id_device_rr_protocol USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_empl-agent_rr_llm-config_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_empl-agent_rr_llm-config_ref_left_ref_right_qk_period" ON isahl."zc_id_empl-agent_rr_llm-config" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_empl-natural_r_marital-status_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_empl-natural_r_marital-status_ref_left_ref_right" ON isahl."zc_id_empl-natural_r_marital-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_empl-natural_rr_consanguinity_ref_left_ref_right_qk_pe; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_empl-natural_rr_consanguinity_ref_left_ref_right_qk_pe" ON isahl."zc_id_empl-natural_rr_consanguinity" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_empl-natural_rr_country_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_empl-natural_rr_country_ref_left_ref_right_qk_period" ON isahl."zc_id_empl-natural_rr_country" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_entity_rr_contacts_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_entity_rr_contacts_ref_left_ref_right_qk_period ON isahl.zc_id_entity_rr_contacts USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_entity_rr_identity_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_entity_rr_identity_ref_left_ref_right_qk_period ON isahl.zc_id_entity_rr_identity USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_even-tracking_code; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_even-tracking_code" ON isahl."zc_id_even-tracking" USING btree (code);
 
 
---
--- Name: uq_zc_id_event_rr_bill_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_event_rr_bill_ref_left_ref_right_qk_period ON isahl.zc_id_event_rr_bill USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_event_rr_container_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_event_rr_container_ref_left_ref_right_qk_period ON isahl.zc_id_event_rr_container USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_event_rr_matter_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_event_rr_matter_ref_left_ref_right_qk_period ON isahl.zc_id_event_rr_matter USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_event_rr_reason_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_event_rr_reason_ref_left_ref_right_qk_period ON isahl.zc_id_event_rr_reason USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_event_rr_standard_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_event_rr_standard_ref_left_ref_right_qk_period ON isahl.zc_id_event_rr_standard USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_file_rr_url_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_file_rr_url_ref_left_ref_right_qk_period ON isahl.zc_id_file_rr_url USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_identity_rr_country_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_identity_rr_country_ref_left_ref_right_qk_period ON isahl.zc_id_identity_rr_country USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_invoice_r_verify-status_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_invoice_r_verify-status_ref_left_ref_right" ON isahl."zc_id_invoice_r_verify-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_lifecycle_r_category_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_lifecycle_r_category_ref_left_ref_right ON isahl.zc_id_lifecycle_r_category USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_lifecycle_r_evaluation_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_lifecycle_r_evaluation_ref_left_ref_right ON isahl.zc_id_lifecycle_r_evaluation USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_lifecycle_r_primary-status_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_lifecycle_r_primary-status_ref_left_ref_right" ON isahl."zc_id_lifecycle_r_primary-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_lifecycle_r_status_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_lifecycle_r_status_ref_left_ref_right ON isahl.zc_id_lifecycle_r_status USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_lifecycle_r_tags_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_lifecycle_r_tags_ref_left_ref_right ON isahl.zc_id_lifecycle_r_tags USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_lifecycle_rr_foreign_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_lifecycle_rr_foreign_ref_left_ref_right_qk_period ON isahl.zc_id_lifecycle_rr_foreign USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_lifecycle_rr_form_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_lifecycle_rr_form_ref_left_ref_right_qk_period ON isahl.zc_id_lifecycle_rr_form USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_lifecycle_rr_non_self_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_lifecycle_rr_non_self_ref_left_ref_right_qk_period ON isahl.zc_id_lifecycle_rr_non_self USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_master_rr_slave_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_master_rr_slave_ref_left_ref_right_qk_period ON isahl.zc_id_master_rr_slave USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_message_rr_contact-info_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_message_rr_contact-info_ref_left_ref_right_qk_period" ON isahl."zc_id_message_rr_contact-info" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_message_rr_copy_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_message_rr_copy_ref_left_ref_right_qk_period ON isahl.zc_id_message_rr_copy USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_message_rr_recipients_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_message_rr_recipients_ref_left_ref_right_qk_period ON isahl.zc_id_message_rr_recipients USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_oper-sign_rr_agreement_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_oper-sign_rr_agreement_ref_left_ref_right_qk_period" ON isahl."zc_id_oper-sign_rr_agreement" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_oper-sign_rr_contract_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_oper-sign_rr_contract_ref_left_ref_right_qk_period" ON isahl."zc_id_oper-sign_rr_contract" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_operation_rr_approve_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_operation_rr_approve_ref_left_ref_right_qk_period ON isahl.zc_id_operation_rr_approve USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_operation_rr_bill_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_operation_rr_bill_ref_left_ref_right_qk_period ON isahl.zc_id_operation_rr_bill USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_operation_rr_bom_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_operation_rr_bom_ref_left_ref_right_qk_period ON isahl.zc_id_operation_rr_bom USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_operation_rr_dependency_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_operation_rr_dependency_ref_left_ref_right_qk_period ON isahl.zc_id_operation_rr_dependency USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_operation_rr_event_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_operation_rr_event_ref_left_ref_right_qk_period ON isahl.zc_id_operation_rr_event USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_operation_rr_post_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_operation_rr_post_ref_left_ref_right_qk_period ON isahl.zc_id_operation_rr_post USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_operation_rr_review_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_operation_rr_review_ref_left_ref_right_qk_period ON isahl.zc_id_operation_rr_review USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_operation_rr_standard_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_operation_rr_standard_ref_left_ref_right_qk_period ON isahl.zc_id_operation_rr_standard USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_operation_rr_statement_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_operation_rr_statement_ref_left_ref_right_qk_period ON isahl.zc_id_operation_rr_statement USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_operation_rr_task_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_operation_rr_task_ref_left_ref_right_qk_period ON isahl.zc_id_operation_rr_task USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_orde-traffic_rr_devi-seal_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_orde-traffic_rr_devi-seal_ref_left_ref_right_qk_period" ON isahl."zc_id_orde-traffic_rr_devi-seal" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_orde-traffic_rr_ticket_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_orde-traffic_rr_ticket_ref_left_ref_right_qk_period" ON isahl."zc_id_orde-traffic_rr_ticket" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_orde-traffic_rr_tsp-voucher_ref_left_ref_right_qk_peri; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_orde-traffic_rr_tsp-voucher_ref_left_ref_right_qk_peri" ON isahl."zc_id_orde-traffic_rr_tsp-voucher" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_order_rr_contract_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_order_rr_contract_ref_left_ref_right_qk_period ON isahl.zc_id_order_rr_contract USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_order_rr_demand_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_order_rr_demand_ref_left_ref_right_qk_period ON isahl.zc_id_order_rr_demand USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_order_rr_foreign_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_order_rr_foreign_ref_left_ref_right_qk_period ON isahl.zc_id_order_rr_foreign USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_order_rr_issue_invoice_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_order_rr_issue_invoice_ref_left_ref_right_qk_period ON isahl.zc_id_order_rr_issue_invoice USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_order_rr_obj-rep_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_order_rr_obj-rep_ref_left_ref_right_qk_period" ON isahl."zc_id_order_rr_obj-rep" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_order_rr_recv_invoice_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_order_rr_recv_invoice_ref_left_ref_right_qk_period ON isahl.zc_id_order_rr_recv_invoice USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_order_rr_subj-rep_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_order_rr_subj-rep_ref_left_ref_right_qk_period" ON isahl."zc_id_order_rr_subj-rep" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_orga-department_rr_project_ref_left_ref_right_qk_perio; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_orga-department_rr_project_ref_left_ref_right_qk_perio" ON isahl."zc_id_orga-department_rr_project" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_place_rr_address_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_place_rr_address_ref_left_ref_right_qk_period ON isahl.zc_id_place_rr_address USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_place_rr_contacts_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_place_rr_contacts_ref_left_ref_right_qk_period ON isahl.zc_id_place_rr_contacts USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_plan-making_rr_prod_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_plan-making_rr_prod_ref_left_ref_right_qk_period" ON isahl."zc_id_plan-making_rr_prod" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_plan-material_rr_material_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_plan-material_rr_material_ref_left_ref_right_qk_period" ON isahl."zc_id_plan-material_rr_material" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_plan-payment_rr_smt-voucher_ref_left_ref_right_qk_peri; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_plan-payment_rr_smt-voucher_ref_left_ref_right_qk_peri" ON isahl."zc_id_plan-payment_rr_smt-voucher" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_plan-perform_rr_tsk-make_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_plan-perform_rr_tsk-make_ref_left_ref_right_qk_period" ON isahl."zc_id_plan-perform_rr_tsk-make" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_plan-perform_rr_tsp-voucher_ref_left_ref_right_qk_peri; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_plan-perform_rr_tsp-voucher_ref_left_ref_right_qk_peri" ON isahl."zc_id_plan-perform_rr_tsp-voucher" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_plan-perform_rr_whs-voucher_ref_left_ref_right_qk_peri; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_plan-perform_rr_whs-voucher_ref_left_ref_right_qk_peri" ON isahl."zc_id_plan-perform_rr_whs-voucher" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_plan-purchase_items_r_prod_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_plan-purchase_items_r_prod_ref_left_ref_right" ON isahl."zc_id_plan-purchase_items_r_prod" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_plan-purchase_rr_material_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_plan-purchase_rr_material_ref_left_ref_right_qk_period" ON isahl."zc_id_plan-purchase_rr_material" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_plan_rr_dependency_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_plan_rr_dependency_ref_left_ref_right_qk_period ON isahl.zc_id_plan_rr_dependency USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_plan_rr_event_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_plan_rr_event_ref_left_ref_right_qk_period ON isahl.zc_id_plan_rr_event USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_plan_rr_participants_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_plan_rr_participants_ref_left_ref_right_qk_period ON isahl.zc_id_plan_rr_participants USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_plan_rr_statement_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_plan_rr_statement_ref_left_ref_right_qk_period ON isahl.zc_id_plan_rr_statement USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_plan_rr_task_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_plan_rr_task_ref_left_ref_right_qk_period ON isahl.zc_id_plan_rr_task USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_process_rr_context_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_process_rr_context_ref_left_ref_right_qk_period ON isahl.zc_id_process_rr_context USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_process_rr_operation_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_process_rr_operation_ref_left_ref_right_qk_period ON isahl.zc_id_process_rr_operation USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-goods_r_hscode_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-goods_r_hscode_ref_left_ref_right" ON isahl."zc_id_prod-goods_r_hscode" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-loading_r_goods-tag_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-loading_r_goods-tag_ref_left_ref_right" ON isahl."zc_id_prod-loading_r_goods-tag" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-made_rr_prod-purchase_ref_left_ref_right_qk_perio; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-made_rr_prod-purchase_ref_left_ref_right_qk_perio" ON isahl."zc_id_prod-made_rr_prod-purchase" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-made_rr_project_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-made_rr_project_ref_left_ref_right_qk_period" ON isahl."zc_id_prod-made_rr_project" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-made_rr_stor-place_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-made_rr_stor-place_ref_left_ref_right_qk_period" ON isahl."zc_id_prod-made_rr_stor-place" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-payload_rr_stor-container_ref_left_ref_right_qk_p; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-payload_rr_stor-container_ref_left_ref_right_qk_p" ON isahl."zc_id_prod-payload_rr_stor-container" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-prj_data_rr_project_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-prj_data_rr_project_ref_left_ref_right_qk_period" ON isahl."zc_id_prod-prj_data_rr_project" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-proxy_rr_principal_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-proxy_rr_principal_ref_left_ref_right_qk_period" ON isahl."zc_id_prod-proxy_rr_principal" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-purchase_rr_project_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-purchase_rr_project_ref_left_ref_right_qk_period" ON isahl."zc_id_prod-purchase_rr_project" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-request_rr_prod-sales_ref_left_ref_right_qk_perio; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-request_rr_prod-sales_ref_left_ref_right_qk_perio" ON isahl."zc_id_prod-request_rr_prod-sales" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-request_rr_project_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-request_rr_project_ref_left_ref_right_qk_period" ON isahl."zc_id_prod-request_rr_project" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-sales_rr_prod-made_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-sales_rr_prod-made_ref_left_ref_right_qk_period" ON isahl."zc_id_prod-sales_rr_prod-made" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-sales_rr_project_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-sales_rr_project_ref_left_ref_right_qk_period" ON isahl."zc_id_prod-sales_rr_project" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-sales_rr_stor-place_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-sales_rr_stor-place_ref_left_ref_right_qk_period" ON isahl."zc_id_prod-sales_rr_stor-place" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-traffic_rr_contacts_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-traffic_rr_contacts_ref_left_ref_right_qk_period" ON isahl."zc_id_prod-traffic_rr_contacts" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-traffic_rr_conveyance_ref_left_ref_right_qk_perio; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-traffic_rr_conveyance_ref_left_ref_right_qk_perio" ON isahl."zc_id_prod-traffic_rr_conveyance" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_prod-transport_rr_stop_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_prod-transport_rr_stop_ref_left_ref_right_qk_period" ON isahl."zc_id_prod-transport_rr_stop" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_production_r_log-status_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_production_r_log-status_ref_left_ref_right" ON isahl."zc_id_production_r_log-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_production_r_period_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_production_r_period_ref_left_ref_right ON isahl.zc_id_production_r_period USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_production_r_pricing_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_production_r_pricing_ref_left_ref_right ON isahl.zc_id_production_r_pricing USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_production_r_transport-status_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_production_r_transport-status_ref_left_ref_right" ON isahl."zc_id_production_r_transport-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_production_r_ts_concomitant_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_production_r_ts_concomitant_ref_left_ref_right ON isahl.zc_id_production_r_ts_concomitant USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_production_r_zone_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_production_r_zone_ref_left_ref_right ON isahl.zc_id_production_r_zone USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_production_rr_bom_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_production_rr_bom_ref_left_ref_right_qk_period ON isahl.zc_id_production_rr_bom USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_production_rr_manual_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_production_rr_manual_ref_left_ref_right_qk_period ON isahl.zc_id_production_rr_manual USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_production_rr_process_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_production_rr_process_ref_left_ref_right_qk_period ON isahl.zc_id_production_rr_process USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_production_rr_project_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_production_rr_project_ref_left_ref_right_qk_period ON isahl.zc_id_production_rr_project USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_production_rr_standard_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_production_rr_standard_ref_left_ref_right_qk_period ON isahl.zc_id_production_rr_standard USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_production_rr_storage_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_production_rr_storage_ref_left_ref_right_qk_period ON isahl.zc_id_production_rr_storage USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_project_r_milestone-tags_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_project_r_milestone-tags_ref_left_ref_right" ON isahl."zc_id_project_r_milestone-tags" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_project_rr_dependency_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_project_rr_dependency_ref_left_ref_right_qk_period ON isahl.zc_id_project_rr_dependency USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_project_rr_other_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_project_rr_other_ref_left_ref_right_qk_period ON isahl.zc_id_project_rr_other USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_project_rr_process_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_project_rr_process_ref_left_ref_right_qk_period ON isahl.zc_id_project_rr_process USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_project_rr_task_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_project_rr_task_ref_left_ref_right_qk_period ON isahl.zc_id_project_rr_task USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_relation-bom_item_r_tags_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_relation-bom_item_r_tags_ref_left_ref_right" ON isahl."zc_id_relation-bom_item_r_tags" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_relation-cooperation_r_evaluation_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_relation-cooperation_r_evaluation_ref_left_ref_right" ON isahl."zc_id_relation-cooperation_r_evaluation" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_relation-employ_r_duty-status_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_relation-employ_r_duty-status_ref_left_ref_right" ON isahl."zc_id_relation-employ_r_duty-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_relation-employee_r_skill-tags_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_relation-employee_r_skill-tags_ref_left_ref_right" ON isahl."zc_id_relation-employee_r_skill-tags" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_relation-plan_smt_r_tags_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_relation-plan_smt_r_tags_ref_left_ref_right" ON isahl."zc_id_relation-plan_smt_r_tags" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_relation-post_view_r_tags_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_relation-post_view_r_tags_ref_left_ref_right" ON isahl."zc_id_relation-post_view_r_tags" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_standard_r_formula_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_standard_r_formula_ref_left_ref_right ON isahl.zc_id_standard_r_formula USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_standard_rr_law_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_standard_rr_law_ref_left_ref_right_qk_period ON isahl.zc_id_standard_rr_law USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_standard_rr_reference_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_standard_rr_reference_ref_left_ref_right_qk_period ON isahl.zc_id_standard_rr_reference USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_stat-com-voucher_code_active; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_stat-com-voucher_code_active" ON isahl."zc_id_stat-com-voucher" USING btree (code) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_stat-task_r_verify-status_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_stat-task_r_verify-status_ref_left_ref_right" ON isahl."zc_id_stat-task_r_verify-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_stat-task_rr_sto-voucher_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_stat-task_rr_sto-voucher_ref_left_ref_right_qk_period" ON isahl."zc_id_stat-task_rr_sto-voucher" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_stat-task_rr_trade_order_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_stat-task_rr_trade_order_ref_left_ref_right_qk_period" ON isahl."zc_id_stat-task_rr_trade_order" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_stat-tsp-voucher_code_active; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_stat-tsp-voucher_code_active" ON isahl."zc_id_stat-tsp-voucher" USING btree (code) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_statement_rr_reason_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_statement_rr_reason_ref_left_ref_right_qk_period ON isahl.zc_id_statement_rr_reason USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_stor-container_r_tracking-status_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_stor-container_r_tracking-status_ref_left_ref_right" ON isahl."zc_id_stor-container_r_tracking-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_stor-traffic_line_rr_stop_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_stor-traffic_line_rr_stop_ref_left_ref_right_qk_period" ON isahl."zc_id_stor-traffic_line_rr_stop" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_storage_rr_stock-in_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_storage_rr_stock-in_ref_left_ref_right_qk_period" ON isahl."zc_id_storage_rr_stock-in" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subj-country_code; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-country_code" ON isahl."zc_id_subj-country" USING btree (code);
 
 
---
--- Name: uq_zc_id_subj-employee_r_employ-status_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-employee_r_employ-status_ref_left_ref_right" ON isahl."zc_id_subj-employee_r_employ-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subj-employee_rr_client_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-employee_rr_client_ref_left_ref_right_qk_period" ON isahl."zc_id_subj-employee_rr_client" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subj-group_rr_member_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-group_rr_member_ref_left_ref_right_qk_period" ON isahl."zc_id_subj-group_rr_member" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subj-group_rr_project_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-group_rr_project_ref_left_ref_right_qk_period" ON isahl."zc_id_subj-group_rr_project" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subj-hierarchy_rr_subordinate_ref_left_ref_right_qk_pe; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-hierarchy_rr_subordinate_ref_left_ref_right_qk_pe" ON isahl."zc_id_subj-hierarchy_rr_subordinate" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subj-ministry_rr_servant_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-ministry_rr_servant_ref_left_ref_right_qk_period" ON isahl."zc_id_subj-ministry_rr_servant" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subj-ministry_rr_subordinate_ref_left_ref_right_qk_per; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-ministry_rr_subordinate_ref_left_ref_right_qk_per" ON isahl."zc_id_subj-ministry_rr_subordinate" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subj-org_rr_employee_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-org_rr_employee_ref_left_ref_right_qk_period" ON isahl."zc_id_subj-org_rr_employee" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subj-org_rr_member_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-org_rr_member_ref_left_ref_right_qk_period" ON isahl."zc_id_subj-org_rr_member" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subj-org_rr_position_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-org_rr_position_ref_left_ref_right_qk_period" ON isahl."zc_id_subj-org_rr_position" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subj-org_rr_sharehold_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-org_rr_sharehold_ref_left_ref_right_qk_period" ON isahl."zc_id_subj-org_rr_sharehold" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subj-org_rr_subordinate_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-org_rr_subordinate_ref_left_ref_right_qk_period" ON isahl."zc_id_subj-org_rr_subordinate" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subj-post_rr_employee_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-post_rr_employee_ref_left_ref_right_qk_period" ON isahl."zc_id_subj-post_rr_employee" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subj-post_rr_subordinate_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-post_rr_subordinate_ref_left_ref_right_qk_period" ON isahl."zc_id_subj-post_rr_subordinate" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subj-post_rr_view_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-post_rr_view_ref_left_ref_right_qk_period" ON isahl."zc_id_subj-post_rr_view" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subj-sovereign_rr_ministry_ref_left_ref_right_qk_perio; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_subj-sovereign_rr_ministry_ref_left_ref_right_qk_perio" ON isahl."zc_id_subj-sovereign_rr_ministry" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subjects_rr_account_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_subjects_rr_account_ref_left_ref_right_qk_period ON isahl.zc_id_subjects_rr_account USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subjects_rr_container_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_subjects_rr_container_ref_left_ref_right_qk_period ON isahl.zc_id_subjects_rr_container USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subjects_rr_partner_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_subjects_rr_partner_ref_left_ref_right_qk_period ON isahl.zc_id_subjects_rr_partner USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subjects_rr_place_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_subjects_rr_place_ref_left_ref_right_qk_period ON isahl.zc_id_subjects_rr_place USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_subjects_rr_storage_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_subjects_rr_storage_ref_left_ref_right_qk_period ON isahl.zc_id_subjects_rr_storage USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_task_rr_bill_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_task_rr_bill_ref_left_ref_right_qk_period ON isahl.zc_id_task_rr_bill USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_task_rr_dependency_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_task_rr_dependency_ref_left_ref_right_qk_period ON isahl.zc_id_task_rr_dependency USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_task_rr_reason_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX uq_zc_id_task_rr_reason_ref_left_ref_right_qk_period ON isahl.zc_id_task_rr_reason USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_thread_rr_topic-x_ref_left_ref_right_qk_period; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_thread_rr_topic-x_ref_left_ref_right_qk_period" ON isahl."zc_id_thread_rr_topic-x" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_vers-context_r_baseline_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_vers-context_r_baseline_ref_left_ref_right" ON isahl."zc_id_vers-context_r_baseline" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: uq_zc_id_vers-context_r_ver-status_ref_left_ref_right; Type: INDEX; Schema: isahl; Owner: -
---
 
 CREATE UNIQUE INDEX "uq_zc_id_vers-context_r_ver-status_ref_left_ref_right" ON isahl."zc_id_vers-context_r_ver-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
---
--- Name: zc_id_geom-circle trg_clear_place_fence_ref; Type: TRIGGER; Schema: isahl; Owner: -
---
 
 CREATE TRIGGER trg_clear_place_fence_ref AFTER UPDATE OF deleted_at ON isahl."zc_id_geom-circle" FOR EACH ROW EXECUTE FUNCTION isahl.tf_clear_place_fence_ref();
 
 
---
--- PostgreSQL database dump complete
---
 
 
 ALTER TABLE ONLY isahl."zc_ad_object" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((1)::bigint);

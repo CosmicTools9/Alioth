@@ -2,27 +2,27 @@
   "files": [
     {
       "name": "001_schema.sql",
-      "size_bytes": 51
+      "size_bytes": 35
     },
     {
       "name": "002_isahl_tables.sql",
-      "size_bytes": 1279536
+      "size_bytes": 902314
     },
     {
-      "name": "model-contract.json",
-      "size_bytes": 15347
+      "name": "seed-dimensions.sql",
+      "size_bytes": 961804
     },
     {
       "name": "seed-dimensions.meta.json",
       "size_bytes": 7169
     },
     {
-      "name": "seed-dimensions.sql",
-      "size_bytes": 984135
+      "name": "seed-model-contract.sql",
+      "size_bytes": 3106
     },
     {
-      "name": "seed-model-contract.sql",
-      "size_bytes": 3326
+      "name": "model-contract.json",
+      "size_bytes": 15347
     }
   ],
   "pg_dump_version": "pg_dump (PostgreSQL) 18.6 (Homebrew)",
