@@ -2888,8 +2888,7 @@ CREATE TABLE isahl."zc_id_form-calculation" (
     valid_at timestamp with time zone,
     invalid_at timestamp with time zone,
     active boolean,
-    context jsonb,
-    "exe-type" text
+    context jsonb
 )
 INHERITS (isahl.zc_id_formula, isahl."zc_id_eval-calculable");
 
@@ -2911,8 +2910,7 @@ CREATE TABLE isahl."zc_id_calc-prod_pricing" (
     valid_at timestamp with time zone,
     invalid_at timestamp with time zone,
     active boolean,
-    context jsonb,
-    "exe-type" text
+    context jsonb
 )
 INHERITS (isahl."zc_id_form-calculation");
 
@@ -2935,7 +2933,6 @@ CREATE TABLE isahl."zc_id_calc-sales_bonus" (
     invalid_at timestamp with time zone,
     active boolean,
     context jsonb,
-    "exe-type" text,
     engine text,
     source_collection text
 )
@@ -2959,8 +2956,7 @@ CREATE TABLE isahl."zc_id_calc-zone_qty" (
     valid_at timestamp with time zone,
     invalid_at timestamp with time zone,
     active boolean,
-    context jsonb,
-    "exe-type" text
+    context jsonb
 )
 INHERITS (isahl."zc_id_calc-prod_pricing");
 
@@ -5595,8 +5591,7 @@ CREATE TABLE isahl."zc_id_form-condition" (
     valid_at timestamp with time zone,
     invalid_at timestamp with time zone,
     active boolean,
-    context jsonb,
-    "exe-type" text
+    context jsonb
 )
 INHERITS (isahl.zc_id_formula, isahl."zc_id_eval-comparable");
 
@@ -5632,7 +5627,6 @@ CREATE TABLE isahl."zc_id_form-calc_tax" (
     invalid_at timestamp with time zone,
     active boolean,
     context jsonb,
-    "exe-type" text,
     ak_tax_ratio bigint[]
 )
 INHERITS (isahl."zc_id_form-calculation");
@@ -5655,8 +5649,7 @@ CREATE TABLE isahl."zc_id_form-mapping" (
     valid_at timestamp with time zone,
     invalid_at timestamp with time zone,
     active boolean,
-    context jsonb,
-    "exe-type" text
+    context jsonb
 )
 INHERITS (isahl."zc_id_eval-calculable", isahl.zc_id_formula);
 
@@ -14783,7 +14776,8 @@ CREATE TABLE isahl.zc_id_standard (
     tk_batch_no bigint,
     fk_previous bigint,
     ck_branch bigint,
-    lk_priority bigint
+    lk_priority bigint,
+    ak_attachment bigint[]
 )
 INHERITS (isahl.zc_id_version);
 
