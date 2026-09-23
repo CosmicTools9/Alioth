@@ -32,13 +32,6 @@ CREATE TYPE isahl.zc_id_cate_bom_item_direction_enum AS ENUM (
 
 
 
-CREATE TYPE isahl.zc_id_formula_exe_type_enum AS ENUM (
-    'JIT',
-    'INLINE'
-);
-
-
-
 CREATE TYPE isahl.zc_id_message_rr_contact_info_feedback_enum AS ENUM (
     'received',
     'read',
@@ -2867,8 +2860,7 @@ CREATE TABLE isahl.zc_id_formula (
     valid_at timestamp with time zone,
     invalid_at timestamp with time zone,
     active boolean,
-    context jsonb,
-    exe_type isahl.zc_id_formula_exe_type_enum
+    context jsonb
 )
 INHERITS (isahl.zc_id_evaluation);
 
@@ -2982,7 +2974,7 @@ CREATE TABLE isahl.zc_id_category (
     code text,
     o_number text,
     comments text,
-    enable boolean
+    enable boolean DEFAULT true
 )
 INHERITS (isahl.zc_id_object, isahl.zc_ad_scalar);
 
@@ -2999,7 +2991,7 @@ CREATE TABLE isahl."zc_id_cate-acc-title" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     direction text,
     sk_currency bigint,
@@ -3023,7 +3015,7 @@ CREATE TABLE isahl."zc_id_cate-subject" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
@@ -3041,7 +3033,7 @@ CREATE TABLE isahl."zc_id_cate-agent" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     sub_tables jsonb
 )
@@ -3085,7 +3077,7 @@ CREATE TABLE isahl."zc_id_cate-bom-item" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     lk_satisfy bigint,
     direction isahl.zc_id_cate_bom_item_direction_enum DEFAULT 'input'::isahl.zc_id_cate_bom_item_direction_enum
@@ -3112,7 +3104,7 @@ CREATE TABLE isahl."zc_id_cate-clause" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
@@ -3142,7 +3134,7 @@ CREATE TABLE isahl."zc_id_cate-contacts" (
     ak_benefit_user bigint[],
     ak_permit_user bigint[],
     ak_access_user bigint[],
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
@@ -3173,7 +3165,7 @@ CREATE TABLE isahl."zc_id_cate-department" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     sub_tables jsonb
 )
@@ -3205,7 +3197,7 @@ CREATE TABLE isahl."zc_id_cate-group" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     sub_tables jsonb
 )
@@ -3224,7 +3216,7 @@ CREATE TABLE isahl."zc_id_cate-group_member" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
@@ -3242,7 +3234,7 @@ CREATE TABLE isahl."zc_id_cate-identity" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
@@ -3267,7 +3259,7 @@ CREATE TABLE isahl."zc_id_cate-sto-title" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     sk_currency bigint,
     sk_unit bigint,
@@ -3289,7 +3281,7 @@ CREATE TABLE isahl."zc_id_cate-inv-title" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     sk_currency bigint,
     sk_unit bigint,
@@ -3318,7 +3310,7 @@ CREATE TABLE isahl."zc_id_cate-inv-title-ns" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     sk_currency bigint,
     sk_unit bigint,
@@ -3339,7 +3331,7 @@ CREATE TABLE isahl."zc_id_cate-inve-trasnfer" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
@@ -3378,7 +3370,7 @@ CREATE TABLE isahl."zc_id_cate-op_standard" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
@@ -3396,7 +3388,7 @@ CREATE TABLE isahl."zc_id_cate-ope-title" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     sk_currency bigint,
     sk_unit bigint,
@@ -3427,7 +3419,7 @@ CREATE TABLE isahl."zc_id_cate-ope-title-ns" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     sk_currency bigint,
     sk_unit bigint,
@@ -3472,7 +3464,7 @@ CREATE TABLE isahl."zc_id_cate-position" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     sub_tables jsonb
 )
@@ -3491,7 +3483,7 @@ CREATE TABLE isahl."zc_id_cate-proc_op" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
@@ -3512,7 +3504,7 @@ CREATE TABLE isahl."zc_id_cate-process" (
     ak_benefit_user bigint[],
     ak_permit_user bigint[],
     ak_access_user bigint[],
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
@@ -3551,7 +3543,7 @@ CREATE TABLE isahl."zc_id_cate-society" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     sub_tables jsonb
 )
@@ -3586,7 +3578,7 @@ CREATE TABLE isahl."zc_id_cate-tax-title" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     fk_country bigint
 )
@@ -3622,7 +3614,7 @@ INHERITS (isahl.zc_id_category);
 
 
 CREATE TABLE isahl."zc_id_cate-tsp" (
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
@@ -3640,7 +3632,7 @@ CREATE TABLE isahl."zc_id_cate-tsp-title" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     sk_currency bigint,
     sk_unit bigint,
@@ -3669,7 +3661,7 @@ CREATE TABLE isahl."zc_id_cate-tsp-title-ns" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     sk_currency bigint,
     sk_unit bigint,
@@ -3690,7 +3682,7 @@ CREATE TABLE isahl."zc_id_cate-ver_branch" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
@@ -3708,7 +3700,7 @@ CREATE TABLE isahl."zc_id_cate-warehouse" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
@@ -3726,7 +3718,7 @@ CREATE TABLE isahl."zc_id_cate-wh-title" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category);
@@ -3751,7 +3743,7 @@ CREATE TABLE isahl."zc_id_cons-cron-cate" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
@@ -3814,7 +3806,7 @@ CREATE TABLE isahl."zc_id_cons-factor-cate" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     a_type_ text
 )
@@ -3833,7 +3825,7 @@ CREATE TABLE isahl."zc_id_cons-function-cate" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     a_domain_ text
 )
 INHERITS (isahl.zc_id_consensus, isahl.zc_id_category);
@@ -3858,7 +3850,7 @@ CREATE TABLE isahl."zc_id_cons-industry-cate" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
@@ -3876,7 +3868,7 @@ CREATE TABLE isahl."zc_id_cons-license-cate" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_consensus, isahl.zc_id_category);
@@ -3894,7 +3886,7 @@ CREATE TABLE isahl."zc_id_cons-packing-cate" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint
 )
 INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
@@ -3919,7 +3911,7 @@ CREATE TABLE isahl."zc_id_cons-r-type-cate" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     c_sort_ bigint,
     "r-form" jsonb
 )
@@ -15426,7 +15418,7 @@ CREATE TABLE isahl.zc_id_status (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag NOT NULL
 )
 INHERITS (isahl.zc_id_object, isahl.zc_ad_scalar);
@@ -16491,7 +16483,7 @@ CREATE TABLE isahl."zc_id_stus-storage" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -16509,7 +16501,7 @@ CREATE TABLE isahl."zc_id_stus-account" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-storage");
@@ -16527,7 +16519,7 @@ CREATE TABLE isahl."zc_id_stus-subject" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -16545,7 +16537,7 @@ CREATE TABLE isahl."zc_id_stus-agent" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-subject");
@@ -16570,7 +16562,7 @@ CREATE TABLE isahl."zc_id_stus-approve" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -16602,7 +16594,7 @@ CREATE TABLE isahl."zc_id_stus-billing" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -16620,7 +16612,7 @@ CREATE TABLE isahl."zc_id_stus-billing_verify" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -16638,7 +16630,7 @@ CREATE TABLE isahl."zc_id_stus-bin_location" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-storage");
@@ -16656,7 +16648,7 @@ CREATE TABLE isahl."zc_id_stus-bom" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -16681,7 +16673,7 @@ CREATE TABLE isahl."zc_id_stus-place" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-storage");
@@ -16699,7 +16691,7 @@ CREATE TABLE isahl."zc_id_stus-channel" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-place");
@@ -16717,7 +16709,7 @@ CREATE TABLE isahl."zc_id_stus-collect" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -16735,7 +16727,7 @@ CREATE TABLE isahl."zc_id_stus-commit" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -16753,7 +16745,7 @@ CREATE TABLE isahl."zc_id_stus-contact_infos" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -16771,7 +16763,7 @@ CREATE TABLE isahl."zc_id_stus-contacts" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -16789,7 +16781,7 @@ CREATE TABLE isahl."zc_id_stus-container" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-storage");
@@ -16814,7 +16806,7 @@ CREATE TABLE isahl."zc_id_stus-counting" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -16832,7 +16824,7 @@ CREATE TABLE isahl."zc_id_stus-country" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-subject");
@@ -16850,7 +16842,7 @@ CREATE TABLE isahl."zc_id_stus-org" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-subject");
@@ -16868,7 +16860,7 @@ CREATE TABLE isahl."zc_id_stus-department" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-org");
@@ -16893,7 +16885,7 @@ CREATE TABLE isahl."zc_id_stus-device" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -16918,7 +16910,7 @@ CREATE TABLE isahl."zc_id_stus-employ" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -16970,7 +16962,7 @@ CREATE TABLE isahl."zc_id_stus-inv-voucher" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -16995,7 +16987,7 @@ CREATE TABLE isahl."zc_id_stus-invoice_issue" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17013,7 +17005,7 @@ CREATE TABLE isahl."zc_id_stus-invoice_verify" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17037,7 +17029,7 @@ CREATE TABLE isahl."zc_id_stus-legal_person" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-org");
@@ -17055,7 +17047,7 @@ CREATE TABLE isahl."zc_id_stus-license" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17080,7 +17072,7 @@ CREATE TABLE isahl."zc_id_stus-message" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17098,7 +17090,7 @@ CREATE TABLE isahl."zc_id_stus-ministry" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-subject");
@@ -17116,7 +17108,7 @@ CREATE TABLE isahl."zc_id_stus-natural" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-subject");
@@ -17134,7 +17126,7 @@ CREATE TABLE isahl."zc_id_stus-operation" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17152,7 +17144,7 @@ CREATE TABLE isahl."zc_id_stus-payment" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17170,7 +17162,7 @@ CREATE TABLE isahl."zc_id_stus-plan" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17188,7 +17180,7 @@ CREATE TABLE isahl."zc_id_stus-position" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-subject");
@@ -17206,7 +17198,7 @@ CREATE TABLE isahl."zc_id_stus-pricing" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17224,7 +17216,7 @@ CREATE TABLE isahl."zc_id_stus-process" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17242,7 +17234,7 @@ CREATE TABLE isahl."zc_id_stus-production" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17260,7 +17252,7 @@ CREATE TABLE isahl."zc_id_stus-prod-made" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-production");
@@ -17278,7 +17270,7 @@ CREATE TABLE isahl."zc_id_stus-prod-purchase" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-production");
@@ -17296,7 +17288,7 @@ CREATE TABLE isahl."zc_id_stus-prod-request" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-production");
@@ -17314,7 +17306,7 @@ CREATE TABLE isahl."zc_id_stus-prod-sales" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-production");
@@ -17332,7 +17324,7 @@ CREATE TABLE isahl."zc_id_stus-project" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17357,7 +17349,7 @@ CREATE TABLE isahl."zc_id_stus-trade" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17375,7 +17367,7 @@ CREATE TABLE isahl."zc_id_stus-purchase" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-trade");
@@ -17393,7 +17385,7 @@ CREATE TABLE isahl."zc_id_stus-retail" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-trade");
@@ -17411,7 +17403,7 @@ CREATE TABLE isahl."zc_id_stus-service" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-trade");
@@ -17429,7 +17421,7 @@ CREATE TABLE isahl."zc_id_stus-smt-voucher" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17447,7 +17439,7 @@ CREATE TABLE isahl."zc_id_stus-standard" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17472,7 +17464,7 @@ CREATE TABLE isahl."zc_id_stus-supranational" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-subject");
@@ -17490,7 +17482,7 @@ CREATE TABLE isahl."zc_id_stus-task" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17508,7 +17500,7 @@ CREATE TABLE isahl."zc_id_stus-template" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17533,7 +17525,7 @@ CREATE TABLE isahl."zc_id_stus-tracking_log" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17551,7 +17543,7 @@ CREATE TABLE isahl."zc_id_stus-tracking_transport" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17583,7 +17575,7 @@ CREATE TABLE isahl."zc_id_stus-vehicle" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-container");
@@ -17601,7 +17593,7 @@ CREATE TABLE isahl."zc_id_stus-version" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl.zc_id_status);
@@ -17619,7 +17611,7 @@ CREATE TABLE isahl."zc_id_stus-vessel" (
     code text,
     o_number text,
     comments text,
-    enable boolean,
+    enable boolean DEFAULT true,
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-vehicle");
@@ -19636,6 +19628,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-alert" ALTER COLUMN updated_by_id SET DEFAULT
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-alert" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-approve" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -19653,6 +19649,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-approve" ALTER COLUMN created_by_id SET DEFAU
 
 
 ALTER TABLE ONLY isahl."zc_id_cate-approve" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-approve" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -19676,6 +19676,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-approve_role" ALTER COLUMN updated_by_id SET 
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-approve_role" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-auth" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -19696,6 +19700,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-auth" ALTER COLUMN updated_by_id SET DEFAULT 
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-auth" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-certification" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -19709,6 +19717,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-certification" ALTER COLUMN created_by_id SET
 
 
 ALTER TABLE ONLY isahl."zc_id_cate-certification" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-certification" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -19728,6 +19740,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-contact_role" ALTER COLUMN updated_by_id SET 
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-contact_role" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-cooperation" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -19741,6 +19757,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-cooperation" ALTER COLUMN created_by_id SET D
 
 
 ALTER TABLE ONLY isahl."zc_id_cate-cooperation" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-cooperation" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -19764,6 +19784,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-defect" ALTER COLUMN updated_by_id SET DEFAUL
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-defect" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-employment" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -19784,6 +19808,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-employment" ALTER COLUMN updated_by_id SET DE
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-employment" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-file" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -19797,6 +19825,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-file" ALTER COLUMN created_by_id SET DEFAULT 
 
 
 ALTER TABLE ONLY isahl."zc_id_cate-file" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-file" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -19816,6 +19848,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-inspection" ALTER COLUMN updated_by_id SET DE
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-inspection" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -19829,6 +19865,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN created_by_id SET 
 
 
 ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -19848,6 +19888,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-log" ALTER COLUMN updated_by_id SET DEFAULT 1
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-log" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-maintain" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -19861,6 +19905,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-maintain" ALTER COLUMN created_by_id SET DEFA
 
 
 ALTER TABLE ONLY isahl."zc_id_cate-maintain" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-maintain" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -19880,6 +19928,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-modify" ALTER COLUMN updated_by_id SET DEFAUL
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-modify" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-ope-title-cm" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -19893,6 +19945,18 @@ ALTER TABLE ONLY isahl."zc_id_cate-ope-title-cm" ALTER COLUMN created_by_id SET 
 
 
 ALTER TABLE ONLY isahl."zc_id_cate-ope-title-cm" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-ope-title-cm" ALTER COLUMN enable SET DEFAULT true;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-org_system" ALTER COLUMN enable SET DEFAULT true;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-organization" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -19912,6 +19976,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-project" ALTER COLUMN updated_by_id SET DEFAU
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-project" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-real_rights" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -19928,6 +19996,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-real_rights" ALTER COLUMN updated_by_id SET D
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-real_rights" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-seal" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -19941,6 +20013,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-seal" ALTER COLUMN created_by_id SET DEFAULT 
 
 
 ALTER TABLE ONLY isahl."zc_id_cate-seal" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-seal" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -19964,6 +20040,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-testing" ALTER COLUMN updated_by_id SET DEFAU
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-testing" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-tracking" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -19977,6 +20057,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-tracking" ALTER COLUMN created_by_id SET DEFA
 
 
 ALTER TABLE ONLY isahl."zc_id_cate-tracking" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-tracking" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -19996,6 +20080,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-traffic" ALTER COLUMN updated_by_id SET DEFAU
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-traffic" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-training" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -20009,6 +20097,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-training" ALTER COLUMN created_by_id SET DEFA
 
 
 ALTER TABLE ONLY isahl."zc_id_cate-training" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-training" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -20048,6 +20140,10 @@ ALTER TABLE ONLY isahl."zc_id_cate-tsp-title-cm" ALTER COLUMN updated_by_id SET 
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-tsp-title-cm" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cons-consanguinity-cate" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -20064,6 +20160,10 @@ ALTER TABLE ONLY isahl."zc_id_cons-consanguinity-cate" ALTER COLUMN updated_by_i
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cons-consanguinity-cate" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -20077,6 +20177,10 @@ ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN created_by_id
 
 
 ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -20104,6 +20208,10 @@ ALTER TABLE ONLY isahl."zc_id_cons-polity-cate" ALTER COLUMN updated_by_id SET D
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cons-polity-cate" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -20117,6 +20225,10 @@ ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN created_by_id SET
 
 
 ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -22456,6 +22568,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-agreement" ALTER COLUMN updated_by_id SET DEF
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stus-agreement" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stus-audit" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22469,6 +22585,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-audit" ALTER COLUMN created_by_id SET DEFAULT
 
 
 ALTER TABLE ONLY isahl."zc_id_stus-audit" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-audit" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -22488,6 +22608,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-bill" ALTER COLUMN updated_by_id SET DEFAULT 
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stus-bill" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stus-certification" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22501,6 +22625,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-certification" ALTER COLUMN created_by_id SET
 
 
 ALTER TABLE ONLY isahl."zc_id_stus-certification" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-certification" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -22520,6 +22648,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-contract" ALTER COLUMN updated_by_id SET DEFA
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stus-contract" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stus-detail" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22533,6 +22665,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-detail" ALTER COLUMN created_by_id SET DEFAUL
 
 
 ALTER TABLE ONLY isahl."zc_id_stus-detail" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-detail" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -22552,6 +22688,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-duty" ALTER COLUMN updated_by_id SET DEFAULT 
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stus-duty" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stus-entity" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22565,6 +22705,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-entity" ALTER COLUMN created_by_id SET DEFAUL
 
 
 ALTER TABLE ONLY isahl."zc_id_stus-entity" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-entity" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -22584,6 +22728,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-event" ALTER COLUMN updated_by_id SET DEFAULT
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stus-event" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stus-file" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22600,6 +22748,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-file" ALTER COLUMN updated_by_id SET DEFAULT 
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stus-file" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stus-identity" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22613,6 +22765,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-identity" ALTER COLUMN created_by_id SET DEFA
 
 
 ALTER TABLE ONLY isahl."zc_id_stus-identity" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-identity" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -22636,6 +22792,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-inspection" ALTER COLUMN updated_by_id SET DE
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stus-inspection" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stus-inventory" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22649,6 +22809,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-inventory" ALTER COLUMN created_by_id SET DEF
 
 
 ALTER TABLE ONLY isahl."zc_id_stus-inventory" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-inventory" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -22672,6 +22836,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-iot" ALTER COLUMN updated_by_id SET DEFAULT 1
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stus-iot" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stus-marital" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22685,6 +22853,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-marital" ALTER COLUMN created_by_id SET DEFAU
 
 
 ALTER TABLE ONLY isahl."zc_id_stus-marital" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-marital" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -22704,6 +22876,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-protocol" ALTER COLUMN updated_by_id SET DEFA
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stus-protocol" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stus-statement" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22717,6 +22893,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-statement" ALTER COLUMN created_by_id SET DEF
 
 
 ALTER TABLE ONLY isahl."zc_id_stus-statement" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-statement" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -22736,6 +22916,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-threads" ALTER COLUMN updated_by_id SET DEFAU
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stus-threads" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stus-training" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22752,6 +22936,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-training" ALTER COLUMN updated_by_id SET DEFA
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stus-training" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22765,6 +22953,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN created_by_id SET DE
 
 
 ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN enable SET DEFAULT true;
 
 
 
