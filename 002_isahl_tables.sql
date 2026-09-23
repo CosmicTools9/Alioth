@@ -1302,7 +1302,8 @@ CREATE TABLE isahl.zc_id_lifecycle_r_evaluation (
     code text,
     ref_left bigint,
     ref_right bigint,
-    comments text
+    comments text,
+    qk_period bigint
 )
 INHERITS (isahl.zc_ad_tensor_r_dimension);
 
@@ -2589,7 +2590,8 @@ CREATE TABLE isahl."zc_id_bom-input_item_r_substitution" (
     ref_left bigint,
     ref_right bigint,
     comments text,
-    lk_substitute bigint
+    lk_substitute bigint,
+    qk_period bigint
 )
 INHERITS (isahl."zc_ad_relation_r_isolate-tensor");
 
@@ -6709,7 +6711,8 @@ CREATE TABLE isahl.zc_id_lifecycle_r_category (
     code text,
     ref_left bigint,
     ref_right bigint,
-    comments text
+    comments text,
+    qk_period bigint
 )
 INHERITS (isahl.zc_ad_tensor_r_scalar);
 
@@ -6744,7 +6747,8 @@ CREATE TABLE isahl.zc_id_lifecycle_r_tags (
     code text,
     ref_left bigint,
     ref_right bigint,
-    comments text
+    comments text,
+    qk_period bigint
 )
 INHERITS (isahl.zc_ad_tensor_r_scalar);
 
@@ -9233,7 +9237,8 @@ CREATE TABLE isahl."zc_id_plan-purchase_items_r_prod" (
     ref_left bigint,
     ref_right bigint,
     comments text,
-    qk_qty bigint
+    qk_qty bigint,
+    qk_period bigint
 )
 INHERITS (isahl."zc_ad_relation_r_isolate-tensor");
 
@@ -14064,7 +14069,8 @@ CREATE TABLE isahl."zc_id_relation-bom_item_r_tags" (
     code text,
     ref_left bigint,
     ref_right bigint,
-    comments text
+    comments text,
+    qk_period bigint
 )
 INHERITS (isahl.zc_ad_relation_r_scalar);
 
@@ -14073,14 +14079,16 @@ INHERITS (isahl.zc_ad_relation_r_scalar);
 CREATE TABLE isahl."zc_id_relation-cooperation_r_evaluation" (
     id bigint NOT NULL,
     ck_cooperation bigint,
-    ak_attachment bigint[]
+    ak_attachment bigint[],
+    qk_period bigint
 )
 INHERITS (isahl.zc_ad_relation_r_scalar);
 
 
 
 CREATE TABLE isahl."zc_id_relation-employ_r_duty-status" (
-    id bigint NOT NULL
+    id bigint NOT NULL,
+    qk_period bigint
 )
 INHERITS (isahl.zc_ad_relation_r_scalar);
 
@@ -14088,7 +14096,8 @@ INHERITS (isahl.zc_ad_relation_r_scalar);
 
 CREATE TABLE isahl."zc_id_relation-employee_r_skill-tags" (
     id bigint NOT NULL,
-    lk_proficiency bigint
+    lk_proficiency bigint,
+    qk_period bigint
 )
 INHERITS (isahl.zc_ad_relation_r_scalar);
 
@@ -14105,7 +14114,8 @@ CREATE TABLE isahl."zc_id_relation-plan_smt_r_tags" (
     code text,
     ref_left bigint,
     ref_right bigint,
-    comments text
+    comments text,
+    qk_period bigint
 )
 INHERITS (isahl.zc_ad_relation_r_scalar);
 
@@ -14122,7 +14132,8 @@ CREATE TABLE isahl."zc_id_relation-post_view_r_tags" (
     code text,
     ref_left bigint,
     ref_right bigint,
-    comments text
+    comments text,
+    qk_period bigint
 )
 INHERITS (isahl.zc_ad_relation_r_scalar);
 
@@ -14987,7 +14998,8 @@ CREATE TABLE isahl.zc_id_standard_r_formula (
     code text,
     ref_left bigint,
     ref_right bigint,
-    comments text
+    comments text,
+    qk_period bigint
 )
 INHERITS (isahl.zc_ad_tensor_r_scalar);
 
@@ -31796,6 +31808,10 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-training" ON isahl."zc_id_stus-traini
 
 
 
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-tsk_verify" ON isahl."zc_id_stus-tsk_verify" USING btree (id);
+
+
+
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-vehicle" ON isahl."zc_id_stus-vehicle" USING btree (id);
 
 
@@ -32052,11 +32068,11 @@ CREATE UNIQUE INDEX "uq_zc_ad_tensor_rr_non_self-ref_ref_left_ref_right" ON isah
 
 
 
-CREATE UNIQUE INDEX uq_zc_id_agreement_r_calc_ref_left_ref_right ON isahl.zc_id_agreement_r_calc USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX uq_zc_id_agreement_r_calc_ref_left_ref_right_qk_period ON isahl.zc_id_agreement_r_calc USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
-CREATE UNIQUE INDEX uq_zc_id_agreement_r_term_ref_left_ref_right ON isahl.zc_id_agreement_r_term USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX uq_zc_id_agreement_r_term_ref_left_ref_right_qk_period ON isahl.zc_id_agreement_r_term USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
@@ -32104,7 +32120,7 @@ CREATE UNIQUE INDEX uq_zc_id_bill_rr_recipients_ref_left_ref_right_qk_period ON 
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_bom-input_item_r_substitution_ref_left_ref_right" ON isahl."zc_id_bom-input_item_r_substitution" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX "uq_zc_id_bom-input_item_r_substitution_ref_left_ref_right_qk_pe" ON isahl."zc_id_bom-input_item_r_substitution" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
@@ -32132,11 +32148,11 @@ CREATE UNIQUE INDEX uq_zc_id_container_rr_device_ref_left_ref_right_qk_period ON
 
 
 
-CREATE UNIQUE INDEX uq_zc_id_contract_r_calc_ref_left_ref_right ON isahl.zc_id_contract_r_calc USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX uq_zc_id_contract_r_calc_ref_left_ref_right_qk_period ON isahl.zc_id_contract_r_calc USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
-CREATE UNIQUE INDEX uq_zc_id_contract_r_term_ref_left_ref_right ON isahl.zc_id_contract_r_term USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX uq_zc_id_contract_r_term_ref_left_ref_right_qk_period ON isahl.zc_id_contract_r_term USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
@@ -32264,11 +32280,11 @@ CREATE UNIQUE INDEX "uq_zc_id_invoice_r_verify-status_ref_left_ref_right" ON isa
 
 
 
-CREATE UNIQUE INDEX uq_zc_id_lifecycle_r_category_ref_left_ref_right ON isahl.zc_id_lifecycle_r_category USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX uq_zc_id_lifecycle_r_category_ref_left_ref_right_qk_period ON isahl.zc_id_lifecycle_r_category USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
-CREATE UNIQUE INDEX uq_zc_id_lifecycle_r_evaluation_ref_left_ref_right ON isahl.zc_id_lifecycle_r_evaluation USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX uq_zc_id_lifecycle_r_evaluation_ref_left_ref_right_qk_period ON isahl.zc_id_lifecycle_r_evaluation USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
@@ -32280,7 +32296,7 @@ CREATE UNIQUE INDEX uq_zc_id_lifecycle_r_status_ref_left_ref_right ON isahl.zc_i
 
 
 
-CREATE UNIQUE INDEX uq_zc_id_lifecycle_r_tags_ref_left_ref_right ON isahl.zc_id_lifecycle_r_tags USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX uq_zc_id_lifecycle_r_tags_ref_left_ref_right_qk_period ON isahl.zc_id_lifecycle_r_tags USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
@@ -32436,7 +32452,7 @@ CREATE UNIQUE INDEX "uq_zc_id_plan-perform_rr_whs-voucher_ref_left_ref_right_qk_
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_plan-purchase_items_r_prod_ref_left_ref_right" ON isahl."zc_id_plan-purchase_items_r_prod" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX "uq_zc_id_plan-purchase_items_r_prod_ref_left_ref_right_qk_perio" ON isahl."zc_id_plan-purchase_items_r_prod" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
@@ -32472,11 +32488,11 @@ CREATE UNIQUE INDEX uq_zc_id_process_rr_operation_ref_left_ref_right_qk_period O
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_prod-goods_r_hscode_ref_left_ref_right" ON isahl."zc_id_prod-goods_r_hscode" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX "uq_zc_id_prod-goods_r_hscode_ref_left_ref_right_qk_period" ON isahl."zc_id_prod-goods_r_hscode" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_prod-loading_r_goods-tag_ref_left_ref_right" ON isahl."zc_id_prod-loading_r_goods-tag" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX "uq_zc_id_prod-loading_r_goods-tag_ref_left_ref_right_qk_period" ON isahl."zc_id_prod-loading_r_goods-tag" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
@@ -32544,11 +32560,11 @@ CREATE UNIQUE INDEX "uq_zc_id_production_r_log-status_ref_left_ref_right" ON isa
 
 
 
-CREATE UNIQUE INDEX uq_zc_id_production_r_period_ref_left_ref_right ON isahl.zc_id_production_r_period USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX uq_zc_id_production_r_period_ref_left_ref_right_qk_period ON isahl.zc_id_production_r_period USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
-CREATE UNIQUE INDEX uq_zc_id_production_r_pricing_ref_left_ref_right ON isahl.zc_id_production_r_pricing USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX uq_zc_id_production_r_pricing_ref_left_ref_right_qk_period ON isahl.zc_id_production_r_pricing USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
@@ -32556,11 +32572,11 @@ CREATE UNIQUE INDEX "uq_zc_id_production_r_transport-status_ref_left_ref_right" 
 
 
 
-CREATE UNIQUE INDEX uq_zc_id_production_r_ts_concomitant_ref_left_ref_right ON isahl.zc_id_production_r_ts_concomitant USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX uq_zc_id_production_r_ts_concomitant_ref_left_ref_right_qk_peri ON isahl.zc_id_production_r_ts_concomitant USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
-CREATE UNIQUE INDEX uq_zc_id_production_r_zone_ref_left_ref_right ON isahl.zc_id_production_r_zone USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX uq_zc_id_production_r_zone_ref_left_ref_right_qk_period ON isahl.zc_id_production_r_zone USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
@@ -32588,7 +32604,7 @@ CREATE UNIQUE INDEX uq_zc_id_production_rr_storage_ref_left_ref_right_qk_period 
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_project_r_milestone-tags_ref_left_ref_right" ON isahl."zc_id_project_r_milestone-tags" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX "uq_zc_id_project_r_milestone-tags_ref_left_ref_right_qk_period" ON isahl."zc_id_project_r_milestone-tags" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
@@ -32608,31 +32624,31 @@ CREATE UNIQUE INDEX uq_zc_id_project_rr_task_ref_left_ref_right_qk_period ON isa
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_relation-bom_item_r_tags_ref_left_ref_right" ON isahl."zc_id_relation-bom_item_r_tags" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX "uq_zc_id_relation-bom_item_r_tags_ref_left_ref_right_qk_period" ON isahl."zc_id_relation-bom_item_r_tags" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_relation-cooperation_r_evaluation_ref_left_ref_right" ON isahl."zc_id_relation-cooperation_r_evaluation" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX "uq_zc_id_relation-cooperation_r_evaluation_ref_left_ref_right_q" ON isahl."zc_id_relation-cooperation_r_evaluation" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_relation-employ_r_duty-status_ref_left_ref_right" ON isahl."zc_id_relation-employ_r_duty-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX "uq_zc_id_relation-employ_r_duty-status_ref_left_ref_right_qk_pe" ON isahl."zc_id_relation-employ_r_duty-status" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_relation-employee_r_skill-tags_ref_left_ref_right" ON isahl."zc_id_relation-employee_r_skill-tags" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX "uq_zc_id_relation-employee_r_skill-tags_ref_left_ref_right_qk_p" ON isahl."zc_id_relation-employee_r_skill-tags" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_relation-plan_smt_r_tags_ref_left_ref_right" ON isahl."zc_id_relation-plan_smt_r_tags" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX "uq_zc_id_relation-plan_smt_r_tags_ref_left_ref_right_qk_period" ON isahl."zc_id_relation-plan_smt_r_tags" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_relation-post_view_r_tags_ref_left_ref_right" ON isahl."zc_id_relation-post_view_r_tags" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX "uq_zc_id_relation-post_view_r_tags_ref_left_ref_right_qk_period" ON isahl."zc_id_relation-post_view_r_tags" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
-CREATE UNIQUE INDEX uq_zc_id_standard_r_formula_ref_left_ref_right ON isahl.zc_id_standard_r_formula USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX uq_zc_id_standard_r_formula_ref_left_ref_right_qk_period ON isahl.zc_id_standard_r_formula USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
@@ -32784,7 +32800,7 @@ CREATE UNIQUE INDEX "uq_zc_id_thread_rr_topic-x_ref_left_ref_right_qk_period" ON
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_vers-context_r_baseline_ref_left_ref_right" ON isahl."zc_id_vers-context_r_baseline" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+CREATE UNIQUE INDEX "uq_zc_id_vers-context_r_baseline_ref_left_ref_right_qk_period" ON isahl."zc_id_vers-context_r_baseline" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
