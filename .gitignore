@@ -1,2 +1,5 @@
 .minimax/*
 .DS_Store
+
+# dsh-alioth 消费的 isahl_meta 注册表专用拷贝（派生数据，发布时生成，不纳入 GIT）
+/isahl_meta-registry.sql

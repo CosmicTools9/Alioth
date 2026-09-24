@@ -8170,7 +8170,10 @@ CREATE TABLE isahl."zc_id_stat-trade_order" (
     fk_object bigint,
     qk_date bigint,
     fk_contract bigint,
-    ck_category bigint
+    ck_category bigint,
+    lk_health bigint,
+    lk_risk bigint,
+    qk_progress bigint
 )
 INHERITS (isahl.zc_id_statement);
 
@@ -13237,7 +13240,8 @@ INHERITS (isahl.zc_id_master_rr_slave);
 CREATE TABLE isahl."zc_id_project_r_milestone-tags" (
     id bigint NOT NULL,
     qk_arrived bigint,
-    "qk_plan-segm" bigint
+    "qk_plan-segm" bigint,
+    "qk_review-segm" bigint
 )
 INHERITS (isahl.zc_id_lifecycle_r_tags);
 
