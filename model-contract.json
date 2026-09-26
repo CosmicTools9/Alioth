@@ -164,6 +164,7 @@
     "zc_id_stus-iot": 5,
     "zc_id_stus-legal_person": 8,
     "zc_id_stus-license": 6,
+    "zc_id_stus-lock": 2,
     "zc_id_stus-marital": 4,
     "zc_id_stus-message": 4,
     "zc_id_stus-ministry": 0,
@@ -184,6 +185,7 @@
     "zc_id_stus-protocol": 5,
     "zc_id_stus-purchase": 0,
     "zc_id_stus-retail": 0,
+    "zc_id_stus-review": 3,
     "zc_id_stus-service": 13,
     "zc_id_stus-smt-voucher": 4,
     "zc_id_stus-standard": 6,
@@ -256,7 +258,7 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "published_at": "2026-09-24T09:23:02.445493+00:00",
+  "published_at": "2026-09-26T04:28:55.673474+00:00",
   "row_layer": {
     "zc_id_cate-inv-title": "carry",
     "zc_id_cate-ope-title": "carry",
@@ -450,6 +452,7 @@
     "zc_id_stus-iot",
     "zc_id_stus-legal_person",
     "zc_id_stus-license",
+    "zc_id_stus-lock",
     "zc_id_stus-marital",
     "zc_id_stus-message",
     "zc_id_stus-ministry",
@@ -470,6 +473,7 @@
     "zc_id_stus-protocol",
     "zc_id_stus-purchase",
     "zc_id_stus-retail",
+    "zc_id_stus-review",
     "zc_id_stus-service",
     "zc_id_stus-smt-voucher",
     "zc_id_stus-standard",
@@ -542,5 +546,5 @@
     "zc_id_unit-weight",
     "zc_id_unit-working"
   ],
-  "version": "v10.0.34"
+  "version": "v10.0.35"
 }

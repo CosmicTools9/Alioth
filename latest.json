@@ -6,19 +6,19 @@
     },
     {
       "name": "002_isahl_tables.sql",
-      "size_bytes": 909381
+      "size_bytes": 912379
     },
     {
       "name": "model-contract.json",
-      "size_bytes": 15347
+      "size_bytes": 15449
     },
     {
       "name": "seed-dimensions.meta.json",
-      "size_bytes": 7169
+      "size_bytes": 7219
     },
     {
       "name": "seed-dimensions.sql",
-      "size_bytes": 791344
+      "size_bytes": 792709
     },
     {
       "name": "seed-model-contract.sql",
@@ -26,7 +26,7 @@
     }
   ],
   "pg_dump_version": "pg_dump (PostgreSQL) 18.6 (Homebrew)",
-  "published_at": "2026-09-24T09:23:02.445493+00:00",
+  "published_at": "2026-09-26T04:28:55.673474+00:00",
   "tables": {
     "zc_id_cate-acc-title": 13,
     "zc_id_cate-agent": 0,
@@ -192,6 +192,7 @@
     "zc_id_stus-iot": 5,
     "zc_id_stus-legal_person": 8,
     "zc_id_stus-license": 6,
+    "zc_id_stus-lock": 2,
     "zc_id_stus-marital": 4,
     "zc_id_stus-message": 4,
     "zc_id_stus-ministry": 0,
@@ -212,6 +213,7 @@
     "zc_id_stus-protocol": 5,
     "zc_id_stus-purchase": 0,
     "zc_id_stus-retail": 0,
+    "zc_id_stus-review": 3,
     "zc_id_stus-service": 13,
     "zc_id_stus-smt-voucher": 4,
     "zc_id_stus-standard": 6,
@@ -284,5 +286,5 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "version": "v10.0.34"
+  "version": "v10.0.35"
 }

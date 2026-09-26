@@ -1,9 +1,9 @@
 {
-  "output": "✅ 001_schema.sql: 35 bytes\n✅ 002_isahl_tables.sql: 909381 bytes\n✅ seed-dimensions.sql: 791344 bytes\n✅ seed-model-contract.sql: 3106 bytes\n✅ uid 默认值体系校验：0 冲突 0 缺失\n✅ 数据往返：255 张表逐表计数与发布快照一致\n✅ 种子契约检查通过（模型侧声明完备，无违规）\n✅ 结构往返（表集 986 项）与源库一致\n✅ 结构往返（继承边集 1156 项）与源库一致\n✅ 声明分发一致（重建库解析 255 张 == 产物自描述）\n",
+  "output": "✅ 001_schema.sql: 35 bytes\n✅ 002_isahl_tables.sql: 912379 bytes\n✅ seed-dimensions.sql: 792709 bytes\n✅ seed-model-contract.sql: 3106 bytes\n✅ uid 默认值体系校验：0 冲突 0 缺失\n✅ 数据往返：257 张表逐表计数与发布快照一致\n✅ 种子契约检查通过（模型侧声明完备，无违规）\n✅ 结构往返（表集 990 项）与源库一致\n✅ 结构往返（继承边集 1160 项）与源库一致\n✅ 声明分发一致（重建库解析 257 张 == 产物自描述）\n",
   "source_db": "postgres://isahl@localhost:5432/aliothstudio_dev",
-  "verified_at": "2026-09-24T09:24:56.829430+00:00",
+  "verified_at": "2026-09-26T04:29:00.638990+00:00",
   "verify_status": "verified",
   "verify_target_db": "postgres://localhost:5432/aliothstudio_verify",
   "verify_target_is_shared": false,
-  "version": "v10.0.34"
+  "version": "v10.0.35"
 }

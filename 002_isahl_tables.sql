@@ -6710,6 +6710,13 @@ INHERITS (isahl.zc_ad_tensor_r_scalar);
 
 
 
+CREATE TABLE isahl."zc_id_lifecycle_r_lock-status" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_r_status);
+
+
+
 CREATE TABLE isahl."zc_id_lifecycle_r_primary-status" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -13247,6 +13254,13 @@ INHERITS (isahl.zc_id_lifecycle_r_tags);
 
 
 
+CREATE TABLE isahl."zc_id_project_r_review-status" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_r_status);
+
+
+
 CREATE TABLE isahl.zc_id_project_rr_dependency (
     id bigint NOT NULL
 )
@@ -17058,6 +17072,13 @@ INHERITS (isahl.zc_id_status);
 
 
 
+CREATE TABLE isahl."zc_id_stus-lock" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_status);
+
+
+
 CREATE TABLE isahl."zc_id_stus-marital" (
     id bigint NOT NULL
 )
@@ -17393,6 +17414,13 @@ CREATE TABLE isahl."zc_id_stus-retail" (
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-trade");
+
+
+
+CREATE TABLE isahl."zc_id_stus-review" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_status);
 
 
 
@@ -21140,6 +21168,14 @@ ALTER TABLE ONLY isahl."zc_id_leve-vote_weight" ALTER COLUMN id SET DEFAULT isah
 
 
 
+ALTER TABLE ONLY isahl."zc_id_lifecycle_r_lock-status" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_lifecycle_r_lock-status" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_message_rr_contact-info" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -21969,6 +22005,14 @@ ALTER TABLE ONLY isahl."zc_id_project_r_milestone-tags" ALTER COLUMN created_at 
 
 
 ALTER TABLE ONLY isahl."zc_id_project_r_milestone-tags" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_project_r_review-status" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_project_r_review-status" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -22844,6 +22888,26 @@ ALTER TABLE ONLY isahl."zc_id_stus-iot" ALTER COLUMN enable SET DEFAULT true;
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stus-lock" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-lock" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-lock" ALTER COLUMN created_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-lock" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-lock" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stus-marital" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22881,6 +22945,26 @@ ALTER TABLE ONLY isahl."zc_id_stus-protocol" ALTER COLUMN updated_by_id SET DEFA
 
 
 ALTER TABLE ONLY isahl."zc_id_stus-protocol" ALTER COLUMN enable SET DEFAULT true;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-review" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-review" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-review" ALTER COLUMN created_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-review" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-review" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -24739,6 +24823,11 @@ ALTER TABLE ONLY isahl.zc_id_lifecycle_r_evaluation
 
 
 
+ALTER TABLE ONLY isahl."zc_id_lifecycle_r_lock-status"
+    ADD CONSTRAINT "zc_id_lifecycle_r_lock-status_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_primary-status"
     ADD CONSTRAINT "zc_id_lifecycle_r_primary-status_pkey" PRIMARY KEY (id);
 
@@ -26189,6 +26278,11 @@ ALTER TABLE ONLY isahl."zc_id_project_r_milestone-tags"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_project_r_review-status"
+    ADD CONSTRAINT "zc_id_project_r_review-status_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl.zc_id_project_rr_dependency
     ADD CONSTRAINT zc_id_project_rr_dependency_pkey PRIMARY KEY (id);
 
@@ -27169,6 +27263,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-license"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stus-lock"
+    ADD CONSTRAINT "zc_id_stus-lock_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stus-marital"
     ADD CONSTRAINT "zc_id_stus-marital_pkey" PRIMARY KEY (id);
 
@@ -27271,6 +27370,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-purchase"
 
 ALTER TABLE ONLY isahl."zc_id_stus-retail"
     ADD CONSTRAINT "zc_id_stus-retail_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-review"
+    ADD CONSTRAINT "zc_id_stus-review_pkey" PRIMARY KEY (id);
 
 
 
@@ -32484,6 +32588,10 @@ CREATE UNIQUE INDEX uq_zc_id_lifecycle_r_evaluation_ref_left_ref_right_qk_period
 
 
 
+CREATE UNIQUE INDEX "uq_zc_id_lifecycle_r_lock-status_ref_left_ref_right" ON isahl."zc_id_lifecycle_r_lock-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+
+
+
 CREATE UNIQUE INDEX "uq_zc_id_lifecycle_r_primary-status_ref_left_ref_right" ON isahl."zc_id_lifecycle_r_primary-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
@@ -32804,6 +32912,10 @@ CREATE UNIQUE INDEX "uq_zc_id_project_r_milestone-tags_ref_left_ref_right_qk_per
 
 
 
+CREATE UNIQUE INDEX "uq_zc_id_project_r_review-status_ref_left_ref_right" ON isahl."zc_id_project_r_review-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+
+
+
 CREATE UNIQUE INDEX uq_zc_id_project_rr_dependency_ref_left_ref_right_qk_period ON isahl.zc_id_project_rr_dependency USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
@@ -33102,6 +33214,7 @@ ALTER TABLE ONLY isahl."zc_id_stus-inventory" ALTER COLUMN id SET DEFAULT isahl.
 ALTER TABLE ONLY isahl."zc_id_stus-invoice_issue" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((95)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-invoice_verify" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((96)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-license" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((98)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stus-lock" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((525)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-marital" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((99)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-message" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((100)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-operation" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((101)::bigint);
@@ -33112,6 +33225,7 @@ ALTER TABLE ONLY isahl."zc_id_stus-process" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_stus-production" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((106)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-project" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((107)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-protocol" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((108)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stus-review" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((521)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-smt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((109)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-standard" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((110)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-statement" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((111)::bigint);
@@ -33370,6 +33484,7 @@ ALTER TABLE ONLY isahl."zc_id_law-common" ALTER COLUMN id SET DEFAULT isahl.gen_
 ALTER TABLE ONLY isahl."zc_id_law-intl" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-mixed" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-religious" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_lifecycle_r_lock-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((527)::bigint);
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_primary-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((260)::bigint);
 ALTER TABLE ONLY isahl."zc_id_oper-action" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-approve" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -33453,6 +33568,7 @@ ALTER TABLE ONLY isahl."zc_id_prod-transport_rr_stop" ALTER COLUMN id SET DEFAUL
 ALTER TABLE ONLY isahl."zc_id_production_r_log-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((289)::bigint);
 ALTER TABLE ONLY isahl."zc_id_production_r_transport-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((291)::bigint);
 ALTER TABLE ONLY isahl."zc_id_project_r_milestone-tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((492)::bigint);
+ALTER TABLE ONLY isahl."zc_id_project_r_review-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((523)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stan-air" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stan-operation" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stan-prod_quality" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
