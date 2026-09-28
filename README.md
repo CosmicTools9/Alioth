@@ -6,7 +6,7 @@
 
 A **PostgreSQL table-inherited data model** grounded in category theory and commutative ontology. Alioth formalizes economic behavior as morphisms of an *exchange category*: reversible trades form a **groupoid** equipped with an involutive symmetry functor (every reversible trade has a mirror-image counter-trade, `S² = id`), and every business entity occupies a unique point in a 4-dimensional orthogonal space `(Scene, Factor, Function, Status)` — a mathematically rigorous foundation for enterprise data management.
 
-Latest model version is anchored at [`latest.json`](latest.json); each release is additionally pinned by an **annotated git tag** of the same name (`v{major}.{minor}.{patch}`). The latest publish (`v10.0.29`, 2026-09-20) carries **972 inherited tables** (13 `zc_ad_*` abstract + 959 `zc_id_*` implement) and **254 seed tables**, verified by a full rebuild on a dedicated verification database.
+The current model version, publish timestamp and per-table seed row counts are anchored in [`latest.json`](latest.json); the seed table set and declaration surface live in [`model-contract.json`](model-contract.json) — this document does not restate numbers that move with each publish. Each release is additionally pinned by an **annotated git tag** of the same name (`v{major}.{minor}.{patch}`) and verified by a full rebuild on a dedicated verification database (see `verify-report.json`).
 
 ---
 
@@ -16,10 +16,10 @@ Published artifacts live at **fixed paths** in the repository root — there is 
 
 ```
 Alioth/
-├── latest.json                     # Version anchor: version, published_at, pg_dump_version, per-table seed row counts, file list
+├── latest.json                     # Version anchor: version, published_at, pg_dump_version, description, per-table seed row counts, file list
 ├── 001_schema.sql                  # CREATE SCHEMA IF NOT EXISTS isahl
-├── 002_isahl_tables.sql            # isahl schema structure only (pure CREATE/ALTER, post-processed; 972 tables)
-├── seed-dimensions.sql             # Seed data for the 254 dimension/category/status/dictionary tables
+├── 002_isahl_tables.sql            # isahl schema structure only (pure CREATE/ALTER, post-processed)
+├── seed-dimensions.sql             # Model-level seed table set data (set resolved from the model's own declaration)
 ├── seed-dimensions.meta.json       # Expected row counts per seed table (for verification)
 ├── seed-model-contract.sql         # Model-level seed contract (declared seed table set, idempotent)
 ├── model-contract.json             # Machine-readable model contract of this publish
@@ -32,8 +32,8 @@ The working tree holds exactly one version — the one `latest.json` names. Any 
 
 ```bash
 git fetch --tags
-git show v10.0.29:002_isahl_tables.sql > /tmp/002_isahl_tables.sql   # single file
-git archive v10.0.29 | tar -x -C /tmp/alioth-v10.0.29                # whole snapshot
+git show <version>:002_isahl_tables.sql > /tmp/002_isahl_tables.sql   # single file
+git archive <version> | tar -x -C /tmp/alioth-<version>               # whole snapshot
 ```
 
 ---
@@ -50,7 +50,7 @@ git archive v10.0.29 | tar -x -C /tmp/alioth-v10.0.29                # whole sna
 ```bash
 git clone https://github.com/CosmicTools9/Alioth.git
 cd Alioth
-# The checkout is the version named by latest.json; use `git checkout v10.0.29` for a historical snapshot.
+# The checkout is the version named by latest.json; use `git checkout <version>` for a historical snapshot.
 psql "$DATABASE_URL" -f 001_schema.sql
 psql "$DATABASE_URL" -f 002_isahl_tables.sql
 psql "$DATABASE_URL" -f seed-dimensions.sql
@@ -62,9 +62,9 @@ The files must be applied **in order**: schema → tables → seed data → seed
 ### Verification
 
 ```sql
--- Table counts (expected for v10.0.27)
-SELECT count(*) FROM pg_tables WHERE schemaname='isahl' AND tablename LIKE 'zc\_ad\_%';  -- 13
-SELECT count(*) FROM pg_tables WHERE schemaname='isahl' AND tablename LIKE 'zc\_id\_%';  -- 959
+-- Table counts: compare against latest.json's tables / verify-report.json structural round-trip
+SELECT count(*) FROM pg_tables WHERE schemaname='isahl' AND tablename LIKE 'zc\_ad\_%';
+SELECT count(*) FROM pg_tables WHERE schemaname='isahl' AND tablename LIKE 'zc\_id\_%';
 
 -- Seed dimensions loaded
 SELECT code, notice FROM isahl.zc_id_scene LIMIT 10;
@@ -232,13 +232,13 @@ business_table.qk_date  (bigint) → zc_id_scal-date.id  → zc_id_scal-date.dat
 
 Each release is produced by the model publishing pipeline:
 
-1. Export the `isahl` schema from the authoritative database via `pg_dump --schema-only` (plus data-only dumps of the 254 seed tables).
+1. Export the `isahl` schema from the authoritative database via `pg_dump --schema-only` (plus data-only dumps of the model-level seed table set — the set is resolved from `isahl.gf_seed_tables()`, never hard-coded).
 2. Post-process to **pure CREATE/ALTER** form: strip runtime-only statements, inline `id` column DEFAULTs are extracted and re-applied as `ALTER TABLE ... ALTER COLUMN id SET DEFAULT isahl.gen_next_uid(...)` statements, ordered topologically by inheritance depth so every inherited table binds its own generator.
-3. Write the artifacts at their **fixed paths** in the repository root (including the machine-readable `model-contract.json` / `seed-model-contract.sql`) and update `latest.json` (version, timestamp, `pg_dump_version`, per-table seed counts, file list).
-4. Commit the artifacts and create an **annotated tag** `<version>` (name = anchor version); a tag already pointing at another commit is rejected (no tag reuse).
-5. **Rebuild verification**: on a dedicated clean verification database, drop `isahl` / `isahl_auth` / `isahl_audit` and re-apply the SQL files in order with `ON_ERROR_STOP=1`, then assert seed-table row counts (per-table round-trip against the publish snapshot), `gen_next_uid` uniqueness (0 conflicts, 0 missing), and structural round-trip (972-table set identical to source). The report is persisted as `verify-report.json` at the repository root; a passing rebuild marks the version `verified`.
+3. Write the artifacts at their **fixed paths** in the repository root (including the machine-readable `model-contract.json` / `seed-model-contract.sql`) and update `latest.json` (version, timestamp, `pg_dump_version`, publish description, per-table seed counts, file list).
+4. Commit the artifacts and create an **annotated tag** `<version>` (name = anchor version; message carries version / publish time / publish description); a tag already pointing at another commit is rejected (no tag reuse).
+5. **Rebuild verification**: on a dedicated clean verification database, drop `isahl` / `isahl_auth` / `isahl_audit` and re-apply the SQL files in order with `ON_ERROR_STOP=1`, then assert seed-table row counts (per-table round-trip against the publish snapshot), `gen_next_uid` uniqueness (0 conflicts, 0 missing), and structural round-trip (table set identical to source). The report is persisted as `verify-report.json` at the repository root; a passing rebuild marks the version `verified`.
 
-Versioning follows [SemVer](https://semver.org/). Versions never decrease; the floor is `v10.0.0`. Publish records (version, description, output directory, file list, status) are tracked in `isahl_meta.model_publish_records`.
+Versioning follows [SemVer](https://semver.org/). Versions never decrease; the floor is major version `10` (`10.x`). Publish records (version, description, output directory, file list, status) are tracked in `isahl_meta.model_publish_records`; the current anchor version and its publish description live in [`latest.json`](latest.json).
 
 ---
 

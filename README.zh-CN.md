@@ -6,7 +6,7 @@
 
 基于 **PostgreSQL 表继承** 的企业数据模型，以范畴论与交换本体论为理论基础。Alioth 将经济行为形式化为*交换范畴*中的态射：可逆交易构成一个**群胚**（groupoid），其上配备对合对称函子（每笔可逆交易都有镜像逆交易，`S² = id`）；每个业务实体在 4 维正交空间 `(Scene, Factor, Function, Status)` 中占据唯一坐标——为企业数据管理提供数学上严格的基础。
 
-最新模型版本以 [`latest.json`](latest.json) 为锚点；每次发布另以同名 **annotated git tag**（`v{major}.{minor}.{patch}`）固定该版本快照。最新发布（`v10.0.29`，2026-09-20）包含 **972 张继承表**（13 张 `zc_ad_*` 抽象表 + 959 张 `zc_id_*` 实现表）与 **254 张种子表**，已在专用验证库上通过全量重建验证。
+最新模型版本号、发布时间与逐表种子行数以 [`latest.json`](latest.json) 为唯一锚点，种子表集与声明面见 [`model-contract.json`](model-contract.json)——本文档不重复这些随发布变动的数字。每次发布另以同名 **annotated git tag**（`v{major}.{minor}.{patch}`）固定该版本快照，并在专用验证库上通过全量重建验证（结论见 `verify-report.json`）。
 
 ---
 
@@ -16,10 +16,10 @@
 
 ```
 Alioth/
-├── latest.json                     # 版本锚点：version、published_at、pg_dump_version、逐表种子行数、文件清单
+├── latest.json                     # 版本锚点：version、published_at、pg_dump_version、description、逐表种子行数、文件清单
 ├── 001_schema.sql                  # CREATE SCHEMA IF NOT EXISTS isahl
-├── 002_isahl_tables.sql            # isahl schema 结构（纯 CREATE/ALTER，后处理产物；972 张表）
-├── seed-dimensions.sql             # 254 张维度/类目/状态/字典表的种子数据
+├── 002_isahl_tables.sql            # isahl schema 结构（纯 CREATE/ALTER，后处理产物）
+├── seed-dimensions.sql             # 模型级种子表集数据（表集由模型侧声明解析，随模型演进）
 ├── seed-dimensions.meta.json       # 各种子表预期行数（用于验证）
 ├── seed-model-contract.sql         # 模型级种子契约（声明的种子表集合，幂等）
 ├── model-contract.json             # 本次发布的机读模型契约
@@ -32,8 +32,8 @@ Alioth/
 
 ```bash
 git fetch --tags
-git show v10.0.29:002_isahl_tables.sql > /tmp/002_isahl_tables.sql   # 单文件
-git archive v10.0.29 | tar -x -C /tmp/alioth-v10.0.29                # 整快照
+git show <version>:002_isahl_tables.sql > /tmp/002_isahl_tables.sql   # 单文件
+git archive <version> | tar -x -C /tmp/alioth-<version>               # 整快照
 ```
 
 ---
@@ -50,7 +50,7 @@ git archive v10.0.29 | tar -x -C /tmp/alioth-v10.0.29                # 整快照
 ```bash
 git clone https://github.com/CosmicTools9/Alioth.git
 cd Alioth
-# 检出即为 latest.json 所指版本；历史快照用 `git checkout v10.0.29`
+# 检出即为 latest.json 所指版本；历史快照用 `git checkout <version>`
 psql "$DATABASE_URL" -f 001_schema.sql
 psql "$DATABASE_URL" -f 002_isahl_tables.sql
 psql "$DATABASE_URL" -f seed-dimensions.sql
@@ -62,9 +62,9 @@ psql "$DATABASE_URL" -f seed-model-contract.sql
 ### 验证
 
 ```sql
--- 表计数（v10.0.27 预期值）
-SELECT count(*) FROM pg_tables WHERE schemaname='isahl' AND tablename LIKE 'zc\_ad\_%';  -- 13
-SELECT count(*) FROM pg_tables WHERE schemaname='isahl' AND tablename LIKE 'zc\_id\_%';  -- 959
+-- 表计数：与 latest.json 的 tables / verify-report.json 的结构往返项对照
+SELECT count(*) FROM pg_tables WHERE schemaname='isahl' AND tablename LIKE 'zc\_ad\_%';
+SELECT count(*) FROM pg_tables WHERE schemaname='isahl' AND tablename LIKE 'zc\_id\_%';
 
 -- 维度种子数据加载
 SELECT code, notice FROM isahl.zc_id_scene LIMIT 10;
@@ -232,13 +232,13 @@ business_table.qk_date  (bigint) → zc_id_scal-date.id  → zc_id_scal-date.dat
 
 每次发布由模型发布管道产出：
 
-1. 通过 `pg_dump --schema-only` 从权威数据库导出 `isahl` schema（外加 254 张种子表的数据导出）。
+1. 通过 `pg_dump --schema-only` 从权威数据库导出 `isahl` schema（外加模型级种子表集的数据导出——表集由 `isahl.gf_seed_tables()` 解析，不内嵌清单）。
 2. 后处理为 **纯 CREATE/ALTER** 形式：剥离仅运行时语句，内联 `id` 列 DEFAULT 提取后以 `ALTER TABLE ... ALTER COLUMN id SET DEFAULT isahl.gen_next_uid(...)` 语句重新应用，按继承深度拓扑排序，使每个继承表绑定自己的生成器。
-3. 在仓库根**固定路径**写入产物（含机读契约 `model-contract.json` / `seed-model-contract.sql`）并更新 `latest.json`（版本、时间戳、`pg_dump_version`、逐表种子计数、文件清单）。
-4. 提交产物并创建 **annotated tag** `<version>`（tag 名 = 锚点版本）；已存在且指向其他提交的同名 tag 被拒绝（禁止 tag 复用）。
-5. **重建验证**：在专用干净验证库上，删除 `isahl` / `isahl_auth` / `isahl_audit` 后按顺序以 `ON_ERROR_STOP=1` 重放 SQL 文件，再断言种子表行数（逐表与发布快照往返一致）、`gen_next_uid` 唯一性（0 冲突、0 缺失）与结构往返（972 表集合与源库一致）。报告落盘为仓库根的 `verify-report.json`；验证通过后版本标记为 `verified`。
+3. 在仓库根**固定路径**写入产物（含机读契约 `model-contract.json` / `seed-model-contract.sql`）并更新 `latest.json`（版本、时间戳、`pg_dump_version`、发布描述、逐表种子计数、文件清单）。
+4. 提交产物并创建 **annotated tag** `<version>`（tag 名 = 锚点版本，消息含版本 / 发布时间 / 发布描述）；已存在且指向其他提交的同名 tag 被拒绝（禁止 tag 复用）。
+5. **重建验证**：在专用干净验证库上，删除 `isahl` / `isahl_auth` / `isahl_audit` 后按顺序以 `ON_ERROR_STOP=1` 重放 SQL 文件，再断言种子表行数（逐表与发布快照往返一致）、`gen_next_uid` 唯一性（0 冲突、0 缺失）与结构往返（表集合与源库一致）。报告落盘为仓库根的 `verify-report.json`；验证通过后版本标记为 `verified`。
 
-版本遵循 [SemVer](https://semver.org/)。版本只增不减，下限为 `v10.0.0`。发布记录（版本、描述、输出目录、文件清单、状态）记录于 `isahl_meta.model_publish_records`。
+版本遵循 [SemVer](https://semver.org/)。版本只增不减，下限为主版本 `10`（`10.x`）。发布记录（版本、描述、输出目录、文件清单、状态）记录于 `isahl_meta.model_publish_records`；当前锚点版本与其发布描述见 [`latest.json`](latest.json)。
 
 ---
 

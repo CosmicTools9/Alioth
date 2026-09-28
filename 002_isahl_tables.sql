@@ -3180,7 +3180,8 @@ INHERITS (isahl.zc_id_category);
 
 
 CREATE TABLE isahl."zc_id_cate-file" (
-    id bigint NOT NULL
+    id bigint NOT NULL,
+    mime text
 )
 INHERITS (isahl.zc_id_category);
 
@@ -13262,7 +13263,8 @@ INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
 CREATE TABLE isahl.zc_id_project_rr_dependency (
-    id bigint NOT NULL
+    id bigint NOT NULL,
+    "qk_budget-segm" bigint
 )
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
@@ -31968,6 +31970,10 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-license" ON isahl."zc_id_stus-license
 
 
 
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-lock" ON isahl."zc_id_stus-lock" USING btree (id);
+
+
+
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-marital" ON isahl."zc_id_stus-marital" USING btree (id);
 
 
@@ -32049,6 +32055,10 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-purchase" ON isahl."zc_id_stus-purcha
 
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-retail" ON isahl."zc_id_stus-retail" USING btree (id);
+
+
+
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-review" ON isahl."zc_id_stus-review" USING btree (id);
 
 
 
