@@ -289,82 +289,82 @@ $$;
 CREATE FUNCTION isahl.gf_check_gen_next_uid_uniqueness() RETURNS TABLE(table_name name, schema_name name, table_code bigint, default_expr text, is_duplicate boolean, conflict_count bigint, missing_default boolean)
     LANGUAGE plpgsql STABLE
     AS $$
-        BEGIN
-            RETURN QUERY
-            WITH RECURSIVE
-            uid_defaults AS (
-                SELECT
-                    c.relname::name AS table_name,
-                    n.nspname::name AS schema_name,
-                    -- gen_next_uid 内部将 code 截断为 16 位（& 65535），
-                    -- 唯一性检测必须按掩码后值比较，否则同余字面值逃逸检测
-                    (substring(pg_get_expr(d.adbin, d.adrelid)
-                        FROM 'gen_next_uid\((?:\(?)([0-9]+)(?:\)?::bigint)?\)')::bigint & 65535) AS table_code,
-                    pg_get_expr(d.adbin, d.adrelid)::text AS default_expr
-                FROM pg_class c
-                JOIN pg_namespace n ON n.oid = c.relnamespace
-                JOIN pg_attrdef d ON d.adrelid = c.oid
-                    AND d.adnum = (
-                        SELECT a.attnum FROM pg_attribute a
-                        WHERE a.attrelid = c.oid AND a.attname = 'id'
-                    )
-                WHERE c.relkind = 'r'
-                  -- 元数据异常检测仅纳入 isahl.* 本体 schema（批注闭环：wz_fssc 等业务 schema 泄漏为 UID 冲突误报）
-                  AND n.nspname = 'isahl'
-                  AND pg_get_expr(d.adbin, d.adrelid) LIKE '%gen_next_uid(%'
-            ),
-            code_counts AS (
-                SELECT u.table_code, COUNT(*) AS cnt
-                FROM uid_defaults u
-                WHERE u.table_code IS NOT NULL
-                GROUP BY u.table_code
-            ),
-            gen_uid AS (
-                SELECT
-                    u.table_name, u.schema_name, u.table_code,
-                    u.default_expr,
-                    (c.cnt > 1) AS is_duplicate,
-                    c.cnt AS conflict_count,
-                    false::boolean AS missing_default
-                FROM uid_defaults u
-                LEFT JOIN code_counts c ON c.table_code = u.table_code
-            ),
-            inherit_all AS (
-                SELECT c.oid AS leaf_oid, c.oid AS node_oid, c.relname AS leaf_name
-                FROM pg_class c
-                JOIN pg_namespace n ON n.oid = c.relnamespace
-                WHERE n.nspname = 'isahl' AND c.relkind = 'r'
-                UNION ALL
-                SELECT ic.leaf_oid, i.inhparent AS node_oid, ic.leaf_name
-                FROM inherit_all ic
-                JOIN pg_inherits i ON i.inhrelid = ic.node_oid
-            ),
-            no_default AS (
-                SELECT DISTINCT leaf_name
-                FROM inherit_all ic
-                WHERE NOT EXISTS (
-                    SELECT 1 FROM pg_attrdef d
-                    JOIN pg_attribute a ON a.attrelid = d.adrelid AND a.attnum = d.adnum
-                    WHERE d.adrelid = ic.node_oid AND a.attname = 'id'
-                )
-            ),
-            missing_id AS (
-                SELECT
-                    m.leaf_name::name AS table_name,
-                    'isahl'::name AS schema_name,
-                    0::bigint AS table_code,
-                    ''::text AS default_expr,
-                    false::boolean AS is_duplicate,
-                    0::bigint AS conflict_count,
-                    true::boolean AS missing_default
-                FROM no_default m
+BEGIN
+    RETURN QUERY
+    WITH RECURSIVE
+    uid_defaults AS (
+        SELECT
+            c.relname::name AS table_name,
+            n.nspname::name AS schema_name,
+            -- gen_next_uid 内部将 code 截断为 16 位（& 65535），
+            -- 唯一性检测必须按掩码后值比较，否则同余字面值逃逸检测
+            (substring(pg_get_expr(d.adbin, d.adrelid)
+                FROM 'gen_next_uid\((?:\(?)([0-9]+)(?:\)?::bigint)?\)')::bigint & 65535) AS table_code,
+            pg_get_expr(d.adbin, d.adrelid)::text AS default_expr
+        FROM pg_class c
+        JOIN pg_namespace n ON n.oid = c.relnamespace
+        JOIN pg_attrdef d ON d.adrelid = c.oid
+            AND d.adnum = (
+                SELECT a.attnum FROM pg_attribute a
+                WHERE a.attrelid = c.oid AND a.attname = 'id'
             )
-            SELECT * FROM gen_uid
-            UNION ALL
-            SELECT * FROM missing_id
-            ORDER BY conflict_count DESC, table_code, table_name;
-        END;
-        $$;
+        WHERE c.relkind = 'r'
+          -- 元数据异常检测仅纳入 isahl.* 本体 schema（批注闭环：wz_fssc 等业务 schema 泄漏为 UID 冲突误报）
+          AND n.nspname = 'isahl'
+          AND pg_get_expr(d.adbin, d.adrelid) LIKE '%gen_next_uid(%'
+    ),
+    code_counts AS (
+        SELECT u.table_code, COUNT(*) AS cnt
+        FROM uid_defaults u
+        WHERE u.table_code IS NOT NULL
+        GROUP BY u.table_code
+    ),
+    gen_uid AS (
+        SELECT
+            u.table_name, u.schema_name, u.table_code,
+            u.default_expr,
+            (c.cnt > 1) AS is_duplicate,
+            c.cnt AS conflict_count,
+            false::boolean AS missing_default
+        FROM uid_defaults u
+        LEFT JOIN code_counts c ON c.table_code = u.table_code
+    ),
+    inherit_all AS (
+        SELECT c.oid AS leaf_oid, c.oid AS node_oid, c.relname AS leaf_name
+        FROM pg_class c
+        JOIN pg_namespace n ON n.oid = c.relnamespace
+        WHERE n.nspname = 'isahl' AND c.relkind = 'r'
+        UNION ALL
+        SELECT ic.leaf_oid, i.inhparent AS node_oid, ic.leaf_name
+        FROM inherit_all ic
+        JOIN pg_inherits i ON i.inhrelid = ic.node_oid
+    ),
+    no_default AS (
+        SELECT DISTINCT leaf_name
+        FROM inherit_all ic
+        WHERE NOT EXISTS (
+            SELECT 1 FROM pg_attrdef d
+            JOIN pg_attribute a ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+            WHERE d.adrelid = ic.node_oid AND a.attname = 'id'
+        )
+    ),
+    missing_id AS (
+        SELECT
+            m.leaf_name::name AS table_name,
+            'isahl'::name AS schema_name,
+            0::bigint AS table_code,
+            ''::text AS default_expr,
+            false::boolean AS is_duplicate,
+            0::bigint AS conflict_count,
+            true::boolean AS missing_default
+        FROM no_default m
+    )
+    SELECT * FROM gen_uid
+    UNION ALL
+    SELECT * FROM missing_id
+    ORDER BY conflict_count DESC, table_code, table_name;
+END;
+$$;
 
 
 
@@ -19194,7 +19194,9 @@ CREATE TABLE isahl."zc_id_unit-price" (
     position_ text,
     c_type_ text DEFAULT '/'::text,
     common boolean,
-    fix_type text
+    fix_type text,
+    CONSTRAINT "ck_zc_id_unit-price_fk_prefix_not_self" CHECK (((fk_prefix IS NULL) OR (((fk_prefix >> 48) & (65535)::bigint) <> 150))),
+    CONSTRAINT "ck_zc_id_unit-price_fk_suffix_not_self" CHECK (((fk_suffix IS NULL) OR (((fk_suffix >> 48) & (65535)::bigint) <> 150)))
 )
 INHERITS (isahl.zc_id_unit);
 
