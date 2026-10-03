@@ -16682,24 +16682,6 @@ INHERITS (isahl.zc_id_status);
 
 
 
-CREATE TABLE isahl."zc_id_stus-place" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    enable boolean DEFAULT true,
-    flag isahl.status_flag
-)
-INHERITS (isahl."zc_id_stus-storage");
-
-
-
 CREATE TABLE isahl."zc_id_stus-channel" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16708,13 +16690,18 @@ CREATE TABLE isahl."zc_id_stus-channel" (
     updated_by_id bigint DEFAULT 1,
     notice text,
     t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
     code text,
     o_number text,
     comments text,
+    ak_benefit_user bigint[],
+    ak_permit_user bigint[],
+    ak_access_user bigint[],
     enable boolean DEFAULT true,
-    flag isahl.status_flag
+    flag isahl.status_flag CONSTRAINT zc_id_status_flag_not_null NOT NULL
 )
-INHERITS (isahl."zc_id_stus-place");
+INHERITS (isahl.zc_id_status);
 
 
 
@@ -17178,6 +17165,24 @@ INHERITS (isahl.zc_id_status);
 
 
 
+CREATE TABLE isahl."zc_id_stus-place" (
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint DEFAULT 1,
+    updated_by_id bigint DEFAULT 1,
+    notice text,
+    t_color_ text,
+    code text,
+    o_number text,
+    comments text,
+    enable boolean DEFAULT true,
+    flag isahl.status_flag
+)
+INHERITS (isahl."zc_id_stus-storage");
+
+
+
 CREATE TABLE isahl."zc_id_stus-plan" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -17398,6 +17403,13 @@ CREATE TABLE isahl."zc_id_stus-purchase" (
     flag isahl.status_flag
 )
 INHERITS (isahl."zc_id_stus-trade");
+
+
+
+CREATE TABLE isahl."zc_id_stus-repository" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_stus-storage");
 
 
 
@@ -17642,13 +17654,18 @@ CREATE TABLE isahl."zc_id_stus-vessel" (
     updated_by_id bigint DEFAULT 1,
     notice text,
     t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
     code text,
     o_number text,
     comments text,
+    ak_benefit_user bigint[],
+    ak_permit_user bigint[],
+    ak_access_user bigint[],
     enable boolean DEFAULT true,
-    flag isahl.status_flag
+    flag isahl.status_flag CONSTRAINT zc_id_status_flag_not_null NOT NULL
 )
-INHERITS (isahl."zc_id_stus-vehicle");
+INHERITS (isahl.zc_id_status);
 
 
 
@@ -22952,6 +22969,26 @@ ALTER TABLE ONLY isahl."zc_id_stus-protocol" ALTER COLUMN enable SET DEFAULT tru
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stus-repository" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-repository" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-repository" ALTER COLUMN created_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-repository" ALTER COLUMN updated_by_id SET DEFAULT 1;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-repository" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stus-review" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -27369,6 +27406,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-protocol"
 
 ALTER TABLE ONLY isahl."zc_id_stus-purchase"
     ADD CONSTRAINT "zc_id_stus-purchase_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-repository"
+    ADD CONSTRAINT "zc_id_stus-repository_pkey" PRIMARY KEY (id);
 
 
 
@@ -33207,6 +33249,7 @@ ALTER TABLE ONLY isahl."zc_id_stus-billing" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_stus-billing_verify" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((76)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-bom" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((77)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-certification" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((78)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stus-channel" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((306)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-collect" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((79)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-commit" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((80)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-contact_infos" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((81)::bigint);
@@ -33252,6 +33295,7 @@ ALTER TABLE ONLY isahl."zc_id_stus-trade" ALTER COLUMN id SET DEFAULT isahl.gen_
 ALTER TABLE ONLY isahl."zc_id_stus-training" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((487)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((482)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-version" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((120)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stus-vessel" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((446)::bigint);
 ALTER TABLE ONLY isahl."zc_id_tags-baseline" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((121)::bigint);
 ALTER TABLE ONLY isahl."zc_id_tags-batch" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((122)::bigint);
 ALTER TABLE ONLY isahl."zc_id_tags-bom_item" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((123)::bigint);
@@ -33406,6 +33450,7 @@ ALTER TABLE ONLY isahl."zc_id_stus-prod-purchase" ALTER COLUMN id SET DEFAULT is
 ALTER TABLE ONLY isahl."zc_id_stus-prod-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((198)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-prod-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((199)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((200)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stus-repository" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((529)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-retail" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((201)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-service" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((202)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-supranational" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((203)::bigint);
@@ -33634,7 +33679,6 @@ ALTER TABLE ONLY isahl."zc_id_stor-plc-warehouse" ALTER COLUMN id SET DEFAULT is
 ALTER TABLE ONLY isahl."zc_id_stor-plc-yard" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-traffic_line_rr_stop" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((478)::bigint);
 ALTER TABLE ONLY isahl."zc_id_storage_rr_stock-in" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((305)::bigint);
-ALTER TABLE ONLY isahl."zc_id_stus-channel" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((306)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-department" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((307)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-legal_person" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((308)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-vehicle" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((309)::bigint);
@@ -33923,7 +33967,6 @@ ALTER TABLE ONLY isahl."zc_id_segm-weight" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_stat-smt-bank" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-cash" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-channel" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_stus-vessel" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((446)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-country" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_subj-group_rr_member" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((447)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-ministry" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();

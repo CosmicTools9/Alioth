@@ -1,5 +1,5 @@
 
-\restrict 5CEWlIL4bbqXyGzVdcLSBhnDIWG79TLV9l7l9SerwVzYKpEeaUC2mOOHesDqYUb
+\restrict YWfibMF84A39wtGLMAC9hfFLaebS0PoQuHdp0c57bccRDLooYuK5ydbLaS6wFYp
 
 
 SET statement_timeout = 0;
@@ -2520,6 +2520,11 @@ INSERT INTO isahl."zc_id_stus-protocol" VALUES ('2026-08-30 02:36:16.004413+08',
 
 
 
+INSERT INTO isahl."zc_id_stus-repository" VALUES ('2026-10-03 01:02:18.469174+08', '2026-10-03 01:35:52.275659+08', 149119522346165437, 1, 1, '启用', NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, true, 'start') ON CONFLICT DO NOTHING;
+INSERT INTO isahl."zc_id_stus-repository" VALUES ('2026-10-03 01:02:18.469174+08', '2026-10-03 01:35:52.275659+08', 148914629871310409, 1, 1, '已归档', NULL, NULL, NULL, 'archived', NULL, NULL, NULL, NULL, NULL, true, 'end') ON CONFLICT DO NOTHING;
+
+
+
 
 
 
@@ -3325,5 +3330,5 @@ INSERT INTO isahl."zc_id_unit-working" VALUES ('2026-08-29 22:53:09.773239+08', 
 
 
 
-\unrestrict 5CEWlIL4bbqXyGzVdcLSBhnDIWG79TLV9l7l9SerwVzYKpEeaUC2mOOHesDqYUb
+\unrestrict YWfibMF84A39wtGLMAC9hfFLaebS0PoQuHdp0c57bccRDLooYuK5ydbLaS6wFYp
 
