@@ -8373,6 +8373,13 @@ INHERITS (isahl."zc_id_orde-traffic");
 
 
 
+CREATE TABLE isahl."zc_id_orde-manual" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_stat-trade_order");
+
+
+
 CREATE TABLE isahl."zc_id_orde-multimodal" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15116,6 +15123,13 @@ INHERITS (isahl.zc_id_statement);
 
 
 
+CREATE TABLE isahl."zc_id_stat-mal-voucher" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_stat-sto-voucher");
+
+
+
 CREATE TABLE isahl."zc_id_stat-slf-voucher" (
     id bigint NOT NULL,
     qk_forcast_period bigint,
@@ -21325,6 +21339,14 @@ ALTER TABLE ONLY isahl."zc_id_orde-lbl" ALTER COLUMN updated_at SET DEFAULT now(
 
 
 
+ALTER TABLE ONLY isahl."zc_id_orde-manual" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_orde-manual" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_orde-payment" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22482,6 +22504,14 @@ ALTER TABLE ONLY isahl."zc_id_stat-maintenance" ALTER COLUMN created_at SET DEFA
 
 
 ALTER TABLE ONLY isahl."zc_id_stat-maintenance" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-mal-voucher" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-mal-voucher" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -25229,6 +25259,11 @@ ALTER TABLE ONLY isahl."zc_id_orde-lbl"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_orde-manual"
+    ADD CONSTRAINT "zc_id_orde-manual_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_orde-payment"
     ADD CONSTRAINT "zc_id_orde-payment_pkey" PRIMARY KEY (id);
 
@@ -26794,6 +26829,11 @@ ALTER TABLE ONLY isahl."zc_id_stat-maintenance"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stat-mal-voucher"
+    ADD CONSTRAINT "zc_id_stat-mal-voucher_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stat-slf-voucher"
     ADD CONSTRAINT "zc_id_stat-slf-voucher_pkey" PRIMARY KEY (id);
 
@@ -27967,6 +28007,142 @@ CREATE INDEX idx_mv_title_ownership_prod ON isahl.mv_title_ownership USING btree
 
 
 CREATE UNIQUE INDEX idx_mv_title_ownership_subj_prod ON isahl.mv_title_ownership USING btree (subject_id, production_id);
+
+
+
+CREATE INDEX idx_trgm_zc_id_docu_accounting_code ON isahl."zc_id_docu-accounting" USING gin (code isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_docu_accounting_comments ON isahl."zc_id_docu-accounting" USING gin (comments isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_docu_accounting_notice ON isahl."zc_id_docu-accounting" USING gin (notice isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_file_document_code ON isahl."zc_id_file-document" USING gin (code isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_file_document_comments ON isahl."zc_id_file-document" USING gin (comments isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_file_document_notice ON isahl."zc_id_file-document" USING gin (notice isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_law_civil_article_comments ON isahl."zc_id_law-civil-article" USING gin (comments isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_law_civil_article_notice ON isahl."zc_id_law-civil-article" USING gin (notice isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_law_common_holding_comments ON isahl."zc_id_law-common-holding" USING gin (comments isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_law_common_holding_notice ON isahl."zc_id_law-common-holding" USING gin (notice isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_law_common_section_comments ON isahl."zc_id_law-common-section" USING gin (comments isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_law_common_section_notice ON isahl."zc_id_law-common-section" USING gin (notice isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_law_intl_article_comments ON isahl."zc_id_law-intl-article" USING gin (comments isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_law_intl_article_notice ON isahl."zc_id_law-intl-article" USING gin (notice isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_production_code ON isahl.zc_id_production USING gin (code isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_production_notice ON isahl.zc_id_production USING gin (notice isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_air_caac_article_comments ON isahl."zc_id_stan-air-caac-article" USING gin (comments isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_air_caac_article_notice ON isahl."zc_id_stan-air-caac-article" USING gin (notice isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_air_easa_article_comments ON isahl."zc_id_stan-air-easa-article" USING gin (comments isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_air_easa_article_notice ON isahl."zc_id_stan-air-easa-article" USING gin (notice isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_air_faa_article_comments ON isahl."zc_id_stan-air-faa-article" USING gin (comments isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_air_faa_article_notice ON isahl."zc_id_stan-air-faa-article" USING gin (notice isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_air_icao_article_comments ON isahl."zc_id_stan-air-icao-article" USING gin (comments isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_air_icao_article_notice ON isahl."zc_id_stan-air-icao-article" USING gin (notice isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_fin_cas_article_comments ON isahl."zc_id_stan-fin-cas-article" USING gin (comments isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_fin_cas_article_notice ON isahl."zc_id_stan-fin-cas-article" USING gin (notice isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_fin_gaap_article_comments ON isahl."zc_id_stan-fin-gaap-article" USING gin (comments isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_fin_gaap_article_notice ON isahl."zc_id_stan-fin-gaap-article" USING gin (notice isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_fin_ifrs_article_comments ON isahl."zc_id_stan-fin-ifrs-article" USING gin (comments isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_fin_ifrs_article_notice ON isahl."zc_id_stan-fin-ifrs-article" USING gin (notice isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_operation_comments ON isahl."zc_id_stan-operation" USING gin (comments isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_operation_notice ON isahl."zc_id_stan-operation" USING gin (notice isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_prod_quality_comments ON isahl."zc_id_stan-prod_quality" USING gin (comments isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_zc_id_stan_prod_quality_notice ON isahl."zc_id_stan-prod_quality" USING gin (notice isahl.gin_trgm_ops);
 
 
 
@@ -33572,6 +33748,7 @@ ALTER TABLE ONLY isahl."zc_id_oper-take_off_stock" ALTER COLUMN id SET DEFAULT i
 ALTER TABLE ONLY isahl."zc_id_oper-trailer" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-transport_tracking" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orde-consult" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_orde-manual" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((531)::bigint);
 ALTER TABLE ONLY isahl."zc_id_orde-payment" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orde-retail" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orde-storage" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -33631,6 +33808,7 @@ ALTER TABLE ONLY isahl."zc_id_stan-operation" ALTER COLUMN id SET DEFAULT isahl.
 ALTER TABLE ONLY isahl."zc_id_stan-prod_quality" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-bok-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-com-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_stat-mal-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((532)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-slf-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((503)::bigint);

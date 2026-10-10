@@ -7,7 +7,7 @@
     },
     {
       "name": "002_isahl_tables.sql",
-      "size_bytes": 913473
+      "size_bytes": 919007
     },
     {
       "name": "model-contract.json",
@@ -27,7 +27,7 @@
     }
   ],
   "pg_dump_version": "pg_dump (PostgreSQL) 18.6 (Homebrew)",
-  "published_at": "2026-10-03T14:58:42.193626+00:00",
+  "published_at": "2026-10-10T18:53:59.644434+00:00",
   "tables": {
     "zc_id_cate-acc-title": 13,
     "zc_id_cate-agent": 0,
@@ -288,5 +288,5 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "version": "v10.0.38"
+  "version": "v10.0.39"
 }
