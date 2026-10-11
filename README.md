@@ -44,6 +44,9 @@ git archive <version> | tar -x -C /tmp/alioth-<version>               # whole sn
 
 - PostgreSQL 14+
 - The `isahl_meta` type definitions referenced by `isahl` columns must exist (enums/domains are injected from the source database during verification; a standard deployment ships them together with the schema).
+- **Extensions MUST be installed in the schema the artifact qualifies them with**: `CREATE SCHEMA IF NOT EXISTS isahl; CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA isahl;` (same for pgvector).
+  `pg_dump` always schema-qualifies non-default operator classes and non-exported types (`… USING gin (code isahl.gin_trgm_ops)`, `isahl.vector(1024)`);
+  a qualified name matches verbatim, so installing the extension elsewhere is equivalent to the object not existing, and `002_isahl_tables.sql` stops at the first such index.
 
 ### Setup
 
