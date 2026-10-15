@@ -678,7 +678,8 @@ CREATE TABLE isahl.zc_ad_object (
     notice text,
     t_color_ text,
     deleted_at timestamp with time zone,
-    deleted_by_id bigint
+    deleted_by_id bigint,
+    operated_by_id bigint
 );
 
 
@@ -1296,7 +1297,8 @@ CREATE TABLE isahl.zc_id_lifecycle_r_evaluation (
     ref_left bigint,
     ref_right bigint,
     comments text,
-    qk_period bigint
+    qk_period bigint,
+    seq integer
 )
 INHERITS (isahl.zc_ad_tensor_r_dimension);
 
@@ -2967,8 +2969,8 @@ CREATE TABLE isahl.zc_id_category (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -2984,8 +2986,8 @@ CREATE TABLE isahl."zc_id_cate-acc-title" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3008,8 +3010,8 @@ CREATE TABLE isahl."zc_id_cate-subject" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3026,8 +3028,8 @@ CREATE TABLE isahl."zc_id_cate-agent" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3070,8 +3072,8 @@ CREATE TABLE isahl."zc_id_cate-bom-item" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3097,8 +3099,8 @@ CREATE TABLE isahl."zc_id_cate-clause" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3122,8 +3124,8 @@ CREATE TABLE isahl."zc_id_cate-contacts" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     deleted_at timestamp with time zone,
@@ -3158,8 +3160,8 @@ CREATE TABLE isahl."zc_id_cate-department" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3191,8 +3193,8 @@ CREATE TABLE isahl."zc_id_cate-group" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3210,8 +3212,8 @@ CREATE TABLE isahl."zc_id_cate-group_member" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3228,8 +3230,8 @@ CREATE TABLE isahl."zc_id_cate-identity" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3253,8 +3255,8 @@ CREATE TABLE isahl."zc_id_cate-sto-title" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3275,8 +3277,8 @@ CREATE TABLE isahl."zc_id_cate-inv-title" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3304,8 +3306,8 @@ CREATE TABLE isahl."zc_id_cate-inv-title-ns" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3325,8 +3327,8 @@ CREATE TABLE isahl."zc_id_cate-inve-trasnfer" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3364,8 +3366,8 @@ CREATE TABLE isahl."zc_id_cate-op_standard" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3382,8 +3384,8 @@ CREATE TABLE isahl."zc_id_cate-ope-title" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3413,8 +3415,8 @@ CREATE TABLE isahl."zc_id_cate-ope-title-ns" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3436,8 +3438,8 @@ CREATE TABLE isahl."zc_id_cate-org_system" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint
 )
 INHERITS (isahl.zc_id_category);
 
@@ -3447,8 +3449,8 @@ CREATE TABLE isahl."zc_id_cate-organization" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint
 )
 INHERITS (isahl."zc_id_cate-subject");
 
@@ -3458,8 +3460,8 @@ CREATE TABLE isahl."zc_id_cate-position" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3477,8 +3479,8 @@ CREATE TABLE isahl."zc_id_cate-proc_op" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3495,8 +3497,8 @@ CREATE TABLE isahl."zc_id_cate-process" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3537,8 +3539,8 @@ CREATE TABLE isahl."zc_id_cate-society" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3572,8 +3574,8 @@ CREATE TABLE isahl."zc_id_cate-tax-title" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3626,8 +3628,8 @@ CREATE TABLE isahl."zc_id_cate-tsp-title" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3655,8 +3657,8 @@ CREATE TABLE isahl."zc_id_cate-tsp-title-ns" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3676,8 +3678,8 @@ CREATE TABLE isahl."zc_id_cate-ver_branch" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3694,8 +3696,8 @@ CREATE TABLE isahl."zc_id_cate-warehouse" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3712,8 +3714,8 @@ CREATE TABLE isahl."zc_id_cate-wh-title" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3737,8 +3739,8 @@ CREATE TABLE isahl."zc_id_cons-cron-cate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3800,8 +3802,8 @@ CREATE TABLE isahl."zc_id_cons-factor-cate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3819,8 +3821,8 @@ CREATE TABLE isahl."zc_id_cons-function-cate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3844,8 +3846,8 @@ CREATE TABLE isahl."zc_id_cons-industry-cate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3862,8 +3864,8 @@ CREATE TABLE isahl."zc_id_cons-license-cate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3880,8 +3882,8 @@ CREATE TABLE isahl."zc_id_cons-packing-cate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -3905,8 +3907,8 @@ CREATE TABLE isahl."zc_id_cons-r-type-cate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -4274,8 +4276,7 @@ CREATE TABLE isahl.zc_id_contract_r_term (
     code text,
     ref_left bigint,
     ref_right bigint,
-    comments text,
-    seq bigint
+    comments text
 )
 INHERITS (isahl.zc_id_lifecycle_r_evaluation);
 
@@ -5109,8 +5110,8 @@ CREATE TABLE isahl."zc_id_empl-natural_r_marital-status" (
     created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_status_created_at_not_null NOT NULL,
     updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_status_updated_at_not_null NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     deleted_at timestamp with time zone,
@@ -5354,8 +5355,8 @@ CREATE TABLE isahl.zc_id_factor (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -5675,8 +5676,8 @@ CREATE TABLE isahl.zc_id_function (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -6690,6 +6691,13 @@ INHERITS (isahl.zc_id_level);
 CREATE TABLE isahl."zc_id_leve-vote_weight" (
 )
 INHERITS (isahl.zc_id_level);
+
+
+
+CREATE TABLE isahl."zc_id_lifecycle_r_appraval-status" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
 
@@ -14507,8 +14515,8 @@ CREATE TABLE isahl.zc_id_scene (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -15295,6 +15303,20 @@ INHERITS (isahl."zc_id_stat-smt-voucher");
 
 
 
+CREATE TABLE isahl."zc_id_stat-sto-voucher_rr_deta-counting" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_statement_rr_reason);
+
+
+
+CREATE TABLE isahl."zc_id_stat-sto-voucher_rr_order" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_statement_rr_reason);
+
+
+
 CREATE TABLE isahl."zc_id_stat-task" (
     id bigint NOT NULL,
     "qk_write-off" bigint
@@ -15445,8 +15467,8 @@ CREATE TABLE isahl.zc_id_status (
     created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_status_created_at_not_null1 NOT NULL,
     updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_status_updated_at_not_null1 NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16510,8 +16532,8 @@ CREATE TABLE isahl."zc_id_stus-storage" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16528,8 +16550,8 @@ CREATE TABLE isahl."zc_id_stus-account" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16546,8 +16568,8 @@ CREATE TABLE isahl."zc_id_stus-subject" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16564,8 +16586,8 @@ CREATE TABLE isahl."zc_id_stus-agent" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16589,8 +16611,8 @@ CREATE TABLE isahl."zc_id_stus-approve" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16621,8 +16643,8 @@ CREATE TABLE isahl."zc_id_stus-billing" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16639,8 +16661,8 @@ CREATE TABLE isahl."zc_id_stus-billing_verify" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16657,8 +16679,8 @@ CREATE TABLE isahl."zc_id_stus-bin_location" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16675,8 +16697,8 @@ CREATE TABLE isahl."zc_id_stus-bom" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16700,8 +16722,8 @@ CREATE TABLE isahl."zc_id_stus-channel" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     deleted_at timestamp with time zone,
@@ -16723,8 +16745,8 @@ CREATE TABLE isahl."zc_id_stus-collect" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16741,8 +16763,8 @@ CREATE TABLE isahl."zc_id_stus-commit" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16759,8 +16781,8 @@ CREATE TABLE isahl."zc_id_stus-contact_infos" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16777,8 +16799,8 @@ CREATE TABLE isahl."zc_id_stus-contacts" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16795,8 +16817,8 @@ CREATE TABLE isahl."zc_id_stus-container" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16820,8 +16842,8 @@ CREATE TABLE isahl."zc_id_stus-counting" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16838,8 +16860,8 @@ CREATE TABLE isahl."zc_id_stus-country" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16856,8 +16878,8 @@ CREATE TABLE isahl."zc_id_stus-org" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16874,8 +16896,8 @@ CREATE TABLE isahl."zc_id_stus-department" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16899,8 +16921,8 @@ CREATE TABLE isahl."zc_id_stus-device" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16924,8 +16946,8 @@ CREATE TABLE isahl."zc_id_stus-employ" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -16976,8 +16998,8 @@ CREATE TABLE isahl."zc_id_stus-inv-voucher" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17001,8 +17023,8 @@ CREATE TABLE isahl."zc_id_stus-invoice_issue" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17019,8 +17041,8 @@ CREATE TABLE isahl."zc_id_stus-invoice_verify" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17043,8 +17065,8 @@ CREATE TABLE isahl."zc_id_stus-legal_person" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17061,8 +17083,8 @@ CREATE TABLE isahl."zc_id_stus-license" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17093,8 +17115,8 @@ CREATE TABLE isahl."zc_id_stus-message" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17111,8 +17133,8 @@ CREATE TABLE isahl."zc_id_stus-ministry" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17129,8 +17151,8 @@ CREATE TABLE isahl."zc_id_stus-natural" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17147,8 +17169,8 @@ CREATE TABLE isahl."zc_id_stus-operation" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17165,8 +17187,8 @@ CREATE TABLE isahl."zc_id_stus-payment" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17183,8 +17205,8 @@ CREATE TABLE isahl."zc_id_stus-place" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17201,8 +17223,8 @@ CREATE TABLE isahl."zc_id_stus-plan" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17219,8 +17241,8 @@ CREATE TABLE isahl."zc_id_stus-position" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17237,8 +17259,8 @@ CREATE TABLE isahl."zc_id_stus-pricing" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17255,8 +17277,8 @@ CREATE TABLE isahl."zc_id_stus-process" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17273,8 +17295,8 @@ CREATE TABLE isahl."zc_id_stus-production" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17291,8 +17313,8 @@ CREATE TABLE isahl."zc_id_stus-prod-made" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17309,8 +17331,8 @@ CREATE TABLE isahl."zc_id_stus-prod-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17327,8 +17349,8 @@ CREATE TABLE isahl."zc_id_stus-prod-request" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17345,8 +17367,8 @@ CREATE TABLE isahl."zc_id_stus-prod-sales" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17363,8 +17385,8 @@ CREATE TABLE isahl."zc_id_stus-project" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17388,8 +17410,8 @@ CREATE TABLE isahl."zc_id_stus-trade" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17406,8 +17428,8 @@ CREATE TABLE isahl."zc_id_stus-purchase" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17431,8 +17453,8 @@ CREATE TABLE isahl."zc_id_stus-retail" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17456,8 +17478,8 @@ CREATE TABLE isahl."zc_id_stus-service" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17474,8 +17496,8 @@ CREATE TABLE isahl."zc_id_stus-smt-voucher" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17492,8 +17514,8 @@ CREATE TABLE isahl."zc_id_stus-standard" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17517,8 +17539,8 @@ CREATE TABLE isahl."zc_id_stus-supranational" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17535,8 +17557,8 @@ CREATE TABLE isahl."zc_id_stus-task" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17553,8 +17575,8 @@ CREATE TABLE isahl."zc_id_stus-template" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17578,8 +17600,8 @@ CREATE TABLE isahl."zc_id_stus-tracking_log" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17596,8 +17618,8 @@ CREATE TABLE isahl."zc_id_stus-tracking_transport" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17628,8 +17650,8 @@ CREATE TABLE isahl."zc_id_stus-vehicle" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17646,8 +17668,8 @@ CREATE TABLE isahl."zc_id_stus-version" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     code text,
@@ -17664,8 +17686,8 @@ CREATE TABLE isahl."zc_id_stus-vessel" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
-    created_by_id bigint DEFAULT 1,
-    updated_by_id bigint DEFAULT 1,
+    created_by_id bigint DEFAULT '1'::bigint,
+    updated_by_id bigint DEFAULT '1'::bigint,
     notice text,
     t_color_ text,
     deleted_at timestamp with time zone,
@@ -19687,11 +19709,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-alert" ALTER COLUMN updated_at SET DEFAULT no
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-alert" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-alert" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-alert" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-alert" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -19711,11 +19733,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-approve" ALTER COLUMN id SET DEFAULT isahl.ge
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-approve" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-approve" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-approve" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-approve" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -19759,11 +19781,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-auth" ALTER COLUMN id SET DEFAULT isahl.gen_n
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-auth" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-auth" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-auth" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-auth" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -19779,11 +19801,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-certification" ALTER COLUMN updated_at SET DE
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-certification" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-certification" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-certification" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-certification" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -19799,11 +19821,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-contact_role" ALTER COLUMN updated_at SET DEF
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-contact_role" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-contact_role" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-contact_role" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-contact_role" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -19819,11 +19841,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-cooperation" ALTER COLUMN updated_at SET DEFA
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-cooperation" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-cooperation" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-cooperation" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-cooperation" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -19843,11 +19865,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-defect" ALTER COLUMN id SET DEFAULT isahl.gen
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-defect" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-defect" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-defect" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-defect" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -19887,11 +19909,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-file" ALTER COLUMN updated_at SET DEFAULT now
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-file" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-file" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-file" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-file" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -19907,11 +19929,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-inspection" ALTER COLUMN updated_at SET DEFAU
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-inspection" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-inspection" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-inspection" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-inspection" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -19927,11 +19949,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN updated_at SET DEF
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -19947,11 +19969,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-log" ALTER COLUMN updated_at SET DEFAULT now(
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-log" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-log" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-log" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-log" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -19967,11 +19989,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-maintain" ALTER COLUMN updated_at SET DEFAULT
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-maintain" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-maintain" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-maintain" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-maintain" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -19987,11 +20009,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-modify" ALTER COLUMN updated_at SET DEFAULT n
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-modify" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-modify" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-modify" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-modify" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -20007,11 +20029,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-ope-title-cm" ALTER COLUMN updated_at SET DEF
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-ope-title-cm" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-ope-title-cm" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-ope-title-cm" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-ope-title-cm" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -20035,11 +20057,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-project" ALTER COLUMN updated_at SET DEFAULT 
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-project" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-project" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-project" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-project" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -20055,11 +20077,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-real_rights" ALTER COLUMN updated_at SET DEFA
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-real_rights" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-real_rights" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-real_rights" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-real_rights" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -20075,11 +20097,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-seal" ALTER COLUMN updated_at SET DEFAULT now
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-seal" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-seal" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-seal" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-seal" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -20099,11 +20121,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-testing" ALTER COLUMN id SET DEFAULT isahl.ge
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-testing" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-testing" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-testing" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-testing" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -20119,11 +20141,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-tracking" ALTER COLUMN updated_at SET DEFAULT
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-tracking" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-tracking" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-tracking" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-tracking" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -20139,11 +20161,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-traffic" ALTER COLUMN updated_at SET DEFAULT 
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-traffic" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-traffic" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-traffic" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-traffic" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -20159,11 +20181,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-training" ALTER COLUMN updated_at SET DEFAULT
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-training" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-training" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-training" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-training" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -20183,11 +20205,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-tsp" ALTER COLUMN id SET DEFAULT isahl.gen_ne
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-tsp" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-tsp" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-tsp" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-tsp" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -20199,11 +20221,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-tsp-title-cm" ALTER COLUMN updated_at SET DEF
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-tsp-title-cm" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-tsp-title-cm" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cate-tsp-title-cm" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cate-tsp-title-cm" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -20219,11 +20241,11 @@ ALTER TABLE ONLY isahl."zc_id_cons-consanguinity-cate" ALTER COLUMN updated_at S
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cons-consanguinity-cate" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cons-consanguinity-cate" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cons-consanguinity-cate" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cons-consanguinity-cate" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -20239,11 +20261,11 @@ ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN updated_at SE
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -20267,11 +20289,11 @@ ALTER TABLE ONLY isahl."zc_id_cons-polity-cate" ALTER COLUMN updated_at SET DEFA
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cons-polity-cate" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cons-polity-cate" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cons-polity-cate" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cons-polity-cate" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -20287,11 +20309,11 @@ ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN updated_at SET DE
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -21200,6 +21222,14 @@ ALTER TABLE ONLY isahl."zc_id_leve-vote_weight" ALTER COLUMN updated_at SET DEFA
 
 
 ALTER TABLE ONLY isahl."zc_id_leve-vote_weight" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((363)::bigint);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_lifecycle_r_appraval-status" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_lifecycle_r_appraval-status" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -22523,6 +22553,22 @@ ALTER TABLE ONLY isahl."zc_id_stat-slf-voucher" ALTER COLUMN updated_at SET DEFA
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_deta-counting" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_deta-counting" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_order" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_order" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stat-task" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22659,11 +22705,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-agreement" ALTER COLUMN updated_at SET DEFAUL
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-agreement" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-agreement" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-agreement" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-agreement" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -22679,11 +22725,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-audit" ALTER COLUMN updated_at SET DEFAULT no
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-audit" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-audit" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-audit" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-audit" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -22699,11 +22745,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-bill" ALTER COLUMN updated_at SET DEFAULT now
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-bill" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-bill" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-bill" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-bill" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -22719,11 +22765,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-certification" ALTER COLUMN updated_at SET DE
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-certification" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-certification" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-certification" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-certification" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -22739,11 +22785,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-contract" ALTER COLUMN updated_at SET DEFAULT
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-contract" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-contract" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-contract" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-contract" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -22759,11 +22805,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-detail" ALTER COLUMN updated_at SET DEFAULT n
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-detail" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-detail" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-detail" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-detail" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -22779,11 +22825,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-duty" ALTER COLUMN updated_at SET DEFAULT now
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-duty" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-duty" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-duty" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-duty" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -22799,11 +22845,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-entity" ALTER COLUMN updated_at SET DEFAULT n
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-entity" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-entity" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-entity" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-entity" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -22819,11 +22865,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-event" ALTER COLUMN updated_at SET DEFAULT no
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-event" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-event" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-event" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-event" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -22839,11 +22885,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-file" ALTER COLUMN updated_at SET DEFAULT now
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-file" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-file" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-file" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-file" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -22859,11 +22905,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-identity" ALTER COLUMN updated_at SET DEFAULT
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-identity" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-identity" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-identity" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-identity" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -22883,11 +22929,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-inspection" ALTER COLUMN id SET DEFAULT isahl
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-inspection" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-inspection" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-inspection" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-inspection" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -22903,11 +22949,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-inventory" ALTER COLUMN updated_at SET DEFAUL
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-inventory" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-inventory" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-inventory" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-inventory" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -22927,11 +22973,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-iot" ALTER COLUMN id SET DEFAULT isahl.gen_ne
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-iot" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-iot" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-iot" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-iot" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -22947,11 +22993,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-lock" ALTER COLUMN updated_at SET DEFAULT now
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-lock" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-lock" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-lock" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-lock" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -22967,11 +23013,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-marital" ALTER COLUMN updated_at SET DEFAULT 
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-marital" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-marital" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-marital" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-marital" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -22987,11 +23033,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-protocol" ALTER COLUMN updated_at SET DEFAULT
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-protocol" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-protocol" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-protocol" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-protocol" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -23007,11 +23053,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-repository" ALTER COLUMN updated_at SET DEFAU
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-repository" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-repository" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-repository" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-repository" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -23027,11 +23073,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-review" ALTER COLUMN updated_at SET DEFAULT n
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-review" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-review" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-review" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-review" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -23047,11 +23093,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-statement" ALTER COLUMN updated_at SET DEFAUL
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-statement" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-statement" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-statement" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-statement" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -23067,11 +23113,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-threads" ALTER COLUMN updated_at SET DEFAULT 
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-threads" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-threads" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-threads" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-threads" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -23087,11 +23133,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-training" ALTER COLUMN updated_at SET DEFAULT
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-training" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-training" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-training" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-training" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -23107,11 +23153,11 @@ ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN updated_at SET DEFAU
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN created_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN updated_by_id SET DEFAULT 1;
+ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
 
 
 
@@ -24881,6 +24927,11 @@ ALTER TABLE ONLY isahl.zc_id_level
 
 ALTER TABLE ONLY isahl.zc_id_lifecycle
     ADD CONSTRAINT zc_id_lifecycle_pkey PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_lifecycle_r_appraval-status"
+    ADD CONSTRAINT "zc_id_lifecycle_r_appraval-status_pkey" PRIMARY KEY (id);
 
 
 
@@ -26861,6 +26912,16 @@ ALTER TABLE ONLY isahl."zc_id_stat-smt-voucher"
 
 ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher"
     ADD CONSTRAINT "zc_id_stat-sto-voucher_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_deta-counting"
+    ADD CONSTRAINT "zc_id_stat-sto-voucher_rr_deta-counting_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_order"
+    ADD CONSTRAINT "zc_id_stat-sto-voucher_rr_order_pkey" PRIMARY KEY (id);
 
 
 
@@ -32810,6 +32871,10 @@ CREATE UNIQUE INDEX "uq_zc_id_invoice_r_verify-status_ref_left_ref_right" ON isa
 
 
 
+CREATE UNIQUE INDEX "uq_zc_id_lifecycle_r_appraval-status_ref_left_ref_right" ON isahl."zc_id_lifecycle_r_appraval-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+
+
+
 CREATE UNIQUE INDEX uq_zc_id_lifecycle_r_category_ref_left_ref_right_qk_period ON isahl.zc_id_lifecycle_r_category USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
@@ -33199,6 +33264,14 @@ CREATE UNIQUE INDEX uq_zc_id_standard_rr_reference_ref_left_ref_right_qk_period 
 
 
 CREATE UNIQUE INDEX "uq_zc_id_stat-com-voucher_code_active" ON isahl."zc_id_stat-com-voucher" USING btree (code) WHERE (deleted_at IS NULL);
+
+
+
+CREATE UNIQUE INDEX "uq_zc_id_stat-sto-voucher_rr_deta-counting_ref_left_ref_right_q" ON isahl."zc_id_stat-sto-voucher_rr_deta-counting" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+
+CREATE UNIQUE INDEX "uq_zc_id_stat-sto-voucher_rr_order_ref_left_ref_right_qk_period" ON isahl."zc_id_stat-sto-voucher_rr_order" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
@@ -33717,6 +33790,7 @@ ALTER TABLE ONLY isahl."zc_id_law-common" ALTER COLUMN id SET DEFAULT isahl.gen_
 ALTER TABLE ONLY isahl."zc_id_law-intl" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-mixed" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-religious" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_lifecycle_r_appraval-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((537)::bigint);
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_lock-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((527)::bigint);
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_primary-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((260)::bigint);
 ALTER TABLE ONLY isahl."zc_id_oper-action" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -33748,7 +33822,7 @@ ALTER TABLE ONLY isahl."zc_id_oper-take_off_stock" ALTER COLUMN id SET DEFAULT i
 ALTER TABLE ONLY isahl."zc_id_oper-trailer" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-transport_tracking" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orde-consult" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_orde-manual" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((531)::bigint);
+ALTER TABLE ONLY isahl."zc_id_orde-manual" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orde-payment" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orde-retail" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orde-storage" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -33808,7 +33882,7 @@ ALTER TABLE ONLY isahl."zc_id_stan-operation" ALTER COLUMN id SET DEFAULT isahl.
 ALTER TABLE ONLY isahl."zc_id_stan-prod_quality" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-bok-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-com-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_stat-mal-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((532)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stat-mal-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-slf-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((503)::bigint);
@@ -34230,6 +34304,8 @@ ALTER TABLE ONLY isahl."zc_id_prod-sovereign_currency-sales" ALTER COLUMN id SET
 ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_deta-counting" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((541)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_order" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((539)::bigint);
 ALTER TABLE ONLY isahl."zc_id_order_rr_contract" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((470)::bigint);
 ALTER TABLE ONLY isahl."zc_id_order_rr_foreign" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((368)::bigint);
 ALTER TABLE ONLY isahl."zc_id_bank-commercial" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();

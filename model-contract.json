@@ -144,7 +144,7 @@
     "zc_id_stus-contact_infos": 0,
     "zc_id_stus-contacts": 0,
     "zc_id_stus-container": 5,
-    "zc_id_stus-contract": 11,
+    "zc_id_stus-contract": 12,
     "zc_id_stus-counting": 5,
     "zc_id_stus-country": 0,
     "zc_id_stus-department": 0,
@@ -259,7 +259,7 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "published_at": "2026-10-11T13:03:19.541533+00:00",
+  "published_at": "2026-10-15T15:34:47.481396+00:00",
   "row_layer": {
     "zc_id_cate-inv-title": "carry",
     "zc_id_cate-ope-title": "carry",
@@ -548,5 +548,5 @@
     "zc_id_unit-weight",
     "zc_id_unit-working"
   ],
-  "version": "v10.0.40"
+  "version": "v10.0.41"
 }
