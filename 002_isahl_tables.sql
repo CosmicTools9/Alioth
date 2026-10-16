@@ -3916,7 +3916,9 @@ CREATE TABLE isahl."zc_id_cons-r-type-cate" (
     comments text,
     enable boolean DEFAULT true,
     c_sort_ bigint,
-    "r-form" jsonb
+    "r-form" jsonb,
+    qk_w_capacity bigint,
+    qk_v_capacity bigint
 )
 INHERITS (isahl.zc_id_consensus, isahl.zc_id_category);
 
@@ -15419,7 +15421,8 @@ INHERITS (isahl.zc_id_statement);
 CREATE TABLE isahl."zc_id_stat-weight" (
     id bigint NOT NULL,
     fk_gauge bigint,
-    qk_qty bigint
+    "qk_gross-weight" bigint,
+    "qk_net-weight" bigint
 )
 INHERITS (isahl.zc_id_statement);
 
