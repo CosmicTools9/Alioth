@@ -7,19 +7,19 @@
     },
     {
       "name": "002_isahl_tables.sql",
-      "size_bytes": 924564
+      "size_bytes": 938145
     },
     {
       "name": "model-contract.json",
-      "size_bytes": 15510
+      "size_bytes": 16052
     },
     {
       "name": "seed-dimensions.meta.json",
-      "size_bytes": 7249
+      "size_bytes": 7515
     },
     {
       "name": "seed-dimensions.sql",
-      "size_bytes": 1385143
+      "size_bytes": 1377376
     },
     {
       "name": "seed-model-contract.sql",
@@ -27,7 +27,7 @@
     }
   ],
   "pg_dump_version": "pg_dump (PostgreSQL) 18.6 (Homebrew)",
-  "published_at": "2026-10-16T09:43:37.177206+00:00",
+  "published_at": "2026-10-18T23:35:00.461170+00:00",
   "tables": {
     "zc_id_cate-acc-title": 13,
     "zc_id_cate-agent": 0,
@@ -65,6 +65,7 @@
     "zc_id_cate-project": 15,
     "zc_id_cate-real_rights": 6,
     "zc_id_cate-seal": 5,
+    "zc_id_cate-series": 0,
     "zc_id_cate-society": 4,
     "zc_id_cate-sto-title": 4,
     "zc_id_cate-subject": 0,
@@ -76,22 +77,25 @@
     "zc_id_cate-tsp": 0,
     "zc_id_cate-tsp-title": 0,
     "zc_id_cate-tsp-title-cm": 0,
+    "zc_id_cate-variant": 0,
     "zc_id_cate-ver_branch": 5,
     "zc_id_cate-warehouse": 9,
     "zc_id_cate-wh-title": 0,
     "zc_id_category": 1,
+    "zc_id_cons-color-cate": 0,
     "zc_id_cons-consanguinity-cate": 9,
     "zc_id_cons-cron-cate": 7,
     "zc_id_cons-date-tags": 6,
     "zc_id_cons-ethnic_group-cate": 56,
     "zc_id_cons-factor-cate": 62,
     "zc_id_cons-function-cate": 79,
-    "zc_id_cons-goods-tags": 13,
     "zc_id_cons-industry-cate": 21,
     "zc_id_cons-license-cate": 9,
     "zc_id_cons-packing-cate": 11,
     "zc_id_cons-polity-cate": 10,
     "zc_id_cons-r-type-cate": 32,
+    "zc_id_cons-season-cate": 0,
+    "zc_id_cons-size-cate": 0,
     "zc_id_cons-timezone-cate": 268,
     "zc_id_cons-ts_concomitant-tags": 0,
     "zc_id_cons-zone-tags": 7,
@@ -239,8 +243,10 @@
     "zc_id_tags-batch": 1,
     "zc_id_tags-bom_item": 0,
     "zc_id_tags-channel": 0,
+    "zc_id_tags-composition": 0,
     "zc_id_tags-contacts": 0,
     "zc_id_tags-event": 0,
+    "zc_id_tags-fabric": 0,
     "zc_id_tags-finance": 23,
     "zc_id_tags-hscode": 97,
     "zc_id_tags-info_title": 0,
@@ -251,7 +257,10 @@
     "zc_id_tags-project": 25,
     "zc_id_tags-r-type": 7,
     "zc_id_tags-r-type-alias": 0,
+    "zc_id_tags-retail-barcode": 0,
+    "zc_id_tags-retail-description": 0,
     "zc_id_tags-skill": 3,
+    "zc_id_tags-style": 0,
     "zc_id_tags-version": 10,
     "zc_id_tags-warehousing": 0,
     "zc_id_tags_poi": 0,
@@ -288,5 +297,5 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "version": "v10.0.42"
+  "version": "v10.0.43"
 }
