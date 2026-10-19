@@ -80,6 +80,7 @@
     "zc_id_leve-impact": 4,
     "zc_id_leve-kpi": 0,
     "zc_id_leve-log": 0,
+    "zc_id_leve-loyalty": 0,
     "zc_id_leve-org": 4,
     "zc_id_leve-plan": 0,
     "zc_id_leve-post-resp": 0,
@@ -229,7 +230,7 @@
     "zc_id_tags-r-type": 7,
     "zc_id_tags-r-type-alias": 0,
     "zc_id_tags-retail-barcode": 0,
-    "zc_id_tags-retail-description": 0,
+    "zc_id_tags-retail-description": 13,
     "zc_id_tags-skill": 3,
     "zc_id_tags-style": 0,
     "zc_id_tags-version": 10,
@@ -268,7 +269,7 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "published_at": "2026-10-18T23:35:00.461170+00:00",
+  "published_at": "2026-10-19T07:23:57.173611+00:00",
   "row_layer": {
     "zc_id_cate-inv-title": "carry",
     "zc_id_cate-ope-title": "carry",
@@ -378,6 +379,7 @@
     "zc_id_leve-impact",
     "zc_id_leve-kpi",
     "zc_id_leve-log",
+    "zc_id_leve-loyalty",
     "zc_id_leve-org",
     "zc_id_leve-plan",
     "zc_id_leve-post-resp",
@@ -566,5 +568,5 @@
     "zc_id_unit-weight",
     "zc_id_unit-working"
   ],
-  "version": "v10.0.43"
+  "version": "v10.0.44"
 }
