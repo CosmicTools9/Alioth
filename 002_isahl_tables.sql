@@ -916,7 +916,6 @@ CREATE TABLE isahl.zc_id_production_rr_storage (
     qk_period bigint,
     qk_p_capacity bigint,
     qk_s_capacity bigint,
-    sk_unit bigint,
     qk_qty bigint,
     sk_currency bigint,
     qk_amount bigint,
@@ -926,7 +925,8 @@ CREATE TABLE isahl.zc_id_production_rr_storage (
     qk_vs_capacity bigint,
     qk_wp_capacity bigint,
     qk_ws_capacity bigint,
-    qk_w_total bigint
+    qk_w_total bigint,
+    "sk_unit-pricing" bigint
 )
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
@@ -1037,7 +1037,7 @@ CREATE MATERIALIZED VIEW isahl.mv_inventory AS
     COALESCE(vm.mark, (0)::numeric) AS v_qty,
     COALESCE(am.mark, (0)::numeric) AS amount,
     COALESCE(cap.mark, (0)::numeric) AS capacity,
-    r.sk_unit AS unit,
+    r."sk_unit-pricing" AS unit_pricing,
     cnt.counted_mark AS last_counted_qty,
     (cnt.counted_mark - COALESCE(sm.mark, (0)::numeric)) AS variance,
     r.created_at,
@@ -8908,6 +8908,10 @@ CREATE TABLE isahl.zc_id_plan (
     dk_function bigint,
     tpl_id bigint,
     ak_source bigint[],
+    tk_version bigint,
+    tk_batch_no bigint,
+    fk_previous bigint,
+    ck_branch bigint,
     cron text,
     exclude json,
     sort bigint,
@@ -8915,11 +8919,7 @@ CREATE TABLE isahl.zc_id_plan (
     qk_progress bigint,
     lk_health bigint,
     "qk_date-segm" bigint,
-    lk_priority bigint,
-    tk_version bigint,
-    ck_branch bigint,
-    tk_batch_no bigint,
-    fk_previous bigint
+    lk_priority bigint
 )
 INHERITS (isahl.zc_id_version);
 
@@ -9761,11 +9761,11 @@ CREATE TABLE isahl."zc_id_prod-certificate" (
     fk_process bigint,
     sk_currency bigint,
     qk_size bigint,
-    qk_period bigint,
     ck_category bigint,
-    qk_date bigint,
     encoding isahl.zc_id_prod_file_encoding_enum DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum,
     sk_unit bigint,
+    qk_period bigint,
+    qk_date bigint,
     "ck_cate-cert" bigint
 )
 INHERITS (isahl."zc_id_prod-file");
@@ -9851,6 +9851,8 @@ INHERITS (isahl.zc_id_production);
 
 CREATE TABLE isahl."zc_id_prod-apparel" (
     id bigint NOT NULL,
+    ck_variant bigint,
+    sk_unit bigint,
     qk_length bigint,
     qk_width bigint,
     qk_height bigint,
@@ -9859,11 +9861,9 @@ CREATE TABLE isahl."zc_id_prod-apparel" (
     sk_l_unit bigint,
     sk_w_unit bigint,
     sk_h_unit bigint,
-    sk_unit bigint,
     ck_season bigint,
     ck_size bigint,
     ck_series bigint,
-    ck_variant bigint,
     ck_color bigint
 )
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-transform");
@@ -32169,10 +32169,6 @@ CREATE INDEX idx_zc_id_version_fk_previous ON isahl.zc_id_version USING btree (f
 
 
 
-CREATE UNIQUE INDEX uq_mv_inventory_material_place ON isahl.mv_inventory USING btree (production_id, storage_id);
-
-
-
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-acc-title" ON isahl."zc_id_cate-acc-title" USING btree (id);
 
 
@@ -32325,6 +32321,10 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-seal" ON isahl."zc_id_cate-seal" USIN
 
 
 
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-series" ON isahl."zc_id_cate-series" USING btree (id);
+
+
+
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-society" ON isahl."zc_id_cate-society" USING btree (id);
 
 
@@ -32373,6 +32373,10 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-tsp-title-ns" ON isahl."zc_id_cate-ts
 
 
 
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-variant" ON isahl."zc_id_cate-variant" USING btree (id);
+
+
+
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-ver_branch" ON isahl."zc_id_cate-ver_branch" USING btree (id);
 
 
@@ -32386,6 +32390,10 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-wh-title" ON isahl."zc_id_cate-wh-tit
 
 
 CREATE UNIQUE INDEX uq_seed_id_zc_id_category ON isahl.zc_id_category USING btree (id);
+
+
+
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-color-cate" ON isahl."zc_id_cons-color-cate" USING btree (id);
 
 
 
@@ -32430,6 +32438,14 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-polity-cate" ON isahl."zc_id_cons-pol
 
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-r-type-cate" ON isahl."zc_id_cons-r-type-cate" USING btree (id);
+
+
+
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-season-cate" ON isahl."zc_id_cons-season-cate" USING btree (id);
+
+
+
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_cons-size-cate" ON isahl."zc_id_cons-size-cate" USING btree (id);
 
 
 
@@ -32482,6 +32498,10 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-kpi" ON isahl."zc_id_leve-kpi" USING 
 
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-log" ON isahl."zc_id_leve-log" USING btree (id);
+
+
+
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_leve-loyalty" ON isahl."zc_id_leve-loyalty" USING btree (id);
 
 
 
@@ -32925,6 +32945,10 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-purchase" ON isahl."zc_id_stus-purcha
 
 
 
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-repository" ON isahl."zc_id_stus-repository" USING btree (id);
+
+
+
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_stus-retail" ON isahl."zc_id_stus-retail" USING btree (id);
 
 
@@ -33029,11 +33053,19 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-channel" ON isahl."zc_id_tags-channel
 
 
 
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-composition" ON isahl."zc_id_tags-composition" USING btree (id);
+
+
+
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-contacts" ON isahl."zc_id_tags-contacts" USING btree (id);
 
 
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-event" ON isahl."zc_id_tags-event" USING btree (id);
+
+
+
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-fabric" ON isahl."zc_id_tags-fabric" USING btree (id);
 
 
 
@@ -33077,7 +33109,19 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-r-type-alias" ON isahl."zc_id_tags-r-
 
 
 
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-retail-barcode" ON isahl."zc_id_tags-retail-barcode" USING btree (id);
+
+
+
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-retail-description" ON isahl."zc_id_tags-retail-description" USING btree (id);
+
+
+
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-skill" ON isahl."zc_id_tags-skill" USING btree (id);
+
+
+
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-style" ON isahl."zc_id_tags-style" USING btree (id);
 
 
 
