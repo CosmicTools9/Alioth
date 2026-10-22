@@ -1,5 +1,5 @@
 
-\restrict UueqiczPu7rtJSwWh46RSdV4heS8Zc4XJD6QwFuSjOhHc0aAHXtmhq0OPwcNYJh
+\restrict JBR4nttIGpc0ldZo08AHMgRwsRc95B7fAUnCCwqMriHu6IWCHJdGFEeyTJ1ac2V
 
 
 SET statement_timeout = 0;
@@ -116,6 +116,9 @@ INSERT INTO isahl."zc_id_cate-clause" (created_at, updated_at, id, created_by_id
 
 
 
+
+
+
 INSERT INTO isahl."zc_id_cate-contacts" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, c_sort_) VALUES ('2026-08-30 02:36:16.004413+08', '2026-08-30 02:36:16.004413+08', 7881299347899233, 343596428788625, 1, '邮寄地址', NULL, NULL, NULL, NULL, 'CT-ADDRESS', '20260829_183616004_d5a6e66d', NULL, NULL, NULL, NULL, true, NULL) ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_cate-contacts" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, c_sort_) VALUES ('2026-08-30 02:36:16.004413+08', '2026-08-30 02:36:16.004413+08', 7881299347899234, 343596428788625, 1, '传真', NULL, NULL, NULL, NULL, 'CT-FAX', '20260829_183616004_aac13287', NULL, NULL, NULL, NULL, true, NULL) ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_cate-contacts" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, c_sort_) VALUES ('2026-08-30 02:36:16.004413+08', '2026-08-30 02:36:16.004413+08', 7881299347899235, 343596428788625, 1, '电子邮箱', NULL, NULL, NULL, NULL, 'CT-EMAIL', '20260829_183616004_2b59dd44', NULL, NULL, NULL, NULL, true, NULL) ON CONFLICT DO NOTHING;
@@ -145,6 +148,9 @@ INSERT INTO isahl."zc_id_cate-defect" (created_at, updated_at, id, created_by_id
 INSERT INTO isahl."zc_id_cate-defect" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable) VALUES ('2026-09-07 13:33:59.526679+08', '2026-09-07 13:33:59.526679+08', 8162774324610445, 343596428788625, 1, '设计缺陷', NULL, NULL, NULL, NULL, 'DESIGN', '20260907_053359526_833a6a5f', NULL, NULL, NULL, NULL, true) ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_cate-defect" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable) VALUES ('2026-09-07 13:33:59.526679+08', '2026-09-07 13:33:59.526679+08', 8162774324610446, 343596428788625, 1, '外观缺陷', NULL, NULL, NULL, NULL, 'APPEARANCE', '20260907_053359526_736d472d', NULL, NULL, NULL, NULL, true) ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_cate-defect" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable) VALUES ('2026-09-07 13:33:59.526679+08', '2026-09-07 13:33:59.526679+08', 8162774324610447, 343596428788625, 1, '安全隐患', NULL, NULL, NULL, NULL, 'SAFETY', '20260907_053359526_fa981737', NULL, NULL, NULL, NULL, true) ON CONFLICT DO NOTHING;
+
+
+
 
 
 
@@ -222,6 +228,9 @@ INSERT INTO isahl."zc_id_cate-inv-title-cm" (created_at, updated_at, id, created
 INSERT INTO isahl."zc_id_cate-inv-title-cm" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, c_sort_, sk_currency, sk_unit, direction, fk_parent) VALUES ('2026-09-18 10:06:36.100515+08', '2026-09-18 10:06:36.100515+08', 136844354874047919, 343596428788625, 1, '履约', NULL, NULL, NULL, NULL, 'STO-FULFILL', '20260918_020636100_cde49749', NULL, NULL, NULL, NULL, true, NULL, NULL, NULL, NULL, NULL) ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_cate-inv-title-cm" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, c_sort_, sk_currency, sk_unit, direction, fk_parent) VALUES ('2026-09-18 10:06:36.100515+08', '2026-09-18 10:06:36.100515+08', 136869139503388480, 343596428788625, 1, '在途', NULL, NULL, NULL, NULL, 'STO-TRANSIT', '20260918_020636100_1a5a73c8', NULL, NULL, NULL, NULL, true, NULL, NULL, NULL, NULL, NULL) ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_cate-inv-title-cm" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, c_sort_, sk_currency, sk_unit, direction, fk_parent) VALUES ('2026-09-18 10:06:36.100515+08', '2026-09-18 10:06:36.100515+08', 137067074766451788, 343596428788625, 1, '空闲', NULL, NULL, NULL, NULL, 'STO-IDLE', '20260918_020636100_000e0ea6', NULL, NULL, NULL, NULL, true, NULL, NULL, NULL, NULL, NULL) ON CONFLICT DO NOTHING;
+
+
+
 
 
 
@@ -2920,6 +2929,9 @@ INSERT INTO isahl."zc_id_tags-retail-description" (created_at, updated_at, id, c
 
 
 
+
+
+
 INSERT INTO isahl."zc_id_tags-skill" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, v_group, t_sort_, v_filter) VALUES ('2026-09-07 22:14:43.614151+08', '2026-09-07 22:14:43.614151+08', 38724181284276337, 343596428788625, NULL, '结构设计', NULL, NULL, NULL, NULL, 'SKILL-001', '20260907_141443614_b1ae5ace', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_tags-skill" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, v_group, t_sort_, v_filter) VALUES ('2026-09-07 22:14:43.614151+08', '2026-09-07 22:14:43.614151+08', 38826055849436549, 343596428788625, NULL, '航电系统', NULL, NULL, NULL, NULL, 'SKILL-002', '20260907_141443614_5363e88f', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_tags-skill" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, v_group, t_sort_, v_filter) VALUES ('2026-09-07 22:14:43.614151+08', '2026-09-07 22:14:43.614151+08', 38808218523132584, 343596428788625, NULL, '适航管理', NULL, NULL, NULL, NULL, 'SKILL-003', '20260907_141443614_80d31162', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT DO NOTHING;
@@ -3361,5 +3373,5 @@ INSERT INTO isahl."zc_id_unit-working" (created_at, updated_at, id, created_by_i
 
 
 
-\unrestrict UueqiczPu7rtJSwWh46RSdV4heS8Zc4XJD6QwFuSjOhHc0aAHXtmhq0OPwcNYJh
+\unrestrict JBR4nttIGpc0ldZo08AHMgRwsRc95B7fAUnCCwqMriHu6IWCHJdGFEeyTJ1ac2V
 

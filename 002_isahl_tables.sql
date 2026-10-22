@@ -1885,6 +1885,55 @@ INHERITS (isahl.zc_id_lifecycle);
 
 
 
+CREATE TABLE isahl."zc_id_audi-contract" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_audit);
+
+
+
+CREATE TABLE isahl."zc_id_audi-cost" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_audit);
+
+
+
+CREATE TABLE isahl."zc_id_audi-expense" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_audit);
+
+
+
+CREATE TABLE isahl."zc_id_audi-functional" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_audit);
+
+
+
+CREATE TABLE isahl."zc_id_audi-physical" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_audit);
+
+
+
+CREATE TABLE isahl."zc_id_audi-project" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_audit);
+
+
+
+CREATE TABLE isahl."zc_id_audi-purchase" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_audit);
+
+
+
 CREATE TABLE isahl.zc_id_audit_rr_auditee (
     id bigint NOT NULL
 )
@@ -3113,6 +3162,13 @@ INHERITS (isahl.zc_id_category);
 
 
 
+CREATE TABLE isahl."zc_id_cate-config" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_category);
+
+
+
 CREATE TABLE isahl."zc_id_cate-contact_role" (
     id bigint NOT NULL
 )
@@ -3172,6 +3228,13 @@ CREATE TABLE isahl."zc_id_cate-department" (
     sub_tables jsonb
 )
 INHERITS (isahl."zc_id_cate-subject");
+
+
+
+CREATE TABLE isahl."zc_id_cate-document" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_category);
 
 
 
@@ -3336,6 +3399,13 @@ CREATE TABLE isahl."zc_id_cate-inve-trasnfer" (
     comments text,
     enable boolean DEFAULT true,
     c_sort_ bigint
+)
+INHERITS (isahl.zc_id_category);
+
+
+
+CREATE TABLE isahl."zc_id_cate-issue" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_category);
 
@@ -4611,6 +4681,31 @@ INHERITS (isahl.zc_id_detail);
 
 
 
+CREATE TABLE isahl.zc_id_lifecycle_r_tags (
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    code text,
+    ref_left bigint,
+    ref_right bigint,
+    comments text,
+    qk_period bigint
+)
+INHERITS (isahl.zc_ad_tensor_r_scalar);
+
+
+
+CREATE TABLE isahl."zc_id_deta-damage_r_scrap" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_r_tags);
+
+
+
 CREATE TABLE isahl."zc_id_deta-inspection" (
 )
 INHERITS (isahl.zc_id_detail);
@@ -5274,7 +5369,8 @@ INHERITS (isahl.zc_id_event);
 
 CREATE TABLE isahl."zc_id_even-issue" (
     id bigint NOT NULL,
-    ck_category bigint
+    ck_category bigint,
+    lk_severity bigint
 )
 INHERITS (isahl.zc_id_event);
 
@@ -5318,6 +5414,21 @@ CREATE TABLE isahl."zc_id_even-modify" (
     lk_impact bigint
 )
 INHERITS (isahl.zc_id_event);
+
+
+
+CREATE TABLE isahl.zc_id_event_rr_matter (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_master_rr_slave);
+
+
+
+CREATE TABLE isahl."zc_id_even-modify_rr_matter" (
+    id bigint NOT NULL,
+    is_baseline boolean DEFAULT false
+)
+INHERITS (isahl.zc_id_event_rr_matter);
 
 
 
@@ -5365,10 +5476,10 @@ INHERITS (isahl.zc_id_master_rr_slave);
 
 
 
-CREATE TABLE isahl.zc_id_event_rr_matter (
+CREATE TABLE isahl."zc_id_event_rr_ind-matter" (
     id bigint NOT NULL
 )
-INHERITS (isahl.zc_id_master_rr_slave);
+INHERITS (isahl.zc_id_event_rr_matter);
 
 
 
@@ -5475,7 +5586,8 @@ CREATE TABLE isahl."zc_id_prod-data" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    qk_size bigint
+    qk_size bigint,
+    ck_document bigint
 )
 INHERITS (isahl.zc_id_production);
 
@@ -5483,9 +5595,9 @@ INHERITS (isahl.zc_id_production);
 
 CREATE TABLE isahl."zc_id_prod-file" (
     id bigint NOT NULL,
-    ck_category bigint,
     encoding isahl.zc_id_prod_file_encoding_enum DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum,
-    sk_unit bigint
+    sk_unit bigint,
+    ck_mime bigint
 )
 INHERITS (isahl."zc_id_prod-data", isahl.zc_id_attachment);
 
@@ -6796,24 +6908,6 @@ INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
 
-CREATE TABLE isahl.zc_id_lifecycle_r_tags (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    ref_left bigint,
-    ref_right bigint,
-    comments text,
-    qk_period bigint
-)
-INHERITS (isahl.zc_ad_tensor_r_scalar);
-
-
-
 CREATE TABLE isahl.zc_id_lifecycle_rr_form (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7506,6 +7600,20 @@ INHERITS (isahl.zc_id_operation);
 
 
 
+CREATE TABLE isahl."zc_id_oper-goods_pick" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
+CREATE TABLE isahl."zc_id_oper-inbound" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
 CREATE TABLE isahl."zc_id_oper-lading" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7646,6 +7754,20 @@ INHERITS (isahl.zc_id_operation);
 
 
 
+CREATE TABLE isahl."zc_id_oper-outbound" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
+CREATE TABLE isahl."zc_id_oper-payload_sort" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
 CREATE TABLE isahl."zc_id_oper-payment" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7674,6 +7796,13 @@ CREATE TABLE isahl."zc_id_oper-payment" (
     "ck_cate-wh" bigint,
     qk_work_duration bigint,
     "ck_cate-biz" bigint
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
+CREATE TABLE isahl."zc_id_oper-pick_to_bin" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -7740,6 +7869,13 @@ CREATE TABLE isahl."zc_id_oper-put_in_stock" (
     "ck_cate-wh" bigint,
     qk_work_duration bigint,
     "ck_cate-biz" bigint
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
+CREATE TABLE isahl."zc_id_oper-put_to_store" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -8058,6 +8194,13 @@ CREATE TABLE isahl."zc_id_oper-transport_tracking" (
     "ck_cate-wh" bigint,
     qk_work_duration bigint,
     "ck_cate-biz" bigint
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
+CREATE TABLE isahl."zc_id_oper-tsp_package" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -9761,7 +9904,6 @@ CREATE TABLE isahl."zc_id_prod-certificate" (
     fk_process bigint,
     sk_currency bigint,
     qk_size bigint,
-    ck_category bigint,
     encoding isahl.zc_id_prod_file_encoding_enum DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum,
     sk_unit bigint,
     qk_period bigint,
@@ -9898,7 +10040,8 @@ CREATE TABLE isahl."zc_id_prod-made" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint
+    sk_unit bigint,
+    lk_health bigint
 )
 INHERITS (isahl.zc_id_production);
 
@@ -9982,8 +10125,7 @@ CREATE TABLE isahl."zc_id_prod-request" (
     fk_process bigint,
     sk_currency bigint,
     lk_priority bigint,
-    fk_place bigint,
-    ck_category bigint
+    fk_place bigint
 )
 INHERITS (isahl.zc_id_production);
 
@@ -10115,6 +10257,14 @@ CREATE TABLE isahl."zc_id_prod-conclusion" (
     id bigint NOT NULL
 )
 INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-data");
+
+
+
+CREATE TABLE isahl."zc_id_prod-config" (
+    id bigint NOT NULL,
+    ck_config bigint
+)
+INHERITS (isahl."zc_id_prod-made");
 
 
 
@@ -18635,6 +18785,13 @@ INHERITS (isahl.zc_id_tags);
 
 
 
+CREATE TABLE isahl."zc_id_tags-scrap" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_tags);
+
+
+
 CREATE TABLE isahl."zc_id_tags-skill" (
 )
 INHERITS (isahl.zc_id_tags);
@@ -19805,6 +19962,62 @@ ALTER TABLE ONLY isahl.zc_id_attachment ALTER COLUMN updated_at SET DEFAULT now(
 
 
 
+ALTER TABLE ONLY isahl."zc_id_audi-contract" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-contract" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-cost" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-cost" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-expense" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-expense" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-functional" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-functional" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-physical" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-physical" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-project" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-project" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-purchase" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-purchase" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl.zc_id_audit ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -20001,6 +20214,26 @@ ALTER TABLE ONLY isahl."zc_id_cate-certification" ALTER COLUMN enable SET DEFAUL
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-config" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-config" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-config" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-config" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-config" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-contact_role" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -20062,6 +20295,26 @@ ALTER TABLE ONLY isahl."zc_id_cate-defect" ALTER COLUMN updated_by_id SET DEFAUL
 
 
 ALTER TABLE ONLY isahl."zc_id_cate-defect" ALTER COLUMN enable SET DEFAULT true;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-document" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-document" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-document" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-document" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-document" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -20146,6 +20399,26 @@ ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN updated_by_id SET 
 
 
 ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN enable SET DEFAULT true;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-issue" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-issue" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-issue" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-issue" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-issue" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -20781,6 +21054,14 @@ ALTER TABLE ONLY isahl."zc_id_deta-damage" ALTER COLUMN updated_at SET DEFAULT n
 
 
 
+ALTER TABLE ONLY isahl."zc_id_deta-damage_r_scrap" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_deta-damage_r_scrap" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_deta-inspection" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -20965,6 +21246,14 @@ ALTER TABLE ONLY isahl."zc_id_even-log" ALTER COLUMN id SET DEFAULT isahl.gen_ne
 
 
 
+ALTER TABLE ONLY isahl."zc_id_even-modify_rr_matter" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_even-modify_rr_matter" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_even-report" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -21002,6 +21291,14 @@ ALTER TABLE ONLY isahl.zc_id_event_rr_container ALTER COLUMN created_at SET DEFA
 
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_container ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_event_rr_ind-matter" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_event_rr_ind-matter" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -21609,6 +21906,22 @@ ALTER TABLE ONLY isahl."zc_id_oper-gate" ALTER COLUMN id SET DEFAULT isahl.gen_n
 
 
 
+ALTER TABLE ONLY isahl."zc_id_oper-goods_pick" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-goods_pick" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-inbound" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-inbound" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-move" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -21618,6 +21931,38 @@ ALTER TABLE ONLY isahl."zc_id_oper-move" ALTER COLUMN updated_at SET DEFAULT now
 
 
 ALTER TABLE ONLY isahl."zc_id_oper-move" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-outbound" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-outbound" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-payload_sort" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-payload_sort" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-pick_to_bin" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-pick_to_bin" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-put_to_store" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-put_to_store" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -21638,6 +21983,14 @@ ALTER TABLE ONLY isahl."zc_id_oper-test" ALTER COLUMN updated_at SET DEFAULT now
 
 
 ALTER TABLE ONLY isahl."zc_id_oper-test" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-tsp_package" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-tsp_package" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -21978,6 +22331,14 @@ ALTER TABLE ONLY isahl."zc_id_prod-conclusion" ALTER COLUMN created_at SET DEFAU
 
 
 ALTER TABLE ONLY isahl."zc_id_prod-conclusion" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-config" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-config" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -23677,6 +24038,14 @@ ALTER TABLE ONLY isahl."zc_id_tags-retail-description" ALTER COLUMN updated_at S
 
 
 
+ALTER TABLE ONLY isahl."zc_id_tags-scrap" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_tags-scrap" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_tags-skill" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -24039,6 +24408,41 @@ ALTER TABLE ONLY isahl.zc_id_attachment
 
 
 
+ALTER TABLE ONLY isahl."zc_id_audi-contract"
+    ADD CONSTRAINT "zc_id_audi-contract_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-cost"
+    ADD CONSTRAINT "zc_id_audi-cost_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-expense"
+    ADD CONSTRAINT "zc_id_audi-expense_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-functional"
+    ADD CONSTRAINT "zc_id_audi-functional_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-physical"
+    ADD CONSTRAINT "zc_id_audi-physical_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-project"
+    ADD CONSTRAINT "zc_id_audi-project_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-purchase"
+    ADD CONSTRAINT "zc_id_audi-purchase_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl.zc_id_audit
     ADD CONSTRAINT zc_id_audit_pkey PRIMARY KEY (id);
 
@@ -24269,6 +24673,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-clause"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-config"
+    ADD CONSTRAINT "zc_id_cate-config_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-contact_role"
     ADD CONSTRAINT "zc_id_cate-contact_role_pkey" PRIMARY KEY (id);
 
@@ -24291,6 +24700,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-defect"
 
 ALTER TABLE ONLY isahl."zc_id_cate-department"
     ADD CONSTRAINT "zc_id_cate-department_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-document"
+    ADD CONSTRAINT "zc_id_cate-document_pkey" PRIMARY KEY (id);
 
 
 
@@ -24336,6 +24750,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-inv-title"
 
 ALTER TABLE ONLY isahl."zc_id_cate-inve-trasnfer"
     ADD CONSTRAINT "zc_id_cate-inve-trasnfer_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-issue"
+    ADD CONSTRAINT "zc_id_cate-issue_pkey" PRIMARY KEY (id);
 
 
 
@@ -24759,6 +25178,11 @@ ALTER TABLE ONLY isahl."zc_id_deta-damage"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_deta-damage_r_scrap"
+    ADD CONSTRAINT "zc_id_deta-damage_r_scrap_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_deta-inspection"
     ADD CONSTRAINT "zc_id_deta-inspection_pkey" PRIMARY KEY (id);
 
@@ -24984,6 +25408,11 @@ ALTER TABLE ONLY isahl."zc_id_even-modify"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_even-modify_rr_matter"
+    ADD CONSTRAINT "zc_id_even-modify_rr_matter_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_even-report"
     ADD CONSTRAINT "zc_id_even-report_pkey" PRIMARY KEY (id);
 
@@ -25001,6 +25430,11 @@ ALTER TABLE ONLY isahl.zc_id_event_rr_bill
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_container
     ADD CONSTRAINT zc_id_event_rr_container_pkey PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_event_rr_ind-matter"
+    ADD CONSTRAINT "zc_id_event_rr_ind-matter_pkey" PRIMARY KEY (id);
 
 
 
@@ -25629,6 +26063,16 @@ ALTER TABLE ONLY isahl."zc_id_oper-gate"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_oper-goods_pick"
+    ADD CONSTRAINT "zc_id_oper-goods_pick_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-inbound"
+    ADD CONSTRAINT "zc_id_oper-inbound_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-lading"
     ADD CONSTRAINT "zc_id_oper-lading_pkey" PRIMARY KEY (id);
 
@@ -25649,8 +26093,23 @@ ALTER TABLE ONLY isahl."zc_id_oper-orient"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_oper-outbound"
+    ADD CONSTRAINT "zc_id_oper-outbound_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-payload_sort"
+    ADD CONSTRAINT "zc_id_oper-payload_sort_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-payment"
     ADD CONSTRAINT "zc_id_oper-payment_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-pick_to_bin"
+    ADD CONSTRAINT "zc_id_oper-pick_to_bin_pkey" PRIMARY KEY (id);
 
 
 
@@ -25661,6 +26120,11 @@ ALTER TABLE ONLY isahl."zc_id_oper-planing"
 
 ALTER TABLE ONLY isahl."zc_id_oper-put_in_stock"
     ADD CONSTRAINT "zc_id_oper-put_in_stock_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-put_to_store"
+    ADD CONSTRAINT "zc_id_oper-put_to_store_pkey" PRIMARY KEY (id);
 
 
 
@@ -25721,6 +26185,11 @@ ALTER TABLE ONLY isahl."zc_id_oper-trailer"
 
 ALTER TABLE ONLY isahl."zc_id_oper-transport_tracking"
     ADD CONSTRAINT "zc_id_oper-transport_tracking_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-tsp_package"
+    ADD CONSTRAINT "zc_id_oper-tsp_package_pkey" PRIMARY KEY (id);
 
 
 
@@ -26196,6 +26665,11 @@ ALTER TABLE ONLY isahl."zc_id_prod-combine"
 
 ALTER TABLE ONLY isahl."zc_id_prod-conclusion"
     ADD CONSTRAINT "zc_id_prod-conclusion_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-config"
+    ADD CONSTRAINT "zc_id_prod-config_pkey" PRIMARY KEY (id);
 
 
 
@@ -28386,6 +28860,11 @@ ALTER TABLE ONLY isahl."zc_id_tags-retail-barcode"
 
 ALTER TABLE ONLY isahl."zc_id_tags-retail-description"
     ADD CONSTRAINT "zc_id_tags-retail-description_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_tags-scrap"
+    ADD CONSTRAINT "zc_id_tags-scrap_pkey" PRIMARY KEY (id);
 
 
 
@@ -33429,6 +33908,10 @@ CREATE UNIQUE INDEX "uq_zc_id_deta-bill-check_r_verify-status_ref_left_ref_right
 
 
 
+CREATE UNIQUE INDEX "uq_zc_id_deta-damage_r_scrap_ref_left_ref_right_qk_period" ON isahl."zc_id_deta-damage_r_scrap" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+
 CREATE UNIQUE INDEX "uq_zc_id_deta-training_rr_matter_ref_left_ref_right_qk_period" ON isahl."zc_id_deta-training_rr_matter" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
@@ -33469,6 +33952,10 @@ CREATE UNIQUE INDEX uq_zc_id_entity_rr_identity_ref_left_ref_right_qk_period ON 
 
 
 
+CREATE UNIQUE INDEX "uq_zc_id_even-modify_rr_matter_ref_left_ref_right_qk_period" ON isahl."zc_id_even-modify_rr_matter" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+
 CREATE UNIQUE INDEX "uq_zc_id_even-tracking_code" ON isahl."zc_id_even-tracking" USING btree (code);
 
 
@@ -33478,6 +33965,10 @@ CREATE UNIQUE INDEX uq_zc_id_event_rr_bill_ref_left_ref_right_qk_period ON isahl
 
 
 CREATE UNIQUE INDEX uq_zc_id_event_rr_container_ref_left_ref_right_qk_period ON isahl.zc_id_event_rr_container USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+
+CREATE UNIQUE INDEX "uq_zc_id_event_rr_ind-matter_ref_left_ref_right_qk_period" ON isahl."zc_id_event_rr_ind-matter" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
@@ -34100,14 +34591,17 @@ ALTER TABLE ONLY isahl."zc_id_cate-alert" ALTER COLUMN id SET DEFAULT isahl.gen_
 ALTER TABLE ONLY isahl."zc_id_cate-bom-item" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((25)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-certification" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((26)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-clause" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((27)::bigint);
+ALTER TABLE ONLY isahl."zc_id_cate-config" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((610)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-contact_role" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((476)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-contacts" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((28)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-cooperation" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((496)::bigint);
+ALTER TABLE ONLY isahl."zc_id_cate-document" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((612)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-file" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((31)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-group_member" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((32)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-identity" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((33)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-inspection" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((34)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-inve-trasnfer" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((35)::bigint);
+ALTER TABLE ONLY isahl."zc_id_cate-issue" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((608)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-log" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((36)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-maintain" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((37)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-modify" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((38)::bigint);
@@ -34221,6 +34715,7 @@ ALTER TABLE ONLY isahl."zc_id_tags-r-type" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_tags-r-type-alias" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((136)::bigint);
 ALTER TABLE ONLY isahl."zc_id_tags-retail-barcode" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((512)::bigint);
 ALTER TABLE ONLY isahl."zc_id_tags-retail-description" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((513)::bigint);
+ALTER TABLE ONLY isahl."zc_id_tags-scrap" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((590)::bigint);
 ALTER TABLE ONLY isahl."zc_id_tags-style" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((527)::bigint);
 ALTER TABLE ONLY isahl."zc_id_tags-version" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((138)::bigint);
 ALTER TABLE ONLY isahl."zc_id_tags-warehousing" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((139)::bigint);
@@ -34269,6 +34764,13 @@ ALTER TABLE ONLY isahl."zc_id_storage" ALTER COLUMN id SET DEFAULT isahl.gen_nex
 ALTER TABLE ONLY isahl."zc_id_tags_poi" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((140)::bigint);
 ALTER TABLE ONLY isahl."zc_id_threads" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_version" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_audi-contract" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_audi-cost" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_audi-expense" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_audi-functional" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_audi-physical" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_audi-project" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_audi-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bom-input_item_r_substitution" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((154)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-agent" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((162)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-department" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((163)::bigint);
@@ -34425,6 +34927,7 @@ ALTER TABLE ONLY isahl."zc_id_cont-transport-sales" ALTER COLUMN id SET DEFAULT 
 ALTER TABLE ONLY isahl."zc_id_cont-transport_rr_stop" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((231)::bigint);
 ALTER TABLE ONLY isahl."zc_id_counting_r_cnt-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((241)::bigint);
 ALTER TABLE ONLY isahl."zc_id_deta-bill-check_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((243)::bigint);
+ALTER TABLE ONLY isahl."zc_id_deta-damage_r_scrap" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((592)::bigint);
 ALTER TABLE ONLY isahl."zc_id_deta-training_rr_matter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((244)::bigint);
 ALTER TABLE ONLY isahl."zc_id_deta-tsk_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((498)::bigint);
 ALTER TABLE ONLY isahl."zc_id_devi-camera" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -34470,13 +34973,19 @@ ALTER TABLE ONLY isahl."zc_id_oper-decide" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_oper-declaration_export" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-delivery" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-fo_booking" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-goods_pick" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-inbound" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-lading" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-merchandise_on" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-observe" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-orient" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-outbound" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-payload_sort" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-payment" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-pick_to_bin" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-planing" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-put_in_stock" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-put_to_store" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-register" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-resp_inquiry" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-sales_order" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -34486,6 +34995,7 @@ ALTER TABLE ONLY isahl."zc_id_oper-storage" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_oper-take_off_stock" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-trailer" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-transport_tracking" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-tsp_package" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orde-consult" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orde-manual" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orde-payment" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -34755,6 +35265,7 @@ ALTER TABLE ONLY isahl."zc_id_plan-perform_rr_whs-voucher" ALTER COLUMN id SET D
 ALTER TABLE ONLY isahl."zc_id_prod-apparel" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-channel_cost-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-conclusion" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-consulting" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-customs-clearance" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-customs_declaration" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -34937,6 +35448,8 @@ ALTER TABLE ONLY isahl."zc_id_bank-central" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_bom-input_rr_item" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((455)::bigint);
 ALTER TABLE ONLY isahl."zc_id_bom-output_rr_item" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((456)::bigint);
 ALTER TABLE ONLY isahl."zc_id_calc-zone_qty" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((457)::bigint);
+ALTER TABLE ONLY isahl."zc_id_even-modify_rr_matter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((615)::bigint);
+ALTER TABLE ONLY isahl."zc_id_event_rr_ind-matter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((617)::bigint);
 ALTER TABLE ONLY isahl."zc_id_file-document" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_file-image" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_file-manual" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();

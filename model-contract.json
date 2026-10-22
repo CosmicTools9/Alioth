@@ -9,10 +9,12 @@
     "zc_id_cate-bom-item": 6,
     "zc_id_cate-certification": 22,
     "zc_id_cate-clause": 11,
+    "zc_id_cate-config": 0,
     "zc_id_cate-contacts": 7,
     "zc_id_cate-cooperation": 9,
     "zc_id_cate-defect": 7,
     "zc_id_cate-department": 0,
+    "zc_id_cate-document": 0,
     "zc_id_cate-employment": 7,
     "zc_id_cate-file": 13,
     "zc_id_cate-group": 2,
@@ -22,6 +24,7 @@
     "zc_id_cate-inv-title": 0,
     "zc_id_cate-inv-title-cm": 12,
     "zc_id_cate-inve-trasnfer": 0,
+    "zc_id_cate-issue": 0,
     "zc_id_cate-log": 12,
     "zc_id_cate-maintain": 6,
     "zc_id_cate-modify": 12,
@@ -231,6 +234,7 @@
     "zc_id_tags-r-type-alias": 0,
     "zc_id_tags-retail-barcode": 0,
     "zc_id_tags-retail-description": 13,
+    "zc_id_tags-scrap": 0,
     "zc_id_tags-skill": 3,
     "zc_id_tags-style": 0,
     "zc_id_tags-version": 10,
@@ -269,7 +273,7 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "published_at": "2026-10-20T08:41:49.018768+00:00",
+  "published_at": "2026-10-22T17:02:38.912584+00:00",
   "row_layer": {
     "zc_id_cate-inv-title": "carry",
     "zc_id_cate-ope-title": "carry",
@@ -308,10 +312,12 @@
     "zc_id_cate-bom-item",
     "zc_id_cate-certification",
     "zc_id_cate-clause",
+    "zc_id_cate-config",
     "zc_id_cate-contacts",
     "zc_id_cate-cooperation",
     "zc_id_cate-defect",
     "zc_id_cate-department",
+    "zc_id_cate-document",
     "zc_id_cate-employment",
     "zc_id_cate-file",
     "zc_id_cate-group",
@@ -321,6 +327,7 @@
     "zc_id_cate-inv-title",
     "zc_id_cate-inv-title-cm",
     "zc_id_cate-inve-trasnfer",
+    "zc_id_cate-issue",
     "zc_id_cate-log",
     "zc_id_cate-maintain",
     "zc_id_cate-modify",
@@ -531,6 +538,7 @@
     "zc_id_tags-r-type-alias",
     "zc_id_tags-retail-barcode",
     "zc_id_tags-retail-description",
+    "zc_id_tags-scrap",
     "zc_id_tags-skill",
     "zc_id_tags-style",
     "zc_id_tags-version",
@@ -568,5 +576,5 @@
     "zc_id_unit-weight",
     "zc_id_unit-working"
   ],
-  "version": "v10.0.45"
+  "version": "v10.0.46"
 }
