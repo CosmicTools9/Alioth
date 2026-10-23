@@ -1,5 +1,5 @@
 
-\restrict JBR4nttIGpc0ldZo08AHMgRwsRc95B7fAUnCCwqMriHu6IWCHJdGFEeyTJ1ac2V
+\restrict MB2FMjeFLzfQKkVZdf4GGMokiD2KV4uMW6kgrJMq2uIb3cJr1TjlRZ9I3nFqa8z
 
 
 SET statement_timeout = 0;
@@ -116,6 +116,10 @@ INSERT INTO isahl."zc_id_cate-clause" (created_at, updated_at, id, created_by_id
 
 
 
+INSERT INTO isahl."zc_id_cate-config" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable) VALUES ('2026-10-23 01:19:31.145254+08', '2026-10-23 01:19:31.145254+08', 171699735793500161, 1, 1, '硬件', NULL, NULL, NULL, NULL, 'hw', NULL, NULL, NULL, NULL, NULL, true) ON CONFLICT DO NOTHING;
+INSERT INTO isahl."zc_id_cate-config" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable) VALUES ('2026-10-23 01:19:31.158043+08', '2026-10-23 01:19:31.158043+08', 171699735793500162, 1, 1, '软件', NULL, NULL, NULL, NULL, 'sw', NULL, NULL, NULL, NULL, NULL, true) ON CONFLICT DO NOTHING;
+INSERT INTO isahl."zc_id_cate-config" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable) VALUES ('2026-10-23 01:19:31.158557+08', '2026-10-23 01:19:31.158557+08', 171699735793500163, 1, 1, '接口', NULL, NULL, NULL, NULL, 'interface', NULL, NULL, NULL, NULL, NULL, true) ON CONFLICT DO NOTHING;
+INSERT INTO isahl."zc_id_cate-config" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable) VALUES ('2026-10-23 01:19:31.158896+08', '2026-10-23 01:19:31.158896+08', 171699735793500164, 1, 1, '技术文档', NULL, NULL, NULL, NULL, 'doc', NULL, NULL, NULL, NULL, NULL, true) ON CONFLICT DO NOTHING;
 
 
 
@@ -3373,5 +3377,5 @@ INSERT INTO isahl."zc_id_unit-working" (created_at, updated_at, id, created_by_i
 
 
 
-\unrestrict JBR4nttIGpc0ldZo08AHMgRwsRc95B7fAUnCCwqMriHu6IWCHJdGFEeyTJ1ac2V
+\unrestrict MB2FMjeFLzfQKkVZdf4GGMokiD2KV4uMW6kgrJMq2uIb3cJr1TjlRZ9I3nFqa8z
 

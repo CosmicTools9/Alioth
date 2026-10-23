@@ -19,7 +19,7 @@
     },
     {
       "name": "seed-dimensions.sql",
-      "size_bytes": 1384754
+      "size_bytes": 1386532
     },
     {
       "name": "seed-model-contract.sql",
@@ -27,7 +27,7 @@
     }
   ],
   "pg_dump_version": "pg_dump (PostgreSQL) 18.6 (Homebrew)",
-  "published_at": "2026-10-22T17:02:38.912584+00:00",
+  "published_at": "2026-10-23T04:12:51.378452+00:00",
   "tables": {
     "zc_id_cate-acc-title": 13,
     "zc_id_cate-agent": 0,
@@ -38,7 +38,7 @@
     "zc_id_cate-bom-item": 6,
     "zc_id_cate-certification": 22,
     "zc_id_cate-clause": 11,
-    "zc_id_cate-config": 0,
+    "zc_id_cate-config": 4,
     "zc_id_cate-contacts": 7,
     "zc_id_cate-cooperation": 9,
     "zc_id_cate-defect": 7,
@@ -302,5 +302,5 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "version": "v10.0.46"
+  "version": "v10.0.47"
 }
