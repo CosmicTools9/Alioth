@@ -11383,6 +11383,41 @@ INHERITS (isahl.zc_id_production_rr_storage);
 
 
 
+CREATE TABLE isahl."zc_id_prod-manual" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-lease");
+
+
+
+CREATE TABLE isahl."zc_id_prod-mal-carrier-made" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-manual");
+
+
+
+CREATE TABLE isahl."zc_id_prod-mal-carrier-purchase" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_prod-manual", isahl."zc_id_prod-purchase");
+
+
+
+CREATE TABLE isahl."zc_id_prod-mal-carrier-request" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_prod-manual", isahl."zc_id_prod-request");
+
+
+
+CREATE TABLE isahl."zc_id_prod-mal-carrier-sales" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_prod-manual", isahl."zc_id_prod-sales");
+
+
+
 CREATE TABLE isahl."zc_id_prod-marriage_cert-sales" (
     id bigint NOT NULL
 )
@@ -16467,6 +16502,13 @@ CREATE TABLE isahl."zc_id_stor-plc-airport" (
     fk_trustee bigint,
     qk_capacity bigint,
     fk_address bigint
+)
+INHERITS (isahl."zc_id_stor-place");
+
+
+
+CREATE TABLE isahl."zc_id_stor-plc-area" (
+    id bigint NOT NULL
 )
 INHERITS (isahl."zc_id_stor-place");
 
@@ -22562,6 +22604,46 @@ ALTER TABLE ONLY isahl."zc_id_prod-made_rr_stor-place" ALTER COLUMN updated_at S
 
 
 
+ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-made" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-made" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-purchase" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-purchase" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-request" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-request" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-sales" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-sales" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-manual" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-manual" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_prod-marriage_cert-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -23415,6 +23497,14 @@ ALTER TABLE ONLY isahl."zc_id_stor-ctn-subj" ALTER COLUMN created_at SET DEFAULT
 
 
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-subj" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stor-plc-area" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stor-plc-area" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -26928,6 +27018,31 @@ ALTER TABLE ONLY isahl."zc_id_prod-made_rr_stor-place"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-made"
+    ADD CONSTRAINT "zc_id_prod-mal-carrier-made_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-purchase"
+    ADD CONSTRAINT "zc_id_prod-mal-carrier-purchase_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-request"
+    ADD CONSTRAINT "zc_id_prod-mal-carrier-request_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-sales"
+    ADD CONSTRAINT "zc_id_prod-mal-carrier-sales_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-manual"
+    ADD CONSTRAINT "zc_id_prod-manual_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_prod-marriage_cert-sales"
     ADD CONSTRAINT "zc_id_prod-marriage_cert-sales_pkey" PRIMARY KEY (id);
 
@@ -28168,6 +28283,11 @@ ALTER TABLE ONLY isahl."zc_id_stor-plc-airport"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stor-plc-area"
+    ADD CONSTRAINT "zc_id_stor-plc-area_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stor-plc-asset"
     ADD CONSTRAINT "zc_id_stor-plc-asset_pkey" PRIMARY KEY (id);
 
@@ -29280,6 +29400,38 @@ CREATE INDEX idx_trgm_zc_id_stan_prod_quality_notice ON isahl."zc_id_stan-prod_q
 
 
 
+CREATE INDEX "idx_zc_ad_relation_r_isolate-tensor_ref_right" ON isahl."zc_ad_relation_r_isolate-tensor" USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_ad_relation_r_scalar_ref_right ON isahl.zc_ad_relation_r_scalar USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_ad_relation_rr_non_self-ref_ref_right" ON isahl."zc_ad_relation_rr_non_self-ref" USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_ad_tensor_r_dimension_ref_right ON isahl.zc_ad_tensor_r_dimension USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_ad_tensor_r_scalar_ref_right ON isahl.zc_ad_tensor_r_scalar USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_ad_tensor_rr_non_self-ref_ref_right" ON isahl."zc_ad_tensor_rr_non_self-ref" USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_agreement_r_calc_ref_right ON isahl.zc_id_agreement_r_calc USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_agreement_r_term_ref_right ON isahl.zc_id_agreement_r_term USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_appr-bid-evaluation_fk_object" ON isahl."zc_id_appr-bid-evaluation" USING btree (fk_object);
 
 
@@ -29301,6 +29453,14 @@ CREATE INDEX "idx_zc_id_appr-org-structure_fk_place" ON isahl."zc_id_appr-org-st
 
 
 CREATE INDEX "idx_zc_id_appr-org-structure_fk_subject" ON isahl."zc_id_appr-org-structure" USING btree (fk_subject);
+
+
+
+CREATE INDEX "idx_zc_id_appr-payment_rr_invoice_ref_right" ON isahl."zc_id_appr-payment_rr_invoice" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_appr-payment_rr_smt-voucher_ref_right" ON isahl."zc_id_appr-payment_rr_smt-voucher" USING btree (ref_right);
 
 
 
@@ -29444,6 +29604,14 @@ CREATE INDEX "idx_zc_id_appr-user_verify_fk_subject" ON isahl."zc_id_appr-user_v
 
 
 
+CREATE INDEX idx_zc_id_audit_rr_auditee_ref_right ON isahl.zc_id_audit_rr_auditee USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_audit_rr_conclusion_ref_right ON isahl.zc_id_audit_rr_conclusion USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_bank-commercial_fk_country" ON isahl."zc_id_bank-commercial" USING btree (fk_country);
 
 
@@ -29464,11 +29632,39 @@ CREATE INDEX "idx_zc_id_bill-check_fk_subject" ON isahl."zc_id_bill-check" USING
 
 
 
+CREATE INDEX "idx_zc_id_bill-check_r_verify-status_ref_right" ON isahl."zc_id_bill-check_r_verify-status" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_bill-check_rr_invoice_ref_right" ON isahl."zc_id_bill-check_rr_invoice" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_bill-check_rr_plan-payment_ref_right" ON isahl."zc_id_bill-check_rr_plan-payment" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_bill-check_rr_smt-voucher_ref_right" ON isahl."zc_id_bill-check_rr_smt-voucher" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_bill-check_rr_trade_order_ref_right" ON isahl."zc_id_bill-check_rr_trade_order" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_bill-pricing_fk_subject" ON isahl."zc_id_bill-pricing" USING btree (fk_subject);
 
 
 
 CREATE INDEX idx_zc_id_bill_fk_subject ON isahl.zc_id_bill USING btree (fk_subject);
+
+
+
+CREATE INDEX idx_zc_id_bill_rr_process_ref_right ON isahl.zc_id_bill_rr_process USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_bill_rr_recipients_ref_right ON isahl.zc_id_bill_rr_recipients USING btree (ref_right);
 
 
 
@@ -29512,11 +29708,19 @@ CREATE INDEX "idx_zc_id_bom-inbound_fk_previous" ON isahl."zc_id_bom-inbound" US
 
 
 
+CREATE INDEX "idx_zc_id_bom-input_item_r_substitution_ref_right" ON isahl."zc_id_bom-input_item_r_substitution" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_bom-input_rr_item_fk_place" ON isahl."zc_id_bom-input_rr_item" USING btree (fk_place);
 
 
 
 CREATE INDEX "idx_zc_id_bom-input_rr_item_fk_qc_std" ON isahl."zc_id_bom-input_rr_item" USING btree (fk_qc_std);
+
+
+
+CREATE INDEX "idx_zc_id_bom-input_rr_item_ref_right" ON isahl."zc_id_bom-input_rr_item" USING btree (ref_right);
 
 
 
@@ -29533,6 +29737,10 @@ CREATE INDEX "idx_zc_id_bom-outbound_fk_editor" ON isahl."zc_id_bom-outbound" US
 
 
 CREATE INDEX "idx_zc_id_bom-outbound_fk_previous" ON isahl."zc_id_bom-outbound" USING btree (fk_previous);
+
+
+
+CREATE INDEX "idx_zc_id_bom-output_rr_item_ref_right" ON isahl."zc_id_bom-output_rr_item" USING btree (ref_right);
 
 
 
@@ -29584,7 +29792,75 @@ CREATE INDEX idx_zc_id_bom_rr_item_fk_qc_std ON isahl.zc_id_bom_rr_item USING bt
 
 
 
+CREATE INDEX idx_zc_id_bom_rr_item_ref_right ON isahl.zc_id_bom_rr_item USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_cate-tax-title_fk_country" ON isahl."zc_id_cate-tax-title" USING btree (fk_country);
+
+
+
+CREATE INDEX "idx_zc_id_cont-transport_rr_stop_ref_right" ON isahl."zc_id_cont-transport_rr_stop" USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_contacts_rr_infos_ref_right ON isahl.zc_id_contacts_rr_infos USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_container_rr_device_ref_right ON isahl.zc_id_container_rr_device USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_contract_r_calc_ref_right ON isahl.zc_id_contract_r_calc USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_contract_r_term_ref_right ON isahl.zc_id_contract_r_term USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_contract_rr_agreement_ref_right ON isahl.zc_id_contract_rr_agreement USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_contract_rr_deal_ref_right ON isahl.zc_id_contract_rr_deal USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_contract_rr_demand_ref_right ON isahl.zc_id_contract_rr_demand USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_contract_rr_goods_ref_right ON isahl.zc_id_contract_rr_goods USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_contract_rr_law_ref_right ON isahl.zc_id_contract_rr_law USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_contract_rr_matter_ref_right ON isahl.zc_id_contract_rr_matter USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_contract_rr_party_ref_right ON isahl.zc_id_contract_rr_party USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_contract_rr_standard_ref_right ON isahl.zc_id_contract_rr_standard USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_contract_rr_symmetry_ref_right ON isahl.zc_id_contract_rr_symmetry USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_counting_r_cnt-status_ref_right" ON isahl."zc_id_counting_r_cnt-status" USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_demand_rr_supply_ref_right ON isahl.zc_id_demand_rr_supply USING btree (ref_right);
 
 
 
@@ -29604,6 +29880,10 @@ CREATE INDEX "idx_zc_id_deta-bill-check_fk_list" ON isahl."zc_id_deta-bill-check
 
 
 
+CREATE INDEX "idx_zc_id_deta-bill-check_r_verify-status_ref_right" ON isahl."zc_id_deta-bill-check_r_verify-status" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_deta-bill-pricing_fk_goods" ON isahl."zc_id_deta-bill-pricing" USING btree (fk_goods);
 
 
@@ -29617,6 +29897,10 @@ CREATE INDEX "idx_zc_id_deta-commit_fk_list" ON isahl."zc_id_deta-commit" USING 
 
 
 CREATE INDEX "idx_zc_id_deta-commit_fk_modify" ON isahl."zc_id_deta-commit" USING btree (fk_modify);
+
+
+
+CREATE INDEX "idx_zc_id_deta-damage_r_scrap_ref_right" ON isahl."zc_id_deta-damage_r_scrap" USING btree (ref_right);
 
 
 
@@ -29649,6 +29933,14 @@ CREATE INDEX "idx_zc_id_deta-trade_order_fk_list" ON isahl."zc_id_deta-trade_ord
 
 
 CREATE INDEX "idx_zc_id_deta-trade_order_fk_subject" ON isahl."zc_id_deta-trade_order" USING btree (fk_subject);
+
+
+
+CREATE INDEX "idx_zc_id_deta-training_rr_matter_ref_right" ON isahl."zc_id_deta-training_rr_matter" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_deta-tsk_r_verify-status_ref_right" ON isahl."zc_id_deta-tsk_r_verify-status" USING btree (ref_right);
 
 
 
@@ -29712,6 +30004,14 @@ CREATE INDEX idx_zc_id_device_fk_user ON isahl.zc_id_device USING btree (fk_user
 
 
 
+CREATE INDEX "idx_zc_id_device_r_iot-status_ref_right" ON isahl."zc_id_device_r_iot-status" USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_device_rr_protocol_ref_right ON isahl.zc_id_device_rr_protocol USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_docu-accounting_fk_previous" ON isahl."zc_id_docu-accounting" USING btree (fk_previous);
 
 
@@ -29724,11 +30024,35 @@ CREATE INDEX "idx_zc_id_empl-agent_fk_user" ON isahl."zc_id_empl-agent" USING bt
 
 
 
+CREATE INDEX "idx_zc_id_empl-agent_rr_llm-config_ref_right" ON isahl."zc_id_empl-agent_rr_llm-config" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_empl-natural_fk_user" ON isahl."zc_id_empl-natural" USING btree (fk_user);
 
 
 
+CREATE INDEX "idx_zc_id_empl-natural_r_marital-status_ref_right" ON isahl."zc_id_empl-natural_r_marital-status" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_empl-natural_rr_consanguinity_ref_right" ON isahl."zc_id_empl-natural_rr_consanguinity" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_empl-natural_rr_country_ref_right" ON isahl."zc_id_empl-natural_rr_country" USING btree (ref_right);
+
+
+
 CREATE INDEX idx_zc_id_entity_fk_user ON isahl.zc_id_entity USING btree (fk_user);
+
+
+
+CREATE INDEX idx_zc_id_entity_rr_contacts_ref_right ON isahl.zc_id_entity_rr_contacts USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_entity_rr_identity_ref_right ON isahl.zc_id_entity_rr_identity USING btree (ref_right);
 
 
 
@@ -29752,11 +30076,47 @@ CREATE INDEX "idx_zc_id_even-modify_fk_ver-fork" ON isahl."zc_id_even-modify" US
 
 
 
+CREATE INDEX "idx_zc_id_even-modify_rr_matter_ref_right" ON isahl."zc_id_even-modify_rr_matter" USING btree (ref_right);
+
+
+
 CREATE INDEX idx_zc_id_event_fk_place ON isahl.zc_id_event USING btree (fk_place);
 
 
 
 CREATE INDEX idx_zc_id_event_fk_subject ON isahl.zc_id_event USING btree (fk_subject);
+
+
+
+CREATE INDEX idx_zc_id_event_rr_bill_ref_right ON isahl.zc_id_event_rr_bill USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_event_rr_container_ref_right ON isahl.zc_id_event_rr_container USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_event_rr_ind-matter_ref_right" ON isahl."zc_id_event_rr_ind-matter" USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_event_rr_matter_ref_right ON isahl.zc_id_event_rr_matter USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_event_rr_reason_ref_right ON isahl.zc_id_event_rr_reason USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_event_rr_standard_ref_right ON isahl.zc_id_event_rr_standard USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_file_rr_url_ref_right ON isahl.zc_id_file_rr_url USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_identity_rr_country_ref_right ON isahl.zc_id_identity_rr_country USING btree (ref_right);
 
 
 
@@ -29804,7 +30164,55 @@ CREATE INDEX idx_zc_id_invoice_fk_sender ON isahl.zc_id_invoice USING btree (fk_
 
 
 
+CREATE INDEX "idx_zc_id_invoice_r_verify-status_ref_right" ON isahl."zc_id_invoice_r_verify-status" USING btree (ref_right);
+
+
+
 CREATE INDEX idx_zc_id_law_fk_previous ON isahl.zc_id_law USING btree (fk_previous);
+
+
+
+CREATE INDEX "idx_zc_id_lifecycle_r_appraval-status_ref_right" ON isahl."zc_id_lifecycle_r_appraval-status" USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_lifecycle_r_category_ref_right ON isahl.zc_id_lifecycle_r_category USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_lifecycle_r_evaluation_ref_right ON isahl.zc_id_lifecycle_r_evaluation USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_lifecycle_r_lock-status_ref_right" ON isahl."zc_id_lifecycle_r_lock-status" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_lifecycle_r_primary-status_ref_right" ON isahl."zc_id_lifecycle_r_primary-status" USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_lifecycle_r_status_ref_right ON isahl.zc_id_lifecycle_r_status USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_lifecycle_r_tags_ref_right ON isahl.zc_id_lifecycle_r_tags USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_lifecycle_rr_foreign_ref_right ON isahl.zc_id_lifecycle_rr_foreign USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_lifecycle_rr_form_ref_right ON isahl.zc_id_lifecycle_rr_form USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_lifecycle_rr_non_self_ref_right ON isahl.zc_id_lifecycle_rr_non_self USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_master_rr_slave_ref_right ON isahl.zc_id_master_rr_slave USING btree (ref_right);
 
 
 
@@ -29817,6 +30225,18 @@ CREATE INDEX "idx_zc_id_message_fk_sender-addr" ON isahl.zc_id_message USING btr
 
 
 CREATE INDEX idx_zc_id_message_fk_thread ON isahl.zc_id_message USING btree (fk_thread);
+
+
+
+CREATE INDEX "idx_zc_id_message_rr_contact-info_ref_right" ON isahl."zc_id_message_rr_contact-info" USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_message_rr_copy_ref_right ON isahl.zc_id_message_rr_copy USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_message_rr_recipients_ref_right ON isahl.zc_id_message_rr_recipients USING btree (ref_right);
 
 
 
@@ -30180,6 +30600,14 @@ CREATE INDEX "idx_zc_id_oper-sales_order_fk_subject" ON isahl."zc_id_oper-sales_
 
 
 
+CREATE INDEX "idx_zc_id_oper-sign_rr_agreement_ref_right" ON isahl."zc_id_oper-sign_rr_agreement" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_oper-sign_rr_contract_ref_right" ON isahl."zc_id_oper-sign_rr_contract" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_oper-smtv_review_fk_operator" ON isahl."zc_id_oper-smtv_review" USING btree (fk_operator);
 
 
@@ -30249,6 +30677,46 @@ CREATE INDEX idx_zc_id_operation_fk_previous ON isahl.zc_id_operation USING btre
 
 
 CREATE INDEX idx_zc_id_operation_fk_subject ON isahl.zc_id_operation USING btree (fk_subject);
+
+
+
+CREATE INDEX idx_zc_id_operation_rr_approve_ref_right ON isahl.zc_id_operation_rr_approve USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_operation_rr_bill_ref_right ON isahl.zc_id_operation_rr_bill USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_operation_rr_bom_ref_right ON isahl.zc_id_operation_rr_bom USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_operation_rr_dependency_ref_right ON isahl.zc_id_operation_rr_dependency USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_operation_rr_event_ref_right ON isahl.zc_id_operation_rr_event USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_operation_rr_post_ref_right ON isahl.zc_id_operation_rr_post USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_operation_rr_review_ref_right ON isahl.zc_id_operation_rr_review USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_operation_rr_standard_ref_right ON isahl.zc_id_operation_rr_standard USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_operation_rr_statement_ref_right ON isahl.zc_id_operation_rr_statement USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_operation_rr_task_ref_right ON isahl.zc_id_operation_rr_task USING btree (ref_right);
 
 
 
@@ -30356,11 +30824,55 @@ CREATE INDEX "idx_zc_id_orde-shipping_fk_subject" ON isahl."zc_id_orde-shipping"
 
 
 
+CREATE INDEX "idx_zc_id_orde-traffic_rr_devi-seal_ref_right" ON isahl."zc_id_orde-traffic_rr_devi-seal" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_orde-traffic_rr_ticket_ref_right" ON isahl."zc_id_orde-traffic_rr_ticket" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_orde-traffic_rr_tsp-voucher_ref_right" ON isahl."zc_id_orde-traffic_rr_tsp-voucher" USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_order_rr_contract_ref_right ON isahl.zc_id_order_rr_contract USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_order_rr_demand_ref_right ON isahl.zc_id_order_rr_demand USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_order_rr_foreign_ref_right ON isahl.zc_id_order_rr_foreign USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_order_rr_issue_invoice_ref_right ON isahl.zc_id_order_rr_issue_invoice USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_order_rr_obj-rep_ref_right" ON isahl."zc_id_order_rr_obj-rep" USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_order_rr_recv_invoice_ref_right ON isahl.zc_id_order_rr_recv_invoice USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_order_rr_subj-rep_ref_right" ON isahl."zc_id_order_rr_subj-rep" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_orga-department_fk_country" ON isahl."zc_id_orga-department" USING btree (fk_country);
 
 
 
 CREATE INDEX "idx_zc_id_orga-department_fk_user" ON isahl."zc_id_orga-department" USING btree (fk_user);
+
+
+
+CREATE INDEX "idx_zc_id_orga-department_rr_project_ref_right" ON isahl."zc_id_orga-department_rr_project" USING btree (ref_right);
 
 
 
@@ -30380,7 +30892,67 @@ CREATE INDEX "idx_zc_id_orga-non-banking-legal_fk_user" ON isahl."zc_id_orga-non
 
 
 
+CREATE INDEX idx_zc_id_place_rr_address_ref_right ON isahl.zc_id_place_rr_address USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_place_rr_contacts_ref_right ON isahl.zc_id_place_rr_contacts USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_plan-making_rr_prod_ref_right" ON isahl."zc_id_plan-making_rr_prod" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_plan-material_rr_material_ref_right" ON isahl."zc_id_plan-material_rr_material" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_plan-payment_rr_smt-voucher_ref_right" ON isahl."zc_id_plan-payment_rr_smt-voucher" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_plan-perform_rr_tsk-make_ref_right" ON isahl."zc_id_plan-perform_rr_tsk-make" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_plan-perform_rr_tsp-voucher_ref_right" ON isahl."zc_id_plan-perform_rr_tsp-voucher" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_plan-perform_rr_whs-voucher_ref_right" ON isahl."zc_id_plan-perform_rr_whs-voucher" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_plan-project_fk_project" ON isahl."zc_id_plan-project" USING btree (fk_project);
+
+
+
+CREATE INDEX "idx_zc_id_plan-purchase_items_r_prod_ref_right" ON isahl."zc_id_plan-purchase_items_r_prod" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_plan-purchase_rr_material_ref_right" ON isahl."zc_id_plan-purchase_rr_material" USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_plan_rr_dependency_ref_right ON isahl.zc_id_plan_rr_dependency USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_plan_rr_event_ref_right ON isahl.zc_id_plan_rr_event USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_plan_rr_participants_ref_right ON isahl.zc_id_plan_rr_participants USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_plan_rr_statement_ref_right ON isahl.zc_id_plan_rr_statement USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_plan_rr_task_ref_right ON isahl.zc_id_plan_rr_task USING btree (ref_right);
 
 
 
@@ -30481,6 +31053,22 @@ CREATE INDEX "idx_zc_id_process_fk_subj-define" ON isahl.zc_id_process USING btr
 
 
 CREATE INDEX idx_zc_id_process_fk_subject ON isahl.zc_id_process USING btree (fk_subject);
+
+
+
+CREATE INDEX idx_zc_id_process_rr_context_ref_right ON isahl.zc_id_process_rr_context USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_process_rr_operation_ref_right ON isahl.zc_id_process_rr_operation USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_prod-apparel_r_fabric_ref_right" ON isahl."zc_id_prod-apparel_r_fabric" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_prod-apparel_r_style_ref_right" ON isahl."zc_id_prod-apparel_r_style" USING btree (ref_right);
 
 
 
@@ -30956,6 +31544,10 @@ CREATE INDEX "idx_zc_id_prod-loading_fk_subj-provider" ON isahl."zc_id_prod-load
 
 
 
+CREATE INDEX "idx_zc_id_prod-loading_r_description_ref_right" ON isahl."zc_id_prod-loading_r_description" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_prod-made_fk_previous" ON isahl."zc_id_prod-made" USING btree (fk_previous);
 
 
@@ -30969,6 +31561,18 @@ CREATE INDEX "idx_zc_id_prod-made_fk_subj-demand" ON isahl."zc_id_prod-made" USI
 
 
 CREATE INDEX "idx_zc_id_prod-made_fk_subj-provider" ON isahl."zc_id_prod-made" USING btree ("fk_subj-provider");
+
+
+
+CREATE INDEX "idx_zc_id_prod-made_rr_prod-purchase_ref_right" ON isahl."zc_id_prod-made_rr_prod-purchase" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_prod-made_rr_project_ref_right" ON isahl."zc_id_prod-made_rr_project" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_prod-made_rr_stor-place_ref_right" ON isahl."zc_id_prod-made_rr_stor-place" USING btree (ref_right);
 
 
 
@@ -31020,6 +31624,10 @@ CREATE INDEX "idx_zc_id_prod-payload_fk_subj-provider" ON isahl."zc_id_prod-payl
 
 
 
+CREATE INDEX "idx_zc_id_prod-payload_rr_stor-container_ref_right" ON isahl."zc_id_prod-payload_rr_stor-container" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_prod-ports-purchase_fk_previous" ON isahl."zc_id_prod-ports-purchase" USING btree (fk_previous);
 
 
@@ -31065,6 +31673,10 @@ CREATE INDEX "idx_zc_id_prod-ports-sales_fk_subj-demand" ON isahl."zc_id_prod-po
 
 
 CREATE INDEX "idx_zc_id_prod-ports-sales_fk_subj-provider" ON isahl."zc_id_prod-ports-sales" USING btree ("fk_subj-provider");
+
+
+
+CREATE INDEX "idx_zc_id_prod-prj_data_rr_project_ref_right" ON isahl."zc_id_prod-prj_data_rr_project" USING btree (ref_right);
 
 
 
@@ -31152,6 +31764,10 @@ CREATE INDEX "idx_zc_id_prod-proxy_rr_principal_fk_src-prod" ON isahl."zc_id_pro
 
 
 
+CREATE INDEX "idx_zc_id_prod-proxy_rr_principal_ref_right" ON isahl."zc_id_prod-proxy_rr_principal" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_prod-pub_affairs_fk_previous" ON isahl."zc_id_prod-pub_affairs" USING btree (fk_previous);
 
 
@@ -31181,6 +31797,10 @@ CREATE INDEX "idx_zc_id_prod-purchase_fk_subj-demand" ON isahl."zc_id_prod-purch
 
 
 CREATE INDEX "idx_zc_id_prod-purchase_fk_subj-provider" ON isahl."zc_id_prod-purchase" USING btree ("fk_subj-provider");
+
+
+
+CREATE INDEX "idx_zc_id_prod-purchase_rr_project_ref_right" ON isahl."zc_id_prod-purchase_rr_project" USING btree (ref_right);
 
 
 
@@ -31668,6 +32288,14 @@ CREATE INDEX "idx_zc_id_prod-request_fk_subj-provider" ON isahl."zc_id_prod-requ
 
 
 
+CREATE INDEX "idx_zc_id_prod-request_rr_prod-sales_ref_right" ON isahl."zc_id_prod-request_rr_prod-sales" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_prod-request_rr_project_ref_right" ON isahl."zc_id_prod-request_rr_project" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_prod-retail-made_fk_previous" ON isahl."zc_id_prod-retail-made" USING btree (fk_previous);
 
 
@@ -31732,6 +32360,18 @@ CREATE INDEX "idx_zc_id_prod-retail-sales_fk_subj-provider" ON isahl."zc_id_prod
 
 
 
+CREATE INDEX "idx_zc_id_prod-retail_r_barcode_ref_right" ON isahl."zc_id_prod-retail_r_barcode" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_prod-retail_r_description_ref_right" ON isahl."zc_id_prod-retail_r_description" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_prod-retail_r_hscode_ref_right" ON isahl."zc_id_prod-retail_r_hscode" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_prod-sales_fk_previous" ON isahl."zc_id_prod-sales" USING btree (fk_previous);
 
 
@@ -31745,6 +32385,18 @@ CREATE INDEX "idx_zc_id_prod-sales_fk_subj-demand" ON isahl."zc_id_prod-sales" U
 
 
 CREATE INDEX "idx_zc_id_prod-sales_fk_subj-provider" ON isahl."zc_id_prod-sales" USING btree ("fk_subj-provider");
+
+
+
+CREATE INDEX "idx_zc_id_prod-sales_rr_prod-made_ref_right" ON isahl."zc_id_prod-sales_rr_prod-made" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_prod-sales_rr_project_ref_right" ON isahl."zc_id_prod-sales_rr_project" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_prod-sales_rr_stor-place_ref_right" ON isahl."zc_id_prod-sales_rr_stor-place" USING btree (ref_right);
 
 
 
@@ -31876,6 +32528,14 @@ CREATE INDEX "idx_zc_id_prod-traffic_fk_subj-provider" ON isahl."zc_id_prod-traf
 
 
 
+CREATE INDEX "idx_zc_id_prod-traffic_rr_contacts_ref_right" ON isahl."zc_id_prod-traffic_rr_contacts" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_prod-traffic_rr_conveyance_ref_right" ON isahl."zc_id_prod-traffic_rr_conveyance" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_prod-transfer_p2p-purchase_fk_departure" ON isahl."zc_id_prod-transfer_p2p-purchase" USING btree (fk_departure);
 
 
@@ -31964,6 +32624,14 @@ CREATE INDEX "idx_zc_id_prod-transform_fk_subj-provider" ON isahl."zc_id_prod-tr
 
 
 
+CREATE INDEX "idx_zc_id_prod-transform_r_composition_ref_right" ON isahl."zc_id_prod-transform_r_composition" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_prod-transport_rr_stop_ref_right" ON isahl."zc_id_prod-transport_rr_stop" USING btree (ref_right);
+
+
+
 CREATE INDEX idx_zc_id_production_fk_previous ON isahl.zc_id_production USING btree (fk_previous);
 
 
@@ -31980,7 +32648,55 @@ CREATE INDEX "idx_zc_id_production_fk_subj-provider" ON isahl.zc_id_production U
 
 
 
+CREATE INDEX "idx_zc_id_production_r_log-status_ref_right" ON isahl."zc_id_production_r_log-status" USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_production_r_period_ref_right ON isahl.zc_id_production_r_period USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_production_r_pricing_ref_right ON isahl.zc_id_production_r_pricing USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_production_r_transport-status_ref_right" ON isahl."zc_id_production_r_transport-status" USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_production_r_ts_concomitant_ref_right ON isahl.zc_id_production_r_ts_concomitant USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_production_r_zone_fk_formula-pricing" ON isahl.zc_id_production_r_zone USING btree ("fk_formula-pricing");
+
+
+
+CREATE INDEX idx_zc_id_production_r_zone_ref_right ON isahl.zc_id_production_r_zone USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_production_rr_bom_ref_right ON isahl.zc_id_production_rr_bom USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_production_rr_manual_ref_right ON isahl.zc_id_production_rr_manual USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_production_rr_process_ref_right ON isahl.zc_id_production_rr_process USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_production_rr_project_ref_right ON isahl.zc_id_production_rr_project USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_production_rr_standard_ref_right ON isahl.zc_id_production_rr_standard USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_production_rr_storage_ref_right ON isahl.zc_id_production_rr_storage USING btree (ref_right);
 
 
 
@@ -31993,6 +32709,54 @@ CREATE INDEX idx_zc_id_project_fk_launcher ON isahl.zc_id_project USING btree (f
 
 
 CREATE INDEX idx_zc_id_project_fk_previous ON isahl.zc_id_project USING btree (fk_previous);
+
+
+
+CREATE INDEX idx_zc_id_project_r_milestone_ref_right ON isahl.zc_id_project_r_milestone USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_project_r_review-status_ref_right" ON isahl."zc_id_project_r_review-status" USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_project_rr_dependency_ref_right ON isahl.zc_id_project_rr_dependency USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_project_rr_other_ref_right ON isahl.zc_id_project_rr_other USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_project_rr_process_ref_right ON isahl.zc_id_project_rr_process USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_project_rr_task_ref_right ON isahl.zc_id_project_rr_task USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_relation-bom_item_r_tags_ref_right" ON isahl."zc_id_relation-bom_item_r_tags" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_relation-cooperation_r_evaluation_ref_right" ON isahl."zc_id_relation-cooperation_r_evaluation" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_relation-employ_r_duty-status_ref_right" ON isahl."zc_id_relation-employ_r_duty-status" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_relation-employee_r_skill-tags_ref_right" ON isahl."zc_id_relation-employee_r_skill-tags" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_relation-plan_smt_r_tags_ref_right" ON isahl."zc_id_relation-plan_smt_r_tags" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_relation-post_view_r_tags_ref_right" ON isahl."zc_id_relation-post_view_r_tags" USING btree (ref_right);
 
 
 
@@ -32013,6 +32777,18 @@ CREATE INDEX "idx_zc_id_stan-operation_fk_previous" ON isahl."zc_id_stan-operati
 
 
 CREATE INDEX idx_zc_id_standard_fk_previous ON isahl.zc_id_standard USING btree (fk_previous);
+
+
+
+CREATE INDEX idx_zc_id_standard_r_formula_ref_right ON isahl.zc_id_standard_r_formula USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_standard_rr_law_ref_right ON isahl.zc_id_standard_rr_law USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_standard_rr_reference_ref_right ON isahl.zc_id_standard_rr_reference USING btree (ref_right);
 
 
 
@@ -32112,6 +32888,26 @@ CREATE INDEX "idx_zc_id_stat-sto-voucher_fk_subject" ON isahl."zc_id_stat-sto-vo
 
 
 
+CREATE INDEX "idx_zc_id_stat-sto-voucher_rr_deta-counting_ref_right" ON isahl."zc_id_stat-sto-voucher_rr_deta-counting" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_stat-sto-voucher_rr_order_ref_right" ON isahl."zc_id_stat-sto-voucher_rr_order" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_stat-task_r_verify-status_ref_right" ON isahl."zc_id_stat-task_r_verify-status" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_stat-task_rr_sto-voucher_ref_right" ON isahl."zc_id_stat-task_rr_sto-voucher" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_stat-task_rr_trade_order_ref_right" ON isahl."zc_id_stat-task_rr_trade_order" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_stat-trade_order_fk_contract" ON isahl."zc_id_stat-trade_order" USING btree (fk_contract);
 
 
@@ -32168,6 +32964,10 @@ CREATE INDEX idx_zc_id_statement_fk_subject ON isahl.zc_id_statement USING btree
 
 
 
+CREATE INDEX idx_zc_id_statement_rr_reason_ref_right ON isahl.zc_id_statement_rr_reason USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_stor-acc-bank_fk_trustee" ON isahl."zc_id_stor-acc-bank" USING btree (fk_trustee);
 
 
@@ -32209,6 +33009,10 @@ CREATE INDEX "idx_zc_id_stor-account_fk_trustee" ON isahl."zc_id_stor-account" U
 
 
 CREATE INDEX "idx_zc_id_stor-container_fk_trustee" ON isahl."zc_id_stor-container" USING btree (fk_trustee);
+
+
+
+CREATE INDEX "idx_zc_id_stor-container_r_tracking-status_ref_right" ON isahl."zc_id_stor-container_r_tracking-status" USING btree (ref_right);
 
 
 
@@ -32364,7 +33168,15 @@ CREATE INDEX "idx_zc_id_stor-plc-yard_fk_trustee" ON isahl."zc_id_stor-plc-yard"
 
 
 
+CREATE INDEX "idx_zc_id_stor-traffic_line_rr_stop_ref_right" ON isahl."zc_id_stor-traffic_line_rr_stop" USING btree (ref_right);
+
+
+
 CREATE INDEX idx_zc_id_storage_fk_trustee ON isahl.zc_id_storage USING btree (fk_trustee);
+
+
+
+CREATE INDEX "idx_zc_id_storage_rr_stock-in_ref_right" ON isahl."zc_id_storage_rr_stock-in" USING btree (ref_right);
 
 
 
@@ -32376,7 +33188,23 @@ CREATE INDEX "idx_zc_id_subj-employee_fk_user" ON isahl."zc_id_subj-employee" US
 
 
 
+CREATE INDEX "idx_zc_id_subj-employee_r_employ-status_ref_right" ON isahl."zc_id_subj-employee_r_employ-status" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_subj-employee_rr_client_ref_right" ON isahl."zc_id_subj-employee_rr_client" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_subj-group_fk_user" ON isahl."zc_id_subj-group" USING btree (fk_user);
+
+
+
+CREATE INDEX "idx_zc_id_subj-group_rr_member_ref_right" ON isahl."zc_id_subj-group_rr_member" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_subj-group_rr_project_ref_right" ON isahl."zc_id_subj-group_rr_project" USING btree (ref_right);
 
 
 
@@ -32384,7 +33212,19 @@ CREATE INDEX "idx_zc_id_subj-hierarchy_fk_user" ON isahl."zc_id_subj-hierarchy" 
 
 
 
+CREATE INDEX "idx_zc_id_subj-hierarchy_rr_subordinate_ref_right" ON isahl."zc_id_subj-hierarchy_rr_subordinate" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_subj-ministry_fk_user" ON isahl."zc_id_subj-ministry" USING btree (fk_user);
+
+
+
+CREATE INDEX "idx_zc_id_subj-ministry_rr_servant_ref_right" ON isahl."zc_id_subj-ministry_rr_servant" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_subj-ministry_rr_subordinate_ref_right" ON isahl."zc_id_subj-ministry_rr_subordinate" USING btree (ref_right);
 
 
 
@@ -32396,7 +33236,43 @@ CREATE INDEX "idx_zc_id_subj-org_fk_user" ON isahl."zc_id_subj-org" USING btree 
 
 
 
+CREATE INDEX "idx_zc_id_subj-org_rr_employee_ref_right" ON isahl."zc_id_subj-org_rr_employee" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_subj-org_rr_member_ref_right" ON isahl."zc_id_subj-org_rr_member" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_subj-org_rr_position_ref_right" ON isahl."zc_id_subj-org_rr_position" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_subj-org_rr_sharehold_ref_right" ON isahl."zc_id_subj-org_rr_sharehold" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_subj-org_rr_subordinate_ref_right" ON isahl."zc_id_subj-org_rr_subordinate" USING btree (ref_right);
+
+
+
 CREATE INDEX "idx_zc_id_subj-position_fk_user" ON isahl."zc_id_subj-position" USING btree (fk_user);
+
+
+
+CREATE INDEX "idx_zc_id_subj-post_rr_employee_ref_right" ON isahl."zc_id_subj-post_rr_employee" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_subj-post_rr_subordinate_ref_right" ON isahl."zc_id_subj-post_rr_subordinate" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_subj-post_rr_view_ref_right" ON isahl."zc_id_subj-post_rr_view" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_subj-sovereign_rr_ministry_ref_right" ON isahl."zc_id_subj-sovereign_rr_ministry" USING btree (ref_right);
 
 
 
@@ -32408,11 +33284,47 @@ CREATE INDEX idx_zc_id_subjects_fk_user ON isahl.zc_id_subjects USING btree (fk_
 
 
 
+CREATE INDEX idx_zc_id_subjects_rr_account_ref_right ON isahl.zc_id_subjects_rr_account USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_subjects_rr_container_ref_right ON isahl.zc_id_subjects_rr_container USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_subjects_rr_partner_ref_right ON isahl.zc_id_subjects_rr_partner USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_subjects_rr_place_ref_right ON isahl.zc_id_subjects_rr_place USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_subjects_rr_storage_ref_right ON isahl.zc_id_subjects_rr_storage USING btree (ref_right);
+
+
+
 CREATE INDEX idx_zc_id_task_fk_previous ON isahl.zc_id_task USING btree (fk_previous);
 
 
 
 CREATE INDEX idx_zc_id_task_fk_subject ON isahl.zc_id_task USING btree (fk_subject);
+
+
+
+CREATE INDEX idx_zc_id_task_rr_bill_ref_right ON isahl.zc_id_task_rr_bill USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_task_rr_dependency_ref_right ON isahl.zc_id_task_rr_dependency USING btree (ref_right);
+
+
+
+CREATE INDEX idx_zc_id_task_rr_reason_ref_right ON isahl.zc_id_task_rr_reason USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_thread_rr_topic-x_ref_right" ON isahl."zc_id_thread_rr_topic-x" USING btree (ref_right);
 
 
 
@@ -32644,6 +33556,14 @@ CREATE INDEX "idx_zc_id_vers-context_fk_previous" ON isahl."zc_id_vers-context" 
 
 
 
+CREATE INDEX "idx_zc_id_vers-context_r_baseline_ref_right" ON isahl."zc_id_vers-context_r_baseline" USING btree (ref_right);
+
+
+
+CREATE INDEX "idx_zc_id_vers-context_r_ver-status_ref_right" ON isahl."zc_id_vers-context_r_ver-status" USING btree (ref_right);
+
+
+
 CREATE INDEX idx_zc_id_version_fk_previous ON isahl.zc_id_version USING btree (fk_previous);
 
 
@@ -32684,6 +33604,10 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-clause" ON isahl."zc_id_cate-clause" 
 
 
 
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-config" ON isahl."zc_id_cate-config" USING btree (id);
+
+
+
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-contacts" ON isahl."zc_id_cate-contacts" USING btree (id);
 
 
@@ -32697,6 +33621,10 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-defect" ON isahl."zc_id_cate-defect" 
 
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-department" ON isahl."zc_id_cate-department" USING btree (id);
+
+
+
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-document" ON isahl."zc_id_cate-document" USING btree (id);
 
 
 
@@ -32737,6 +33665,10 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-inv-title-ns" ON isahl."zc_id_cate-in
 
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-inve-trasnfer" ON isahl."zc_id_cate-inve-trasnfer" USING btree (id);
+
+
+
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-issue" ON isahl."zc_id_cate-issue" USING btree (id);
 
 
 
@@ -33593,6 +34525,10 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-retail-barcode" ON isahl."zc_id_tags-
 
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-retail-description" ON isahl."zc_id_tags-retail-description" USING btree (id);
+
+
+
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_tags-scrap" ON isahl."zc_id_tags-scrap" USING btree (id);
 
 
 
@@ -35094,6 +36030,7 @@ ALTER TABLE ONLY isahl."zc_id_stor-ctn-tote" ALTER COLUMN id SET DEFAULT isahl.g
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-vehicle" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-vessel" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-plc-airport" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_stor-plc-area" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-plc-asset" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-plc-bin" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-plc-channel" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -35295,6 +36232,7 @@ ALTER TABLE ONLY isahl."zc_id_prod-loading" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_prod-made_rr_prod-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((373)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-made_rr_project" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((374)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-made_rr_stor-place" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((519)::bigint);
+ALTER TABLE ONLY isahl."zc_id_prod-manual" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-material-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -35487,6 +36425,10 @@ ALTER TABLE ONLY isahl."zc_id_prod-loading-made" ALTER COLUMN id SET DEFAULT isa
 ALTER TABLE ONLY isahl."zc_id_prod-loading-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-loading-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-loading-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_fcl-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_fcl-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_lcl-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
