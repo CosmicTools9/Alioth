@@ -54,6 +54,14 @@ CREATE TYPE isahl.zc_id_prod_file_encoding_enum AS ENUM (
 
 
 
+CREATE TYPE isahl.zc_id_stus_operation_flag_enum AS ENUM (
+    'start',
+    'doing',
+    'end'
+);
+
+
+
 CREATE TYPE isahl.zc_id_unit_formatter_enum AS ENUM (
     '{symbol}{mark}',
     '{mark}{symbol}',
@@ -15204,9 +15212,15 @@ CREATE TABLE isahl."zc_id_stan-clause" (
     updated_by_id bigint,
     notice text,
     t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
     code text,
     o_number text,
     comments text,
+    ak_benefit_user bigint[],
+    ak_permit_user bigint[],
+    ak_access_user bigint[],
     projection text,
     _f_ text,
     _t_ text,
@@ -15214,6 +15228,7 @@ CREATE TABLE isahl."zc_id_stan-clause" (
     dk_factor bigint,
     dk_function bigint,
     tpl_id bigint,
+    ak_source bigint[],
     tk_version bigint,
     tk_batch_no bigint,
     fk_previous bigint,
@@ -15223,9 +15238,10 @@ CREATE TABLE isahl."zc_id_stan-clause" (
     fk_parent bigint,
     mandatory boolean DEFAULT true,
     qk_threshold bigint,
-    lk_priority bigint
+    lk_priority bigint,
+    ak_attachment bigint[]
 )
-INHERITS (isahl.zc_id_lifecycle);
+INHERITS (isahl.zc_id_standard);
 
 
 
@@ -35577,7 +35593,6 @@ ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN id SET DEFAULT is
 ALTER TABLE ONLY isahl."zc_id_cons-ts_concomitant-tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((66)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cons-zone-tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((67)::bigint);
 ALTER TABLE ONLY isahl."zc_id_proc-context" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_stan-clause" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stus-agreement" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((72)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-approve" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((73)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-audit" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((488)::bigint);
@@ -35993,6 +36008,7 @@ ALTER TABLE ONLY isahl."zc_id_production_r_log-status" ALTER COLUMN id SET DEFAU
 ALTER TABLE ONLY isahl."zc_id_production_r_transport-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((291)::bigint);
 ALTER TABLE ONLY isahl."zc_id_project_r_review-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((523)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stan-air" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_stan-clause" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stan-operation" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stan-prod_quality" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-bok-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
