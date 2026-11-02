@@ -7,19 +7,19 @@
     },
     {
       "name": "002_isahl_tables.sql",
-      "size_bytes": 983539
+      "size_bytes": 984378
     },
     {
       "name": "model-contract.json",
-      "size_bytes": 16320
+      "size_bytes": 16438
     },
     {
       "name": "seed-dimensions.meta.json",
-      "size_bytes": 7647
+      "size_bytes": 7705
     },
     {
       "name": "seed-dimensions.sql",
-      "size_bytes": 1386532
+      "size_bytes": 1400957
     },
     {
       "name": "seed-model-contract.sql",
@@ -27,7 +27,7 @@
     }
   ],
   "pg_dump_version": "pg_dump (PostgreSQL) 18.6 (Homebrew)",
-  "published_at": "2026-10-29T10:33:01.172104+00:00",
+  "published_at": "2026-11-02T05:59:49.339433+00:00",
   "tables": {
     "zc_id_cate-acc-title": 13,
     "zc_id_cate-agent": 0,
@@ -43,9 +43,9 @@
     "zc_id_cate-cooperation": 9,
     "zc_id_cate-defect": 7,
     "zc_id_cate-department": 0,
-    "zc_id_cate-document": 0,
+    "zc_id_cate-document": 8,
     "zc_id_cate-employment": 7,
-    "zc_id_cate-file": 13,
+    "zc_id_cate-file": 14,
     "zc_id_cate-group": 2,
     "zc_id_cate-group_member": 0,
     "zc_id_cate-identity": 12,
@@ -54,9 +54,10 @@
     "zc_id_cate-inv-title-cm": 12,
     "zc_id_cate-inve-trasnfer": 0,
     "zc_id_cate-issue": 0,
-    "zc_id_cate-log": 12,
+    "zc_id_cate-log": 22,
     "zc_id_cate-maintain": 6,
     "zc_id_cate-modify": 12,
+    "zc_id_cate-natural": 0,
     "zc_id_cate-op_standard": 0,
     "zc_id_cate-ope-title": 0,
     "zc_id_cate-ope-title-cm": 8,
@@ -92,6 +93,7 @@
     "zc_id_cons-ethnic_group-cate": 56,
     "zc_id_cons-factor-cate": 62,
     "zc_id_cons-function-cate": 79,
+    "zc_id_cons-gender-cate": 0,
     "zc_id_cons-industry-cate": 21,
     "zc_id_cons-license-cate": 9,
     "zc_id_cons-packing-cate": 11,
@@ -206,7 +208,7 @@
     "zc_id_stus-message": 4,
     "zc_id_stus-ministry": 0,
     "zc_id_stus-natural": 4,
-    "zc_id_stus-operation": 0,
+    "zc_id_stus-operation": 3,
     "zc_id_stus-payment": 0,
     "zc_id_stus-place": 0,
     "zc_id_stus-plan": 9,
@@ -220,9 +222,9 @@
     "zc_id_stus-production": 0,
     "zc_id_stus-project": 8,
     "zc_id_stus-protocol": 5,
-    "zc_id_stus-purchase": 0,
+    "zc_id_stus-purchase": 4,
     "zc_id_stus-repository": 2,
-    "zc_id_stus-retail": 0,
+    "zc_id_stus-retail": 5,
     "zc_id_stus-review": 3,
     "zc_id_stus-service": 13,
     "zc_id_stus-smt-voucher": 4,
@@ -302,5 +304,5 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "version": "v10.0.50"
+  "version": "v10.0.51"
 }

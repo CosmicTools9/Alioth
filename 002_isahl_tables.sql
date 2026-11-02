@@ -3440,6 +3440,13 @@ INHERITS (isahl.zc_id_category);
 
 
 
+CREATE TABLE isahl."zc_id_cate-natural" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_cate-subject");
+
+
+
 CREATE TABLE isahl."zc_id_cate-op_standard" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3931,6 +3938,13 @@ CREATE TABLE isahl."zc_id_cons-function-cate" (
     a_domain_ text
 )
 INHERITS (isahl.zc_id_consensus, isahl.zc_id_category);
+
+
+
+CREATE TABLE isahl."zc_id_cons-gender-cate" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
 
 
 
@@ -5240,7 +5254,9 @@ CREATE TABLE isahl."zc_id_empl-natural" (
     sk_currency bigint,
     ck_category bigint,
     sk_unit bigint,
-    "ck_cate-ethnic" bigint
+    "ck_cate-ethnic" bigint,
+    "ck_cate-gender" bigint,
+    qk_age bigint
 )
 INHERITS (isahl."zc_id_subj-employee");
 
@@ -12971,8 +12987,7 @@ CREATE TABLE isahl."zc_id_prod-retail-sales" (
     qk_weight bigint,
     sk_l_unit bigint,
     sk_w_unit bigint,
-    sk_h_unit bigint,
-    barcode text
+    sk_h_unit bigint
 )
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-combine", isahl."zc_id_prod-payload");
 
@@ -14652,7 +14667,8 @@ CREATE TABLE isahl."zc_id_scal-duration" (
     mark numeric(30,10),
     sk_unit bigint,
     precision_ bigint,
-    retain_signal boolean
+    retain_signal boolean,
+    start_at timestamp with time zone
 )
 INHERITS (isahl.zc_id_scale);
 
@@ -15233,13 +15249,13 @@ CREATE TABLE isahl."zc_id_stan-clause" (
     tk_batch_no bigint,
     fk_previous bigint,
     ck_branch bigint,
+    lk_priority bigint,
+    ak_attachment bigint[],
     reversion bigint,
     fk_standard bigint NOT NULL,
     fk_parent bigint,
     mandatory boolean DEFAULT true,
-    qk_threshold bigint,
-    lk_priority bigint,
-    ak_attachment bigint[]
+    qk_threshold bigint
 )
 INHERITS (isahl.zc_id_standard);
 
@@ -18136,24 +18152,6 @@ INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
 
-CREATE TABLE isahl."zc_id_subj-employee_rr_client" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    ref_left bigint,
-    ref_right bigint,
-    comments text,
-    qk_valid_period bigint
-)
-INHERITS (isahl.zc_id_lifecycle_rr_non_self);
-
-
-
 CREATE TABLE isahl."zc_id_subj-group" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -20540,6 +20538,26 @@ ALTER TABLE ONLY isahl."zc_id_cate-modify" ALTER COLUMN enable SET DEFAULT true;
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-natural" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-natural" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-natural" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-natural" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-natural" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-ope-title-cm" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -20849,6 +20867,26 @@ ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN updated_by_id
 
 
 ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN enable SET DEFAULT true;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-gender-cate" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-gender-cate" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-gender-cate" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-gender-cate" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-gender-cate" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -24879,6 +24917,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-modify"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cate-natural"
+    ADD CONSTRAINT "zc_id_cate-natural_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cate-op_standard"
     ADD CONSTRAINT "zc_id_cate-op_standard_pkey" PRIMARY KEY (id);
 
@@ -25036,6 +25079,11 @@ ALTER TABLE ONLY isahl."zc_id_cons-cron-cate"
 
 ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate"
     ADD CONSTRAINT "zc_id_cons-ethnic_group-cate_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-gender-cate"
+    ADD CONSTRAINT "zc_id_cons-gender-cate_pkey" PRIMARY KEY (id);
 
 
 
@@ -28796,11 +28844,6 @@ ALTER TABLE ONLY isahl."zc_id_subj-employee_r_employ-status"
 
 ALTER TABLE ONLY isahl."zc_id_subj-employee_r_employ-status"
     ADD CONSTRAINT "zc_id_subj-employee_r_employ-status_ref_left_key" UNIQUE (ref_left);
-
-
-
-ALTER TABLE ONLY isahl."zc_id_subj-employee_rr_client"
-    ADD CONSTRAINT "zc_id_subj-employee_rr_client_pkey" PRIMARY KEY (id);
 
 
 
@@ -33208,10 +33251,6 @@ CREATE INDEX "idx_zc_id_subj-employee_r_employ-status_ref_right" ON isahl."zc_id
 
 
 
-CREATE INDEX "idx_zc_id_subj-employee_rr_client_ref_right" ON isahl."zc_id_subj-employee_rr_client" USING btree (ref_right);
-
-
-
 CREATE INDEX "idx_zc_id_subj-group_fk_user" ON isahl."zc_id_subj-group" USING btree (fk_user);
 
 
@@ -34984,6 +35023,10 @@ CREATE UNIQUE INDEX uq_zc_id_lifecycle_rr_form_ref_left_ref_right_qk_period ON i
 
 
 
+CREATE UNIQUE INDEX uq_zc_id_lifecycle_rr_form_ref_right_qk_period ON isahl.zc_id_lifecycle_rr_form USING btree (ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+
 CREATE UNIQUE INDEX uq_zc_id_lifecycle_rr_non_self_ref_left_ref_right_qk_period ON isahl.zc_id_lifecycle_rr_non_self USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
@@ -35412,10 +35455,6 @@ CREATE UNIQUE INDEX "uq_zc_id_subj-employee_r_employ-status_ref_left_ref_right" 
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_subj-employee_rr_client_ref_left_ref_right_qk_period" ON isahl."zc_id_subj-employee_rr_client" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
-
-
-
 CREATE UNIQUE INDEX "uq_zc_id_subj-group_rr_member_ref_left_ref_right_qk_period" ON isahl."zc_id_subj-group_rr_member" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
@@ -35582,6 +35621,7 @@ ALTER TABLE ONLY isahl."zc_id_cons-date-tags" ALTER COLUMN id SET DEFAULT isahl.
 ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((58)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cons-factor-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((59)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cons-function-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((60)::bigint);
+ALTER TABLE ONLY isahl."zc_id_cons-gender-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((628)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cons-industry-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((62)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cons-license-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((63)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cons-packing-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((64)::bigint);
@@ -35727,6 +35767,7 @@ ALTER TABLE ONLY isahl."zc_id_cate-agent" ALTER COLUMN id SET DEFAULT isahl.gen_
 ALTER TABLE ONLY isahl."zc_id_cate-department" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((163)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-group" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((164)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-inv-title" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((165)::bigint);
+ALTER TABLE ONLY isahl."zc_id_cate-natural" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((626)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-ope-title" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((166)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-organization" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((167)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-position" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((168)::bigint);
@@ -36071,7 +36112,6 @@ ALTER TABLE ONLY isahl."zc_id_stus-vehicle" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_subj-bank" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_subj-employee" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_subj-employee_r_employ-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((310)::bigint);
-ALTER TABLE ONLY isahl."zc_id_subj-employee_rr_client" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((311)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-group" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_subj-group_rr_project" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((312)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-hierarchy" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
