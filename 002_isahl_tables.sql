@@ -11166,6 +11166,13 @@ INHERITS (isahl."zc_id_prod-license");
 
 
 
+CREATE TABLE isahl."zc_id_prod-operate" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_production);
+
+
+
 CREATE TABLE isahl."zc_id_prod-loading" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -11203,7 +11210,7 @@ CREATE TABLE isahl."zc_id_prod-loading" (
     qk_height bigint,
     "ck_r-type" bigint
 )
-INHERITS (isahl."zc_id_prod-combine");
+INHERITS (isahl."zc_id_prod-combine", isahl."zc_id_prod-operate");
 
 
 
@@ -12987,10 +12994,48 @@ INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-storage");
 
 
 
-CREATE TABLE isahl."zc_id_prod-stor_sorting-made" (
-    id bigint NOT NULL
+CREATE TABLE isahl."zc_id_prod-stor_labeling-made" (
+    id bigint NOT NULL,
+    qk_duration bigint
 )
-INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-storage");
+INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-operate");
+
+
+
+CREATE TABLE isahl."zc_id_prod-stor_labeling-purchase" (
+    id bigint NOT NULL,
+    qk_duration bigint,
+    fk_warehouse bigint
+)
+INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-operate");
+
+
+
+CREATE TABLE isahl."zc_id_prod-stor_labeling-request" (
+    id bigint NOT NULL,
+    qk_duration bigint,
+    fk_warehouse bigint
+)
+INHERITS (isahl."zc_id_prod-request", isahl."zc_id_prod-operate");
+
+
+
+CREATE TABLE isahl."zc_id_prod-stor_labeling-sales" (
+    id bigint NOT NULL,
+    qk_duration bigint,
+    fk_warehouse bigint
+)
+INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-operate");
+
+
+
+CREATE TABLE isahl."zc_id_prod-stor_sorting-made" (
+    id bigint NOT NULL,
+    qk_duration bigint,
+    fk_storage bigint,
+    fk_warehouse bigint
+)
+INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-operate");
 
 
 
@@ -13027,7 +13072,7 @@ CREATE TABLE isahl."zc_id_prod-stor_sorting-purchase" (
     fk_warehouse bigint,
     sk_unit bigint
 )
-INHERITS (isahl."zc_id_prod-storage", isahl."zc_id_prod-purchase");
+INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-operate");
 
 
 
@@ -13065,7 +13110,7 @@ CREATE TABLE isahl."zc_id_prod-stor_sorting-request" (
     fk_warehouse bigint,
     sk_unit bigint
 )
-INHERITS (isahl."zc_id_prod-request", isahl."zc_id_prod-storage");
+INHERITS (isahl."zc_id_prod-request", isahl."zc_id_prod-operate");
 
 
 
@@ -13103,7 +13148,42 @@ CREATE TABLE isahl."zc_id_prod-stor_sorting-sales" (
     fk_storage bigint,
     fk_warehouse bigint
 )
-INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-storage");
+INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-operate");
+
+
+
+CREATE TABLE isahl."zc_id_prod-stor_tallying-made" (
+    id bigint NOT NULL,
+    qk_duration bigint
+)
+INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-operate");
+
+
+
+CREATE TABLE isahl."zc_id_prod-stor_tallying-purchase" (
+    id bigint NOT NULL,
+    qk_duration bigint,
+    fk_warehouse bigint
+)
+INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-operate");
+
+
+
+CREATE TABLE isahl."zc_id_prod-stor_tallying-request" (
+    id bigint NOT NULL,
+    qk_duration bigint,
+    fk_warehouse bigint
+)
+INHERITS (isahl."zc_id_prod-request", isahl."zc_id_prod-operate");
+
+
+
+CREATE TABLE isahl."zc_id_prod-stor_tallying-sales" (
+    id bigint NOT NULL,
+    qk_duration bigint,
+    fk_warehouse bigint
+)
+INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-operate");
 
 
 
@@ -22855,6 +22935,14 @@ ALTER TABLE ONLY isahl."zc_id_prod-openapi-sales" ALTER COLUMN updated_at SET DE
 
 
 
+ALTER TABLE ONLY isahl."zc_id_prod-operate" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-operate" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_prod-origin_cert-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -23075,11 +23163,75 @@ ALTER TABLE ONLY isahl."zc_id_prod-stor_keep-sales" ALTER COLUMN updated_at SET 
 
 
 
+ALTER TABLE ONLY isahl."zc_id_prod-stor_labeling-made" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_labeling-made" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_labeling-purchase" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_labeling-purchase" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_labeling-request" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_labeling-request" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_labeling-sales" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_labeling-sales" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-made" ALTER COLUMN created_at SET DEFAULT now();
 
 
 
 ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-made" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_tallying-made" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_tallying-made" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_tallying-purchase" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_tallying-purchase" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_tallying-request" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_tallying-request" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_tallying-sales" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_tallying-sales" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -27451,6 +27603,11 @@ ALTER TABLE ONLY isahl."zc_id_prod-openapi-sales"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_prod-operate"
+    ADD CONSTRAINT "zc_id_prod-operate_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_prod-origin_cert-sales"
     ADD CONSTRAINT "zc_id_prod-origin_cert-sales_pkey" PRIMARY KEY (id);
 
@@ -27796,6 +27953,26 @@ ALTER TABLE ONLY isahl."zc_id_prod-stor_keep-sales"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_prod-stor_labeling-made"
+    ADD CONSTRAINT "zc_id_prod-stor_labeling-made_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_labeling-purchase"
+    ADD CONSTRAINT "zc_id_prod-stor_labeling-purchase_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_labeling-request"
+    ADD CONSTRAINT "zc_id_prod-stor_labeling-request_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_labeling-sales"
+    ADD CONSTRAINT "zc_id_prod-stor_labeling-sales_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-made"
     ADD CONSTRAINT "zc_id_prod-stor_sorting-made_pkey" PRIMARY KEY (id);
 
@@ -27813,6 +27990,26 @@ ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-request"
 
 ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-sales"
     ADD CONSTRAINT "zc_id_prod-stor_sorting-sales_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_tallying-made"
+    ADD CONSTRAINT "zc_id_prod-stor_tallying-made_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_tallying-purchase"
+    ADD CONSTRAINT "zc_id_prod-stor_tallying-purchase_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_tallying-request"
+    ADD CONSTRAINT "zc_id_prod-stor_tallying-request_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-stor_tallying-sales"
+    ADD CONSTRAINT "zc_id_prod-stor_tallying-sales_pkey" PRIMARY KEY (id);
 
 
 
@@ -36332,6 +36529,7 @@ ALTER TABLE ONLY isahl."zc_id_prod-data" ALTER COLUMN id SET DEFAULT isahl.gen_n
 ALTER TABLE ONLY isahl."zc_id_prod-lease" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-loading_r_description" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((528)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-operate" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-payload" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-proxy" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-proxy_rr_principal" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((285)::bigint);
@@ -36638,6 +36836,18 @@ ALTER TABLE ONLY isahl."zc_id_prod-retail" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_prod-sales_rr_prod-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((379)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-sales_rr_project" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((380)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-sales_rr_stor-place" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((518)::bigint);
+ALTER TABLE ONLY isahl."zc_id_prod-stor_labeling-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-stor_labeling-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-stor_labeling-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-stor_labeling-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-stor_tallying-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-stor_tallying-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-stor_tallying-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-stor_tallying-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-storage" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-transfer_p2p-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-transfer_p2p-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -36807,10 +37017,6 @@ ALTER TABLE ONLY isahl."zc_id_prod-stor_keep-made" ALTER COLUMN id SET DEFAULT i
 ALTER TABLE ONLY isahl."zc_id_prod-stor_keep-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-stor_keep-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-stor_keep-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_prod-stor_sorting-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_deta-counting" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((534)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_order" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((535)::bigint);
 ALTER TABLE ONLY isahl."zc_id_order_rr_contract" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((470)::bigint);
