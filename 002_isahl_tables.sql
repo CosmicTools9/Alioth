@@ -7103,33 +7103,8 @@ INHERITS (isahl.zc_id_version);
 
 
 
-CREATE TABLE isahl."zc_id_oper-action" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    projection text,
-    _f_ text,
-    _t_ text,
-    dk_scene bigint,
-    dk_factor bigint,
-    dk_function bigint,
-    tpl_id bigint,
-    tk_version bigint,
-    tk_batch_no bigint,
-    fk_previous bigint,
-    ck_branch bigint,
-    fk_operator bigint,
-    fk_subject bigint,
-    qk_period bigint,
-    "ck_cate-wh" bigint,
-    "ck_cate-biz" bigint
+CREATE TABLE isahl."zc_id_oper-action_prj" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -7181,7 +7156,7 @@ INHERITS (isahl.zc_id_operation);
 
 
 
-CREATE TABLE isahl."zc_id_oper-check" (
+CREATE TABLE isahl."zc_id_oper-check_bill" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
@@ -7214,34 +7189,15 @@ INHERITS (isahl.zc_id_operation);
 
 
 
-CREATE TABLE isahl."zc_id_oper-check_bill" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    projection text,
-    _f_ text,
-    _t_ text,
-    dk_scene bigint,
-    dk_factor bigint,
-    dk_function bigint,
-    tpl_id bigint,
-    tk_version bigint,
-    tk_batch_no bigint,
-    fk_previous bigint,
-    ck_branch bigint,
-    fk_operator bigint,
-    fk_subject bigint,
-    qk_period bigint,
-    "ck_cate-wh" bigint,
-    qk_work_duration bigint,
-    "ck_cate-biz" bigint
+CREATE TABLE isahl."zc_id_oper-check_cond" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
+CREATE TABLE isahl."zc_id_oper-check_prj" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -7312,34 +7268,8 @@ INHERITS (isahl.zc_id_operation);
 
 
 
-CREATE TABLE isahl."zc_id_oper-decide" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    projection text,
-    _f_ text,
-    _t_ text,
-    dk_scene bigint,
-    dk_factor bigint,
-    dk_function bigint,
-    tpl_id bigint,
-    tk_version bigint,
-    tk_batch_no bigint,
-    fk_previous bigint,
-    ck_branch bigint,
-    fk_operator bigint,
-    fk_subject bigint,
-    qk_period bigint,
-    "ck_cate-wh" bigint,
-    qk_work_duration bigint,
-    "ck_cate-biz" bigint
+CREATE TABLE isahl."zc_id_oper-decide_prj" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -7378,34 +7308,8 @@ INHERITS (isahl.zc_id_operation);
 
 
 
-CREATE TABLE isahl."zc_id_oper-delivery" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    projection text,
-    _f_ text,
-    _t_ text,
-    dk_scene bigint,
-    dk_factor bigint,
-    dk_function bigint,
-    tpl_id bigint,
-    tk_version bigint,
-    tk_batch_no bigint,
-    fk_previous bigint,
-    ck_branch bigint,
-    fk_operator bigint,
-    fk_subject bigint,
-    qk_period bigint,
-    "ck_cate-wh" bigint,
-    qk_work_duration bigint,
-    "ck_cate-biz" bigint
+CREATE TABLE isahl."zc_id_oper-delivery_prj" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -7504,6 +7408,13 @@ INHERITS (isahl.zc_id_operation);
 
 
 
+CREATE TABLE isahl."zc_id_oper-match_cond" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
 CREATE TABLE isahl."zc_id_oper-merchandise_on" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7545,67 +7456,15 @@ INHERITS (isahl.zc_id_operation);
 
 
 
-CREATE TABLE isahl."zc_id_oper-observe" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    projection text,
-    _f_ text,
-    _t_ text,
-    dk_scene bigint,
-    dk_factor bigint,
-    dk_function bigint,
-    tpl_id bigint,
-    tk_version bigint,
-    tk_batch_no bigint,
-    fk_previous bigint,
-    ck_branch bigint,
-    fk_operator bigint,
-    fk_subject bigint,
-    qk_period bigint,
-    "ck_cate-wh" bigint,
-    qk_work_duration bigint,
-    "ck_cate-biz" bigint
+CREATE TABLE isahl."zc_id_oper-observe_prj" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_operation);
 
 
 
-CREATE TABLE isahl."zc_id_oper-orient" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    projection text,
-    _f_ text,
-    _t_ text,
-    dk_scene bigint,
-    dk_factor bigint,
-    dk_function bigint,
-    tpl_id bigint,
-    tk_version bigint,
-    tk_batch_no bigint,
-    fk_previous bigint,
-    ck_branch bigint,
-    fk_operator bigint,
-    fk_subject bigint,
-    qk_period bigint,
-    "ck_cate-wh" bigint,
-    qk_work_duration bigint,
-    "ck_cate-biz" bigint
+CREATE TABLE isahl."zc_id_oper-orient_prj" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -7832,6 +7691,13 @@ CREATE TABLE isahl."zc_id_oper-sales_order" (
     "ck_cate-wh" bigint,
     qk_work_duration bigint,
     "ck_cate-biz" bigint
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
+CREATE TABLE isahl."zc_id_oper-scan_barcode" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -13326,7 +13192,8 @@ INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-traffic");
 
 
 CREATE TABLE isahl."zc_id_prod-transform_r_composition" (
-    id bigint NOT NULL
+    id bigint NOT NULL,
+    qk_ratio bigint
 )
 INHERITS (isahl.zc_id_lifecycle_r_tags);
 
@@ -18962,6 +18829,13 @@ INHERITS (isahl.zc_id_task);
 
 
 
+CREATE TABLE isahl."zc_id_task-put_to_store" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_task);
+
+
+
 CREATE TABLE isahl."zc_id_task-sample" (
     id bigint NOT NULL
 )
@@ -21970,6 +21844,14 @@ ALTER TABLE ONLY isahl.zc_id_message_rr_recipients ALTER COLUMN id SET DEFAULT i
 
 
 
+ALTER TABLE ONLY isahl."zc_id_oper-action_prj" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-action_prj" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-audit_acc" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -21983,6 +21865,38 @@ ALTER TABLE ONLY isahl."zc_id_oper-audit_prj" ALTER COLUMN created_at SET DEFAUL
 
 
 ALTER TABLE ONLY isahl."zc_id_oper-audit_prj" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-check_cond" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-check_cond" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-check_prj" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-check_prj" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-decide_prj" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-decide_prj" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-delivery_prj" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-delivery_prj" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -22022,6 +21936,14 @@ ALTER TABLE ONLY isahl."zc_id_oper-loading" ALTER COLUMN updated_at SET DEFAULT 
 
 
 
+ALTER TABLE ONLY isahl."zc_id_oper-match_cond" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-match_cond" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-move" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22031,6 +21953,22 @@ ALTER TABLE ONLY isahl."zc_id_oper-move" ALTER COLUMN updated_at SET DEFAULT now
 
 
 ALTER TABLE ONLY isahl."zc_id_oper-move" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-observe_prj" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-observe_prj" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-orient_prj" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-orient_prj" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -22063,6 +22001,14 @@ ALTER TABLE ONLY isahl."zc_id_oper-put_to_store" ALTER COLUMN created_at SET DEF
 
 
 ALTER TABLE ONLY isahl."zc_id_oper-put_to_store" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-scan_barcode" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-scan_barcode" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -24358,6 +24304,14 @@ ALTER TABLE ONLY isahl."zc_id_task-put_in_stock" ALTER COLUMN updated_at SET DEF
 
 
 
+ALTER TABLE ONLY isahl."zc_id_task-put_to_store" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_task-put_to_store" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_task-sample" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -26247,8 +26201,8 @@ ALTER TABLE ONLY isahl.zc_id_object
 
 
 
-ALTER TABLE ONLY isahl."zc_id_oper-action"
-    ADD CONSTRAINT "zc_id_oper-action_pkey" PRIMARY KEY (id);
+ALTER TABLE ONLY isahl."zc_id_oper-action_prj"
+    ADD CONSTRAINT "zc_id_oper-action_prj_pkey" PRIMARY KEY (id);
 
 
 
@@ -26272,8 +26226,13 @@ ALTER TABLE ONLY isahl."zc_id_oper-check_bill"
 
 
 
-ALTER TABLE ONLY isahl."zc_id_oper-check"
-    ADD CONSTRAINT "zc_id_oper-check_pkey" PRIMARY KEY (id);
+ALTER TABLE ONLY isahl."zc_id_oper-check_cond"
+    ADD CONSTRAINT "zc_id_oper-check_cond_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-check_prj"
+    ADD CONSTRAINT "zc_id_oper-check_prj_pkey" PRIMARY KEY (id);
 
 
 
@@ -26287,8 +26246,8 @@ ALTER TABLE ONLY isahl."zc_id_oper-confirm_bill"
 
 
 
-ALTER TABLE ONLY isahl."zc_id_oper-decide"
-    ADD CONSTRAINT "zc_id_oper-decide_pkey" PRIMARY KEY (id);
+ALTER TABLE ONLY isahl."zc_id_oper-decide_prj"
+    ADD CONSTRAINT "zc_id_oper-decide_prj_pkey" PRIMARY KEY (id);
 
 
 
@@ -26297,8 +26256,8 @@ ALTER TABLE ONLY isahl."zc_id_oper-declaration_export"
 
 
 
-ALTER TABLE ONLY isahl."zc_id_oper-delivery"
-    ADD CONSTRAINT "zc_id_oper-delivery_pkey" PRIMARY KEY (id);
+ALTER TABLE ONLY isahl."zc_id_oper-delivery_prj"
+    ADD CONSTRAINT "zc_id_oper-delivery_prj_pkey" PRIMARY KEY (id);
 
 
 
@@ -26332,18 +26291,23 @@ ALTER TABLE ONLY isahl."zc_id_oper-loading"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_oper-match_cond"
+    ADD CONSTRAINT "zc_id_oper-match_cond_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-merchandise_on"
     ADD CONSTRAINT "zc_id_oper-merchandise_on_pkey" PRIMARY KEY (id);
 
 
 
-ALTER TABLE ONLY isahl."zc_id_oper-observe"
-    ADD CONSTRAINT "zc_id_oper-observe_pkey" PRIMARY KEY (id);
+ALTER TABLE ONLY isahl."zc_id_oper-observe_prj"
+    ADD CONSTRAINT "zc_id_oper-observe_prj_pkey" PRIMARY KEY (id);
 
 
 
-ALTER TABLE ONLY isahl."zc_id_oper-orient"
-    ADD CONSTRAINT "zc_id_oper-orient_pkey" PRIMARY KEY (id);
+ALTER TABLE ONLY isahl."zc_id_oper-orient_prj"
+    ADD CONSTRAINT "zc_id_oper-orient_prj_pkey" PRIMARY KEY (id);
 
 
 
@@ -26394,6 +26358,11 @@ ALTER TABLE ONLY isahl."zc_id_oper-resp_inquiry"
 
 ALTER TABLE ONLY isahl."zc_id_oper-sales_order"
     ADD CONSTRAINT "zc_id_oper-sales_order_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-scan_barcode"
+    ADD CONSTRAINT "zc_id_oper-scan_barcode_pkey" PRIMARY KEY (id);
 
 
 
@@ -29237,6 +29206,11 @@ ALTER TABLE ONLY isahl."zc_id_task-put_in_stock"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_task-put_to_store"
+    ADD CONSTRAINT "zc_id_task-put_to_store_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_task-sample"
     ADD CONSTRAINT "zc_id_task-sample_pkey" PRIMARY KEY (id);
 
@@ -30546,18 +30520,6 @@ CREATE INDEX "idx_zc_id_msgs-zchat_fk_thread" ON isahl."zc_id_msgs-zchat" USING 
 
 
 
-CREATE INDEX "idx_zc_id_oper-action_fk_operator" ON isahl."zc_id_oper-action" USING btree (fk_operator);
-
-
-
-CREATE INDEX "idx_zc_id_oper-action_fk_previous" ON isahl."zc_id_oper-action" USING btree (fk_previous);
-
-
-
-CREATE INDEX "idx_zc_id_oper-action_fk_subject" ON isahl."zc_id_oper-action" USING btree (fk_subject);
-
-
-
 CREATE INDEX "idx_zc_id_oper-approve_fk_operator" ON isahl."zc_id_oper-approve" USING btree (fk_operator);
 
 
@@ -30579,18 +30541,6 @@ CREATE INDEX "idx_zc_id_oper-check_bill_fk_previous" ON isahl."zc_id_oper-check_
 
 
 CREATE INDEX "idx_zc_id_oper-check_bill_fk_subject" ON isahl."zc_id_oper-check_bill" USING btree (fk_subject);
-
-
-
-CREATE INDEX "idx_zc_id_oper-check_fk_operator" ON isahl."zc_id_oper-check" USING btree (fk_operator);
-
-
-
-CREATE INDEX "idx_zc_id_oper-check_fk_previous" ON isahl."zc_id_oper-check" USING btree (fk_previous);
-
-
-
-CREATE INDEX "idx_zc_id_oper-check_fk_subject" ON isahl."zc_id_oper-check" USING btree (fk_subject);
 
 
 
@@ -30618,18 +30568,6 @@ CREATE INDEX "idx_zc_id_oper-confirm_bill_fk_subject" ON isahl."zc_id_oper-confi
 
 
 
-CREATE INDEX "idx_zc_id_oper-decide_fk_operator" ON isahl."zc_id_oper-decide" USING btree (fk_operator);
-
-
-
-CREATE INDEX "idx_zc_id_oper-decide_fk_previous" ON isahl."zc_id_oper-decide" USING btree (fk_previous);
-
-
-
-CREATE INDEX "idx_zc_id_oper-decide_fk_subject" ON isahl."zc_id_oper-decide" USING btree (fk_subject);
-
-
-
 CREATE INDEX "idx_zc_id_oper-declaration_export_fk_operator" ON isahl."zc_id_oper-declaration_export" USING btree (fk_operator);
 
 
@@ -30639,18 +30577,6 @@ CREATE INDEX "idx_zc_id_oper-declaration_export_fk_previous" ON isahl."zc_id_ope
 
 
 CREATE INDEX "idx_zc_id_oper-declaration_export_fk_subject" ON isahl."zc_id_oper-declaration_export" USING btree (fk_subject);
-
-
-
-CREATE INDEX "idx_zc_id_oper-delivery_fk_operator" ON isahl."zc_id_oper-delivery" USING btree (fk_operator);
-
-
-
-CREATE INDEX "idx_zc_id_oper-delivery_fk_previous" ON isahl."zc_id_oper-delivery" USING btree (fk_previous);
-
-
-
-CREATE INDEX "idx_zc_id_oper-delivery_fk_subject" ON isahl."zc_id_oper-delivery" USING btree (fk_subject);
 
 
 
@@ -30687,30 +30613,6 @@ CREATE INDEX "idx_zc_id_oper-merchandise_on_fk_previous" ON isahl."zc_id_oper-me
 
 
 CREATE INDEX "idx_zc_id_oper-merchandise_on_fk_subject" ON isahl."zc_id_oper-merchandise_on" USING btree (fk_subject);
-
-
-
-CREATE INDEX "idx_zc_id_oper-observe_fk_operator" ON isahl."zc_id_oper-observe" USING btree (fk_operator);
-
-
-
-CREATE INDEX "idx_zc_id_oper-observe_fk_previous" ON isahl."zc_id_oper-observe" USING btree (fk_previous);
-
-
-
-CREATE INDEX "idx_zc_id_oper-observe_fk_subject" ON isahl."zc_id_oper-observe" USING btree (fk_subject);
-
-
-
-CREATE INDEX "idx_zc_id_oper-orient_fk_operator" ON isahl."zc_id_oper-orient" USING btree (fk_operator);
-
-
-
-CREATE INDEX "idx_zc_id_oper-orient_fk_previous" ON isahl."zc_id_oper-orient" USING btree (fk_previous);
-
-
-
-CREATE INDEX "idx_zc_id_oper-orient_fk_subject" ON isahl."zc_id_oper-orient" USING btree (fk_subject);
 
 
 
@@ -36077,25 +35979,27 @@ ALTER TABLE ONLY isahl."zc_id_law-religious" ALTER COLUMN id SET DEFAULT isahl.g
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_appraval-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((522)::bigint);
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_lock-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((524)::bigint);
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_primary-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((260)::bigint);
-ALTER TABLE ONLY isahl."zc_id_oper-action" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-action_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-approve" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-audit_acc" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-audit_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_oper-check" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-check_bill" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-check_cond" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-check_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-clearance_import" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-confirm_bill" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_oper-decide" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-decide_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-declaration_export" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_oper-delivery" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-delivery_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-fo_booking" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-goods_pick" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-inbound" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-lading" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-loading" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-match_cond" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-merchandise_on" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_oper-observe" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_oper-orient" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-observe_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-orient_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-outbound" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-payload_sort" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-payment" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -36106,6 +36010,7 @@ ALTER TABLE ONLY isahl."zc_id_oper-put_to_store" ALTER COLUMN id SET DEFAULT isa
 ALTER TABLE ONLY isahl."zc_id_oper-register" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-resp_inquiry" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-sales_order" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-scan_barcode" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-sign" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-smtv_review" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-storage" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -36259,6 +36164,7 @@ ALTER TABLE ONLY isahl."zc_id_task-pack" ALTER COLUMN id SET DEFAULT isahl.gen_n
 ALTER TABLE ONLY isahl."zc_id_task-pay" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-picking" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-put_in_stock" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_task-put_to_store" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-sample" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-storage" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-take_off_stock" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
