@@ -11445,6 +11445,34 @@ INHERITS (isahl."zc_id_prod-manual", isahl."zc_id_prod-sales");
 
 
 
+CREATE TABLE isahl."zc_id_prod-marks_labeling-made" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-operate");
+
+
+
+CREATE TABLE isahl."zc_id_prod-marks_labeling-purchase" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-operate");
+
+
+
+CREATE TABLE isahl."zc_id_prod-marks_labeling-request" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_prod-request", isahl."zc_id_prod-operate");
+
+
+
+CREATE TABLE isahl."zc_id_prod-marks_labeling-sales" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-operate");
+
+
+
 CREATE TABLE isahl."zc_id_prod-marriage_cert-sales" (
     id bigint NOT NULL
 )
@@ -12996,8 +13024,7 @@ INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-storage");
 
 CREATE TABLE isahl."zc_id_prod-stor_labeling-made" (
     id bigint NOT NULL,
-    qk_duration bigint,
-    fk_warehouse bigint
+    qk_duration bigint
 )
 INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-operate");
 
@@ -13155,8 +13182,7 @@ INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-operate");
 
 CREATE TABLE isahl."zc_id_prod-stor_tallying-made" (
     id bigint NOT NULL,
-    qk_duration bigint,
-    fk_warehouse bigint
+    qk_duration bigint
 )
 INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-operate");
 
@@ -22893,6 +22919,38 @@ ALTER TABLE ONLY isahl."zc_id_prod-manual" ALTER COLUMN updated_at SET DEFAULT n
 
 
 
+ALTER TABLE ONLY isahl."zc_id_prod-marks_labeling-made" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-marks_labeling-made" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-marks_labeling-purchase" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-marks_labeling-purchase" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-marks_labeling-request" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-marks_labeling-request" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-marks_labeling-sales" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-marks_labeling-sales" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_prod-marriage_cert-sales" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -27572,6 +27630,26 @@ ALTER TABLE ONLY isahl."zc_id_prod-mal-carrier-sales"
 
 ALTER TABLE ONLY isahl."zc_id_prod-manual"
     ADD CONSTRAINT "zc_id_prod-manual_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-marks_labeling-made"
+    ADD CONSTRAINT "zc_id_prod-marks_labeling-made_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-marks_labeling-purchase"
+    ADD CONSTRAINT "zc_id_prod-marks_labeling-purchase_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-marks_labeling-request"
+    ADD CONSTRAINT "zc_id_prod-marks_labeling-request_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-marks_labeling-sales"
+    ADD CONSTRAINT "zc_id_prod-marks_labeling-sales_pkey" PRIMARY KEY (id);
 
 
 
@@ -36796,6 +36874,10 @@ ALTER TABLE ONLY isahl."zc_id_prod-made_rr_prod-purchase" ALTER COLUMN id SET DE
 ALTER TABLE ONLY isahl."zc_id_prod-made_rr_project" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((374)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-made_rr_stor-place" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((519)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-manual" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-marks_labeling-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-marks_labeling-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-marks_labeling-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-marks_labeling-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-material-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-openapi-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
