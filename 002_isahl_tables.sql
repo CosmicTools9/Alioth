@@ -12996,7 +12996,8 @@ INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-storage");
 
 CREATE TABLE isahl."zc_id_prod-stor_labeling-made" (
     id bigint NOT NULL,
-    qk_duration bigint
+    qk_duration bigint,
+    fk_warehouse bigint
 )
 INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-operate");
 
@@ -13067,10 +13068,10 @@ CREATE TABLE isahl."zc_id_prod-stor_sorting-purchase" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
+    sk_unit bigint,
     qk_duration bigint,
     fk_storage bigint,
-    fk_warehouse bigint,
-    sk_unit bigint
+    fk_warehouse bigint
 )
 INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-operate");
 
@@ -13154,7 +13155,8 @@ INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-operate");
 
 CREATE TABLE isahl."zc_id_prod-stor_tallying-made" (
     id bigint NOT NULL,
-    qk_duration bigint
+    qk_duration bigint,
+    fk_warehouse bigint
 )
 INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-operate");
 
