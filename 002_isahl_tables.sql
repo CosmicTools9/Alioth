@@ -2001,37 +2001,9 @@ CREATE TABLE isahl.zc_id_subjects (
     tpl_id bigint,
     fk_user bigint,
     sk_currency bigint,
-    ck_category bigint,
-    sk_unit bigint
+    ck_category bigint
 )
 INHERITS (isahl.zc_id_entity);
-
-
-
-CREATE TABLE isahl."zc_id_subj-bank" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    projection text,
-    _f_ text,
-    _t_ text,
-    dk_scene bigint,
-    dk_factor bigint,
-    dk_function bigint,
-    tpl_id bigint,
-    fk_user bigint,
-    sk_currency bigint,
-    ck_category bigint,
-    sk_unit bigint
-)
-INHERITS (isahl.zc_id_subjects);
 
 
 
@@ -2056,70 +2028,10 @@ CREATE TABLE isahl."zc_id_subj-hierarchy" (
     fk_user bigint,
     sk_currency bigint,
     ck_category bigint,
-    sk_unit bigint,
     paths jsonb,
     lk_structure bigint
 )
 INHERITS (isahl.zc_id_subjects);
-
-
-
-CREATE TABLE isahl."zc_id_subj-ministry" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    projection text,
-    _f_ text,
-    _t_ text,
-    dk_scene bigint,
-    dk_factor bigint,
-    dk_function bigint,
-    tpl_id bigint,
-    fk_user bigint,
-    sk_currency bigint,
-    ck_category bigint,
-    sk_unit bigint,
-    paths jsonb,
-    lk_structure bigint
-)
-INHERITS (isahl."zc_id_subj-hierarchy");
-
-
-
-CREATE TABLE isahl."zc_id_bank-central" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    projection text,
-    _f_ text,
-    _t_ text,
-    dk_scene bigint,
-    dk_factor bigint,
-    dk_function bigint,
-    tpl_id bigint,
-    fk_user bigint,
-    sk_currency bigint,
-    ck_category bigint,
-    sk_unit bigint,
-    paths jsonb,
-    lk_structure bigint,
-    fk_sovereign bigint
-)
-INHERITS (isahl."zc_id_subj-ministry", isahl."zc_id_subj-bank");
 
 
 
@@ -2144,7 +2056,6 @@ CREATE TABLE isahl."zc_id_subj-org" (
     fk_user bigint,
     sk_currency bigint,
     ck_category bigint,
-    sk_unit bigint,
     paths jsonb,
     lk_structure bigint,
     fk_country bigint
@@ -2162,6 +2073,98 @@ CREATE TABLE isahl."zc_id_orga-legal" (
     fk_representative bigint
 )
 INHERITS (isahl."zc_id_subj-org");
+
+
+
+CREATE TABLE isahl."zc_id_subj-bank" (
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    code text,
+    o_number text,
+    comments text,
+    projection text,
+    _f_ text,
+    _t_ text,
+    dk_scene bigint,
+    dk_factor bigint,
+    dk_function bigint,
+    tpl_id bigint,
+    fk_user bigint,
+    sk_currency bigint,
+    ck_category bigint
+)
+INHERITS (isahl.zc_id_subjects);
+
+
+
+CREATE TABLE isahl."zc_id_subj-ministry" (
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    o_number text,
+    comments text,
+    ak_benefit_user bigint[],
+    ak_permit_user bigint[],
+    ak_access_user bigint[],
+    projection text,
+    _f_ text,
+    _t_ text,
+    dk_scene bigint,
+    dk_factor bigint,
+    dk_function bigint,
+    tpl_id bigint,
+    ak_source bigint[],
+    fk_user bigint,
+    sk_currency bigint,
+    ck_category bigint,
+    paths jsonb,
+    lk_structure bigint,
+    fk_country bigint,
+    fk_representative bigint
+)
+INHERITS (isahl."zc_id_orga-legal");
+
+
+
+CREATE TABLE isahl."zc_id_bank-central" (
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    code text,
+    o_number text,
+    comments text,
+    projection text,
+    _f_ text,
+    _t_ text,
+    dk_scene bigint,
+    dk_factor bigint,
+    dk_function bigint,
+    tpl_id bigint,
+    fk_user bigint,
+    sk_currency bigint,
+    ck_category bigint,
+    paths jsonb,
+    lk_structure bigint,
+    fk_sovereign bigint
+)
+INHERITS (isahl."zc_id_subj-ministry", isahl."zc_id_subj-bank");
 
 
 
@@ -3060,6 +3063,13 @@ INHERITS (isahl."zc_id_cate-subject");
 
 
 CREATE TABLE isahl."zc_id_cate-document" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_category);
+
+
+
+CREATE TABLE isahl."zc_id_cate-eco_idu" (
     id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_category);
@@ -4586,7 +4596,10 @@ CREATE TABLE isahl."zc_id_deta-invoice" (
     qk_tax_amount bigint,
     qk_tax_ratio bigint,
     qk_price bigint,
-    "qk_write-off" bigint
+    "qk_write-off" bigint,
+    fk_goods bigint,
+    ck_eco_idu bigint,
+    qk_eco_amount bigint
 )
 INHERITS (isahl.zc_id_detail);
 
@@ -5043,8 +5056,7 @@ CREATE TABLE isahl."zc_id_subj-employee" (
     tpl_id bigint,
     fk_user bigint,
     sk_currency bigint,
-    ck_category bigint,
-    sk_unit bigint
+    ck_category bigint
 )
 INHERITS (isahl.zc_id_subjects);
 
@@ -5071,7 +5083,6 @@ CREATE TABLE isahl."zc_id_empl-agent" (
     fk_user bigint,
     sk_currency bigint,
     ck_category bigint,
-    sk_unit bigint,
     soul text,
     settings jsonb
 )
@@ -5107,7 +5118,6 @@ CREATE TABLE isahl."zc_id_empl-natural" (
     fk_user bigint,
     sk_currency bigint,
     ck_category bigint,
-    sk_unit bigint,
     "ck_cate-ethnic" bigint,
     "ck_cate-gender" bigint,
     qk_age bigint
@@ -6143,9 +6153,15 @@ CREATE TABLE isahl.zc_id_invoice (
     updated_by_id bigint,
     notice text,
     t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
     code text,
     o_number text,
     comments text,
+    ak_benefit_user bigint[],
+    ak_permit_user bigint[],
+    ak_access_user bigint[],
     projection text,
     _f_ text,
     _t_ text,
@@ -6153,14 +6169,20 @@ CREATE TABLE isahl.zc_id_invoice (
     dk_factor bigint,
     dk_function bigint,
     tpl_id bigint,
+    ak_source bigint[],
     fk_recipient bigint,
     fk_sender bigint,
     qk_issue_date bigint,
     qk_amount bigint,
     ak_attachment bigint[],
-    qk_tax bigint
+    qk_tax bigint,
+    timeline jsonb,
+    tk_version bigint,
+    tk_batch_no bigint,
+    fk_previous bigint,
+    ck_branch bigint
 )
-INHERITS (isahl.zc_id_lifecycle);
+INHERITS (isahl."zc_id_proc-context", isahl.zc_id_version);
 
 
 
@@ -8745,7 +8767,6 @@ CREATE TABLE isahl."zc_id_orga-department" (
     fk_user bigint,
     sk_currency bigint,
     ck_category bigint,
-    sk_unit bigint,
     paths jsonb,
     lk_structure bigint,
     fk_country bigint
@@ -18147,8 +18168,7 @@ CREATE TABLE isahl."zc_id_subj-sovereign" (
     tpl_id bigint,
     fk_user bigint,
     sk_currency bigint,
-    ck_category bigint,
-    sk_unit bigint
+    ck_category bigint
 )
 INHERITS (isahl.zc_id_subjects);
 
@@ -18175,7 +18195,6 @@ CREATE TABLE isahl."zc_id_subj-country" (
     fk_user bigint,
     sk_currency bigint,
     ck_category bigint,
-    sk_unit bigint,
     "iso-3166-2" text,
     "iso-3166-3" text,
     "numeric-3" text,
@@ -18224,8 +18243,7 @@ CREATE TABLE isahl."zc_id_subj-group" (
     tpl_id bigint,
     fk_user bigint,
     sk_currency bigint,
-    ck_category bigint,
-    sk_unit bigint
+    ck_category bigint
 )
 INHERITS (isahl.zc_id_subjects);
 
@@ -18419,7 +18437,6 @@ CREATE TABLE isahl."zc_id_subj-position" (
     fk_user bigint,
     sk_currency bigint,
     ck_category bigint,
-    sk_unit bigint,
     lk_respo bigint,
     fk_parent bigint
 )
@@ -18507,8 +18524,7 @@ CREATE TABLE isahl."zc_id_subj-supranational" (
     tpl_id bigint,
     fk_user bigint,
     sk_currency bigint,
-    ck_category bigint,
-    sk_unit bigint
+    ck_category bigint
 )
 INHERITS (isahl."zc_id_subj-sovereign");
 
@@ -20508,6 +20524,26 @@ ALTER TABLE ONLY isahl."zc_id_cate-document" ALTER COLUMN updated_by_id SET DEFA
 
 
 ALTER TABLE ONLY isahl."zc_id_cate-document" ALTER COLUMN enable SET DEFAULT true;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-eco_idu" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-eco_idu" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-eco_idu" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-eco_idu" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-eco_idu" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -25416,6 +25452,11 @@ ALTER TABLE ONLY isahl."zc_id_cate-department"
 
 ALTER TABLE ONLY isahl."zc_id_cate-document"
     ADD CONSTRAINT "zc_id_cate-document_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cate-eco_idu"
+    ADD CONSTRAINT "zc_id_cate-eco_idu_pkey" PRIMARY KEY (id);
 
 
 
@@ -36323,6 +36364,7 @@ ALTER TABLE ONLY isahl."zc_id_cate-contact_role" ALTER COLUMN id SET DEFAULT isa
 ALTER TABLE ONLY isahl."zc_id_cate-contacts" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((28)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-cooperation" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((496)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-document" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((612)::bigint);
+ALTER TABLE ONLY isahl."zc_id_cate-eco_idu" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((711)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-file" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((31)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-group_member" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((32)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cate-identity" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((33)::bigint);
@@ -36481,7 +36523,6 @@ ALTER TABLE ONLY isahl."zc_id_evaluation" ALTER COLUMN id SET DEFAULT isahl.gen_
 ALTER TABLE ONLY isahl."zc_id_factor" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((69)::bigint);
 ALTER TABLE ONLY isahl."zc_id_function" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((70)::bigint);
 ALTER TABLE ONLY isahl."zc_id_identity" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_invoice" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_message" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_place" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_protocol" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -36545,8 +36586,6 @@ ALTER TABLE ONLY isahl."zc_id_info-postal" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_info-telephone" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_info-url" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_info-zipcode" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_invo-credit_note" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_invo-tax-list" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-chat_ai" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-comments" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-email" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -36618,6 +36657,7 @@ ALTER TABLE ONLY isahl."zc_id_device" ALTER COLUMN id SET DEFAULT isahl.gen_next
 ALTER TABLE ONLY isahl."zc_id_document" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_event" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_formula" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((173)::bigint);
+ALTER TABLE ONLY isahl."zc_id_invoice" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_category" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((174)::bigint);
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_evaluation" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((175)::bigint);
@@ -36682,9 +36722,8 @@ ALTER TABLE ONLY isahl."zc_id_even-modify" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_form-calculation" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((253)::bigint);
 ALTER TABLE ONLY isahl."zc_id_form-condition" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((254)::bigint);
 ALTER TABLE ONLY isahl."zc_id_form-mapping" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((255)::bigint);
-ALTER TABLE ONLY isahl."zc_id_invo-electric" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_invo-form" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_invo-proforma" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_invo-credit_note" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_invo-tax-list" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_invoice_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((258)::bigint);
 ALTER TABLE ONLY isahl."zc_id_law-civil" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-common" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -36975,6 +37014,9 @@ ALTER TABLE ONLY isahl."zc_id_geom-circle" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_geom-coordinate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((343)::bigint);
 ALTER TABLE ONLY isahl."zc_id_geom-path" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((344)::bigint);
 ALTER TABLE ONLY isahl."zc_id_geom-polygon" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((345)::bigint);
+ALTER TABLE ONLY isahl."zc_id_invo-electric" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_invo-form" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_invo-proforma" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-civil-code" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-common-case" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-common-statute" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -37167,7 +37209,6 @@ ALTER TABLE ONLY isahl."zc_id_stat-smt-cash" ALTER COLUMN id SET DEFAULT isahl.g
 ALTER TABLE ONLY isahl."zc_id_stat-smt-channel" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_subj-country" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_subj-group_rr_member" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((447)::bigint);
-ALTER TABLE ONLY isahl."zc_id_subj-ministry" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_subj-ministry_rr_subordinate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((448)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-org" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_subj-org_rr_subordinate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((449)::bigint);
@@ -37205,7 +37246,6 @@ ALTER TABLE ONLY isahl."zc_id_subjects_rr_container" ALTER COLUMN id SET DEFAULT
 ALTER TABLE ONLY isahl."zc_id_subjects_rr_place" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((453)::bigint);
 ALTER TABLE ONLY isahl."zc_id_task_rr_bill" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((474)::bigint);
 ALTER TABLE ONLY isahl."zc_id_task_rr_reason" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((472)::bigint);
-ALTER TABLE ONLY isahl."zc_id_bank-central" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bom-input_rr_item" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((455)::bigint);
 ALTER TABLE ONLY isahl."zc_id_bom-output_rr_item" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((456)::bigint);
 ALTER TABLE ONLY isahl."zc_id_calc-zone_qty" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((457)::bigint);
@@ -37302,7 +37342,9 @@ ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-request" ALTER COLUMN id SET DEF
 ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-tsp_land-license-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-type_cert-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_subj-ministry" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_order_rr_demand" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((467)::bigint);
+ALTER TABLE ONLY isahl."zc_id_bank-central" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-civil-section" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-common-section" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-intl-article" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();

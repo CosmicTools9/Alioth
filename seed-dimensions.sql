@@ -1,5 +1,5 @@
 
-\restrict gy99pwhh6yjygggR2qVdYF5phn0mfMmP7gRdMMd8pk60gFdOgPJrYXFsgP4VERA
+\restrict tn4a8JROq51qCgLnTjkaIkr8YjqoQDKM4AjcPdiAfQdcMqWd7bQ9LyfY9VPNCCI
 
 
 SET statement_timeout = 0;
@@ -166,6 +166,9 @@ INSERT INTO isahl."zc_id_cate-document" (created_at, updated_at, id, created_by_
 INSERT INTO isahl."zc_id_cate-document" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable) VALUES ('2026-11-01 21:46:07.388807+08', '2026-11-01 21:46:07.388807+08', 172262685746921478, 1, 1, '磅单', NULL, NULL, NULL, NULL, 'PROOF-WEIGH', NULL, NULL, NULL, NULL, NULL, true) ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_cate-document" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable) VALUES ('2026-11-01 21:46:07.388807+08', '2026-11-01 21:46:07.388807+08', 172262685746921479, 1, 1, '铅封照片', NULL, NULL, NULL, NULL, 'PROOF-SEAL', NULL, NULL, NULL, NULL, NULL, true) ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_cate-document" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable) VALUES ('2026-11-01 21:46:07.388807+08', '2026-11-01 21:46:07.388807+08', 172262685746921480, 1, 1, '签到照片', NULL, NULL, NULL, NULL, 'PROOF-SIGNIN', NULL, NULL, NULL, NULL, NULL, true) ON CONFLICT DO NOTHING;
+
+
+
 
 
 
@@ -3414,5 +3417,5 @@ INSERT INTO isahl."zc_id_unit-working" (created_at, updated_at, id, created_by_i
 
 
 
-\unrestrict gy99pwhh6yjygggR2qVdYF5phn0mfMmP7gRdMMd8pk60gFdOgPJrYXFsgP4VERA
+\unrestrict tn4a8JROq51qCgLnTjkaIkr8YjqoQDKM4AjcPdiAfQdcMqWd7bQ9LyfY9VPNCCI
 

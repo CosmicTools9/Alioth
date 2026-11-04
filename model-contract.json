@@ -15,6 +15,7 @@
     "zc_id_cate-defect": 7,
     "zc_id_cate-department": 0,
     "zc_id_cate-document": 8,
+    "zc_id_cate-eco_idu": 0,
     "zc_id_cate-employment": 7,
     "zc_id_cate-file": 14,
     "zc_id_cate-group": 2,
@@ -275,7 +276,7 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "published_at": "2026-11-04T01:34:46.276332+00:00",
+  "published_at": "2026-11-04T02:31:50.902086+00:00",
   "row_layer": {
     "zc_id_cate-inv-title": "carry",
     "zc_id_cate-ope-title": "carry",
@@ -320,6 +321,7 @@
     "zc_id_cate-defect",
     "zc_id_cate-department",
     "zc_id_cate-document",
+    "zc_id_cate-eco_idu",
     "zc_id_cate-employment",
     "zc_id_cate-file",
     "zc_id_cate-group",
@@ -580,5 +582,5 @@
     "zc_id_unit-weight",
     "zc_id_unit-working"
   ],
-  "version": "v10.0.59"
+  "version": "v10.0.60"
 }
