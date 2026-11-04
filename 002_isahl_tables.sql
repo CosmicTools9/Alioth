@@ -6170,17 +6170,17 @@ CREATE TABLE isahl.zc_id_invoice (
     dk_function bigint,
     tpl_id bigint,
     ak_source bigint[],
+    timeline jsonb,
+    ak_attachment bigint[],
+    tk_version bigint,
+    tk_batch_no bigint,
+    fk_previous bigint,
+    ck_branch bigint,
     fk_recipient bigint,
     fk_sender bigint,
     qk_issue_date bigint,
     qk_amount bigint,
-    ak_attachment bigint[],
-    qk_tax bigint,
-    timeline jsonb,
-    tk_version bigint,
-    tk_batch_no bigint,
-    fk_previous bigint,
-    ck_branch bigint
+    qk_tax bigint
 )
 INHERITS (isahl."zc_id_proc-context", isahl.zc_id_version);
 
@@ -6211,12 +6211,12 @@ CREATE TABLE isahl."zc_id_invo-credit_note" (
     dk_function bigint,
     tpl_id bigint,
     ak_source bigint[],
+    ak_attachment bigint[],
     fk_recipient bigint,
     fk_sender bigint,
     qk_issue_date bigint,
     qk_amount bigint,
     qk_tax bigint,
-    ak_attachment bigint[],
     fk_origin bigint
 )
 INHERITS (isahl.zc_id_invoice);
@@ -6224,8 +6224,8 @@ INHERITS (isahl.zc_id_invoice);
 
 
 CREATE TABLE isahl."zc_id_invo-tax-list" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_at timestamp with time zone DEFAULT now() CONSTRAINT "zc_id_invo-tax-list_created_at_not_null1" NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() CONSTRAINT "zc_id_invo-tax-list_updated_at_not_null1" NOT NULL,
     id bigint NOT NULL,
     created_by_id bigint,
     updated_by_id bigint,
@@ -34433,6 +34433,10 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-department" ON isahl."zc_id_cate-depa
 
 
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-document" ON isahl."zc_id_cate-document" USING btree (id);
+
+
+
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_cate-eco_idu" ON isahl."zc_id_cate-eco_idu" USING btree (id);
 
 
 
