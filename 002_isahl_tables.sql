@@ -4318,13 +4318,6 @@ INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
 
-CREATE TABLE isahl."zc_id_counting_r_cnt-status" (
-    id bigint NOT NULL
-)
-INHERITS (isahl.zc_id_lifecycle_r_status);
-
-
-
 CREATE TABLE isahl.zc_id_demand_rr_supply (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5366,6 +5359,27 @@ INHERITS (isahl.zc_id_master_rr_slave);
 
 CREATE TABLE isahl."zc_id_event_rr_ind-matter" (
     id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_event_rr_matter);
+
+
+
+CREATE TABLE isahl."zc_id_event_rr_prod-obj" (
+    created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_master_rr_slave_created_at_not_null NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_master_rr_slave_updated_at_not_null NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    ref_left bigint,
+    ref_right bigint,
+    comments text,
+    qk_period bigint
 )
 INHERITS (isahl.zc_id_event_rr_matter);
 
@@ -15522,6 +15536,13 @@ INHERITS (isahl."zc_id_stat-sto-voucher");
 
 
 
+CREATE TABLE isahl."zc_id_stat-cnt-voucher" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_stat-sto-voucher");
+
+
+
 CREATE TABLE isahl."zc_id_stat-com-voucher" (
     id bigint NOT NULL,
     qk_forcast_period bigint,
@@ -16960,6 +16981,13 @@ CREATE TABLE isahl."zc_id_stor-traffic_line_rr_stop" (
     "over-seq" integer
 )
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
+
+
+
+CREATE TABLE isahl."zc_id_storage_r_cnt-status" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
 
@@ -21291,14 +21319,6 @@ ALTER TABLE ONLY isahl.zc_id_contract_rr_symmetry ALTER COLUMN updated_at SET DE
 
 
 
-ALTER TABLE ONLY isahl."zc_id_counting_r_cnt-status" ALTER COLUMN created_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_counting_r_cnt-status" ALTER COLUMN updated_at SET DEFAULT now();
-
-
-
 ALTER TABLE ONLY isahl."zc_id_deta-alert" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -23943,6 +23963,14 @@ ALTER TABLE ONLY isahl."zc_id_stat-appeal" ALTER COLUMN updated_at SET DEFAULT n
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stat-cnt-voucher" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-cnt-voucher" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stat-com-voucher" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -24144,6 +24172,14 @@ ALTER TABLE ONLY isahl."zc_id_stor-traffic_line_rr_stop" ALTER COLUMN created_at
 
 
 ALTER TABLE ONLY isahl."zc_id_stor-traffic_line_rr_stop" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_storage_r_cnt-status" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_storage_r_cnt-status" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -25880,11 +25916,6 @@ ALTER TABLE ONLY isahl.zc_id_contract_rr_symmetry
 
 
 
-ALTER TABLE ONLY isahl."zc_id_counting_r_cnt-status"
-    ADD CONSTRAINT "zc_id_counting_r_cnt-status_pkey" PRIMARY KEY (id);
-
-
-
 ALTER TABLE ONLY isahl.zc_id_demand_rr_supply
     ADD CONSTRAINT zc_id_demand_rr_supply_pkey PRIMARY KEY (id);
 
@@ -26222,6 +26253,11 @@ ALTER TABLE ONLY isahl."zc_id_event_rr_ind-matter"
 
 ALTER TABLE ONLY isahl.zc_id_event_rr_matter
     ADD CONSTRAINT zc_id_event_rr_matter_pkey PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_event_rr_prod-obj"
+    ADD CONSTRAINT "zc_id_event_rr_prod-obj_pkey" PRIMARY KEY (id);
 
 
 
@@ -28885,6 +28921,11 @@ ALTER TABLE ONLY isahl."zc_id_stat-appeal"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stat-cnt-voucher"
+    ADD CONSTRAINT "zc_id_stat-cnt-voucher_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stat-com-voucher"
     ADD CONSTRAINT "zc_id_stat-com-voucher_pkey" PRIMARY KEY (id);
 
@@ -29257,6 +29298,11 @@ ALTER TABLE ONLY isahl."zc_id_stor-traffic_line_rr_stop"
 
 ALTER TABLE ONLY isahl.zc_id_storage
     ADD CONSTRAINT zc_id_storage_pkey PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_storage_r_cnt-status"
+    ADD CONSTRAINT "zc_id_storage_r_cnt-status_pkey" PRIMARY KEY (id);
 
 
 
@@ -30196,6 +30242,14 @@ CREATE UNIQUE INDEX idx_mv_title_ownership_subj_prod ON isahl.mv_title_ownership
 
 
 
+CREATE INDEX idx_trgm_expr_zc_id_production_code ON isahl.zc_id_production USING gin (lower(regexp_replace(code, '[-_\s　]+'::text, ''::text, 'g'::text)) isahl.gin_trgm_ops);
+
+
+
+CREATE INDEX idx_trgm_expr_zc_id_production_notice ON isahl.zc_id_production USING gin (lower(regexp_replace(notice, '[-_\s　]+'::text, ''::text, 'g'::text)) isahl.gin_trgm_ops);
+
+
+
 CREATE INDEX idx_trgm_zc_id_docu_accounting_code ON isahl."zc_id_docu-accounting" USING gin (code isahl.gin_trgm_ops);
 
 
@@ -30249,14 +30303,6 @@ CREATE INDEX idx_trgm_zc_id_law_intl_article_comments ON isahl."zc_id_law-intl-a
 
 
 CREATE INDEX idx_trgm_zc_id_law_intl_article_notice ON isahl."zc_id_law-intl-article" USING gin (notice isahl.gin_trgm_ops);
-
-
-
-CREATE INDEX idx_trgm_zc_id_production_code ON isahl.zc_id_production USING gin (code isahl.gin_trgm_ops);
-
-
-
-CREATE INDEX idx_trgm_zc_id_production_notice ON isahl.zc_id_production USING gin (notice isahl.gin_trgm_ops);
 
 
 
@@ -30737,10 +30783,6 @@ CREATE INDEX idx_zc_id_contract_rr_standard_ref_right ON isahl.zc_id_contract_rr
 
 
 CREATE INDEX idx_zc_id_contract_rr_symmetry_ref_right ON isahl.zc_id_contract_rr_symmetry USING btree (ref_right);
-
-
-
-CREATE INDEX "idx_zc_id_counting_r_cnt-status_ref_right" ON isahl."zc_id_counting_r_cnt-status" USING btree (ref_right);
 
 
 
@@ -32209,6 +32251,10 @@ CREATE INDEX "idx_zc_id_prod-freight_ocean-sales_fk_subj-provider" ON isahl."zc_
 
 
 CREATE INDEX "idx_zc_id_prod-freight_ocean-sales_fk_vessel" ON isahl."zc_id_prod-freight_ocean-sales" USING btree (fk_vessel);
+
+
+
+CREATE INDEX "idx_zc_id_prod-freight_road-sales_fk_previous" ON isahl."zc_id_prod-freight_road-sales" USING btree (fk_previous) WHERE (deleted_at IS NULL);
 
 
 
@@ -35652,10 +35698,6 @@ CREATE UNIQUE INDEX uq_zc_id_contract_rr_symmetry_ref_left_ref_right_qk_period O
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_counting_r_cnt-status_ref_left_ref_right" ON isahl."zc_id_counting_r_cnt-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
-
-
-
 CREATE UNIQUE INDEX uq_zc_id_demand_rr_supply_ref_left_ref_right_qk_period ON isahl.zc_id_demand_rr_supply USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
@@ -35737,6 +35779,10 @@ CREATE UNIQUE INDEX "uq_zc_id_event_rr_ind-matter_ref_left_ref_right_qk_period" 
 
 
 CREATE UNIQUE INDEX uq_zc_id_event_rr_matter_ref_left_ref_right_qk_period ON isahl.zc_id_event_rr_matter USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+
+CREATE UNIQUE INDEX "uq_zc_id_event_rr_prod-obj_ref_left_ref_right_qk_period" ON isahl."zc_id_event_rr_prod-obj" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
@@ -36220,6 +36266,10 @@ CREATE UNIQUE INDEX "uq_zc_id_stor-traffic_line_rr_stop_ref_left_ref_right_qk_pe
 
 
 
+CREATE UNIQUE INDEX "uq_zc_id_storage_r_cnt-status_ref_left_ref_right" ON isahl."zc_id_storage_r_cnt-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+
+
+
 CREATE UNIQUE INDEX "uq_zc_id_storage_rr_stock-in_ref_left_ref_right_qk_period" ON isahl."zc_id_storage_rr_stock-in" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
@@ -36699,7 +36749,6 @@ ALTER TABLE ONLY isahl."zc_id_cont-marriage" ALTER COLUMN id SET DEFAULT isahl.g
 ALTER TABLE ONLY isahl."zc_id_cont-transport-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_cont-transport-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_cont-transport_rr_stop" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((231)::bigint);
-ALTER TABLE ONLY isahl."zc_id_counting_r_cnt-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((241)::bigint);
 ALTER TABLE ONLY isahl."zc_id_deta-bill-check_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((243)::bigint);
 ALTER TABLE ONLY isahl."zc_id_deta-bill-check_rr_deta-invoice" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((709)::bigint);
 ALTER TABLE ONLY isahl."zc_id_deta-damage_r_scrap" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((592)::bigint);
@@ -36843,6 +36892,7 @@ ALTER TABLE ONLY isahl."zc_id_stan-clause" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_stan-operation" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stan-prod_quality" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-bok-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_stat-cnt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-com-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-mal-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-slf-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -36895,6 +36945,7 @@ ALTER TABLE ONLY isahl."zc_id_stor-plc-url" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_stor-plc-warehouse" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-plc-yard" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-traffic_line_rr_stop" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((478)::bigint);
+ALTER TABLE ONLY isahl."zc_id_storage_r_cnt-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((715)::bigint);
 ALTER TABLE ONLY isahl."zc_id_storage_rr_stock-in" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((305)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-department" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((307)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-legal_person" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((308)::bigint);
@@ -37255,6 +37306,7 @@ ALTER TABLE ONLY isahl."zc_id_bom-output_rr_item" ALTER COLUMN id SET DEFAULT is
 ALTER TABLE ONLY isahl."zc_id_calc-zone_qty" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((457)::bigint);
 ALTER TABLE ONLY isahl."zc_id_even-modify_rr_matter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((615)::bigint);
 ALTER TABLE ONLY isahl."zc_id_event_rr_ind-matter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((617)::bigint);
+ALTER TABLE ONLY isahl."zc_id_event_rr_prod-obj" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((712)::bigint);
 ALTER TABLE ONLY isahl."zc_id_file-document" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_file-image" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_file-manual" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
