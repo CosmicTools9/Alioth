@@ -2389,6 +2389,13 @@ INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
 
+CREATE TABLE isahl."zc_id_bill-customs_declaration" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_bill);
+
+
+
 CREATE TABLE isahl."zc_id_bill-pricing" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5050,8 +5057,7 @@ CREATE TABLE isahl."zc_id_subj-employee" (
     tpl_id bigint,
     fk_user bigint,
     sk_currency bigint,
-    ck_category bigint,
-    sk_unit bigint
+    ck_category bigint
 )
 INHERITS (isahl.zc_id_subjects);
 
@@ -5492,7 +5498,6 @@ INHERITS (isahl.zc_id_production);
 CREATE TABLE isahl."zc_id_prod-file" (
     id bigint NOT NULL,
     encoding isahl.zc_id_prod_file_encoding_enum DEFAULT 'UTF-8'::isahl.zc_id_prod_file_encoding_enum,
-    sk_unit bigint,
     ck_mime bigint
 )
 INHERITS (isahl."zc_id_prod-data", isahl.zc_id_attachment);
@@ -9767,8 +9772,7 @@ CREATE TABLE isahl."zc_id_prod-sales" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    "qk_calc-rule" bigint,
-    sk_unit bigint
+    "qk_calc-rule" bigint
 )
 INHERITS (isahl.zc_id_production);
 
@@ -9814,11 +9818,7 @@ CREATE TABLE isahl."zc_id_prod-payload" (
     qk_width bigint,
     qk_height bigint,
     qk_volume bigint,
-    qk_weight bigint,
-    sk_l_unit bigint,
-    sk_w_unit bigint,
-    sk_h_unit bigint,
-    sk_unit bigint
+    qk_weight bigint
 )
 INHERITS (isahl.zc_id_production);
 
@@ -9851,8 +9851,7 @@ CREATE TABLE isahl."zc_id_prod-transform" (
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    sk_currency bigint,
-    sk_unit bigint
+    sk_currency bigint
 )
 INHERITS (isahl.zc_id_production);
 
@@ -9865,9 +9864,6 @@ CREATE TABLE isahl."zc_id_prod-retail" (
     qk_height bigint,
     qk_volume bigint,
     qk_weight bigint,
-    sk_l_unit bigint,
-    sk_w_unit bigint,
-    sk_h_unit bigint,
     fk_made_in bigint
 )
 INHERITS (isahl."zc_id_prod-transform", isahl."zc_id_prod-payload");
@@ -9912,15 +9908,11 @@ CREATE TABLE isahl."zc_id_prod-apparel" (
     fk_process bigint,
     sk_currency bigint,
     ck_variant bigint,
-    sk_unit bigint,
     qk_length bigint,
     qk_width bigint,
     qk_height bigint,
     qk_volume bigint,
     qk_weight bigint,
-    sk_l_unit bigint,
-    sk_w_unit bigint,
-    sk_h_unit bigint,
     ck_season bigint,
     ck_size bigint,
     ck_series bigint,
@@ -9958,7 +9950,6 @@ CREATE TABLE isahl."zc_id_prod-made" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
     lk_health bigint
 )
 INHERITS (isahl.zc_id_production);
@@ -9993,15 +9984,11 @@ CREATE TABLE isahl."zc_id_prod-retail-made" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
     qk_length bigint,
     qk_width bigint,
     qk_height bigint,
     qk_volume bigint,
-    qk_weight bigint,
-    sk_l_unit bigint,
-    sk_w_unit bigint,
-    sk_h_unit bigint
+    qk_weight bigint
 )
 INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-retail");
 
@@ -10042,8 +10029,7 @@ CREATE TABLE isahl."zc_id_prod-purchase" (
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    sk_currency bigint,
-    sk_unit bigint
+    sk_currency bigint
 )
 INHERITS (isahl.zc_id_production);
 
@@ -10077,15 +10063,11 @@ CREATE TABLE isahl."zc_id_prod-retail-purchase" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
     qk_length bigint,
     qk_width bigint,
     qk_height bigint,
     qk_volume bigint,
-    qk_weight bigint,
-    sk_l_unit bigint,
-    sk_w_unit bigint,
-    sk_h_unit bigint
+    qk_weight bigint
 )
 INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-retail");
 
@@ -10164,15 +10146,11 @@ CREATE TABLE isahl."zc_id_prod-retail-request" (
     fk_process bigint,
     sk_currency bigint,
     lk_priority bigint,
-    sk_unit bigint,
     qk_length bigint,
     qk_width bigint,
     qk_height bigint,
     qk_volume bigint,
-    qk_weight bigint,
-    sk_l_unit bigint,
-    sk_w_unit bigint,
-    sk_h_unit bigint
+    qk_weight bigint
 )
 INHERITS (isahl."zc_id_prod-request", isahl."zc_id_prod-retail");
 
@@ -10216,15 +10194,11 @@ CREATE TABLE isahl."zc_id_prod-retail-sales" (
     fk_process bigint,
     sk_currency bigint,
     "qk_calc-rule" bigint,
-    sk_unit bigint,
     qk_length bigint,
     qk_width bigint,
     qk_height bigint,
     qk_volume bigint,
-    qk_weight bigint,
-    sk_l_unit bigint,
-    sk_w_unit bigint,
-    sk_h_unit bigint
+    qk_weight bigint
 )
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-retail");
 
@@ -10289,8 +10263,7 @@ INHERITS (isahl.zc_id_production);
 
 CREATE TABLE isahl."zc_id_prod-license" (
     ck_category bigint,
-    qk_capacity bigint,
-    sk_unit bigint
+    qk_capacity bigint
 )
 INHERITS (isahl."zc_id_prod-lease");
 
@@ -10388,8 +10361,7 @@ CREATE TABLE isahl."zc_id_prod-pub_affairs" (
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    sk_currency bigint,
-    sk_unit bigint
+    sk_currency bigint
 )
 INHERITS (isahl.zc_id_production);
 
@@ -10423,15 +10395,8 @@ CREATE TABLE isahl."zc_id_prod-customs-clearance" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
-    cds_ref text,
-    dau_number text,
-    eori text,
-    hs_code text,
     fk_agent bigint,
-    "fk_purchase-order" bigint,
-    "qk_duty-rate" bigint,
-    "qk_release-date" bigint
+    "fk_purchase-order" bigint
 )
 INHERITS (isahl."zc_id_prod-pub_affairs");
 
@@ -10466,7 +10431,9 @@ CREATE TABLE isahl."zc_id_prod-customs_cle_fo-purchase" (
     fk_process bigint,
     sk_currency bigint,
     sk_unit bigint,
-    fk_mbl bigint
+    fk_mbl bigint,
+    tk_hscode bigint,
+    fk_cds bigint
 )
 INHERITS (isahl."zc_id_prod-customs-clearance", isahl."zc_id_prod-purchase");
 
@@ -10500,10 +10467,11 @@ CREATE TABLE isahl."zc_id_prod-customs_cle_fo-sales" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
-    fk_mbl bigint
+    fk_mbl bigint,
+    tk_hscode bigint,
+    "qk_calc-rule" bigint
 )
-INHERITS (isahl."zc_id_prod-customs-clearance");
+INHERITS (isahl."zc_id_prod-customs-clearance", isahl."zc_id_prod-sales");
 
 
 
@@ -10534,8 +10502,7 @@ CREATE TABLE isahl."zc_id_prod-customs_declaration" (
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    sk_currency bigint,
-    sk_unit bigint
+    sk_currency bigint
 )
 INHERITS (isahl."zc_id_prod-pub_affairs");
 
@@ -10705,8 +10672,7 @@ CREATE TABLE isahl."zc_id_prod-financial" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    qk_duration bigint,
-    sk_unit bigint
+    qk_duration bigint
 )
 INHERITS (isahl."zc_id_prod-lease");
 
@@ -10740,8 +10706,7 @@ CREATE TABLE isahl."zc_id_prod-insurance" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    qk_duration bigint,
-    sk_unit bigint
+    qk_duration bigint
 )
 INHERITS (isahl."zc_id_prod-lease");
 
@@ -11221,8 +11186,7 @@ CREATE TABLE isahl."zc_id_prod-legal_tender" (
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    sk_currency bigint,
-    sk_unit bigint
+    sk_currency bigint
 )
 INHERITS (isahl."zc_id_prod-pub_affairs");
 
@@ -11695,9 +11659,7 @@ CREATE TABLE isahl."zc_id_prod-passenger" (
     qk_height bigint,
     qk_volume bigint,
     qk_weight bigint,
-    sk_l_unit bigint,
-    sk_w_unit bigint,
-    sk_h_unit bigint
+    sk_unit bigint
 )
 INHERITS (isahl."zc_id_prod-payload");
 
@@ -12040,8 +12002,7 @@ CREATE TABLE isahl."zc_id_prod-proxy" (
     "fk_subj-provider" bigint,
     qk_price bigint,
     fk_process bigint,
-    sk_currency bigint,
-    sk_unit bigint
+    sk_currency bigint
 )
 INHERITS (isahl.zc_id_production);
 
@@ -19052,7 +19013,8 @@ INHERITS (isahl.zc_id_task);
 
 
 CREATE TABLE isahl."zc_id_task-counting" (
-    id bigint NOT NULL
+    id bigint NOT NULL,
+    fk_storage bigint
 )
 INHERITS (isahl.zc_id_task);
 
@@ -20286,6 +20248,14 @@ ALTER TABLE ONLY isahl."zc_id_bill-check_rr_plan-payment" ALTER COLUMN created_a
 
 
 ALTER TABLE ONLY isahl."zc_id_bill-check_rr_plan-payment" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_bill-customs_declaration" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_bill-customs_declaration" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -25298,6 +25268,11 @@ ALTER TABLE ONLY isahl."zc_id_bill-check_rr_smt-voucher"
 
 ALTER TABLE ONLY isahl."zc_id_bill-check_rr_trade_order"
     ADD CONSTRAINT "zc_id_bill-check_rr_trade_order_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_bill-customs_declaration"
+    ADD CONSTRAINT "zc_id_bill-customs_declaration_pkey" PRIMARY KEY (id);
 
 
 
@@ -36712,6 +36687,7 @@ ALTER TABLE ONLY isahl."zc_id_bill-check_rr_invoice" ALTER COLUMN id SET DEFAULT
 ALTER TABLE ONLY isahl."zc_id_bill-check_rr_plan-payment" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((223)::bigint);
 ALTER TABLE ONLY isahl."zc_id_bill-check_rr_smt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((224)::bigint);
 ALTER TABLE ONLY isahl."zc_id_bill-check_rr_trade_order" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((225)::bigint);
+ALTER TABLE ONLY isahl."zc_id_bill-customs_declaration" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bill-pricing" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bill-ticket" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bom-assemble" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
