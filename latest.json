@@ -1,5 +1,5 @@
 {
-  "description": null,
+  "description": "登记 MAT 本地列升为模型字段：sk_unit×2、清关字段×8（deta-bill-check / subj-employee / prod-customs-clearance）",
   "files": [
     {
       "name": "001_schema.sql",
@@ -7,7 +7,7 @@
     },
     {
       "name": "002_isahl_tables.sql",
-      "size_bytes": 1007990
+      "size_bytes": 1008212
     },
     {
       "name": "model-contract.json",
@@ -27,7 +27,7 @@
     }
   ],
   "pg_dump_version": "pg_dump (PostgreSQL) 18.6 (Homebrew)",
-  "published_at": "2026-11-05T11:54:31.543701+00:00",
+  "published_at": "2026-11-05T12:03:20.643667+00:00",
   "tables": {
     "zc_id_cate-acc-title": 13,
     "zc_id_cate-agent": 0,
@@ -305,5 +305,5 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "version": "v10.0.64"
+  "version": "v10.0.65"
 }

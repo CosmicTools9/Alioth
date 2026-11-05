@@ -4431,7 +4431,8 @@ CREATE TABLE isahl."zc_id_deta-bill-check" (
     fk_deal bigint,
     qk_tax_ratio bigint,
     fk_checker bigint,
-    qk_discount_price bigint
+    qk_discount_price bigint,
+    sk_unit bigint
 )
 INHERITS (isahl.zc_id_detail);
 
@@ -5049,7 +5050,8 @@ CREATE TABLE isahl."zc_id_subj-employee" (
     tpl_id bigint,
     fk_user bigint,
     sk_currency bigint,
-    ck_category bigint
+    ck_category bigint,
+    sk_unit bigint
 )
 INHERITS (isahl.zc_id_subjects);
 
@@ -10421,7 +10423,15 @@ CREATE TABLE isahl."zc_id_prod-customs-clearance" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint
+    sk_unit bigint,
+    cds_ref text,
+    dau_number text,
+    eori text,
+    hs_code text,
+    fk_agent bigint,
+    "fk_purchase-order" bigint,
+    "qk_duty-rate" bigint,
+    "qk_release-date" bigint
 )
 INHERITS (isahl."zc_id_prod-pub_affairs");
 
