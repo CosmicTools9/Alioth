@@ -1,5 +1,5 @@
 
-\restrict wqhhLtKwe55EgDW7EmmPlpOzUbAF1cYNUXhj7sVDbXyBCn7ObwaKj01hHEemtRg
+\restrict sbL7jSljeXj6QzBJc1YtaHcP3d5GQiHr3yaBgeF5vj4UQ0wK77rdV58WpnCa9Y0
 
 
 SET statement_timeout = 0;
@@ -2581,6 +2581,13 @@ INSERT INTO isahl."zc_id_stus-retail" (created_at, updated_at, id, created_by_id
 INSERT INTO isahl."zc_id_stus-retail" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-11-01 21:46:07.398717+08', '2026-11-01 21:46:07.398717+08', 56680490295743782, 1, 1, '已发货', NULL, NULL, NULL, NULL, 'ST-SHIPPED', NULL, NULL, NULL, NULL, NULL, true, 'doing') ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_stus-retail" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-11-01 21:46:07.398717+08', '2026-11-01 21:46:07.398717+08', 56618342891758499, 1, 1, '已完结', NULL, NULL, NULL, NULL, 'ST-COMPLETED', NULL, NULL, NULL, NULL, NULL, true, 'end') ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_stus-retail" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-11-01 21:46:07.398717+08', '2026-11-01 21:46:07.398717+08', 56846512068776306, 1, 1, '已取消', NULL, NULL, NULL, NULL, 'ST-CANCELED', NULL, NULL, NULL, NULL, NULL, true, 'end') ON CONFLICT DO NOTHING;
+INSERT INTO isahl."zc_id_stus-retail" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-11-05 14:39:45.872725+08', '2026-11-05 14:39:45.872725+08', 56125433520005768, 1, 1, '待备货', NULL, NULL, NULL, NULL, 'ST-PENDING_PICK', NULL, NULL, NULL, NULL, NULL, true, 'doing') ON CONFLICT DO NOTHING;
+INSERT INTO isahl."zc_id_stus-retail" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-11-05 14:39:45.872725+08', '2026-11-05 14:39:45.872725+08', 56191771143765032, 1, 1, '待发货', NULL, NULL, NULL, NULL, 'ST-PENDING_SHIP', NULL, NULL, NULL, NULL, NULL, true, 'doing') ON CONFLICT DO NOTHING;
+INSERT INTO isahl."zc_id_stus-retail" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-11-05 14:39:45.872725+08', '2026-11-05 14:39:45.872725+08', 56010656269173923, 1, 1, '已送达', NULL, NULL, NULL, NULL, 'ST-DELIVERED', NULL, NULL, NULL, NULL, NULL, true, 'doing') ON CONFLICT DO NOTHING;
+INSERT INTO isahl."zc_id_stus-retail" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-11-05 14:39:45.872725+08', '2026-11-05 14:39:45.872725+08', 56028902513133399, 1, 1, '已取消', NULL, NULL, NULL, NULL, 'ST-CANCELLED', NULL, NULL, NULL, NULL, NULL, true, 'end') ON CONFLICT DO NOTHING;
+INSERT INTO isahl."zc_id_stus-retail" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-11-05 14:39:45.872725+08', '2026-11-05 14:39:45.872725+08', 56033795791397659, 1, 1, '已退货', NULL, NULL, NULL, NULL, 'ST-RETURNED', NULL, NULL, NULL, NULL, NULL, true, 'end') ON CONFLICT DO NOTHING;
+INSERT INTO isahl."zc_id_stus-retail" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-11-05 14:39:45.872725+08', '2026-11-05 14:39:45.872725+08', 56156768224542222, 1, 1, '已退款', NULL, NULL, NULL, NULL, 'ST-REFUNDED', NULL, NULL, NULL, NULL, NULL, true, 'end') ON CONFLICT DO NOTHING;
+INSERT INTO isahl."zc_id_stus-retail" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-11-05 14:39:45.872725+08', '2026-11-05 14:39:45.872725+08', 56148759456195324, 1, 1, '部分退款', NULL, NULL, NULL, NULL, 'ST-PARTIALLY_REFUNDED', NULL, NULL, NULL, NULL, NULL, true, 'end') ON CONFLICT DO NOTHING;
 
 
 
@@ -3417,5 +3424,5 @@ INSERT INTO isahl."zc_id_unit-working" (created_at, updated_at, id, created_by_i
 
 
 
-\unrestrict wqhhLtKwe55EgDW7EmmPlpOzUbAF1cYNUXhj7sVDbXyBCn7ObwaKj01hHEemtRg
+\unrestrict sbL7jSljeXj6QzBJc1YtaHcP3d5GQiHr3yaBgeF5vj4UQ0wK77rdV58WpnCa9Y0
 
