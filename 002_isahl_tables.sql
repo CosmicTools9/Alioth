@@ -860,8 +860,8 @@ CREATE TABLE isahl."zc_id_deta-counting" (
     qk_qty bigint,
     qk_w_qty bigint,
     qk_v_qty bigint,
-    fk_voucher bigint,
-    "qk_write-off" bigint
+    "qk_write-off" bigint,
+    fk_voucher bigint
 )
 INHERITS (isahl.zc_id_detail);
 
@@ -5228,14 +5228,6 @@ INHERITS (isahl.zc_id_event);
 CREATE TABLE isahl."zc_id_even-alert" (
     ck_category bigint,
     lk_applicable bigint
-)
-INHERITS (isahl.zc_id_event);
-
-
-
-CREATE TABLE isahl."zc_id_even-counting" (
-    fk_storage bigint,
-    summary text
 )
 INHERITS (isahl.zc_id_event);
 
@@ -15743,13 +15735,6 @@ INHERITS (isahl."zc_id_stat-smt-voucher");
 
 
 
-CREATE TABLE isahl."zc_id_stat-sto-voucher_rr_deta-counting" (
-    id bigint NOT NULL
-)
-INHERITS (isahl.zc_id_statement_rr_reason);
-
-
-
 CREATE TABLE isahl."zc_id_stat-sto-voucher_rr_order" (
     id bigint NOT NULL
 )
@@ -19056,6 +19041,13 @@ INHERITS (isahl.zc_id_task);
 
 
 
+CREATE TABLE isahl."zc_id_task-counting" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_task);
+
+
+
 CREATE TABLE isahl."zc_id_task-design" (
     id bigint NOT NULL
 )
@@ -21524,18 +21516,6 @@ ALTER TABLE ONLY isahl."zc_id_even-alert" ALTER COLUMN updated_at SET DEFAULT no
 
 
 ALTER TABLE ONLY isahl."zc_id_even-alert" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_even-counting" ALTER COLUMN created_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_even-counting" ALTER COLUMN updated_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_even-counting" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 
 
 
@@ -24015,14 +23995,6 @@ ALTER TABLE ONLY isahl."zc_id_stat-slf-voucher" ALTER COLUMN updated_at SET DEFA
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_deta-counting" ALTER COLUMN created_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_deta-counting" ALTER COLUMN updated_at SET DEFAULT now();
-
-
-
 ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_order" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -24792,6 +24764,14 @@ ALTER TABLE ONLY isahl."zc_id_task-commission" ALTER COLUMN updated_at SET DEFAU
 
 
 ALTER TABLE ONLY isahl."zc_id_task-commission" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_task-counting" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_task-counting" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -26198,11 +26178,6 @@ ALTER TABLE ONLY isahl."zc_id_even-alert"
 
 ALTER TABLE ONLY isahl."zc_id_even-approve"
     ADD CONSTRAINT "zc_id_even-approve_pkey" PRIMARY KEY (id);
-
-
-
-ALTER TABLE ONLY isahl."zc_id_even-counting"
-    ADD CONSTRAINT "zc_id_even-counting_pkey" PRIMARY KEY (id);
 
 
 
@@ -28976,11 +28951,6 @@ ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher"
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_deta-counting"
-    ADD CONSTRAINT "zc_id_stat-sto-voucher_rr_deta-counting_pkey" PRIMARY KEY (id);
-
-
-
 ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_order"
     ADD CONSTRAINT "zc_id_stat-sto-voucher_rr_order_pkey" PRIMARY KEY (id);
 
@@ -29923,6 +29893,11 @@ ALTER TABLE ONLY isahl.zc_id_tags
 
 ALTER TABLE ONLY isahl.zc_id_tags_poi
     ADD CONSTRAINT zc_id_tags_poi_pkey PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_task-counting"
+    ADD CONSTRAINT "zc_id_task-counting_pkey" PRIMARY KEY (id);
 
 
 
@@ -33746,10 +33721,6 @@ CREATE INDEX "idx_zc_id_stat-sto-voucher_fk_subject" ON isahl."zc_id_stat-sto-vo
 
 
 
-CREATE INDEX "idx_zc_id_stat-sto-voucher_rr_deta-counting_ref_right" ON isahl."zc_id_stat-sto-voucher_rr_deta-counting" USING btree (ref_right);
-
-
-
 CREATE INDEX "idx_zc_id_stat-sto-voucher_rr_order_ref_right" ON isahl."zc_id_stat-sto-voucher_rr_order" USING btree (ref_right);
 
 
@@ -36230,10 +36201,6 @@ CREATE UNIQUE INDEX "uq_zc_id_stat-com-voucher_code_active" ON isahl."zc_id_stat
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_stat-sto-voucher_rr_deta-counting_ref_left_ref_right_q" ON isahl."zc_id_stat-sto-voucher_rr_deta-counting" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
-
-
-
 CREATE UNIQUE INDEX "uq_zc_id_stat-sto-voucher_rr_order_ref_left_ref_right_qk_period" ON isahl."zc_id_stat-sto-voucher_rr_order" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
@@ -36965,6 +36932,7 @@ ALTER TABLE ONLY isahl."zc_id_subj-position" ALTER COLUMN id SET DEFAULT isahl.g
 ALTER TABLE ONLY isahl."zc_id_subj-post_rr_employee" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((319)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-post_rr_view" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((320)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-sovereign" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_task-counting" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-design" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-develop" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-fix" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -37365,7 +37333,6 @@ ALTER TABLE ONLY isahl."zc_id_prod-stor_keep-made" ALTER COLUMN id SET DEFAULT i
 ALTER TABLE ONLY isahl."zc_id_prod-stor_keep-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-stor_keep-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-stor_keep-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_deta-counting" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((534)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_order" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((535)::bigint);
 ALTER TABLE ONLY isahl."zc_id_order_rr_contract" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((470)::bigint);
 ALTER TABLE ONLY isahl."zc_id_order_rr_foreign" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((368)::bigint);
