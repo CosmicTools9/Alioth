@@ -10305,8 +10305,8 @@ CREATE TABLE isahl."zc_id_prod-channel_cost-sales" (
     fk_process bigint,
     sk_currency bigint,
     "qk_calc-rule" bigint,
-    sk_unit bigint,
-    qk_duration bigint
+    qk_duration bigint,
+    sk_unit bigint
 )
 INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-lease");
 
@@ -10467,9 +10467,9 @@ CREATE TABLE isahl."zc_id_prod-customs_cle_fo-sales" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
+    "qk_calc-rule" bigint,
     fk_mbl bigint,
-    tk_hscode bigint,
-    "qk_calc-rule" bigint
+    tk_hscode bigint
 )
 INHERITS (isahl."zc_id_prod-customs-clearance", isahl."zc_id_prod-sales");
 
@@ -10740,8 +10740,8 @@ CREATE TABLE isahl."zc_id_prod-fo_insurance-purchase" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
-    qk_duration bigint
+    qk_duration bigint,
+    sk_unit bigint
 )
 INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-insurance");
 
@@ -10776,8 +10776,8 @@ CREATE TABLE isahl."zc_id_prod-fo_insurance-request" (
     fk_process bigint,
     sk_currency bigint,
     qk_duration bigint,
-    sk_unit bigint,
-    lk_priority bigint
+    lk_priority bigint,
+    sk_unit bigint
 )
 INHERITS (isahl."zc_id_prod-insurance", isahl."zc_id_prod-request");
 
@@ -10812,8 +10812,8 @@ CREATE TABLE isahl."zc_id_prod-fo_insurance-sales" (
     fk_process bigint,
     sk_currency bigint,
     qk_duration bigint,
-    sk_unit bigint,
-    "qk_calc-rule" bigint
+    "qk_calc-rule" bigint,
+    sk_unit bigint
 )
 INHERITS (isahl."zc_id_prod-insurance", isahl."zc_id_prod-sales");
 
@@ -10902,10 +10902,10 @@ CREATE TABLE isahl."zc_id_prod-freight_inland-purchase" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
     qk_cot_order bigint,
     "ck_cron-cate" bigint,
     "ck_vehicle-form" bigint,
+    sk_unit bigint,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -10952,10 +10952,10 @@ CREATE TABLE isahl."zc_id_prod-freight_inland-sales" (
     fk_process bigint,
     sk_currency bigint,
     "qk_calc-rule" bigint,
-    sk_unit bigint,
     qk_cot_order bigint,
     "ck_cron-cate" bigint,
     "ck_vehicle-form" bigint,
+    sk_unit bigint,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -11045,10 +11045,10 @@ CREATE TABLE isahl."zc_id_prod-freight_ocean-sales" (
     fk_process bigint,
     sk_currency bigint,
     "qk_calc-rule" bigint,
-    sk_unit bigint,
     qk_cot_order bigint,
     "ck_cron-cate" bigint,
     "ck_vehicle-form" bigint,
+    sk_unit bigint,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -11323,14 +11323,14 @@ CREATE TABLE isahl."zc_id_prod-loading-purchase" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
     fk_receptacle bigint,
     qk_weight bigint,
     qk_volume bigint,
     qk_qty bigint,
     qk_length bigint,
     qk_width bigint,
-    qk_height bigint
+    qk_height bigint,
+    sk_unit bigint
 )
 INHERITS (isahl."zc_id_prod-purchase", isahl."zc_id_prod-loading");
 
@@ -11582,8 +11582,8 @@ CREATE TABLE isahl."zc_id_prod-material-made" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
     lk_health bigint,
+    sk_unit bigint,
     qk_lifetime bigint,
     qk_age bigint
 )
@@ -12146,10 +12146,10 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_express-purchase" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
     qk_cot_order bigint,
     "ck_cron-cate" bigint,
     "ck_vehicle-form" bigint,
+    sk_unit bigint,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -12191,8 +12191,8 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_express-request" (
     qk_cot_order bigint,
     "ck_cron-cate" bigint,
     "ck_vehicle-form" bigint,
-    sk_unit bigint,
     lk_priority bigint,
+    sk_unit bigint,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -12232,10 +12232,10 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_express-sales" (
     fk_process bigint,
     sk_currency bigint,
     "qk_calc-rule" bigint,
-    sk_unit bigint,
     qk_cot_order bigint,
     "ck_cron-cate" bigint,
     "ck_vehicle-form" bigint,
+    sk_unit bigint,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -12325,11 +12325,11 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_fcl-sales" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
     "qk_calc-rule" bigint,
     qk_cot_order bigint,
     "ck_cron-cate" bigint,
     "ck_vehicle-form" bigint,
+    sk_unit bigint,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -12422,10 +12422,10 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_lcl-sales" (
     fk_process bigint,
     sk_currency bigint,
     "qk_calc-rule" bigint,
-    sk_unit bigint,
     qk_cot_order bigint,
     "ck_cron-cate" bigint,
     "ck_vehicle-form" bigint,
+    sk_unit bigint,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -12473,10 +12473,10 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_ltl-purchase" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
     qk_cot_order bigint,
     "ck_cron-cate" bigint,
     "ck_vehicle-form" bigint,
+    sk_unit bigint,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -12515,11 +12515,11 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_ltl-request" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
     lk_priority bigint,
     qk_cot_order bigint,
     "ck_cron-cate" bigint,
     "ck_vehicle-form" bigint,
+    sk_unit bigint,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -12558,11 +12558,11 @@ CREATE TABLE isahl."zc_id_prod-pxy-fo_ltl-sales" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
     "qk_calc-rule" bigint,
     qk_cot_order bigint,
     "ck_cron-cate" bigint,
     "ck_vehicle-form" bigint,
+    sk_unit bigint,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -12636,9 +12636,9 @@ CREATE TABLE isahl."zc_id_prod-pxy-insurance-sales" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
     qk_duration bigint,
-    "qk_calc-rule" bigint
+    "qk_calc-rule" bigint,
+    sk_unit bigint
 )
 INHERITS (isahl."zc_id_prod-proxy", isahl."zc_id_prod-insurance", isahl."zc_id_prod-sales");
 
@@ -12672,10 +12672,10 @@ CREATE TABLE isahl."zc_id_prod-rdc_express-purchase" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
     qk_cot_order bigint,
     "ck_cron-cate" bigint,
     "ck_vehicle-form" bigint,
+    sk_unit bigint,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -12799,10 +12799,10 @@ CREATE TABLE isahl."zc_id_prod-rdc_pickup-purchase" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
     qk_cot_order bigint,
     "ck_cron-cate" bigint,
     "ck_vehicle-form" bigint,
+    sk_unit bigint,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -13338,10 +13338,10 @@ CREATE TABLE isahl."zc_id_prod-transfer_p2p-purchase" (
     qk_price bigint,
     fk_process bigint,
     sk_currency bigint,
-    sk_unit bigint,
     qk_cot_order bigint,
     "ck_cron-cate" bigint,
     "ck_vehicle-form" bigint,
+    sk_unit bigint,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
@@ -13425,10 +13425,10 @@ CREATE TABLE isahl."zc_id_prod-transfer_p2p-sales" (
     fk_process bigint,
     sk_currency bigint,
     "qk_calc-rule" bigint,
-    sk_unit bigint,
     qk_cot_order bigint,
     "ck_cron-cate" bigint,
     "ck_vehicle-form" bigint,
+    sk_unit bigint,
     fk_departure bigint,
     fk_destination bigint,
     qk_dta bigint,
