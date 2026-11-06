@@ -4463,13 +4463,6 @@ INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
 
-CREATE TABLE isahl."zc_id_deta-bill-check_rr_deta-invoice" (
-    id bigint NOT NULL
-)
-INHERITS (isahl.zc_id_lifecycle_rr_non_self);
-
-
-
 CREATE TABLE isahl."zc_id_deta-bill-pricing" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4676,13 +4669,6 @@ INHERITS (isahl.zc_id_detail);
 
 
 
-CREATE TABLE isahl."zc_id_deta-task_rr_deta-tsk" (
-    id bigint NOT NULL
-)
-INHERITS (isahl.zc_id_lifecycle_rr_non_self);
-
-
-
 CREATE TABLE isahl."zc_id_deta-trade_order" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -4756,15 +4742,6 @@ CREATE TABLE isahl."zc_id_deta-tsk_r_verify-status" (
     id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_lifecycle_r_status);
-
-
-
-CREATE TABLE isahl."zc_id_deta-tsp" (
-    id bigint NOT NULL,
-    fk_item bigint,
-    "qk_write-off" bigint
-)
-INHERITS (isahl.zc_id_detail);
 
 
 
@@ -15713,6 +15690,13 @@ INHERITS (isahl.zc_id_statement_rr_reason);
 
 
 
+CREATE TABLE isahl."zc_id_stat-sto-voucher_rr_tsk-meter" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_rr_non_self);
+
+
+
 CREATE TABLE isahl."zc_id_stat-task" (
     id bigint NOT NULL
 )
@@ -15747,6 +15731,93 @@ CREATE TABLE isahl."zc_id_stat-training" (
     id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_statement);
+
+
+
+CREATE TABLE isahl."zc_id_stat-tsk-action" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_stat-task");
+
+
+
+CREATE TABLE isahl."zc_id_stat-tsk-meter" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_stat-task");
+
+
+
+CREATE TABLE isahl."zc_id_stat-tsk-m_volume" (
+    created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_statement_created_at_not_null NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_statement_updated_at_not_null NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    o_number text,
+    comments text,
+    ak_benefit_user bigint[],
+    ak_permit_user bigint[],
+    ak_access_user bigint[],
+    projection text,
+    _f_ text,
+    _t_ text,
+    dk_scene bigint,
+    dk_factor bigint,
+    dk_function bigint,
+    tpl_id bigint,
+    ak_source bigint[],
+    fk_subject bigint,
+    fk_object bigint,
+    qk_date bigint,
+    ak_attachment bigint[],
+    fk_gauge bigint,
+    qk_qty bigint
+)
+INHERITS (isahl."zc_id_stat-tsk-meter");
+
+
+
+CREATE TABLE isahl."zc_id_stat-tsk-m_weight" (
+    created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_statement_created_at_not_null NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_statement_updated_at_not_null NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    o_number text,
+    comments text,
+    ak_benefit_user bigint[],
+    ak_permit_user bigint[],
+    ak_access_user bigint[],
+    projection text,
+    _f_ text,
+    _t_ text,
+    dk_scene bigint,
+    dk_factor bigint,
+    dk_function bigint,
+    tpl_id bigint,
+    ak_source bigint[],
+    fk_subject bigint,
+    fk_object bigint,
+    qk_date bigint,
+    ak_attachment bigint[],
+    fk_gauge bigint,
+    "qk_gross-weight" bigint,
+    "qk_net-weight" bigint
+)
+INHERITS (isahl."zc_id_stat-tsk-meter");
 
 
 
@@ -15794,30 +15865,9 @@ CREATE TABLE isahl."zc_id_stat-tsp-voucher" (
     "qk_write-off" bigint,
     qk_income bigint,
     qk_outgo bigint,
-    qk_forcast_period bigint,
-    "fk_in-w_measured" bigint,
-    "fk_out-w_measured" bigint
+    qk_forcast_period bigint
 )
 INHERITS (isahl."zc_id_stat-sto-voucher");
-
-
-
-CREATE TABLE isahl."zc_id_stat-volume" (
-    id bigint NOT NULL,
-    fk_gauge bigint,
-    qk_qty bigint
-)
-INHERITS (isahl.zc_id_statement);
-
-
-
-CREATE TABLE isahl."zc_id_stat-weight" (
-    id bigint NOT NULL,
-    fk_gauge bigint,
-    "qk_gross-weight" bigint,
-    "qk_net-weight" bigint
-)
-INHERITS (isahl.zc_id_statement);
 
 
 
@@ -21299,14 +21349,6 @@ ALTER TABLE ONLY isahl."zc_id_deta-alert" ALTER COLUMN updated_at SET DEFAULT no
 
 
 
-ALTER TABLE ONLY isahl."zc_id_deta-bill-check_rr_deta-invoice" ALTER COLUMN created_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_deta-bill-check_rr_deta-invoice" ALTER COLUMN updated_at SET DEFAULT now();
-
-
-
 ALTER TABLE ONLY isahl."zc_id_deta-counting" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -21375,14 +21417,6 @@ ALTER TABLE ONLY isahl."zc_id_deta-task" ALTER COLUMN updated_at SET DEFAULT now
 
 
 
-ALTER TABLE ONLY isahl."zc_id_deta-task_rr_deta-tsk" ALTER COLUMN created_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_deta-task_rr_deta-tsk" ALTER COLUMN updated_at SET DEFAULT now();
-
-
-
 ALTER TABLE ONLY isahl."zc_id_deta-training" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -21412,14 +21446,6 @@ ALTER TABLE ONLY isahl."zc_id_deta-tsk_r_verify-status" ALTER COLUMN created_at 
 
 
 ALTER TABLE ONLY isahl."zc_id_deta-tsk_r_verify-status" ALTER COLUMN updated_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_deta-tsp" ALTER COLUMN created_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_deta-tsp" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -23983,6 +24009,14 @@ ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_order" ALTER COLUMN updated_at
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_tsk-meter" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_tsk-meter" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stat-task" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -24023,6 +24057,14 @@ ALTER TABLE ONLY isahl."zc_id_stat-training" ALTER COLUMN updated_at SET DEFAULT
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stat-tsk-action" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-tsk-action" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-make" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -24031,27 +24073,19 @@ ALTER TABLE ONLY isahl."zc_id_stat-tsk-make" ALTER COLUMN updated_at SET DEFAULT
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stat-tsk-meter" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-tsk-meter" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-requisition" ALTER COLUMN created_at SET DEFAULT now();
 
 
 
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-requisition" ALTER COLUMN updated_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_stat-volume" ALTER COLUMN created_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_stat-volume" ALTER COLUMN updated_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_stat-weight" ALTER COLUMN created_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_stat-weight" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -25916,11 +25950,6 @@ ALTER TABLE ONLY isahl."zc_id_deta-bill-check_r_verify-status"
 
 
 
-ALTER TABLE ONLY isahl."zc_id_deta-bill-check_rr_deta-invoice"
-    ADD CONSTRAINT "zc_id_deta-bill-check_rr_deta-invoice_pkey" PRIMARY KEY (id);
-
-
-
 ALTER TABLE ONLY isahl."zc_id_deta-bill-pricing"
     ADD CONSTRAINT "zc_id_deta-bill-pricing_pkey" PRIMARY KEY (id);
 
@@ -25981,11 +26010,6 @@ ALTER TABLE ONLY isahl."zc_id_deta-task"
 
 
 
-ALTER TABLE ONLY isahl."zc_id_deta-task_rr_deta-tsk"
-    ADD CONSTRAINT "zc_id_deta-task_rr_deta-tsk_pkey" PRIMARY KEY (id);
-
-
-
 ALTER TABLE ONLY isahl."zc_id_deta-trade_order"
     ADD CONSTRAINT "zc_id_deta-trade_order_pkey" PRIMARY KEY (id);
 
@@ -26008,11 +26032,6 @@ ALTER TABLE ONLY isahl."zc_id_deta-tsk"
 
 ALTER TABLE ONLY isahl."zc_id_deta-tsk_r_verify-status"
     ADD CONSTRAINT "zc_id_deta-tsk_r_verify-status_pkey" PRIMARY KEY (id);
-
-
-
-ALTER TABLE ONLY isahl."zc_id_deta-tsp"
-    ADD CONSTRAINT "zc_id_deta-tsp_pkey" PRIMARY KEY (id);
 
 
 
@@ -28941,6 +28960,11 @@ ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_order"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_tsk-meter"
+    ADD CONSTRAINT "zc_id_stat-sto-voucher_rr_tsk-meter_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stat-task"
     ADD CONSTRAINT "zc_id_stat-task_pkey" PRIMARY KEY (id);
 
@@ -28971,8 +28995,28 @@ ALTER TABLE ONLY isahl."zc_id_stat-training"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stat-tsk-action"
+    ADD CONSTRAINT "zc_id_stat-tsk-action_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-tsk-m_volume"
+    ADD CONSTRAINT "zc_id_stat-tsk-m_volume_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-tsk-m_weight"
+    ADD CONSTRAINT "zc_id_stat-tsk-m_weight_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-make"
     ADD CONSTRAINT "zc_id_stat-tsk-make_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-tsk-meter"
+    ADD CONSTRAINT "zc_id_stat-tsk-meter_pkey" PRIMARY KEY (id);
 
 
 
@@ -28983,16 +29027,6 @@ ALTER TABLE ONLY isahl."zc_id_stat-tsk-requisition"
 
 ALTER TABLE ONLY isahl."zc_id_stat-tsp-voucher"
     ADD CONSTRAINT "zc_id_stat-tsp-voucher_pkey" PRIMARY KEY (id);
-
-
-
-ALTER TABLE ONLY isahl."zc_id_stat-volume"
-    ADD CONSTRAINT "zc_id_stat-volume_pkey" PRIMARY KEY (id);
-
-
-
-ALTER TABLE ONLY isahl."zc_id_stat-weight"
-    ADD CONSTRAINT "zc_id_stat-weight_pkey" PRIMARY KEY (id);
 
 
 
@@ -35662,15 +35696,7 @@ CREATE UNIQUE INDEX "uq_zc_id_deta-bill-check_r_verify-status_ref_left_ref_right
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_deta-bill-check_rr_deta-invoice_ref_left_ref_right_qk_" ON isahl."zc_id_deta-bill-check_rr_deta-invoice" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
-
-
-
 CREATE UNIQUE INDEX "uq_zc_id_deta-damage_r_scrap_ref_left_ref_right_qk_period" ON isahl."zc_id_deta-damage_r_scrap" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
-
-
-
-CREATE UNIQUE INDEX "uq_zc_id_deta-task_rr_deta-tsk_ref_left_ref_right_qk_period" ON isahl."zc_id_deta-task_rr_deta-tsk" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
@@ -36190,6 +36216,10 @@ CREATE UNIQUE INDEX "uq_zc_id_stat-sto-voucher_rr_order_ref_left_ref_right_qk_pe
 
 
 
+CREATE UNIQUE INDEX "uq_zc_id_stat-sto-voucher_rr_tsk-meter_ref_left_ref_right_qk_pe" ON isahl."zc_id_stat-sto-voucher_rr_tsk-meter" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+
 CREATE UNIQUE INDEX "uq_zc_id_stat-task_r_verify-status_ref_left_ref_right" ON isahl."zc_id_stat-task_r_verify-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
@@ -36582,7 +36612,6 @@ ALTER TABLE ONLY isahl."zc_id_deta-task" ALTER COLUMN id SET DEFAULT isahl.gen_n
 ALTER TABLE ONLY isahl."zc_id_deta-trade_order" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_deta-training" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_deta-tsk" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_deta-tsp" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_eval-calculable" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((171)::bigint);
 ALTER TABLE ONLY isahl."zc_id_eval-comparable" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((172)::bigint);
 ALTER TABLE ONLY isahl."zc_id_info-email" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -36618,8 +36647,6 @@ ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher" ALTER COLUMN id SET DEFAULT isah
 ALTER TABLE ONLY isahl."zc_id_stat-task" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-trade_order" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-training" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_stat-volume" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_stat-weight" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-account" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-container" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-data" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -36703,9 +36730,7 @@ ALTER TABLE ONLY isahl."zc_id_cont-transport-purchase" ALTER COLUMN id SET DEFAU
 ALTER TABLE ONLY isahl."zc_id_cont-transport-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_cont-transport_rr_stop" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((231)::bigint);
 ALTER TABLE ONLY isahl."zc_id_deta-bill-check_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((243)::bigint);
-ALTER TABLE ONLY isahl."zc_id_deta-bill-check_rr_deta-invoice" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((709)::bigint);
 ALTER TABLE ONLY isahl."zc_id_deta-damage_r_scrap" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((592)::bigint);
-ALTER TABLE ONLY isahl."zc_id_deta-task_rr_deta-tsk" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((706)::bigint);
 ALTER TABLE ONLY isahl."zc_id_deta-training_rr_matter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((244)::bigint);
 ALTER TABLE ONLY isahl."zc_id_deta-tsk_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((498)::bigint);
 ALTER TABLE ONLY isahl."zc_id_devi-camera" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -36850,10 +36875,13 @@ ALTER TABLE ONLY isahl."zc_id_stat-com-voucher" ALTER COLUMN id SET DEFAULT isah
 ALTER TABLE ONLY isahl."zc_id_stat-mal-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-slf-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_tsk-meter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((722)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((503)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-task_rr_sto-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((506)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-task_rr_trade_order" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((507)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stat-tsk-action" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-make" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_stat-tsk-meter" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-requisition" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-tsp-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-whs-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -37216,6 +37244,8 @@ ALTER TABLE ONLY isahl."zc_id_segm-weight" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_stat-smt-bank" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-cash" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-channel" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_stat-tsk-m_volume" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_stat-tsk-m_weight" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_subj-country" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_subj-group_rr_member" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((447)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-ministry_rr_subordinate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((448)::bigint);

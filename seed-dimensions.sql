@@ -1,5 +1,5 @@
 
-\restrict c7g4ldVEP8Z8oDphRaRNwI46pmeJCB7HghC7D45tWzva1S9toHCS2Cf3bTUc2Ik
+\restrict ehicnIQVot0yeOONT48VAnDlu9v5lRKq5ND2rmYC3Rt2MjDl9rvE2pfW6imoh7z
 
 
 SET statement_timeout = 0;
@@ -2682,6 +2682,7 @@ INSERT INTO isahl."zc_id_stus-trade" (created_at, updated_at, id, created_by_id,
 INSERT INTO isahl."zc_id_stus-trade" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-09-07 23:24:57.634663+08', '2026-09-07 23:24:57.634663+08', 33495522228570401, 343596428788625, 1, '已审批', NULL, NULL, NULL, NULL, 'ST-APPROVED', '20260907_152457634_cf47045f', NULL, NULL, NULL, NULL, true, 'doing') ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_stus-trade" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-09-07 23:24:57.634663+08', '2026-09-07 23:24:57.634663+08', 33495522228570402, 343596428788625, 1, '已驳回', NULL, NULL, NULL, NULL, 'ST-REJECTED', '20260907_152457634_ec4cd290', NULL, NULL, NULL, NULL, true, 'end') ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_stus-trade" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-09-07 23:31:17.262855+08', '2026-09-07 23:31:17.262855+08', 33495522228570509, 343596428788625, 1, '已签收(运输)', NULL, NULL, NULL, NULL, 'WZ-TRST-SIGNED', '20260907_153117262_0131cde3', NULL, NULL, NULL, NULL, true, 'doing') ON CONFLICT DO NOTHING;
+INSERT INTO isahl."zc_id_stus-trade" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-11-06 11:09:05.164545+08', '2026-11-06 11:09:05.164545+08', 33495522228568065, 1, 1, '退货申请', NULL, NULL, NULL, NULL, 'ST-REQUESTED', NULL, NULL, NULL, NULL, NULL, true, 'start') ON CONFLICT DO NOTHING;
 
 
 
@@ -3424,5 +3425,5 @@ INSERT INTO isahl."zc_id_unit-working" (created_at, updated_at, id, created_by_i
 
 
 
-\unrestrict c7g4ldVEP8Z8oDphRaRNwI46pmeJCB7HghC7D45tWzva1S9toHCS2Cf3bTUc2Ik
+\unrestrict ehicnIQVot0yeOONT48VAnDlu9v5lRKq5ND2rmYC3Rt2MjDl9rvE2pfW6imoh7z
 
