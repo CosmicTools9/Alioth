@@ -5225,6 +5225,13 @@ INHERITS (isahl.zc_id_event);
 
 
 
+CREATE TABLE isahl."zc_id_even-exception" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_event);
+
+
+
 CREATE TABLE isahl."zc_id_even-issue" (
     id bigint NOT NULL,
     ck_category bigint,
@@ -5742,6 +5749,134 @@ INHERITS (isahl."zc_id_eval-calculable");
 
 
 
+CREATE TABLE isahl."zc_id_geog-area" (
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    o_number text,
+    comments text,
+    ak_benefit_user bigint[],
+    ak_permit_user bigint[],
+    ak_access_user bigint[],
+    ref_count bigint,
+    sk_unit bigint,
+    box polygon
+)
+INHERITS (isahl.zc_id_geometry);
+
+
+
+CREATE TABLE isahl."zc_id_geog-circle" (
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    o_number text,
+    comments text,
+    ak_benefit_user bigint[],
+    ak_permit_user bigint[],
+    ak_access_user bigint[],
+    ref_count bigint,
+    sk_unit bigint,
+    circle point,
+    qk_radius bigint
+)
+INHERITS (isahl.zc_id_geometry);
+
+
+
+CREATE TABLE isahl."zc_id_geog-path" (
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    o_number text,
+    comments text,
+    ak_benefit_user bigint[],
+    ak_permit_user bigint[],
+    ak_access_user bigint[],
+    ref_count bigint,
+    sk_unit bigint,
+    ak_nodes bigint[],
+    path path
+)
+INHERITS (isahl.zc_id_geometry);
+
+
+
+CREATE TABLE isahl."zc_id_geog-point" (
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    o_number text,
+    comments text,
+    ak_benefit_user bigint[],
+    ak_permit_user bigint[],
+    ak_access_user bigint[],
+    ref_count bigint,
+    sk_unit bigint,
+    point point
+)
+INHERITS (isahl.zc_id_geometry);
+
+
+
+CREATE TABLE isahl."zc_id_geog-polygon" (
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    o_number text,
+    comments text,
+    ak_benefit_user bigint[],
+    ak_permit_user bigint[],
+    ak_access_user bigint[],
+    ref_count bigint,
+    sk_unit bigint,
+    ak_nodes bigint[],
+    polygon polygon
+)
+INHERITS (isahl.zc_id_geometry);
+
+
+
 CREATE TABLE isahl."zc_id_geom-area" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5758,25 +5893,6 @@ CREATE TABLE isahl."zc_id_geom-area" (
     box polygon
 )
 INHERITS (isahl.zc_id_geometry);
-
-
-
-CREATE TABLE isahl."zc_id_geog-area" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    ref_count bigint,
-    sk_unit bigint,
-    box polygon
-)
-INHERITS (isahl."zc_id_geom-area");
 
 
 
@@ -5799,7 +5915,7 @@ INHERITS (isahl.zc_id_geometry);
 
 
 
-CREATE TABLE isahl."zc_id_geog-circle" (
+CREATE TABLE isahl."zc_id_geom-coordinate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     id bigint NOT NULL,
@@ -5812,10 +5928,9 @@ CREATE TABLE isahl."zc_id_geog-circle" (
     comments text,
     ref_count bigint,
     sk_unit bigint,
-    circle point,
-    qk_radius bigint
+    point point
 )
-INHERITS (isahl."zc_id_geom-circle");
+INHERITS (isahl.zc_id_geometry);
 
 
 
@@ -5839,64 +5954,6 @@ INHERITS (isahl.zc_id_geometry);
 
 
 
-CREATE TABLE isahl."zc_id_geog-path" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    ref_count bigint,
-    sk_unit bigint,
-    ak_nodes bigint[],
-    path path
-)
-INHERITS (isahl."zc_id_geom-path");
-
-
-
-CREATE TABLE isahl."zc_id_geom-coordinate" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    ref_count bigint,
-    sk_unit bigint,
-    point point
-)
-INHERITS (isahl.zc_id_geometry);
-
-
-
-CREATE TABLE isahl."zc_id_geog-point" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    ref_count bigint,
-    sk_unit bigint,
-    point point
-)
-INHERITS (isahl."zc_id_geom-coordinate");
-
-
-
 CREATE TABLE isahl."zc_id_geom-polygon" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -5914,26 +5971,6 @@ CREATE TABLE isahl."zc_id_geom-polygon" (
     polygon polygon
 )
 INHERITS (isahl.zc_id_geometry);
-
-
-
-CREATE TABLE isahl."zc_id_geog-polygon" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    o_number text,
-    comments text,
-    ref_count bigint,
-    sk_unit bigint,
-    ak_nodes bigint[],
-    polygon polygon
-)
-INHERITS (isahl."zc_id_geom-polygon");
 
 
 
@@ -15711,22 +15748,6 @@ INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
 
-CREATE TABLE isahl."zc_id_stat-task_rr_sto-voucher" (
-    id bigint NOT NULL,
-    qk_verify bigint
-)
-INHERITS (isahl.zc_id_lifecycle_rr_non_self);
-
-
-
-CREATE TABLE isahl."zc_id_stat-task_rr_trade_order" (
-    id bigint NOT NULL,
-    qk_verify bigint
-)
-INHERITS (isahl.zc_id_lifecycle_rr_non_self);
-
-
-
 CREATE TABLE isahl."zc_id_stat-training" (
     id bigint NOT NULL
 )
@@ -19218,6 +19239,13 @@ INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
 
+CREATE TABLE isahl."zc_id_task_rr_sto-voucher" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_rr_non_self);
+
+
+
 CREATE TABLE isahl.zc_id_threads (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -21530,6 +21558,14 @@ ALTER TABLE ONLY isahl."zc_id_even-damage" ALTER COLUMN created_at SET DEFAULT n
 
 
 ALTER TABLE ONLY isahl."zc_id_even-damage" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_even-exception" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_even-exception" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -24033,22 +24069,6 @@ ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status" ALTER COLUMN updated_at
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stat-task_rr_sto-voucher" ALTER COLUMN created_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_stat-task_rr_sto-voucher" ALTER COLUMN updated_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_stat-task_rr_trade_order" ALTER COLUMN created_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_stat-task_rr_trade_order" ALTER COLUMN updated_at SET DEFAULT now();
-
-
-
 ALTER TABLE ONLY isahl."zc_id_stat-training" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -24958,6 +24978,14 @@ ALTER TABLE ONLY isahl."zc_id_task_rr_stat-tsk" ALTER COLUMN created_at SET DEFA
 
 
 ALTER TABLE ONLY isahl."zc_id_task_rr_stat-tsk" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_task_rr_sto-voucher" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_task_rr_sto-voucher" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -26187,6 +26215,11 @@ ALTER TABLE ONLY isahl."zc_id_even-approve"
 
 ALTER TABLE ONLY isahl."zc_id_even-damage"
     ADD CONSTRAINT "zc_id_even-damage_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_even-exception"
+    ADD CONSTRAINT "zc_id_even-exception_pkey" PRIMARY KEY (id);
 
 
 
@@ -28975,16 +29008,6 @@ ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status"
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stat-task_rr_sto-voucher"
-    ADD CONSTRAINT "zc_id_stat-task_rr_sto-voucher_pkey" PRIMARY KEY (id);
-
-
-
-ALTER TABLE ONLY isahl."zc_id_stat-task_rr_trade_order"
-    ADD CONSTRAINT "zc_id_stat-task_rr_trade_order_pkey" PRIMARY KEY (id);
-
-
-
 ALTER TABLE ONLY isahl."zc_id_stat-trade_order"
     ADD CONSTRAINT "zc_id_stat-trade_order_pkey" PRIMARY KEY (id);
 
@@ -30012,6 +30035,11 @@ ALTER TABLE ONLY isahl.zc_id_task_rr_reason
 
 ALTER TABLE ONLY isahl."zc_id_task_rr_stat-tsk"
     ADD CONSTRAINT "zc_id_task_rr_stat-tsk_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_task_rr_sto-voucher"
+    ADD CONSTRAINT "zc_id_task_rr_sto-voucher_pkey" PRIMARY KEY (id);
 
 
 
@@ -33748,14 +33776,6 @@ CREATE INDEX "idx_zc_id_stat-task_r_verify-status_ref_right" ON isahl."zc_id_sta
 
 
 
-CREATE INDEX "idx_zc_id_stat-task_rr_sto-voucher_ref_right" ON isahl."zc_id_stat-task_rr_sto-voucher" USING btree (ref_right);
-
-
-
-CREATE INDEX "idx_zc_id_stat-task_rr_trade_order_ref_right" ON isahl."zc_id_stat-task_rr_trade_order" USING btree (ref_right);
-
-
-
 CREATE INDEX "idx_zc_id_stat-trade_order_fk_contract" ON isahl."zc_id_stat-trade_order" USING btree (fk_contract);
 
 
@@ -36224,14 +36244,6 @@ CREATE UNIQUE INDEX "uq_zc_id_stat-task_r_verify-status_ref_left_ref_right" ON i
 
 
 
-CREATE UNIQUE INDEX "uq_zc_id_stat-task_rr_sto-voucher_ref_left_ref_right_qk_period" ON isahl."zc_id_stat-task_rr_sto-voucher" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
-
-
-
-CREATE UNIQUE INDEX "uq_zc_id_stat-task_rr_trade_order_ref_left_ref_right_qk_period" ON isahl."zc_id_stat-task_rr_trade_order" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
-
-
-
 CREATE UNIQUE INDEX "uq_zc_id_stat-tsp-voucher_code_active" ON isahl."zc_id_stat-tsp-voucher" USING btree (code) WHERE (deleted_at IS NULL);
 
 
@@ -36353,6 +36365,10 @@ CREATE UNIQUE INDEX uq_zc_id_task_rr_reason_ref_left_ref_right_qk_period ON isah
 
 
 CREATE UNIQUE INDEX "uq_zc_id_task_rr_stat-tsk_ref_left_ref_right_qk_period" ON isahl."zc_id_task_rr_stat-tsk" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+
+CREATE UNIQUE INDEX "uq_zc_id_task_rr_sto-voucher_ref_left_ref_right_qk_period" ON isahl."zc_id_task_rr_sto-voucher" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
 
@@ -36748,6 +36764,7 @@ ALTER TABLE ONLY isahl."zc_id_empl-natural_rr_consanguinity" ALTER COLUMN id SET
 ALTER TABLE ONLY isahl."zc_id_empl-natural_rr_country" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((250)::bigint);
 ALTER TABLE ONLY isahl."zc_id_even-approve" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_even-damage" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_even-exception" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_even-issue" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_even-modify" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_form-calculation" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((253)::bigint);
@@ -36877,8 +36894,6 @@ ALTER TABLE ONLY isahl."zc_id_stat-slf-voucher" ALTER COLUMN id SET DEFAULT isah
 ALTER TABLE ONLY isahl."zc_id_stat-smt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_tsk-meter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((722)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((503)::bigint);
-ALTER TABLE ONLY isahl."zc_id_stat-task_rr_sto-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((506)::bigint);
-ALTER TABLE ONLY isahl."zc_id_stat-task_rr_trade_order" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((507)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-action" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-make" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-meter" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -36964,6 +36979,7 @@ ALTER TABLE ONLY isahl."zc_id_task-shipment" ALTER COLUMN id SET DEFAULT isahl.g
 ALTER TABLE ONLY isahl."zc_id_task-storage" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-take_off_stock" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task_rr_stat-tsk" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((677)::bigint);
+ALTER TABLE ONLY isahl."zc_id_task_rr_sto-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((725)::bigint);
 ALTER TABLE ONLY isahl."zc_id_thre-meeting" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_thread_rr_topic-x" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((323)::bigint);
 ALTER TABLE ONLY isahl."zc_id_vers-context_r_baseline" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((324)::bigint);
@@ -37046,6 +37062,11 @@ ALTER TABLE ONLY isahl."zc_id_empl-agent" ALTER COLUMN id SET DEFAULT isahl.gen_
 ALTER TABLE ONLY isahl."zc_id_empl-natural" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_form-access" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((336)::bigint);
 ALTER TABLE ONLY isahl."zc_id_form-calc_tax" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((338)::bigint);
+ALTER TABLE ONLY isahl."zc_id_geog-area" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((458)::bigint);
+ALTER TABLE ONLY isahl."zc_id_geog-circle" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((459)::bigint);
+ALTER TABLE ONLY isahl."zc_id_geog-path" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((460)::bigint);
+ALTER TABLE ONLY isahl."zc_id_geog-point" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((461)::bigint);
+ALTER TABLE ONLY isahl."zc_id_geog-polygon" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((462)::bigint);
 ALTER TABLE ONLY isahl."zc_id_geom-area" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((341)::bigint);
 ALTER TABLE ONLY isahl."zc_id_geom-circle" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((342)::bigint);
 ALTER TABLE ONLY isahl."zc_id_geom-coordinate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((343)::bigint);
@@ -37296,11 +37317,6 @@ ALTER TABLE ONLY isahl."zc_id_file-image" ALTER COLUMN id SET DEFAULT isahl.gen_
 ALTER TABLE ONLY isahl."zc_id_file-manual" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_file-package" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_file-ver_ctrl" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_geog-area" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((458)::bigint);
-ALTER TABLE ONLY isahl."zc_id_geog-circle" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((459)::bigint);
-ALTER TABLE ONLY isahl."zc_id_geog-path" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((460)::bigint);
-ALTER TABLE ONLY isahl."zc_id_geog-point" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((461)::bigint);
-ALTER TABLE ONLY isahl."zc_id_geog-polygon" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((462)::bigint);
 ALTER TABLE ONLY isahl."zc_id_law-civil-book" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-common-holding" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-common-title" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();

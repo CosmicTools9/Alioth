@@ -276,7 +276,7 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "published_at": "2026-11-06T08:06:38.668568+00:00",
+  "published_at": "2026-11-06T11:06:51.214702+00:00",
   "row_layer": {
     "zc_id_cate-inv-title": "carry",
     "zc_id_cate-ope-title": "carry",
@@ -582,5 +582,5 @@
     "zc_id_unit-weight",
     "zc_id_unit-working"
   ],
-  "version": "v10.0.68"
+  "version": "v10.0.69"
 }
