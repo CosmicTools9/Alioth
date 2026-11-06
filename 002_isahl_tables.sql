@@ -7963,6 +7963,13 @@ INHERITS (isahl.zc_id_operation);
 
 
 
+CREATE TABLE isahl."zc_id_oper-trade_delivery" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
 CREATE TABLE isahl."zc_id_oper-trailer" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -8919,9 +8926,9 @@ INHERITS (isahl.zc_id_plan);
 
 
 
-CREATE TABLE isahl."zc_id_plan-delivery" (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+CREATE TABLE isahl."zc_id_plan-delivery_prj" (
+    created_at timestamp with time zone DEFAULT now() CONSTRAINT "zc_id_plan-delivery_created_at_not_null" NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() CONSTRAINT "zc_id_plan-delivery_updated_at_not_null" NOT NULL,
     id bigint NOT NULL,
     created_by_id bigint,
     updated_by_id bigint,
@@ -19240,7 +19247,8 @@ INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
 CREATE TABLE isahl."zc_id_task_rr_sto-voucher" (
-    id bigint NOT NULL
+    id bigint NOT NULL,
+    qk_verify bigint
 )
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
@@ -22406,6 +22414,14 @@ ALTER TABLE ONLY isahl."zc_id_oper-test" ALTER COLUMN updated_at SET DEFAULT now
 
 
 ALTER TABLE ONLY isahl."zc_id_oper-test" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-trade_delivery" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-trade_delivery" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -27033,6 +27049,11 @@ ALTER TABLE ONLY isahl."zc_id_oper-test"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_oper-trade_delivery"
+    ADD CONSTRAINT "zc_id_oper-trade_delivery_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-trailer"
     ADD CONSTRAINT "zc_id_oper-trailer_pkey" PRIMARY KEY (id);
 
@@ -27278,8 +27299,8 @@ ALTER TABLE ONLY isahl."zc_id_plan-certification"
 
 
 
-ALTER TABLE ONLY isahl."zc_id_plan-delivery"
-    ADD CONSTRAINT "zc_id_plan-delivery_pkey" PRIMARY KEY (id);
+ALTER TABLE ONLY isahl."zc_id_plan-delivery_prj"
+    ADD CONSTRAINT "zc_id_plan-delivery_prj_prj_pkey" PRIMARY KEY (id);
 
 
 
@@ -36817,6 +36838,7 @@ ALTER TABLE ONLY isahl."zc_id_oper-sign" ALTER COLUMN id SET DEFAULT isahl.gen_n
 ALTER TABLE ONLY isahl."zc_id_oper-smtv_review" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-storage" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-take_off_stock" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-trade_delivery" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-trailer" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-transport_tracking" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-tsp_package" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -36833,7 +36855,7 @@ ALTER TABLE ONLY isahl."zc_id_order_rr_obj-rep" ALTER COLUMN id SET DEFAULT isah
 ALTER TABLE ONLY isahl."zc_id_order_rr_subj-rep" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((273)::bigint);
 ALTER TABLE ONLY isahl."zc_id_orga-department_rr_project" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((520)::bigint);
 ALTER TABLE ONLY isahl."zc_id_plan-certification" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_plan-delivery" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_plan-delivery_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_plan-inbound" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_plan-maintain" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_plan-making" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();

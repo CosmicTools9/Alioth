@@ -1,5 +1,5 @@
 
-\restrict h9hL9JGNhgzfxxR4FYXsg9JgNPbKTBh1DnZIelyT2nzfKpXjzjwuvoat1Azarrn
+\restrict QgKXk4qjCoB49akacycxx4dFnFPki92UFwHwgvld55wQ4rYhHTPao1TQ8bvClcw
 
 
 SET statement_timeout = 0;
@@ -2565,7 +2565,6 @@ INSERT INTO isahl."zc_id_stus-protocol" (created_at, updated_at, id, created_by_
 
 
 INSERT INTO isahl."zc_id_stus-purchase" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-11-01 21:46:07.405359+08', '2026-11-01 21:46:07.405359+08', 56520865402087416, 1, 1, '待审批', NULL, NULL, NULL, NULL, 'ST-PENDING_APPROVAL', NULL, NULL, NULL, NULL, NULL, true, 'doing') ON CONFLICT DO NOTHING;
-INSERT INTO isahl."zc_id_stus-purchase" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-11-01 21:46:07.405359+08', '2026-11-01 21:46:07.405359+08', 56540336476138460, 1, 1, '已批准', NULL, NULL, NULL, NULL, 'ST-APPROVED', NULL, NULL, NULL, NULL, NULL, true, 'doing') ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_stus-purchase" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-11-01 21:46:07.405359+08', '2026-11-01 21:46:07.405359+08', 56300426347518999, 1, 1, '已入库', NULL, NULL, NULL, NULL, 'ST-RECEIVED', NULL, NULL, NULL, NULL, NULL, true, 'end') ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_stus-purchase" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-11-01 21:46:07.405359+08', '2026-11-01 21:46:07.405359+08', 56565037092065650, 1, 1, '已取消', NULL, NULL, NULL, NULL, 'ST-CANCELED', NULL, NULL, NULL, NULL, NULL, true, 'end') ON CONFLICT DO NOTHING;
 
@@ -3425,5 +3424,5 @@ INSERT INTO isahl."zc_id_unit-working" (created_at, updated_at, id, created_by_i
 
 
 
-\unrestrict h9hL9JGNhgzfxxR4FYXsg9JgNPbKTBh1DnZIelyT2nzfKpXjzjwuvoat1Azarrn
+\unrestrict QgKXk4qjCoB49akacycxx4dFnFPki92UFwHwgvld55wQ4rYhHTPao1TQ8bvClcw
 
