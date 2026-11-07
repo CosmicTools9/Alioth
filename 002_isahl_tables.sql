@@ -7475,6 +7475,13 @@ INHERITS (isahl.zc_id_operation);
 
 
 
+CREATE TABLE isahl."zc_id_oper-issue_invoice" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
 CREATE TABLE isahl."zc_id_oper-lading" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -22341,6 +22348,14 @@ ALTER TABLE ONLY isahl."zc_id_oper-inbound" ALTER COLUMN updated_at SET DEFAULT 
 
 
 
+ALTER TABLE ONLY isahl."zc_id_oper-issue_invoice" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-issue_invoice" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-loading" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -26986,6 +27001,11 @@ ALTER TABLE ONLY isahl."zc_id_oper-goods_pick"
 
 ALTER TABLE ONLY isahl."zc_id_oper-inbound"
     ADD CONSTRAINT "zc_id_oper-inbound_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-issue_invoice"
+    ADD CONSTRAINT "zc_id_oper-issue_invoice_pkey" PRIMARY KEY (id);
 
 
 
@@ -36897,6 +36917,7 @@ ALTER TABLE ONLY isahl."zc_id_oper-delivery_prj" ALTER COLUMN id SET DEFAULT isa
 ALTER TABLE ONLY isahl."zc_id_oper-fo_booking" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-goods_pick" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-inbound" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-issue_invoice" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-lading" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-loading" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-match_cond" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
