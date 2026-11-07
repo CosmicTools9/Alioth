@@ -7737,6 +7737,13 @@ INHERITS (isahl.zc_id_operation);
 
 
 
+CREATE TABLE isahl."zc_id_oper-replenish" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
 CREATE TABLE isahl."zc_id_oper-resp_inquiry" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7765,6 +7772,13 @@ CREATE TABLE isahl."zc_id_oper-resp_inquiry" (
     "ck_cate-wh" bigint,
     qk_work_duration bigint,
     "ck_cate-biz" bigint
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
+CREATE TABLE isahl."zc_id_oper-restock" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -19175,6 +19189,20 @@ INHERITS (isahl.zc_id_task);
 
 
 
+CREATE TABLE isahl."zc_id_task-replenish" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_task);
+
+
+
+CREATE TABLE isahl."zc_id_task-restock" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_task);
+
+
+
 CREATE TABLE isahl."zc_id_task-sample" (
     id bigint NOT NULL
 )
@@ -22389,6 +22417,22 @@ ALTER TABLE ONLY isahl."zc_id_oper-put_to_store" ALTER COLUMN updated_at SET DEF
 
 
 
+ALTER TABLE ONLY isahl."zc_id_oper-replenish" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-replenish" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-restock" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-restock" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-scan_barcode" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -24913,6 +24957,22 @@ ALTER TABLE ONLY isahl."zc_id_task-put_to_store" ALTER COLUMN updated_at SET DEF
 
 
 
+ALTER TABLE ONLY isahl."zc_id_task-replenish" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_task-replenish" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_task-restock" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_task-restock" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_task-sample" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -26999,8 +27059,18 @@ ALTER TABLE ONLY isahl."zc_id_oper-register"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_oper-replenish"
+    ADD CONSTRAINT "zc_id_oper-replenish_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-resp_inquiry"
     ADD CONSTRAINT "zc_id_oper-resp_inquiry_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-restock"
+    ADD CONSTRAINT "zc_id_oper-restock_pkey" PRIMARY KEY (id);
 
 
 
@@ -30001,6 +30071,16 @@ ALTER TABLE ONLY isahl."zc_id_task-put_in_stock"
 
 ALTER TABLE ONLY isahl."zc_id_task-put_to_store"
     ADD CONSTRAINT "zc_id_task-put_to_store_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_task-replenish"
+    ADD CONSTRAINT "zc_id_task-replenish_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_task-restock"
+    ADD CONSTRAINT "zc_id_task-restock_pkey" PRIMARY KEY (id);
 
 
 
@@ -36831,7 +36911,9 @@ ALTER TABLE ONLY isahl."zc_id_oper-planing" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_oper-put_in_stock" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-put_to_store" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-register" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-replenish" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-resp_inquiry" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-restock" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-sales_order" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-scan_barcode" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-sign" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -36995,6 +37077,8 @@ ALTER TABLE ONLY isahl."zc_id_task-pay" ALTER COLUMN id SET DEFAULT isahl.gen_ne
 ALTER TABLE ONLY isahl."zc_id_task-picking" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-put_in_stock" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-put_to_store" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_task-replenish" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_task-restock" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-sample" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-scrap" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-shipment" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
