@@ -5014,6 +5014,48 @@ INHERITS (isahl.zc_id_document);
 
 
 
+CREATE TABLE isahl."zc_id_docu-accounting_rr_bills" (
+    created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_rr_non_self_created_at_not_null NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_rr_non_self_updated_at_not_null NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    ref_left bigint,
+    ref_right bigint,
+    comments text,
+    qk_period bigint
+)
+INHERITS (isahl.zc_id_master_rr_slave);
+
+
+
+CREATE TABLE isahl."zc_id_docu-accounting_rr_smt-voucher" (
+    created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_rr_non_self_created_at_not_null NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_rr_non_self_updated_at_not_null NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    ref_left bigint,
+    ref_right bigint,
+    comments text,
+    qk_period bigint
+)
+INHERITS (isahl.zc_id_master_rr_slave);
+
+
+
 CREATE TABLE isahl."zc_id_subj-employee" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -15791,7 +15833,8 @@ INHERITS (isahl."zc_id_stat-task");
 
 
 CREATE TABLE isahl."zc_id_stat-tsk-meter" (
-    id bigint NOT NULL
+    id bigint NOT NULL,
+    fk_payload bigint
 )
 INHERITS (isahl."zc_id_stat-task");
 
@@ -26219,6 +26262,16 @@ ALTER TABLE ONLY isahl."zc_id_docu-accounting"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_docu-accounting_rr_bills"
+    ADD CONSTRAINT "zc_id_docu-accounting_rr_bills_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_docu-accounting_rr_smt-voucher"
+    ADD CONSTRAINT "zc_id_docu-accounting_rr_smt-voucher_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl.zc_id_document
     ADD CONSTRAINT zc_id_document_pkey PRIMARY KEY (id);
 
@@ -35857,6 +35910,14 @@ CREATE UNIQUE INDEX uq_zc_id_device_rr_protocol_ref_left_ref_right_qk_period ON 
 
 
 
+CREATE UNIQUE INDEX "uq_zc_id_docu-accounting_rr_bills_ref_left_ref_right_qk_period" ON isahl."zc_id_docu-accounting_rr_bills" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+
+CREATE UNIQUE INDEX "uq_zc_id_docu-accounting_rr_smt-voucher_ref_left_ref_right_qk_p" ON isahl."zc_id_docu-accounting_rr_smt-voucher" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+
 CREATE UNIQUE INDEX "uq_zc_id_empl-agent_rr_llm-config_ref_left_ref_right_qk_period" ON isahl."zc_id_empl-agent_rr_llm-config" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
@@ -37185,6 +37246,8 @@ ALTER TABLE ONLY isahl."zc_id_bom-gift_set" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_bom-solution" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_calc-prod_pricing" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((327)::bigint);
 ALTER TABLE ONLY isahl."zc_id_calc-sales_bonus" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((328)::bigint);
+ALTER TABLE ONLY isahl."zc_id_docu-accounting_rr_bills" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((735)::bigint);
+ALTER TABLE ONLY isahl."zc_id_docu-accounting_rr_smt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((733)::bigint);
 ALTER TABLE ONLY isahl."zc_id_empl-agent" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_empl-natural" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_form-access" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((336)::bigint);
