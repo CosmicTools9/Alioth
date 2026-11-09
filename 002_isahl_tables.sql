@@ -3951,7 +3951,8 @@ CREATE TABLE isahl.zc_id_contract (
     "qk_valid-segm" bigint,
     lk_health bigint,
     ak_attachment bigint[],
-    qk_amount bigint
+    qk_amount bigint,
+    ak_origin bigint[]
 )
 INHERITS (isahl.zc_id_lifecycle);
 
