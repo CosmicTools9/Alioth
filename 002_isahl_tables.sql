@@ -15876,6 +15876,13 @@ INHERITS (isahl.zc_id_lifecycle_r_status);
 
 
 
+CREATE TABLE isahl."zc_id_stat-trade_order_rr_bill-pricing" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_master_rr_slave);
+
+
+
 CREATE TABLE isahl."zc_id_stat-training" (
     id bigint NOT NULL
 )
@@ -24317,6 +24324,14 @@ ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status" ALTER COLUMN updated_at
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stat-trade_order_rr_bill-pricing" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-trade_order_rr_bill-pricing" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stat-training" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -29352,6 +29367,11 @@ ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status"
 
 ALTER TABLE ONLY isahl."zc_id_stat-trade_order"
     ADD CONSTRAINT "zc_id_stat-trade_order_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-trade_order_rr_bill-pricing"
+    ADD CONSTRAINT "zc_id_stat-trade_order_rr_bill-pricing_pkey" PRIMARY KEY (id);
 
 
 
@@ -36609,6 +36629,10 @@ CREATE UNIQUE INDEX "uq_zc_id_stat-task_r_verify-status_ref_left_ref_right" ON i
 
 
 
+CREATE UNIQUE INDEX "uq_zc_id_stat-trade_order_rr_bill-pricing_ref_left_ref_right_qk" ON isahl."zc_id_stat-trade_order_rr_bill-pricing" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+
 CREATE UNIQUE INDEX "uq_zc_id_stat-tsp-voucher_code_active" ON isahl."zc_id_stat-tsp-voucher" USING btree (code) WHERE (deleted_at IS NULL);
 
 
@@ -37643,6 +37667,7 @@ ALTER TABLE ONLY isahl."zc_id_segm-weight" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_stat-smt-bank" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-cash" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-channel" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_stat-trade_order_rr_bill-pricing" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((552)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-m_volume" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-m_weight" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_subj-country" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
