@@ -4614,6 +4614,13 @@ INHERITS (isahl.zc_id_detail);
 
 
 
+CREATE TABLE isahl."zc_id_deta-lead" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_detail);
+
+
+
 CREATE TABLE isahl."zc_id_deta-maintenance" (
     id bigint NOT NULL,
     fk_item bigint,
@@ -15652,6 +15659,13 @@ INHERITS (isahl.zc_id_statement);
 
 
 
+CREATE TABLE isahl."zc_id_stat-lead" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_statement);
+
+
+
 CREATE TABLE isahl."zc_id_stat-maintenance" (
     id bigint NOT NULL,
     ck_category bigint,
@@ -18448,7 +18462,8 @@ CREATE TABLE isahl."zc_id_subj-group_rr_member" (
     ref_right bigint,
     comments text,
     lk_member bigint,
-    ck_post bigint
+    ck_post bigint,
+    lk_loyalty bigint
 )
 INHERITS (isahl."zc_id_subj-org_rr_member");
 
@@ -19227,6 +19242,13 @@ INHERITS (isahl.zc_id_task);
 
 
 CREATE TABLE isahl."zc_id_task-inbound" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_task);
+
+
+
+CREATE TABLE isahl."zc_id_task-lead_tracking" (
     id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_task);
@@ -21555,6 +21577,14 @@ ALTER TABLE ONLY isahl."zc_id_deta-lading" ALTER COLUMN created_at SET DEFAULT n
 
 
 ALTER TABLE ONLY isahl."zc_id_deta-lading" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_deta-lead" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_deta-lead" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -24222,6 +24252,14 @@ ALTER TABLE ONLY isahl."zc_id_stat-inspection" ALTER COLUMN id SET DEFAULT isahl
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stat-lead" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stat-lead" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stat-maintenance" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -25047,6 +25085,14 @@ ALTER TABLE ONLY isahl."zc_id_task-inbound" ALTER COLUMN created_at SET DEFAULT 
 
 
 ALTER TABLE ONLY isahl."zc_id_task-inbound" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_task-lead_tracking" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_task-lead_tracking" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -26245,6 +26291,11 @@ ALTER TABLE ONLY isahl."zc_id_deta-invoice"
 
 ALTER TABLE ONLY isahl."zc_id_deta-lading"
     ADD CONSTRAINT "zc_id_deta-lading_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_deta-lead"
+    ADD CONSTRAINT "zc_id_deta-lead_pkey" PRIMARY KEY (id);
 
 
 
@@ -29233,6 +29284,11 @@ ALTER TABLE ONLY isahl."zc_id_stat-inspection"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stat-lead"
+    ADD CONSTRAINT "zc_id_stat-lead_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stat-maintenance"
     ADD CONSTRAINT "zc_id_stat-maintenance_pkey" PRIMARY KEY (id);
 
@@ -30230,6 +30286,11 @@ ALTER TABLE ONLY isahl."zc_id_task-counting"
 
 ALTER TABLE ONLY isahl."zc_id_task-inbound"
     ADD CONSTRAINT "zc_id_task-inbound_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_task-lead_tracking"
+    ADD CONSTRAINT "zc_id_task-lead_tracking_pkey" PRIMARY KEY (id);
 
 
 
@@ -36925,6 +36986,7 @@ ALTER TABLE ONLY isahl."zc_id_deta-counting" ALTER COLUMN id SET DEFAULT isahl.g
 ALTER TABLE ONLY isahl."zc_id_deta-damage" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_deta-invoice" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_deta-lading" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_deta-lead" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_deta-maintenance" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_deta-opinion" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_deta-plan" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -36962,6 +37024,7 @@ ALTER TABLE ONLY isahl."zc_id_relation-employee_r_skill-tags" ALTER COLUMN id SE
 ALTER TABLE ONLY isahl."zc_id_relation-plan_smt_r_tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((214)::bigint);
 ALTER TABLE ONLY isahl."zc_id_relation-post_view_r_tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((215)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-appeal" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_stat-lead" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-maintenance" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-task" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -37275,6 +37338,7 @@ ALTER TABLE ONLY isahl."zc_id_task-design" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_task-develop" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-fix" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-inbound" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_task-lead_tracking" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-merchandise_on" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-outbound" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task-pack" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
