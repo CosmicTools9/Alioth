@@ -2430,6 +2430,28 @@ INHERITS (isahl.zc_id_bill);
 
 
 
+CREATE TABLE isahl."zc_id_bill-ticket_r_verify-status" (
+    created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_r_tags_created_at_not_null NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_r_tags_updated_at_not_null NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    ref_left bigint,
+    ref_right bigint,
+    comments text,
+    qk_period bigint,
+    status_date timestamp with time zone
+)
+INHERITS (isahl.zc_id_lifecycle_r_status);
+
+
+
 CREATE TABLE isahl.zc_id_bill_rr_process (
     id bigint NOT NULL
 )
@@ -18267,6 +18289,20 @@ INHERITS (isahl.zc_id_status);
 
 
 
+CREATE TABLE isahl."zc_id_stus-ticket" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_status);
+
+
+
+CREATE TABLE isahl."zc_id_stus-ticket_verify" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_status);
+
+
+
 CREATE TABLE isahl."zc_id_stus-tracking_log" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -24972,6 +25008,46 @@ ALTER TABLE ONLY isahl."zc_id_stus-threads" ALTER COLUMN enable SET DEFAULT true
 
 
 
+ALTER TABLE ONLY isahl."zc_id_stus-ticket" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-ticket" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-ticket" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-ticket" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-ticket" ALTER COLUMN enable SET DEFAULT true;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-ticket_verify" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-ticket_verify" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-ticket_verify" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-ticket_verify" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-ticket_verify" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stus-training" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -25724,6 +25800,11 @@ ALTER TABLE ONLY isahl."zc_id_bill-pricing"
 
 ALTER TABLE ONLY isahl."zc_id_bill-ticket"
     ADD CONSTRAINT "zc_id_bill-ticket_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_bill-ticket_r_verify-status"
+    ADD CONSTRAINT "zc_id_bill-ticket_r_verify-status_pkey" PRIMARY KEY (id);
 
 
 
@@ -30139,6 +30220,16 @@ ALTER TABLE ONLY isahl."zc_id_stus-template"
 
 ALTER TABLE ONLY isahl."zc_id_stus-threads"
     ADD CONSTRAINT "zc_id_stus-threads_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-ticket"
+    ADD CONSTRAINT "zc_id_stus-ticket_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stus-ticket_verify"
+    ADD CONSTRAINT "zc_id_stus-ticket_verify_pkey" PRIMARY KEY (id);
 
 
 
@@ -36127,6 +36218,10 @@ CREATE UNIQUE INDEX "uq_zc_id_bill-check_rr_trade_order_ref_left_ref_right_qk_pe
 
 
 
+CREATE UNIQUE INDEX "uq_zc_id_bill-ticket_r_verify-status_ref_left_ref_right_qk_peri" ON isahl."zc_id_bill-ticket_r_verify-status" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+
 CREATE UNIQUE INDEX uq_zc_id_bill_rr_process_ref_left_ref_right_qk_period ON isahl.zc_id_bill_rr_process USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
@@ -37022,6 +37117,8 @@ ALTER TABLE ONLY isahl."zc_id_stus-subject" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_stus-task" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((134)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-template" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((135)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-threads" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((136)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stus-ticket" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((560)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stus-ticket_verify" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((564)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-tracking_log" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((137)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-tracking_transport" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((138)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-trade" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((139)::bigint);
@@ -37250,6 +37347,7 @@ ALTER TABLE ONLY isahl."zc_id_bill-check_rr_trade_order" ALTER COLUMN id SET DEF
 ALTER TABLE ONLY isahl."zc_id_bill-customs_declaration" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bill-pricing" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bill-ticket" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_bill-ticket_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((567)::bigint);
 ALTER TABLE ONLY isahl."zc_id_bom-assemble" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bom-combine" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((260)::bigint);

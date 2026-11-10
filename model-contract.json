@@ -208,6 +208,8 @@
     "zc_id_stus-task": 5,
     "zc_id_stus-template": 0,
     "zc_id_stus-threads": 0,
+    "zc_id_stus-ticket": 0,
+    "zc_id_stus-ticket_verify": 0,
     "zc_id_stus-tracking_log": 0,
     "zc_id_stus-tracking_transport": 0,
     "zc_id_stus-trade": 17,
@@ -276,7 +278,7 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "published_at": "2026-11-10T06:56:32.907316+00:00",
+  "published_at": "2026-11-10T14:20:42.335736+00:00",
   "row_layer": {
     "zc_id_cate-inv-title": "carry",
     "zc_id_cate-ope-title": "carry",
@@ -514,6 +516,8 @@
     "zc_id_stus-task",
     "zc_id_stus-template",
     "zc_id_stus-threads",
+    "zc_id_stus-ticket",
+    "zc_id_stus-ticket_verify",
     "zc_id_stus-tracking_log",
     "zc_id_stus-tracking_transport",
     "zc_id_stus-trade",
@@ -582,5 +586,5 @@
     "zc_id_unit-weight",
     "zc_id_unit-working"
   ],
-  "version": "v10.0.80"
+  "version": "v10.0.81"
 }

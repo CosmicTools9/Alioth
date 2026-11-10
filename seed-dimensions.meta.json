@@ -207,6 +207,8 @@
   "zc_id_stus-task": 5,
   "zc_id_stus-template": 0,
   "zc_id_stus-threads": 0,
+  "zc_id_stus-ticket": 0,
+  "zc_id_stus-ticket_verify": 0,
   "zc_id_stus-tracking_log": 0,
   "zc_id_stus-tracking_transport": 0,
   "zc_id_stus-trade": 17,

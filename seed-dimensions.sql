@@ -1,5 +1,5 @@
 
-\restrict Iqc4Rn6FSs5uuVgRbflxAuO39NIkbcfVwVCEXid4Nphx4PsgXX31dLAMc2QKm15
+\restrict uHul5T9HtLFE8pBdJBKDjQgSiyGNTxQPKp6LSmOOrKVbAo0ve8oXi4CfpdJMUb7
 
 
 SET statement_timeout = 0;
@@ -2677,6 +2677,12 @@ INSERT INTO isahl."zc_id_stus-task" (created_at, updated_at, id, created_by_id, 
 
 
 
+
+
+
+
+
+
 INSERT INTO isahl."zc_id_stus-trade" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-09-07 23:24:57.633214+08', '2026-09-07 23:24:57.633214+08', 39125021762783508, 343596428788625, 1, '运输中', NULL, NULL, NULL, NULL, 'ST-IN_TRANSIT', '20260907_152457633_e895a629', NULL, NULL, NULL, NULL, true, 'doing') ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_stus-trade" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-09-07 23:24:57.633214+08', '2026-09-07 23:24:57.633214+08', 39125021762783509, 343596428788625, 1, '新委托', NULL, NULL, NULL, NULL, 'ST-NEW', '20260907_152457633_d7052904', NULL, NULL, NULL, NULL, true, 'start') ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_stus-trade" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable, flag) VALUES ('2026-09-07 23:24:57.633214+08', '2026-09-07 23:24:57.633214+08', 39125021762783510, 343596428788625, 1, '部分收款', NULL, NULL, NULL, NULL, 'ST-PARTIAL_SETTLED', '20260907_152457633_2d59cb91', NULL, NULL, NULL, NULL, true, 'doing') ON CONFLICT DO NOTHING;
@@ -3436,5 +3442,5 @@ INSERT INTO isahl."zc_id_unit-working" (created_at, updated_at, id, created_by_i
 
 
 
-\unrestrict Iqc4Rn6FSs5uuVgRbflxAuO39NIkbcfVwVCEXid4Nphx4PsgXX31dLAMc2QKm15
+\unrestrict uHul5T9HtLFE8pBdJBKDjQgSiyGNTxQPKp6LSmOOrKVbAo0ve8oXi4CfpdJMUb7
 
