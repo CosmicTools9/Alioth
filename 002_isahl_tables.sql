@@ -7544,6 +7544,13 @@ INHERITS (isahl.zc_id_operation);
 
 
 
+CREATE TABLE isahl."zc_id_oper-form_input" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
 CREATE TABLE isahl."zc_id_oper-gate" (
 )
 INHERITS (isahl.zc_id_operation);
@@ -13949,6 +13956,13 @@ INHERITS (isahl.zc_id_protocol);
 
 
 CREATE TABLE isahl."zc_id_prot-oss_config" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_protocol);
+
+
+
+CREATE TABLE isahl."zc_id_prot-page_config" (
     id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_protocol);
@@ -22540,6 +22554,14 @@ ALTER TABLE ONLY isahl."zc_id_oper-delivery_prj" ALTER COLUMN updated_at SET DEF
 
 
 
+ALTER TABLE ONLY isahl."zc_id_oper-form_input" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-form_input" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-gate" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -24009,6 +24031,14 @@ ALTER TABLE ONLY isahl."zc_id_prot-oss_config" ALTER COLUMN created_at SET DEFAU
 
 
 ALTER TABLE ONLY isahl."zc_id_prot-oss_config" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prot-page_config" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prot-page_config" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -27383,6 +27413,11 @@ ALTER TABLE ONLY isahl."zc_id_oper-fo_booking"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_oper-form_input"
+    ADD CONSTRAINT "zc_id_oper-form_input_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-gate"
     ADD CONSTRAINT "zc_id_oper-gate_pkey" PRIMARY KEY (id);
 
@@ -29070,6 +29105,11 @@ ALTER TABLE ONLY isahl."zc_id_prot-openapi_config"
 
 ALTER TABLE ONLY isahl."zc_id_prot-oss_config"
     ADD CONSTRAINT "zc_id_prot-oss_config_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prot-page_config"
+    ADD CONSTRAINT "zc_id_prot-page_config_pkey" PRIMARY KEY (id);
 
 
 
@@ -37262,6 +37302,7 @@ ALTER TABLE ONLY isahl."zc_id_prot-form_config" ALTER COLUMN id SET DEFAULT isah
 ALTER TABLE ONLY isahl."zc_id_prot-im_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prot-openapi_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prot-oss_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prot-page_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prot-report_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prot-webhook_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_relation-bom_item_r_tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((210)::bigint);
@@ -37409,6 +37450,7 @@ ALTER TABLE ONLY isahl."zc_id_oper-decide_prj" ALTER COLUMN id SET DEFAULT isahl
 ALTER TABLE ONLY isahl."zc_id_oper-declaration_export" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-delivery_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-fo_booking" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-form_input" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-goods_pick" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-inbound" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-issue_invoice" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
