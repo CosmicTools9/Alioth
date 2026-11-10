@@ -7122,6 +7122,15 @@ INHERITS (isahl.zc_id_message);
 
 
 
+CREATE TABLE isahl."zc_id_msgs-open_form" (
+    id bigint NOT NULL,
+    fk_schema bigint,
+    payload jsonb
+)
+INHERITS (isahl.zc_id_message);
+
+
+
 CREATE TABLE isahl."zc_id_msgs-review" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -9510,6 +9519,13 @@ INHERITS (isahl.zc_id_version, isahl."zc_id_proc-context");
 
 
 CREATE TABLE isahl."zc_id_prjt-inte_ctrl-case" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_project);
+
+
+
+CREATE TABLE isahl."zc_id_prjt-marketing" (
     id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_project);
@@ -13876,6 +13892,13 @@ INHERITS (isahl.zc_id_protocol);
 
 
 
+CREATE TABLE isahl."zc_id_prot-form_config" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_protocol);
+
+
+
 CREATE TABLE isahl."zc_id_prot-im_config" (
     id bigint NOT NULL
 )
@@ -13912,6 +13935,13 @@ INHERITS (isahl.zc_id_protocol);
 
 CREATE TABLE isahl."zc_id_prot-profile_config" (
     fk_employee bigint
+)
+INHERITS (isahl.zc_id_protocol);
+
+
+
+CREATE TABLE isahl."zc_id_prot-report_config" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_protocol);
 
@@ -15513,6 +15543,13 @@ CREATE TABLE isahl."zc_id_stan-operation" (
     ck_branch bigint,
     qk_sla bigint,
     qk_effort bigint
+)
+INHERITS (isahl.zc_id_standard);
+
+
+
+CREATE TABLE isahl."zc_id_stan-performance" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_standard);
 
@@ -19488,6 +19525,13 @@ INHERITS (isahl."zc_id_bill-ticket");
 
 
 
+CREATE TABLE isahl."zc_id_tick-discount" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_bill-ticket");
+
+
+
 CREATE TABLE isahl."zc_id_tick-lading" (
     id bigint NOT NULL
 )
@@ -22396,6 +22440,14 @@ ALTER TABLE ONLY isahl.zc_id_message_rr_recipients ALTER COLUMN id SET DEFAULT i
 
 
 
+ALTER TABLE ONLY isahl."zc_id_msgs-open_form" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_msgs-open_form" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-action_prj" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22873,6 +22925,14 @@ ALTER TABLE ONLY isahl."zc_id_prjt-inte_ctrl-case" ALTER COLUMN created_at SET D
 
 
 ALTER TABLE ONLY isahl."zc_id_prjt-inte_ctrl-case" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prjt-marketing" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prjt-marketing" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -23860,6 +23920,14 @@ ALTER TABLE ONLY isahl."zc_id_prot-env_config" ALTER COLUMN id SET DEFAULT isahl
 
 
 
+ALTER TABLE ONLY isahl."zc_id_prot-form_config" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prot-form_config" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_prot-im_config" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -23917,6 +23985,14 @@ ALTER TABLE ONLY isahl."zc_id_prot-profile_config" ALTER COLUMN updated_at SET D
 
 
 ALTER TABLE ONLY isahl."zc_id_prot-profile_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prot-report_config" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prot-report_config" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -24213,6 +24289,14 @@ ALTER TABLE ONLY isahl."zc_id_stan-fin-ifrs-article" ALTER COLUMN updated_at SET
 
 
 ALTER TABLE ONLY isahl."zc_id_stan-fin-ifrs-article" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stan-performance" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stan-performance" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -25313,6 +25397,14 @@ ALTER TABLE ONLY isahl."zc_id_tick-admission" ALTER COLUMN created_at SET DEFAUL
 
 
 ALTER TABLE ONLY isahl."zc_id_tick-admission" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_tick-discount" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_tick-discount" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -27115,6 +27207,11 @@ ALTER TABLE ONLY isahl."zc_id_msgs-im"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_msgs-open_form"
+    ADD CONSTRAINT "zc_id_msgs-open_form_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_msgs-review"
     ADD CONSTRAINT "zc_id_msgs-review_pkey" PRIMARY KEY (id);
 
@@ -27737,6 +27834,11 @@ ALTER TABLE ONLY isahl.zc_id_plan_rr_task
 
 ALTER TABLE ONLY isahl."zc_id_prjt-inte_ctrl-case"
     ADD CONSTRAINT "zc_id_prjt-inte_ctrl-case_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prjt-marketing"
+    ADD CONSTRAINT "zc_id_prjt-marketing_pkey" PRIMARY KEY (id);
 
 
 
@@ -28860,6 +28962,11 @@ ALTER TABLE ONLY isahl."zc_id_prot-env_config"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_prot-form_config"
+    ADD CONSTRAINT "zc_id_prot-form_config_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_prot-im_config"
     ADD CONSTRAINT "zc_id_prot-im_config_pkey" PRIMARY KEY (id);
 
@@ -28887,6 +28994,11 @@ ALTER TABLE ONLY isahl."zc_id_prot-oss_config"
 
 ALTER TABLE ONLY isahl."zc_id_prot-profile_config"
     ADD CONSTRAINT "zc_id_prot-profile_config_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prot-report_config"
+    ADD CONSTRAINT "zc_id_prot-report_config_pkey" PRIMARY KEY (id);
 
 
 
@@ -29252,6 +29364,11 @@ ALTER TABLE ONLY isahl."zc_id_stan-clause"
 
 ALTER TABLE ONLY isahl."zc_id_stan-operation"
     ADD CONSTRAINT "zc_id_stan-operation_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stan-performance"
+    ADD CONSTRAINT "zc_id_stan-performance_pkey" PRIMARY KEY (id);
 
 
 
@@ -30442,6 +30559,11 @@ ALTER TABLE ONLY isahl.zc_id_threads
 
 ALTER TABLE ONLY isahl."zc_id_tick-admission"
     ADD CONSTRAINT "zc_id_tick-admission_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_tick-discount"
+    ADD CONSTRAINT "zc_id_tick-discount_pkey" PRIMARY KEY (id);
 
 
 
@@ -37033,14 +37155,17 @@ ALTER TABLE ONLY isahl."zc_id_msgs-comments" ALTER COLUMN id SET DEFAULT isahl.g
 ALTER TABLE ONLY isahl."zc_id_msgs-email" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-feedback" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-im" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_msgs-open_form" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-review" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-system" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-telephone" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-zchat" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_plan-purchase_items_r_prod" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((209)::bigint);
+ALTER TABLE ONLY isahl."zc_id_prot-form_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prot-im_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prot-openapi_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prot-oss_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prot-report_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prot-webhook_config" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_relation-bom_item_r_tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((210)::bigint);
 ALTER TABLE ONLY isahl."zc_id_relation-cooperation_r_evaluation" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((211)::bigint);
@@ -37245,6 +37370,7 @@ ALTER TABLE ONLY isahl."zc_id_plan-purchase" ALTER COLUMN id SET DEFAULT isahl.g
 ALTER TABLE ONLY isahl."zc_id_plan-purchase_rr_material" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((321)::bigint);
 ALTER TABLE ONLY isahl."zc_id_plan-recruitment" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prjt-inte_ctrl-case" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prjt-marketing" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prjt-proc_ctrl" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_proc-approve" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_proc-cicd" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -37282,6 +37408,7 @@ ALTER TABLE ONLY isahl."zc_id_project_r_review-status" ALTER COLUMN id SET DEFAU
 ALTER TABLE ONLY isahl."zc_id_stan-air" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stan-clause" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stan-operation" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_stan-performance" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stan-prod_quality" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-bok-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-cnt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -37678,6 +37805,7 @@ ALTER TABLE ONLY isahl."zc_id_subj-org_rr_subordinate" ALTER COLUMN id SET DEFAU
 ALTER TABLE ONLY isahl."zc_id_subj-post_rr_subordinate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((533)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-supranational" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_tick-admission" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_tick-discount" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_tick-lading" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bom_rr_item" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((383)::bigint);
 ALTER TABLE ONLY isahl."zc_id_contract_rr_deal" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((386)::bigint);
