@@ -4701,7 +4701,8 @@ CREATE TABLE isahl."zc_id_deta-task" (
     fk_actor bigint,
     qk_end_at bigint,
     qk_qty bigint,
-    "qk_write-off" bigint
+    "qk_write-off" bigint,
+    fk_place bigint
 )
 INHERITS (isahl.zc_id_detail);
 
@@ -4770,7 +4771,8 @@ CREATE TABLE isahl."zc_id_deta-tsk" (
     id bigint NOT NULL,
     "qk_write-off" bigint,
     fk_matter bigint,
-    qk_qty bigint
+    qk_qty bigint,
+    fk_place bigint
 )
 INHERITS (isahl.zc_id_detail);
 
@@ -8574,7 +8576,8 @@ INHERITS (isahl."zc_id_orde-traffic");
 
 
 CREATE TABLE isahl."zc_id_orde-payment" (
-    id bigint NOT NULL
+    id bigint NOT NULL,
+    qk_amount bigint
 )
 INHERITS (isahl."zc_id_stat-trade_order");
 
