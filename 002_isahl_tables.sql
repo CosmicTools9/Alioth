@@ -14862,6 +14862,13 @@ INHERITS (isahl.zc_id_scale);
 
 
 
+CREATE TABLE isahl."zc_id_scal-cpe" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_scale);
+
+
+
 CREATE TABLE isahl."zc_id_scal-data" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -24173,6 +24180,14 @@ ALTER TABLE ONLY isahl."zc_id_relation-employee_r_skill-tags" ALTER COLUMN updat
 
 
 
+ALTER TABLE ONLY isahl."zc_id_scal-cpe" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_scal-cpe" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_stan-air" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -29333,6 +29348,11 @@ ALTER TABLE ONLY isahl."zc_id_scal-common"
 
 ALTER TABLE ONLY isahl."zc_id_scal-container"
     ADD CONSTRAINT "zc_id_scal-container_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_scal-cpe"
+    ADD CONSTRAINT "zc_id_scal-cpe_pkey" PRIMARY KEY (id);
 
 
 
@@ -38241,6 +38261,7 @@ ALTER TABLE ONLY isahl."zc_id_scal-angle" ALTER COLUMN id SET DEFAULT isahl.gen_
 ALTER TABLE ONLY isahl."zc_id_scal-area" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((504)::bigint);
 ALTER TABLE ONLY isahl."zc_id_scal-common" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((505)::bigint);
 ALTER TABLE ONLY isahl."zc_id_scal-container" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((506)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-cpe" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((556)::bigint);
 ALTER TABLE ONLY isahl."zc_id_scal-data" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((507)::bigint);
 ALTER TABLE ONLY isahl."zc_id_scal-date" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((508)::bigint);
 ALTER TABLE ONLY isahl."zc_id_scal-distance" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((509)::bigint);
