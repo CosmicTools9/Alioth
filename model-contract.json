@@ -53,7 +53,7 @@
     "zc_id_cate-tsp": 0,
     "zc_id_cate-tsp-title": 0,
     "zc_id_cate-tsp-title-cm": 0,
-    "zc_id_cate-variant": 0,
+    "zc_id_cate-variant": 4,
     "zc_id_cate-ver_branch": 5,
     "zc_id_cate-warehouse": 9,
     "zc_id_cate-wh-title": 0,
@@ -106,6 +106,7 @@
     "zc_id_rate": 0,
     "zc_id_rate-angle": 6,
     "zc_id_rate-area": 3,
+    "zc_id_rate-attrition": 0,
     "zc_id_rate-container": 0,
     "zc_id_rate-current": 2,
     "zc_id_rate-custom": 0,
@@ -278,7 +279,7 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "published_at": "2026-11-13T18:35:32.985165+00:00",
+  "published_at": "2026-11-14T16:38:05.903708+00:00",
   "row_layer": {
     "zc_id_cate-inv-title": "carry",
     "zc_id_cate-ope-title": "carry",
@@ -414,6 +415,7 @@
     "zc_id_rate",
     "zc_id_rate-angle",
     "zc_id_rate-area",
+    "zc_id_rate-attrition",
     "zc_id_rate-container",
     "zc_id_rate-current",
     "zc_id_rate-custom",
@@ -586,5 +588,5 @@
     "zc_id_unit-weight",
     "zc_id_unit-working"
   ],
-  "version": "v10.0.85"
+  "version": "v10.0.86"
 }

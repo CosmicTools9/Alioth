@@ -7,27 +7,27 @@
     },
     {
       "name": "002_isahl_tables.sql",
-      "size_bytes": 1039185
+      "size_bytes": 1043607
     },
     {
       "name": "model-contract.json",
-      "size_bytes": 16611
+      "size_bytes": 16670
     },
     {
       "name": "seed-dimensions.meta.json",
-      "size_bytes": 7789
+      "size_bytes": 7818
     },
     {
       "name": "seed-dimensions.sql",
-      "size_bytes": 1387852
+      "size_bytes": 1389750
     },
     {
       "name": "seed-model-contract.sql",
       "size_bytes": 3106
     }
   ],
-  "pg_dump_version": "pg_dump (PostgreSQL) 18.6 (Homebrew)",
-  "published_at": "2026-11-13T18:35:32.985165+00:00",
+  "pg_dump_version": "pg_dump (PostgreSQL) 18.7 (Homebrew)",
+  "published_at": "2026-11-14T16:38:05.903708+00:00",
   "tables": {
     "zc_id_cate-acc-title": 13,
     "zc_id_cate-agent": 0,
@@ -82,7 +82,7 @@
     "zc_id_cate-tsp": 0,
     "zc_id_cate-tsp-title": 0,
     "zc_id_cate-tsp-title-cm": 0,
-    "zc_id_cate-variant": 0,
+    "zc_id_cate-variant": 4,
     "zc_id_cate-ver_branch": 5,
     "zc_id_cate-warehouse": 9,
     "zc_id_cate-wh-title": 0,
@@ -135,6 +135,7 @@
     "zc_id_rate": 0,
     "zc_id_rate-angle": 6,
     "zc_id_rate-area": 3,
+    "zc_id_rate-attrition": 0,
     "zc_id_rate-container": 0,
     "zc_id_rate-current": 2,
     "zc_id_rate-custom": 0,
@@ -307,5 +308,5 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "version": "v10.0.85"
+  "version": "v10.0.86"
 }

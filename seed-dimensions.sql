@@ -1,5 +1,5 @@
 
-\restrict MWZwuQKCGclbH6KM06Fi0fI3gCOVMlG5f786gAR5anbiEr9J5aMql96Cp2zhDer
+\restrict DYtsnFTjOc0DoWmzgcy9hr2c3ncjoApIPVGWmnMQ8uiPxbslF9CzdpTOlvaMsZL
 
 
 SET statement_timeout = 0;
@@ -483,6 +483,10 @@ INSERT INTO isahl."zc_id_cate-training" (created_at, updated_at, id, created_by_
 
 
 
+INSERT INTO isahl."zc_id_cate-variant" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable) VALUES ('2026-11-14 20:18:16.171178+08', '2026-11-14 20:18:16.171178+08', 17169973579350878, 1, 1, '500ml 磨砂黑', NULL, NULL, NULL, NULL, 'V-500M', NULL, '容量 500ml · 磨砂喷涂 · 单件装', NULL, NULL, NULL, true) ON CONFLICT DO NOTHING;
+INSERT INTO isahl."zc_id_cate-variant" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable) VALUES ('2026-11-14 20:18:16.171178+08', '2026-11-14 20:18:16.171178+08', 17169973579350879, 1, 1, '黑色三折', NULL, NULL, NULL, NULL, 'V-3F', NULL, '三折伞骨 · 黑胶防晒', NULL, NULL, NULL, true) ON CONFLICT DO NOTHING;
+INSERT INTO isahl."zc_id_cate-variant" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable) VALUES ('2026-11-14 20:18:16.171178+08', '2026-11-14 20:18:16.171178+08', 17169973579350880, 1, 1, '礼盒装', NULL, NULL, NULL, NULL, 'V-GIFT', NULL, '纸盒 + 手提袋', NULL, NULL, NULL, true) ON CONFLICT DO NOTHING;
+INSERT INTO isahl."zc_id_cate-variant" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, enable) VALUES ('2026-11-14 20:18:16.171178+08', '2026-11-14 20:18:16.171178+08', 17169973579350881, 1, 1, '家庭装', NULL, NULL, NULL, NULL, 'V-FAMILY', NULL, '两件组合装', NULL, NULL, NULL, true) ON CONFLICT DO NOTHING;
 
 
 
@@ -1802,6 +1806,9 @@ INSERT INTO isahl."zc_id_rate-angle" (created_at, updated_at, id, created_by_id,
 INSERT INTO isahl."zc_id_rate-area" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, ref_count, multiply, division, ck_left, ck_right, precision_, intrinsic, uncertainty) VALUES ('2026-08-29 22:53:09.773239+08', '2026-08-29 22:53:09.773239+08', 132856189007429714, 343596428788625, NULL, '平方千米 → 平方米', NULL, NULL, NULL, NULL, 'km2/m2', '20260829_145309773_aa37545b', NULL, NULL, NULL, NULL, NULL, 1000000.0000000000, NULL, 57420895248974168, 57420895248974170, NULL, true, NULL) ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_rate-area" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, ref_count, multiply, division, ck_left, ck_right, precision_, intrinsic, uncertainty) VALUES ('2026-08-29 22:53:09.773239+08', '2026-08-29 22:53:09.773239+08', 132856189007429715, 343596428788625, NULL, '公顷 → 平方米', NULL, NULL, NULL, NULL, 'ha/m2', '20260829_145309773_50950cf9', NULL, NULL, NULL, NULL, NULL, 10000.0000000000, NULL, 57420895248974169, 57420895248974170, NULL, true, NULL) ON CONFLICT DO NOTHING;
 INSERT INTO isahl."zc_id_rate-area" (created_at, updated_at, id, created_by_id, updated_by_id, notice, t_color_, deleted_at, deleted_by_id, operated_by_id, code, o_number, comments, ak_benefit_user, ak_permit_user, ak_access_user, ref_count, multiply, division, ck_left, ck_right, precision_, intrinsic, uncertainty) VALUES ('2026-08-29 22:53:09.773239+08', '2026-08-29 22:53:09.773239+08', 132856189007429716, 343596428788625, NULL, '市亩 → 平方米', NULL, NULL, NULL, NULL, 'mu/m2', '20260829_145309773_a25589c8', NULL, NULL, NULL, NULL, NULL, 666.6666666667, NULL, 57420895248974171, 57420895248974170, NULL, true, NULL) ON CONFLICT DO NOTHING;
+
+
+
 
 
 
@@ -3398,5 +3405,5 @@ INSERT INTO isahl."zc_id_unit-working" (created_at, updated_at, id, created_by_i
 
 
 
-\unrestrict MWZwuQKCGclbH6KM06Fi0fI3gCOVMlG5f786gAR5anbiEr9J5aMql96Cp2zhDer
+\unrestrict DYtsnFTjOc0DoWmzgcy9hr2c3ncjoApIPVGWmnMQ8uiPxbslF9CzdpTOlvaMsZL
 

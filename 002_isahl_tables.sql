@@ -5385,6 +5385,13 @@ INHERITS (isahl.zc_id_event);
 
 
 
+CREATE TABLE isahl."zc_id_even-tar_damage" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_event);
+
+
+
 CREATE TABLE isahl."zc_id_even-tracking" (
     ck_category bigint
 )
@@ -7507,6 +7514,13 @@ INHERITS (isahl.zc_id_operation);
 
 
 CREATE TABLE isahl."zc_id_oper-delivery_prj" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
+CREATE TABLE isahl."zc_id_oper-effect_evaluate" (
     id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_operation);
@@ -14070,6 +14084,15 @@ INHERITS (isahl.zc_id_rate);
 
 
 
+CREATE TABLE isahl."zc_id_rate-attrition" (
+    id bigint NOT NULL,
+    start_at timestamp with time zone,
+    end_at timestamp with time zone
+)
+INHERITS (isahl.zc_id_rate);
+
+
+
 CREATE TABLE isahl."zc_id_rate-container" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14991,6 +15014,46 @@ CREATE TABLE isahl."zc_id_scal-momentum" (
     sk_unit bigint,
     precision_ bigint,
     retain_signal boolean
+)
+INHERITS (isahl.zc_id_scale);
+
+
+
+CREATE TABLE isahl."zc_id_scal-oper_effect-damage" (
+    id bigint NOT NULL,
+    uncertainty numeric,
+    end_at timestamp with time zone,
+    start_at timestamp with time zone
+)
+INHERITS (isahl.zc_id_scale);
+
+
+
+CREATE TABLE isahl."zc_id_scal-oper_effect-exposure" (
+    id bigint NOT NULL,
+    uncertainty numeric DEFAULT 1,
+    start_at timestamp with time zone,
+    end_at timestamp with time zone
+)
+INHERITS (isahl.zc_id_scale);
+
+
+
+CREATE TABLE isahl."zc_id_scal-oper_effect-readiness" (
+    id bigint NOT NULL,
+    uncertainty numeric,
+    start_at timestamp with time zone,
+    end_at timestamp with time zone
+)
+INHERITS (isahl.zc_id_scale);
+
+
+
+CREATE TABLE isahl."zc_id_scal-oper_effect-suppress" (
+    id bigint NOT NULL,
+    uncertainty numeric,
+    end_at timestamp with time zone,
+    start_at timestamp with time zone
 )
 INHERITS (isahl.zc_id_scale);
 
@@ -21888,6 +21951,14 @@ ALTER TABLE ONLY isahl."zc_id_even-report" ALTER COLUMN id SET DEFAULT isahl.gen
 
 
 
+ALTER TABLE ONLY isahl."zc_id_even-tar_damage" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_even-tar_damage" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_even-tracking" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22561,6 +22632,14 @@ ALTER TABLE ONLY isahl."zc_id_oper-delivery_prj" ALTER COLUMN created_at SET DEF
 
 
 ALTER TABLE ONLY isahl."zc_id_oper-delivery_prj" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-effect_evaluate" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-effect_evaluate" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -24092,6 +24171,18 @@ ALTER TABLE ONLY isahl."zc_id_prot-webhook_config" ALTER COLUMN updated_at SET D
 
 
 
+ALTER TABLE ONLY isahl."zc_id_rate-attrition" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_rate-attrition" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_rate-attrition" ALTER COLUMN intrinsic SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_rate-custom" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -24100,7 +24191,7 @@ ALTER TABLE ONLY isahl."zc_id_rate-custom" ALTER COLUMN updated_at SET DEFAULT n
 
 
 
-ALTER TABLE ONLY isahl."zc_id_rate-custom" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((475)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-custom" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((476)::bigint);
 
 
 
@@ -24116,7 +24207,7 @@ ALTER TABLE ONLY isahl."zc_id_rate-energy" ALTER COLUMN updated_at SET DEFAULT n
 
 
 
-ALTER TABLE ONLY isahl."zc_id_rate-energy" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((480)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-energy" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((481)::bigint);
 
 
 
@@ -24144,7 +24235,7 @@ ALTER TABLE ONLY isahl."zc_id_rati-progress" ALTER COLUMN updated_at SET DEFAULT
 
 
 
-ALTER TABLE ONLY isahl."zc_id_rati-progress" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((499)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rati-progress" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((500)::bigint);
 
 
 
@@ -24185,6 +24276,38 @@ ALTER TABLE ONLY isahl."zc_id_scal-cpe" ALTER COLUMN created_at SET DEFAULT now(
 
 
 ALTER TABLE ONLY isahl."zc_id_scal-cpe" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_scal-oper_effect-damage" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_scal-oper_effect-damage" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_scal-oper_effect-exposure" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_scal-oper_effect-exposure" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_scal-oper_effect-readiness" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_scal-oper_effect-readiness" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_scal-oper_effect-suppress" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_scal-oper_effect-suppress" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -26771,6 +26894,11 @@ ALTER TABLE ONLY isahl."zc_id_even-report"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_even-tar_damage"
+    ADD CONSTRAINT "zc_id_even-tar_damage_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl.zc_id_event
     ADD CONSTRAINT zc_id_event_pkey PRIMARY KEY (id);
 
@@ -27423,6 +27551,11 @@ ALTER TABLE ONLY isahl."zc_id_oper-declaration_export"
 
 ALTER TABLE ONLY isahl."zc_id_oper-delivery_prj"
     ADD CONSTRAINT "zc_id_oper-delivery_prj_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-effect_evaluate"
+    ADD CONSTRAINT "zc_id_oper-effect_evaluate_pkey" PRIMARY KEY (id);
 
 
 
@@ -29161,6 +29294,11 @@ ALTER TABLE ONLY isahl."zc_id_rate-area"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_rate-attrition"
+    ADD CONSTRAINT "zc_id_rate-attrition_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_rate-container"
     ADD CONSTRAINT "zc_id_rate-container_pkey" PRIMARY KEY (id);
 
@@ -29388,6 +29526,26 @@ ALTER TABLE ONLY isahl."zc_id_scal-frequency"
 
 ALTER TABLE ONLY isahl."zc_id_scal-momentum"
     ADD CONSTRAINT "zc_id_scal-momentum_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_scal-oper_effect-damage"
+    ADD CONSTRAINT "zc_id_scal-oper_effect-damage_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_scal-oper_effect-exposure"
+    ADD CONSTRAINT "zc_id_scal-oper_effect-exposure_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_scal-oper_effect-readiness"
+    ADD CONSTRAINT "zc_id_scal-oper_effect-readiness_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_scal-oper_effect-suppress"
+    ADD CONSTRAINT "zc_id_scal-oper_effect-suppress_pkey" PRIMARY KEY (id);
 
 
 
@@ -37778,6 +37936,7 @@ ALTER TABLE ONLY isahl."zc_id_even-damage" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_even-exception" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_even-issue" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_even-modify" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_even-tar_damage" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_form-calculation" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((293)::bigint);
 ALTER TABLE ONLY isahl."zc_id_form-condition" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((294)::bigint);
 ALTER TABLE ONLY isahl."zc_id_form-mapping" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((295)::bigint);
@@ -37804,6 +37963,7 @@ ALTER TABLE ONLY isahl."zc_id_oper-confirm_bill" ALTER COLUMN id SET DEFAULT isa
 ALTER TABLE ONLY isahl."zc_id_oper-decide_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-declaration_export" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-delivery_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-effect_evaluate" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-fo_booking" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-form_input" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-goods_pick" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38230,75 +38390,80 @@ ALTER TABLE ONLY isahl."zc_id_prod-transfer_p2p-request" ALTER COLUMN id SET DEF
 ALTER TABLE ONLY isahl."zc_id_prod-transfer_p2p-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_rate-angle" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((471)::bigint);
 ALTER TABLE ONLY isahl."zc_id_rate-area" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((472)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-container" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((473)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-current" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((474)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-data" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((476)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-density" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((477)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-distance" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((478)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-duration" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((479)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-exchange" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((481)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-frequency" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((482)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-illuminance" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((483)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-intensity" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((484)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-luminance" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((485)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-magnetic_field_strength" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((486)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-magnetic_flux" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((487)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-power" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((488)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-pressure" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((489)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-radiation" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((490)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-speed" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((491)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-stress" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((492)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-temperature" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((493)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-voltage" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((494)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-volume" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((495)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rate-weight" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((496)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rati-discount" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((497)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rati-formula" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((498)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rati-tax" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((500)::bigint);
-ALTER TABLE ONLY isahl."zc_id_rati-weight" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((501)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-amount" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((502)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-angle" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((503)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-area" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((504)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-common" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((505)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-container" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((506)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-cpe" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((556)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-data" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((507)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-date" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((508)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-distance" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((509)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-duration" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((510)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-energy" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((511)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-frequency" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((512)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-momentum" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((513)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-price" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((514)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-speed" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((515)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-temperature" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((516)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-volume" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((517)::bigint);
-ALTER TABLE ONLY isahl."zc_id_scal-weight" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((518)::bigint);
-ALTER TABLE ONLY isahl."zc_id_segm-amount" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((519)::bigint);
-ALTER TABLE ONLY isahl."zc_id_segm-area" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((520)::bigint);
-ALTER TABLE ONLY isahl."zc_id_segm-common" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((521)::bigint);
-ALTER TABLE ONLY isahl."zc_id_segm-container" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((522)::bigint);
-ALTER TABLE ONLY isahl."zc_id_segm-date" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((523)::bigint);
-ALTER TABLE ONLY isahl."zc_id_segm-distance" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((524)::bigint);
-ALTER TABLE ONLY isahl."zc_id_segm-duration" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((525)::bigint);
-ALTER TABLE ONLY isahl."zc_id_segm-frequency" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((526)::bigint);
-ALTER TABLE ONLY isahl."zc_id_segm-power" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((527)::bigint);
-ALTER TABLE ONLY isahl."zc_id_segm-speed" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((528)::bigint);
-ALTER TABLE ONLY isahl."zc_id_segm-temperature" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((529)::bigint);
-ALTER TABLE ONLY isahl."zc_id_segm-volume" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((530)::bigint);
-ALTER TABLE ONLY isahl."zc_id_segm-weight" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((531)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-attrition" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((473)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-container" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((474)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-current" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((475)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-data" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((477)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-density" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((478)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-distance" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((479)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-duration" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((480)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-exchange" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((482)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-frequency" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((483)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-illuminance" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((484)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-intensity" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((485)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-luminance" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((486)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-magnetic_field_strength" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((487)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-magnetic_flux" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((488)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-power" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((489)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-pressure" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((490)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-radiation" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((491)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-speed" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((492)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-stress" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((493)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-temperature" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((494)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-voltage" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((495)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-volume" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((496)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rate-weight" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((497)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rati-discount" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((498)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rati-formula" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((499)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rati-tax" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((501)::bigint);
+ALTER TABLE ONLY isahl."zc_id_rati-weight" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((502)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-amount" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((503)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-angle" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((504)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-area" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((505)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-common" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((506)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-container" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((507)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-cpe" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((508)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-data" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((509)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-date" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((510)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-distance" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((511)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-duration" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((512)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-energy" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((513)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-frequency" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((514)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-momentum" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((515)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-oper_effect-damage" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((516)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-oper_effect-exposure" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((517)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-oper_effect-readiness" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((518)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-oper_effect-suppress" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((519)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-price" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((520)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-speed" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((521)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-temperature" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((522)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-volume" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((523)::bigint);
+ALTER TABLE ONLY isahl."zc_id_scal-weight" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((524)::bigint);
+ALTER TABLE ONLY isahl."zc_id_segm-amount" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((525)::bigint);
+ALTER TABLE ONLY isahl."zc_id_segm-area" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((526)::bigint);
+ALTER TABLE ONLY isahl."zc_id_segm-common" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((527)::bigint);
+ALTER TABLE ONLY isahl."zc_id_segm-container" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((528)::bigint);
+ALTER TABLE ONLY isahl."zc_id_segm-date" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((529)::bigint);
+ALTER TABLE ONLY isahl."zc_id_segm-distance" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((530)::bigint);
+ALTER TABLE ONLY isahl."zc_id_segm-duration" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((531)::bigint);
+ALTER TABLE ONLY isahl."zc_id_segm-frequency" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((532)::bigint);
+ALTER TABLE ONLY isahl."zc_id_segm-power" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((533)::bigint);
+ALTER TABLE ONLY isahl."zc_id_segm-speed" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((534)::bigint);
+ALTER TABLE ONLY isahl."zc_id_segm-temperature" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((535)::bigint);
+ALTER TABLE ONLY isahl."zc_id_segm-volume" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((536)::bigint);
+ALTER TABLE ONLY isahl."zc_id_segm-weight" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((537)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-smt-bank" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-cash" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-channel" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_stat-trade_order_rr_bill-pricing" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((532)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stat-trade_order_rr_bill-pricing" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((538)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-m_volume" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-m_weight" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_subj-country" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_subj-group_rr_member" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((534)::bigint);
-ALTER TABLE ONLY isahl."zc_id_subj-ministry_rr_subordinate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((535)::bigint);
+ALTER TABLE ONLY isahl."zc_id_subj-group_rr_member" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((540)::bigint);
+ALTER TABLE ONLY isahl."zc_id_subj-ministry_rr_subordinate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((541)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-org" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_subj-org_rr_subordinate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((536)::bigint);
-ALTER TABLE ONLY isahl."zc_id_subj-post_rr_subordinate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((537)::bigint);
+ALTER TABLE ONLY isahl."zc_id_subj-org_rr_subordinate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((542)::bigint);
+ALTER TABLE ONLY isahl."zc_id_subj-post_rr_subordinate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((543)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-supranational" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_tick-admission" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_tick-discount" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38327,18 +38492,18 @@ ALTER TABLE ONLY isahl."zc_id_production_rr_manual" ALTER COLUMN id SET DEFAULT 
 ALTER TABLE ONLY isahl."zc_id_production_rr_standard" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((468)::bigint);
 ALTER TABLE ONLY isahl."zc_id_project_rr_other" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((469)::bigint);
 ALTER TABLE ONLY isahl."zc_id_project_rr_task" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((470)::bigint);
-ALTER TABLE ONLY isahl."zc_id_statement_rr_reason" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((533)::bigint);
-ALTER TABLE ONLY isahl."zc_id_subjects_rr_account" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((538)::bigint);
-ALTER TABLE ONLY isahl."zc_id_subjects_rr_container" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((539)::bigint);
-ALTER TABLE ONLY isahl."zc_id_subjects_rr_place" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((540)::bigint);
-ALTER TABLE ONLY isahl."zc_id_task_rr_bill" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((541)::bigint);
-ALTER TABLE ONLY isahl."zc_id_task_rr_reason" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((542)::bigint);
-ALTER TABLE ONLY isahl."zc_id_bom-input_rr_item" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((543)::bigint);
-ALTER TABLE ONLY isahl."zc_id_bom-output_rr_item" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((544)::bigint);
-ALTER TABLE ONLY isahl."zc_id_calc-zone_qty" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((545)::bigint);
-ALTER TABLE ONLY isahl."zc_id_even-modify_rr_matter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((546)::bigint);
-ALTER TABLE ONLY isahl."zc_id_event_rr_ind-matter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((547)::bigint);
-ALTER TABLE ONLY isahl."zc_id_event_rr_prod-obj" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((548)::bigint);
+ALTER TABLE ONLY isahl."zc_id_statement_rr_reason" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((539)::bigint);
+ALTER TABLE ONLY isahl."zc_id_subjects_rr_account" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((544)::bigint);
+ALTER TABLE ONLY isahl."zc_id_subjects_rr_container" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((545)::bigint);
+ALTER TABLE ONLY isahl."zc_id_subjects_rr_place" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((546)::bigint);
+ALTER TABLE ONLY isahl."zc_id_task_rr_bill" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((547)::bigint);
+ALTER TABLE ONLY isahl."zc_id_task_rr_reason" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((548)::bigint);
+ALTER TABLE ONLY isahl."zc_id_bom-input_rr_item" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((549)::bigint);
+ALTER TABLE ONLY isahl."zc_id_bom-output_rr_item" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((550)::bigint);
+ALTER TABLE ONLY isahl."zc_id_calc-zone_qty" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((551)::bigint);
+ALTER TABLE ONLY isahl."zc_id_even-modify_rr_matter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((552)::bigint);
+ALTER TABLE ONLY isahl."zc_id_event_rr_ind-matter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((553)::bigint);
+ALTER TABLE ONLY isahl."zc_id_event_rr_prod-obj" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((554)::bigint);
 ALTER TABLE ONLY isahl."zc_id_file-document" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_file-image" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_file-manual" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38348,9 +38513,9 @@ ALTER TABLE ONLY isahl."zc_id_law-civil-book" ALTER COLUMN id SET DEFAULT isahl.
 ALTER TABLE ONLY isahl."zc_id_law-common-holding" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-common-title" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-intl-part" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_leve-group_member" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((549)::bigint);
-ALTER TABLE ONLY isahl."zc_id_leve-org" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((550)::bigint);
-ALTER TABLE ONLY isahl."zc_id_leve-post-resp" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((551)::bigint);
+ALTER TABLE ONLY isahl."zc_id_leve-group_member" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((555)::bigint);
+ALTER TABLE ONLY isahl."zc_id_leve-org" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((556)::bigint);
+ALTER TABLE ONLY isahl."zc_id_leve-post-resp" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((557)::bigint);
 ALTER TABLE ONLY isahl."zc_id_orga-department" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_orga-legal" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-apparel" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38396,9 +38561,9 @@ ALTER TABLE ONLY isahl."zc_id_prod-stor_keep-made" ALTER COLUMN id SET DEFAULT i
 ALTER TABLE ONLY isahl."zc_id_prod-stor_keep-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-stor_keep-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-stor_keep-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_order" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((554)::bigint);
-ALTER TABLE ONLY isahl."zc_id_order_rr_contract" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((552)::bigint);
-ALTER TABLE ONLY isahl."zc_id_order_rr_foreign" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((553)::bigint);
+ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_order" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((560)::bigint);
+ALTER TABLE ONLY isahl."zc_id_order_rr_contract" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((558)::bigint);
+ALTER TABLE ONLY isahl."zc_id_order_rr_foreign" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((559)::bigint);
 ALTER TABLE ONLY isahl."zc_id_bank-commercial" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_file-avatar" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_file-srm" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38429,7 +38594,7 @@ ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-sales" ALTER COLUMN id SET DEFAU
 ALTER TABLE ONLY isahl."zc_id_prod-tsp_land-license-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-type_cert-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_subj-ministry" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_order_rr_demand" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((555)::bigint);
+ALTER TABLE ONLY isahl."zc_id_order_rr_demand" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((561)::bigint);
 ALTER TABLE ONLY isahl."zc_id_bank-central" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-civil-section" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-common-section" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
