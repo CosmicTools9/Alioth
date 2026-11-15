@@ -9808,6 +9808,13 @@ INHERITS (isahl.zc_id_process);
 
 
 
+CREATE TABLE isahl."zc_id_proc-review" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_process);
+
+
+
 CREATE TABLE isahl."zc_id_proc-service" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -23099,6 +23106,14 @@ ALTER TABLE ONLY isahl."zc_id_proc-context" ALTER COLUMN updated_at SET DEFAULT 
 
 
 
+ALTER TABLE ONLY isahl."zc_id_proc-review" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_proc-review" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl.zc_id_process_rr_context ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -28146,6 +28161,11 @@ ALTER TABLE ONLY isahl."zc_id_proc-project"
 
 ALTER TABLE ONLY isahl."zc_id_proc-purchase"
     ADD CONSTRAINT "zc_id_proc-purchase_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_proc-review"
+    ADD CONSTRAINT "zc_id_proc-review_pkey" PRIMARY KEY (id);
 
 
 
@@ -38033,6 +38053,7 @@ ALTER TABLE ONLY isahl."zc_id_proc-loading" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_proc-make" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_proc-project" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_proc-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_proc-review" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_proc-service" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-apparel_r_fabric" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((330)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-apparel_r_style" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((331)::bigint);
