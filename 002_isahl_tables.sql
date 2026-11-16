@@ -7308,6 +7308,13 @@ INHERITS (isahl.zc_id_operation);
 
 
 
+CREATE TABLE isahl."zc_id_oper-amend" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
 CREATE TABLE isahl."zc_id_oper-approve" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -7335,6 +7342,13 @@ CREATE TABLE isahl."zc_id_oper-approve" (
     qk_period bigint,
     "ck_cate-wh" bigint,
     qk_work_duration bigint
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
+CREATE TABLE isahl."zc_id_oper-archive_seal" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -7461,6 +7475,20 @@ CREATE TABLE isahl."zc_id_oper-confirm_bill" (
     qk_period bigint,
     "ck_cate-wh" bigint,
     "ck_cate-biz" bigint
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
+CREATE TABLE isahl."zc_id_oper-data_export" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
+CREATE TABLE isahl."zc_id_oper-data_import" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_operation);
 
@@ -22690,6 +22718,22 @@ ALTER TABLE ONLY isahl."zc_id_oper-action_prj" ALTER COLUMN updated_at SET DEFAU
 
 
 
+ALTER TABLE ONLY isahl."zc_id_oper-amend" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-amend" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-archive_seal" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-archive_seal" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-audit_acc" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22719,6 +22763,22 @@ ALTER TABLE ONLY isahl."zc_id_oper-check_prj" ALTER COLUMN created_at SET DEFAUL
 
 
 ALTER TABLE ONLY isahl."zc_id_oper-check_prj" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-data_export" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-data_export" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-data_import" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-data_import" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -27741,8 +27801,18 @@ ALTER TABLE ONLY isahl."zc_id_oper-action_prj"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_oper-amend"
+    ADD CONSTRAINT "zc_id_oper-amend_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-approve"
     ADD CONSTRAINT "zc_id_oper-approve_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-archive_seal"
+    ADD CONSTRAINT "zc_id_oper-archive_seal_pkey" PRIMARY KEY (id);
 
 
 
@@ -27778,6 +27848,16 @@ ALTER TABLE ONLY isahl."zc_id_oper-clearance_import"
 
 ALTER TABLE ONLY isahl."zc_id_oper-confirm_bill"
     ADD CONSTRAINT "zc_id_oper-confirm_bill_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-data_export"
+    ADD CONSTRAINT "zc_id_oper-data_export_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-data_import"
+    ADD CONSTRAINT "zc_id_oper-data_import_pkey" PRIMARY KEY (id);
 
 
 
@@ -38282,7 +38362,9 @@ ALTER TABLE ONLY isahl."zc_id_lifecycle_r_appraval-status" ALTER COLUMN id SET D
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_lock-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((301)::bigint);
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_primary-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((302)::bigint);
 ALTER TABLE ONLY isahl."zc_id_oper-action_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-amend" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-approve" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-archive_seal" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-audit_acc" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-audit_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-check_bill" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38290,6 +38372,8 @@ ALTER TABLE ONLY isahl."zc_id_oper-check_cond" ALTER COLUMN id SET DEFAULT isahl
 ALTER TABLE ONLY isahl."zc_id_oper-check_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-clearance_import" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-confirm_bill" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-data_export" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-data_import" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-decide_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-declaration_export" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-delivery_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
