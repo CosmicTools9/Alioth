@@ -133,11 +133,15 @@
     "zc_id_rate-weight": 8,
     "zc_id_rati-discount": 0,
     "zc_id_rati-formula": 0,
+    "zc_id_rati-probability": 0,
     "zc_id_rati-progress": 0,
     "zc_id_rati-tax": 12,
     "zc_id_rati-weight": 0,
     "zc_id_ratio": 0,
     "zc_id_scene": 109,
+    "zc_id_segm-confidence": 0,
+    "zc_id_segm-prediction": 0,
+    "zc_id_segm-tolerance": 0,
     "zc_id_status": 0,
     "zc_id_stus-account": 4,
     "zc_id_stus-agent": 0,
@@ -279,7 +283,7 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "published_at": "2026-11-15T12:40:10.794805+00:00",
+  "published_at": "2026-11-16T03:50:10.547647+00:00",
   "row_layer": {
     "zc_id_cate-inv-title": "carry",
     "zc_id_cate-ope-title": "carry",
@@ -442,11 +446,15 @@
     "zc_id_rate-weight",
     "zc_id_rati-discount",
     "zc_id_rati-formula",
+    "zc_id_rati-probability",
     "zc_id_rati-progress",
     "zc_id_rati-tax",
     "zc_id_rati-weight",
     "zc_id_ratio",
     "zc_id_scene",
+    "zc_id_segm-confidence",
+    "zc_id_segm-prediction",
+    "zc_id_segm-tolerance",
     "zc_id_status",
     "zc_id_stus-account",
     "zc_id_stus-agent",
@@ -588,5 +596,5 @@
     "zc_id_unit-weight",
     "zc_id_unit-working"
   ],
-  "version": "v10.0.87"
+  "version": "v10.0.88"
 }

@@ -7,19 +7,19 @@
     },
     {
       "name": "002_isahl_tables.sql",
-      "size_bytes": 1044088
+      "size_bytes": 1053045
     },
     {
       "name": "model-contract.json",
-      "size_bytes": 16670
+      "size_bytes": 16914
     },
     {
       "name": "seed-dimensions.meta.json",
-      "size_bytes": 7818
+      "size_bytes": 7938
     },
     {
       "name": "seed-dimensions.sql",
-      "size_bytes": 1389750
+      "size_bytes": 1389390
     },
     {
       "name": "seed-model-contract.sql",
@@ -27,7 +27,7 @@
     }
   ],
   "pg_dump_version": "pg_dump (PostgreSQL) 18.7 (Homebrew)",
-  "published_at": "2026-11-15T12:40:10.794805+00:00",
+  "published_at": "2026-11-16T03:50:10.547647+00:00",
   "tables": {
     "zc_id_cate-acc-title": 13,
     "zc_id_cate-agent": 0,
@@ -162,11 +162,15 @@
     "zc_id_rate-weight": 8,
     "zc_id_rati-discount": 0,
     "zc_id_rati-formula": 0,
+    "zc_id_rati-probability": 0,
     "zc_id_rati-progress": 0,
     "zc_id_rati-tax": 12,
     "zc_id_rati-weight": 0,
     "zc_id_ratio": 0,
     "zc_id_scene": 109,
+    "zc_id_segm-confidence": 0,
+    "zc_id_segm-prediction": 0,
+    "zc_id_segm-tolerance": 0,
     "zc_id_status": 0,
     "zc_id_stus-account": 4,
     "zc_id_stus-agent": 0,
@@ -308,5 +312,5 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "version": "v10.0.87"
+  "version": "v10.0.88"
 }
