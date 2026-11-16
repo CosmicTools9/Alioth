@@ -1914,7 +1914,21 @@ INHERITS (isahl.zc_id_audit);
 
 
 
+CREATE TABLE isahl."zc_id_audi-external" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_audit);
+
+
+
 CREATE TABLE isahl."zc_id_audi-functional" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_audit);
+
+
+
+CREATE TABLE isahl."zc_id_audi-internal" (
     id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_audit);
@@ -20730,11 +20744,27 @@ ALTER TABLE ONLY isahl."zc_id_audi-expense" ALTER COLUMN updated_at SET DEFAULT 
 
 
 
+ALTER TABLE ONLY isahl."zc_id_audi-external" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-external" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_audi-functional" ALTER COLUMN created_at SET DEFAULT now();
 
 
 
 ALTER TABLE ONLY isahl."zc_id_audi-functional" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-internal" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-internal" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -26191,8 +26221,18 @@ ALTER TABLE ONLY isahl."zc_id_audi-expense"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_audi-external"
+    ADD CONSTRAINT "zc_id_audi-external_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_audi-functional"
     ADD CONSTRAINT "zc_id_audi-functional_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_audi-internal"
+    ADD CONSTRAINT "zc_id_audi-internal_pkey" PRIMARY KEY (id);
 
 
 
@@ -38160,7 +38200,9 @@ ALTER TABLE ONLY isahl."zc_id_version" ALTER COLUMN id SET DEFAULT isahl.gen_nex
 ALTER TABLE ONLY isahl."zc_id_audi-contract" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_audi-cost" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_audi-expense" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_audi-external" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_audi-functional" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_audi-internal" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_audi-physical" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_audi-project" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_audi-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
