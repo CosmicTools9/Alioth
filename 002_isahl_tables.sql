@@ -7494,6 +7494,13 @@ INHERITS (isahl.zc_id_operation);
 
 
 
+CREATE TABLE isahl."zc_id_oper-custody" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_operation);
+
+
+
 CREATE TABLE isahl."zc_id_oper-data_export" (
     id bigint NOT NULL
 )
@@ -11399,7 +11406,8 @@ INHERITS (isahl."zc_id_prod-sales", isahl."zc_id_prod-traffic");
 
 
 CREATE TABLE isahl."zc_id_prod-grocery" (
-    id bigint NOT NULL
+    id bigint NOT NULL,
+    qk_period bigint
 )
 INHERITS (isahl."zc_id_prod-retail");
 
@@ -11465,6 +11473,27 @@ CREATE TABLE isahl."zc_id_prod-insurance-license-sales" (
     id bigint NOT NULL
 )
 INHERITS (isahl."zc_id_prod-certificate", isahl."zc_id_prod-license", isahl."zc_id_prod-sales");
+
+
+
+CREATE TABLE isahl."zc_id_prod-investigation_rr_bill-evidence" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_rr_non_self);
+
+
+
+CREATE TABLE isahl."zc_id_prod-investigation_rr_event-evidence" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_rr_non_self);
+
+
+
+CREATE TABLE isahl."zc_id_prod-investigation_rr_smt-evidence" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
 
@@ -22796,6 +22825,14 @@ ALTER TABLE ONLY isahl."zc_id_oper-check_prj" ALTER COLUMN updated_at SET DEFAUL
 
 
 
+ALTER TABLE ONLY isahl."zc_id_oper-custody" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_oper-custody" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-data_export" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -23749,6 +23786,30 @@ ALTER TABLE ONLY isahl."zc_id_prod-investigation" ALTER COLUMN created_at SET DE
 
 
 ALTER TABLE ONLY isahl."zc_id_prod-investigation" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-investigation_rr_bill-evidence" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-investigation_rr_bill-evidence" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-investigation_rr_event-evidence" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-investigation_rr_event-evidence" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-investigation_rr_smt-evidence" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-investigation_rr_smt-evidence" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -27891,6 +27952,11 @@ ALTER TABLE ONLY isahl."zc_id_oper-confirm_bill"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_oper-custody"
+    ADD CONSTRAINT "zc_id_oper-custody_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_oper-data_export"
     ADD CONSTRAINT "zc_id_oper-data_export_pkey" PRIMARY KEY (id);
 
@@ -28898,6 +28964,21 @@ ALTER TABLE ONLY isahl."zc_id_prod-insurance"
 
 ALTER TABLE ONLY isahl."zc_id_prod-investigation"
     ADD CONSTRAINT "zc_id_prod-investigation_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-investigation_rr_bill-evidence"
+    ADD CONSTRAINT "zc_id_prod-investigation_rr_bill-evidence_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-investigation_rr_event-evidence"
+    ADD CONSTRAINT "zc_id_prod-investigation_rr_event-evidence_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-investigation_rr_smt-evidence"
+    ADD CONSTRAINT "zc_id_prod-investigation_rr_smt-evidence_pkey" PRIMARY KEY (id);
 
 
 
@@ -37647,6 +37728,18 @@ CREATE UNIQUE INDEX "uq_zc_id_prod-apparel_r_style_ref_left_ref_right_qk_period"
 
 
 
+CREATE UNIQUE INDEX "uq_zc_id_prod-investigation_rr_bill-evidence_ref_left_ref_right" ON isahl."zc_id_prod-investigation_rr_bill-evidence" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+
+CREATE UNIQUE INDEX "uq_zc_id_prod-investigation_rr_event-evidence_ref_left_ref_righ" ON isahl."zc_id_prod-investigation_rr_event-evidence" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+
+CREATE UNIQUE INDEX "uq_zc_id_prod-investigation_rr_smt-evidence_ref_left_ref_right_" ON isahl."zc_id_prod-investigation_rr_smt-evidence" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+
 CREATE UNIQUE INDEX "uq_zc_id_prod-loading_r_description_ref_left_ref_right_qk_perio" ON isahl."zc_id_prod-loading_r_description" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
@@ -38414,6 +38507,7 @@ ALTER TABLE ONLY isahl."zc_id_oper-check_cond" ALTER COLUMN id SET DEFAULT isahl
 ALTER TABLE ONLY isahl."zc_id_oper-check_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-clearance_import" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-confirm_bill" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_oper-custody" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-data_export" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-data_import" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-decide_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38497,6 +38591,9 @@ ALTER TABLE ONLY isahl."zc_id_prod-apparel_r_style" ALTER COLUMN id SET DEFAULT 
 ALTER TABLE ONLY isahl."zc_id_prod-combine" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-data" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-investigation" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-investigation_rr_bill-evidence" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((597)::bigint);
+ALTER TABLE ONLY isahl."zc_id_prod-investigation_rr_event-evidence" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((595)::bigint);
+ALTER TABLE ONLY isahl."zc_id_prod-investigation_rr_smt-evidence" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((593)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-lease" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-loading_r_description" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((332)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
