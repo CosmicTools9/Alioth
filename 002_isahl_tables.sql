@@ -2320,6 +2320,14 @@ INHERITS (isahl.zc_ad_tensor_r_scalar);
 
 
 
+CREATE TABLE isahl."zc_id_lifecycle_r_rollback-status" (
+    id bigint NOT NULL,
+    "recovery-time" bigint DEFAULT '-1'::integer
+)
+INHERITS (isahl.zc_id_lifecycle_r_status);
+
+
+
 CREATE TABLE isahl."zc_id_bill-check_r_verify-status" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2328,13 +2336,16 @@ CREATE TABLE isahl."zc_id_bill-check_r_verify-status" (
     updated_by_id bigint,
     notice text,
     t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
     code text,
     ref_left bigint,
     ref_right bigint,
     comments text,
     status_date timestamp with time zone
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -2462,7 +2473,7 @@ CREATE TABLE isahl."zc_id_bill-ticket_r_verify-status" (
     status_date timestamp with time zone,
     qk_period bigint
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -3821,6 +3832,13 @@ INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
 
 
 
+CREATE TABLE isahl."zc_id_cons-geohazard-cate" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
+
+
+
 CREATE TABLE isahl."zc_id_cons-industry-cate" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -3943,6 +3961,13 @@ CREATE TABLE isahl."zc_id_cons-ts_concomitant-tags" (
     "lbs-type" text
 )
 INHERITS (isahl.zc_id_tags, isahl.zc_id_consensus);
+
+
+
+CREATE TABLE isahl."zc_id_cons-weather-cate" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_category, isahl.zc_id_consensus);
 
 
 
@@ -4498,13 +4523,16 @@ CREATE TABLE isahl."zc_id_deta-bill-check_r_verify-status" (
     updated_by_id bigint,
     notice text,
     t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
     code text,
     ref_left bigint,
     ref_right bigint,
     comments text,
     status_date timestamp with time zone
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -4786,9 +4814,23 @@ INHERITS (isahl.zc_id_detail);
 
 
 CREATE TABLE isahl."zc_id_deta-tsk_r_verify-status" (
-    id bigint NOT NULL
+    created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_r_status_created_at_not_null NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_r_status_updated_at_not_null NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    ref_left bigint,
+    ref_right bigint,
+    comments text,
+    status_date timestamp with time zone
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -4995,8 +5037,23 @@ INHERITS (isahl.zc_id_device);
 
 
 CREATE TABLE isahl."zc_id_device_r_iot-status" (
+    created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_r_status_created_at_not_null NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_r_status_updated_at_not_null NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    ref_left bigint,
+    ref_right bigint,
+    comments text,
+    status_date timestamp with time zone
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -5203,13 +5260,14 @@ CREATE TABLE isahl."zc_id_empl-natural_r_marital-status" (
     t_color_ text,
     deleted_at timestamp with time zone,
     deleted_by_id bigint,
+    operated_by_id bigint,
     code text,
     ref_left bigint,
     ref_right bigint,
     comments text,
     status_date timestamp with time zone
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -6467,13 +6525,16 @@ CREATE TABLE isahl."zc_id_invoice_r_verify-status" (
     updated_by_id bigint,
     notice text,
     t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
     code text,
     ref_left bigint,
     ref_right bigint,
     comments text,
     status_date timestamp with time zone
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -6701,6 +6762,13 @@ INHERITS (isahl.zc_id_level);
 
 
 
+CREATE TABLE isahl."zc_id_leve-criticality" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_level);
+
+
+
 CREATE TABLE isahl."zc_id_leve-diploma" (
     id bigint NOT NULL
 )
@@ -6899,7 +6967,21 @@ INHERITS (isahl.zc_id_level);
 
 
 
+CREATE TABLE isahl."zc_id_leve-threat" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_level);
+
+
+
 CREATE TABLE isahl."zc_id_leve-urgent" (
+)
+INHERITS (isahl.zc_id_level);
+
+
+
+CREATE TABLE isahl."zc_id_leve-value" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_level);
 
@@ -6911,10 +6993,31 @@ INHERITS (isahl.zc_id_level);
 
 
 
-CREATE TABLE isahl."zc_id_lifecycle_r_appraval-status" (
+CREATE TABLE isahl."zc_id_leve-vulnerability" (
     id bigint NOT NULL
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl.zc_id_level);
+
+
+
+CREATE TABLE isahl."zc_id_lifecycle_r_appraval-status" (
+    created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_r_status_created_at_not_null NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_r_status_updated_at_not_null NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    ref_left bigint,
+    ref_right bigint,
+    comments text,
+    status_date timestamp with time zone
+)
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -6937,9 +7040,23 @@ INHERITS (isahl.zc_ad_tensor_r_scalar);
 
 
 CREATE TABLE isahl."zc_id_lifecycle_r_lock-status" (
-    id bigint NOT NULL
+    created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_r_status_created_at_not_null NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_r_status_updated_at_not_null NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    ref_left bigint,
+    ref_right bigint,
+    comments text,
+    status_date timestamp with time zone
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -9001,6 +9118,30 @@ CREATE TABLE isahl."zc_id_orga-non-banking-legal" (
     fk_representative bigint
 )
 INHERITS (isahl."zc_id_orga-legal");
+
+
+
+CREATE TABLE isahl.zc_id_phenomena (
+    id bigint NOT NULL,
+    fk_place bigint,
+    qk_date bigint
+)
+INHERITS (isahl."zc_id_proc-context");
+
+
+
+CREATE TABLE isahl."zc_id_phen-geohazard" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_phenomena);
+
+
+
+CREATE TABLE isahl."zc_id_phen-weather" (
+    id bigint NOT NULL,
+    ck_category bigint
+)
+INHERITS (isahl.zc_id_phenomena);
 
 
 
@@ -13846,13 +13987,16 @@ CREATE TABLE isahl."zc_id_production_r_log-status" (
     updated_by_id bigint,
     notice text,
     t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
     code text,
     ref_left bigint,
     ref_right bigint,
     comments text,
     status_date timestamp with time zone
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -13898,13 +14042,16 @@ CREATE TABLE isahl."zc_id_production_r_transport-status" (
     updated_by_id bigint,
     notice text,
     t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
     code text,
     ref_left bigint,
     ref_right bigint,
     comments text,
     status_date timestamp with time zone
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -14024,9 +14171,23 @@ INHERITS (isahl.zc_id_lifecycle_r_tags);
 
 
 CREATE TABLE isahl."zc_id_project_r_review-status" (
-    id bigint NOT NULL
+    created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_r_status_created_at_not_null NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_r_status_updated_at_not_null NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    ref_left bigint,
+    ref_right bigint,
+    comments text,
+    status_date timestamp with time zone
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -16198,9 +16359,23 @@ INHERITS (isahl.zc_id_statement);
 
 
 CREATE TABLE isahl."zc_id_stat-task_r_verify-status" (
-    id bigint NOT NULL
+    created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_r_status_created_at_not_null NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_r_status_updated_at_not_null NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    ref_left bigint,
+    ref_right bigint,
+    comments text,
+    status_date timestamp with time zone
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -16762,13 +16937,16 @@ CREATE TABLE isahl."zc_id_stor-container_r_tracking-status" (
     updated_by_id bigint,
     notice text,
     t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
     code text,
     ref_left bigint,
     ref_right bigint,
     comments text,
     status_date timestamp with time zone
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -17476,9 +17654,23 @@ INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
 CREATE TABLE isahl."zc_id_storage_r_cnt-status" (
-    id bigint NOT NULL
+    created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_r_status_created_at_not_null NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_r_status_updated_at_not_null NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    ref_left bigint,
+    ref_right bigint,
+    comments text,
+    status_date timestamp with time zone
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -18746,13 +18938,16 @@ CREATE TABLE isahl."zc_id_subj-employee_r_employ-status" (
     updated_by_id bigint,
     notice text,
     t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
     code text,
     ref_left bigint,
     ref_right bigint,
     comments text,
     status_date timestamp with time zone
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -20604,13 +20799,16 @@ CREATE TABLE isahl."zc_id_vers-context_r_ver-status" (
     updated_by_id bigint,
     notice text,
     t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
     code text,
     ref_left bigint,
     ref_right bigint,
     comments text,
     status_date timestamp with time zone
 )
-INHERITS (isahl.zc_id_lifecycle_r_status);
+INHERITS (isahl."zc_id_lifecycle_r_rollback-status");
 
 
 
@@ -20845,6 +21043,10 @@ ALTER TABLE ONLY isahl.zc_id_audit_rr_conclusion ALTER COLUMN updated_at SET DEF
 
 
 
+ALTER TABLE ONLY isahl."zc_id_bill-check_r_verify-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_bill-check_rr_plan-payment" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -20866,6 +21068,10 @@ ALTER TABLE ONLY isahl."zc_id_bill-ticket" ALTER COLUMN created_at SET DEFAULT n
 
 
 ALTER TABLE ONLY isahl."zc_id_bill-ticket" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_bill-ticket_r_verify-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
 
 
 
@@ -21665,6 +21871,26 @@ ALTER TABLE ONLY isahl."zc_id_cons-gender-cate" ALTER COLUMN enable SET DEFAULT 
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cons-geohazard-cate" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-geohazard-cate" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-geohazard-cate" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-geohazard-cate" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-geohazard-cate" ALTER COLUMN enable SET DEFAULT true;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cons-polity-cate" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -21742,6 +21968,26 @@ ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN updated_by_id SET
 
 
 ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN enable SET DEFAULT true;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-weather-cate" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-weather-cate" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-weather-cate" ALTER COLUMN created_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-weather-cate" ALTER COLUMN updated_by_id SET DEFAULT '1'::bigint;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-weather-cate" ALTER COLUMN enable SET DEFAULT true;
 
 
 
@@ -21909,6 +22155,10 @@ ALTER TABLE ONLY isahl."zc_id_deta-audit" ALTER COLUMN updated_at SET DEFAULT no
 
 
 
+ALTER TABLE ONLY isahl."zc_id_deta-bill-check_r_verify-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_deta-counting" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22001,11 +22251,7 @@ ALTER TABLE ONLY isahl."zc_id_deta-tsk" ALTER COLUMN updated_at SET DEFAULT now(
 
 
 
-ALTER TABLE ONLY isahl."zc_id_deta-tsk_r_verify-status" ALTER COLUMN created_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_deta-tsk_r_verify-status" ALTER COLUMN updated_at SET DEFAULT now();
+ALTER TABLE ONLY isahl."zc_id_deta-tsk_r_verify-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
 
 
 
@@ -22025,15 +22271,7 @@ ALTER TABLE ONLY isahl."zc_id_devi-seal" ALTER COLUMN updated_at SET DEFAULT now
 
 
 
-ALTER TABLE ONLY isahl."zc_id_device_r_iot-status" ALTER COLUMN created_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_device_r_iot-status" ALTER COLUMN updated_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_device_r_iot-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((285)::bigint);
+ALTER TABLE ONLY isahl."zc_id_device_r_iot-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
 
 
 
@@ -22050,6 +22288,10 @@ ALTER TABLE ONLY isahl."zc_id_empl-agent_rr_llm-config" ALTER COLUMN created_at 
 
 
 ALTER TABLE ONLY isahl."zc_id_empl-agent_rr_llm-config" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_empl-natural_r_marital-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
 
 
 
@@ -22365,6 +22607,10 @@ ALTER TABLE ONLY isahl."zc_id_info-url" ALTER COLUMN updated_at SET DEFAULT now(
 
 
 
+ALTER TABLE ONLY isahl."zc_id_invoice_r_verify-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_law-civil" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22541,6 +22787,14 @@ ALTER TABLE ONLY isahl."zc_id_leve-applicable" ALTER COLUMN updated_at SET DEFAU
 
 
 
+ALTER TABLE ONLY isahl."zc_id_leve-criticality" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_leve-criticality" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_leve-diploma" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22685,6 +22939,14 @@ ALTER TABLE ONLY isahl."zc_id_leve-task" ALTER COLUMN id SET DEFAULT isahl.gen_n
 
 
 
+ALTER TABLE ONLY isahl."zc_id_leve-threat" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_leve-threat" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_leve-urgent" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -22694,6 +22956,14 @@ ALTER TABLE ONLY isahl."zc_id_leve-urgent" ALTER COLUMN updated_at SET DEFAULT n
 
 
 ALTER TABLE ONLY isahl."zc_id_leve-urgent" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((434)::bigint);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_leve-value" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_leve-value" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -22709,19 +22979,27 @@ ALTER TABLE ONLY isahl."zc_id_leve-vote_weight" ALTER COLUMN id SET DEFAULT isah
 
 
 
-ALTER TABLE ONLY isahl."zc_id_lifecycle_r_appraval-status" ALTER COLUMN created_at SET DEFAULT now();
+ALTER TABLE ONLY isahl."zc_id_leve-vulnerability" ALTER COLUMN created_at SET DEFAULT now();
 
 
 
-ALTER TABLE ONLY isahl."zc_id_lifecycle_r_appraval-status" ALTER COLUMN updated_at SET DEFAULT now();
+ALTER TABLE ONLY isahl."zc_id_leve-vulnerability" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
-ALTER TABLE ONLY isahl."zc_id_lifecycle_r_lock-status" ALTER COLUMN created_at SET DEFAULT now();
+ALTER TABLE ONLY isahl."zc_id_lifecycle_r_appraval-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
 
 
 
-ALTER TABLE ONLY isahl."zc_id_lifecycle_r_lock-status" ALTER COLUMN updated_at SET DEFAULT now();
+ALTER TABLE ONLY isahl."zc_id_lifecycle_r_lock-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_lifecycle_r_rollback-status" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_lifecycle_r_rollback-status" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -23178,6 +23456,30 @@ ALTER TABLE ONLY isahl."zc_id_orga-department_rr_project" ALTER COLUMN created_a
 
 
 ALTER TABLE ONLY isahl."zc_id_orga-department_rr_project" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_phen-geohazard" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_phen-geohazard" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_phen-weather" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_phen-weather" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl.zc_id_phenomena ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl.zc_id_phenomena ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -24369,6 +24671,14 @@ ALTER TABLE ONLY isahl."zc_id_prod-type_cert-sales" ALTER COLUMN encoding SET DE
 
 
 
+ALTER TABLE ONLY isahl."zc_id_production_r_log-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
+
+
+
+ALTER TABLE ONLY isahl."zc_id_production_r_transport-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
+
+
+
 ALTER TABLE ONLY isahl.zc_id_production_rr_storage ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -24385,11 +24695,7 @@ ALTER TABLE ONLY isahl.zc_id_project_r_milestone ALTER COLUMN updated_at SET DEF
 
 
 
-ALTER TABLE ONLY isahl."zc_id_project_r_review-status" ALTER COLUMN created_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_project_r_review-status" ALTER COLUMN updated_at SET DEFAULT now();
+ALTER TABLE ONLY isahl."zc_id_project_r_review-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
 
 
 
@@ -25005,11 +25311,7 @@ ALTER TABLE ONLY isahl."zc_id_stat-task" ALTER COLUMN updated_at SET DEFAULT now
 
 
 
-ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status" ALTER COLUMN created_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status" ALTER COLUMN updated_at SET DEFAULT now();
+ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
 
 
 
@@ -25066,6 +25368,10 @@ ALTER TABLE ONLY isahl."zc_id_stor-acc-points" ALTER COLUMN created_at SET DEFAU
 
 
 ALTER TABLE ONLY isahl."zc_id_stor-acc-points" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stor-container_r_tracking-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
 
 
 
@@ -25133,11 +25439,7 @@ ALTER TABLE ONLY isahl."zc_id_stor-traffic_line_rr_stop" ALTER COLUMN updated_at
 
 
 
-ALTER TABLE ONLY isahl."zc_id_storage_r_cnt-status" ALTER COLUMN created_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl."zc_id_storage_r_cnt-status" ALTER COLUMN updated_at SET DEFAULT now();
+ALTER TABLE ONLY isahl."zc_id_storage_r_cnt-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
 
 
 
@@ -25657,6 +25959,10 @@ ALTER TABLE ONLY isahl."zc_id_stus-tsk_verify" ALTER COLUMN enable SET DEFAULT t
 
 
 
+ALTER TABLE ONLY isahl."zc_id_subj-employee_r_employ-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
+
+
+
 ALTER TABLE ONLY isahl."zc_id_subj-ministry_rr_servant" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -26074,6 +26380,10 @@ ALTER TABLE ONLY isahl."zc_id_unit-illuminance" ALTER COLUMN created_at SET DEFA
 
 
 ALTER TABLE ONLY isahl."zc_id_unit-illuminance" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_vers-context_r_ver-status" ALTER COLUMN "recovery-time" SET DEFAULT '-1'::integer;
 
 
 
@@ -26797,6 +27107,11 @@ ALTER TABLE ONLY isahl."zc_id_cons-gender-cate"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_cons-geohazard-cate"
+    ADD CONSTRAINT "zc_id_cons-geohazard-cate_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_cons-industry-cate"
     ADD CONSTRAINT "zc_id_cons-industry-cate_pkey" PRIMARY KEY (id);
 
@@ -26839,6 +27154,11 @@ ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate"
 
 ALTER TABLE ONLY isahl."zc_id_cons-ts_concomitant-tags"
     ADD CONSTRAINT "zc_id_cons-ts_concomitant-tags_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_cons-weather-cate"
+    ADD CONSTRAINT "zc_id_cons-weather-cate_pkey" PRIMARY KEY (id);
 
 
 
@@ -27687,6 +28007,11 @@ ALTER TABLE ONLY isahl."zc_id_leve-bom_satisfy"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_leve-criticality"
+    ADD CONSTRAINT "zc_id_leve-criticality_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_leve-diploma"
     ADD CONSTRAINT "zc_id_leve-diploma_pkey" PRIMARY KEY (id);
 
@@ -27742,8 +28067,23 @@ ALTER TABLE ONLY isahl."zc_id_leve-task"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_leve-threat"
+    ADD CONSTRAINT "zc_id_leve-threat_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_leve-urgent"
     ADD CONSTRAINT "zc_id_leve-urgent_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_leve-value"
+    ADD CONSTRAINT "zc_id_leve-value_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_leve-vulnerability"
+    ADD CONSTRAINT "zc_id_leve-vulnerability_pkey" PRIMARY KEY (id);
 
 
 
@@ -27784,6 +28124,11 @@ ALTER TABLE ONLY isahl."zc_id_lifecycle_r_primary-status"
 
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_primary-status"
     ADD CONSTRAINT "zc_id_lifecycle_r_primary-status_ref_left_key" UNIQUE (ref_left);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_lifecycle_r_rollback-status"
+    ADD CONSTRAINT "zc_id_lifecycle_r_rollback-status_pkey" PRIMARY KEY (id);
 
 
 
@@ -28374,6 +28719,21 @@ ALTER TABLE ONLY isahl."zc_id_orga-legal"
 
 ALTER TABLE ONLY isahl."zc_id_orga-non-banking-legal"
     ADD CONSTRAINT "zc_id_orga-non-banking-legal_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_phen-geohazard"
+    ADD CONSTRAINT "zc_id_phen-geohazard_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_phen-weather"
+    ADD CONSTRAINT "zc_id_phen-weather_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl.zc_id_phenomena
+    ADD CONSTRAINT zc_id_phenomena_pkey PRIMARY KEY (id);
 
 
 
@@ -36216,6 +36576,10 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-area" ON isahl."zc_id_rate-area" USIN
 
 
 
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-attrition" ON isahl."zc_id_rate-attrition" USING btree (id);
+
+
+
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rate-container" ON isahl."zc_id_rate-container" USING btree (id);
 
 
@@ -36320,6 +36684,10 @@ CREATE UNIQUE INDEX "uq_seed_id_zc_id_rati-formula" ON isahl."zc_id_rati-formula
 
 
 
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_rati-probability" ON isahl."zc_id_rati-probability" USING btree (id);
+
+
+
 CREATE UNIQUE INDEX "uq_seed_id_zc_id_rati-progress" ON isahl."zc_id_rati-progress" USING btree (id);
 
 
@@ -36337,6 +36705,18 @@ CREATE UNIQUE INDEX uq_seed_id_zc_id_ratio ON isahl.zc_id_ratio USING btree (id)
 
 
 CREATE UNIQUE INDEX uq_seed_id_zc_id_scene ON isahl.zc_id_scene USING btree (id);
+
+
+
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_segm-confidence" ON isahl."zc_id_segm-confidence" USING btree (id);
+
+
+
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_segm-prediction" ON isahl."zc_id_segm-prediction" USING btree (id);
+
+
+
+CREATE UNIQUE INDEX "uq_seed_id_zc_id_segm-tolerance" ON isahl."zc_id_segm-tolerance" USING btree (id);
 
 
 
@@ -37236,6 +37616,10 @@ CREATE UNIQUE INDEX "uq_status_code_zc_id_stus-vessel" ON isahl."zc_id_stus-vess
 
 
 
+CREATE UNIQUE INDEX uq_tag_post_view_code ON isahl."zc_id_tags-post_view" USING btree (code) WHERE (deleted_at IS NULL);
+
+
+
 CREATE UNIQUE INDEX "uq_zc_ad_relation_r_isolate-tensor_ref_left_ref_right" ON isahl."zc_ad_relation_r_isolate-tensor" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
@@ -37513,6 +37897,10 @@ CREATE UNIQUE INDEX "uq_zc_id_lifecycle_r_lock-status_ref_left_ref_right" ON isa
 
 
 CREATE UNIQUE INDEX "uq_zc_id_lifecycle_r_primary-status_ref_left_ref_right" ON isahl."zc_id_lifecycle_r_primary-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
+
+
+
+CREATE UNIQUE INDEX "uq_zc_id_lifecycle_r_rollback-status_ref_left_ref_right" ON isahl."zc_id_lifecycle_r_rollback-status" USING btree (ref_left, ref_right) WHERE (deleted_at IS NULL);
 
 
 
@@ -38156,6 +38544,7 @@ ALTER TABLE ONLY isahl."zc_id_cons-ethnic_group-cate" ALTER COLUMN id SET DEFAUL
 ALTER TABLE ONLY isahl."zc_id_cons-factor-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((70)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cons-function-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((71)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cons-gender-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((72)::bigint);
+ALTER TABLE ONLY isahl."zc_id_cons-geohazard-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((614)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cons-industry-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((73)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cons-license-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((74)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cons-packing-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((75)::bigint);
@@ -38165,6 +38554,7 @@ ALTER TABLE ONLY isahl."zc_id_cons-season-cate" ALTER COLUMN id SET DEFAULT isah
 ALTER TABLE ONLY isahl."zc_id_cons-size-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((79)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cons-timezone-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((80)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cons-ts_concomitant-tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((81)::bigint);
+ALTER TABLE ONLY isahl."zc_id_cons-weather-cate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((609)::bigint);
 ALTER TABLE ONLY isahl."zc_id_cons-zone-tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((82)::bigint);
 ALTER TABLE ONLY isahl."zc_id_proc-context" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stus-agreement" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((87)::bigint);
@@ -38427,6 +38817,7 @@ ALTER TABLE ONLY isahl."zc_id_lifecycle_r_status" ALTER COLUMN id SET DEFAULT is
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((209)::bigint);
 ALTER TABLE ONLY isahl."zc_id_lifecycle_rr_non_self" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((210)::bigint);
 ALTER TABLE ONLY isahl."zc_id_operation" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_phenomena" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_plan" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_process" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_production" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38438,7 +38829,6 @@ ALTER TABLE ONLY isahl."zc_id_task" ALTER COLUMN id SET DEFAULT isahl.gen_next_z
 ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_invoice" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((251)::bigint);
 ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_smt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((252)::bigint);
 ALTER TABLE ONLY isahl."zc_id_bill-check" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_bill-check_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((255)::bigint);
 ALTER TABLE ONLY isahl."zc_id_bill-check_rr_invoice" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((256)::bigint);
 ALTER TABLE ONLY isahl."zc_id_bill-check_rr_plan-payment" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((257)::bigint);
 ALTER TABLE ONLY isahl."zc_id_bill-check_rr_smt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((258)::bigint);
@@ -38446,7 +38836,6 @@ ALTER TABLE ONLY isahl."zc_id_bill-check_rr_trade_order" ALTER COLUMN id SET DEF
 ALTER TABLE ONLY isahl."zc_id_bill-customs_declaration" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bill-pricing" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bill-ticket" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_bill-ticket_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((260)::bigint);
 ALTER TABLE ONLY isahl."zc_id_bom-assemble" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bom-combine" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_cate-inv-title-cm" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((263)::bigint);
@@ -38459,10 +38848,8 @@ ALTER TABLE ONLY isahl."zc_id_cont-marriage" ALTER COLUMN id SET DEFAULT isahl.g
 ALTER TABLE ONLY isahl."zc_id_cont-transport-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_cont-transport-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_cont-transport_rr_stop" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((269)::bigint);
-ALTER TABLE ONLY isahl."zc_id_deta-bill-check_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((281)::bigint);
 ALTER TABLE ONLY isahl."zc_id_deta-damage_r_scrap" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((282)::bigint);
 ALTER TABLE ONLY isahl."zc_id_deta-training_rr_matter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((283)::bigint);
-ALTER TABLE ONLY isahl."zc_id_deta-tsk_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((284)::bigint);
 ALTER TABLE ONLY isahl."zc_id_devi-camera" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_devi-cash_register" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_devi-chess" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38473,7 +38860,6 @@ ALTER TABLE ONLY isahl."zc_id_devi-seal" ALTER COLUMN id SET DEFAULT isahl.gen_n
 ALTER TABLE ONLY isahl."zc_id_devi-sensor" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_docu-accounting" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_empl-agent_rr_llm-config" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((287)::bigint);
-ALTER TABLE ONLY isahl."zc_id_empl-natural_r_marital-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((288)::bigint);
 ALTER TABLE ONLY isahl."zc_id_empl-natural_rr_consanguinity" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((289)::bigint);
 ALTER TABLE ONLY isahl."zc_id_empl-natural_rr_country" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((290)::bigint);
 ALTER TABLE ONLY isahl."zc_id_even-approve" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38487,15 +38873,13 @@ ALTER TABLE ONLY isahl."zc_id_form-condition" ALTER COLUMN id SET DEFAULT isahl.
 ALTER TABLE ONLY isahl."zc_id_form-mapping" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((295)::bigint);
 ALTER TABLE ONLY isahl."zc_id_invo-credit_note" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_invo-tax-list" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_invoice_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((298)::bigint);
 ALTER TABLE ONLY isahl."zc_id_law-civil" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-common" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-intl" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-mixed" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-religious" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_lifecycle_r_appraval-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((300)::bigint);
-ALTER TABLE ONLY isahl."zc_id_lifecycle_r_lock-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((301)::bigint);
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_primary-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((302)::bigint);
+ALTER TABLE ONLY isahl."zc_id_lifecycle_r_rollback-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((617)::bigint);
 ALTER TABLE ONLY isahl."zc_id_oper-action_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-amend" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-approve" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38558,6 +38942,8 @@ ALTER TABLE ONLY isahl."zc_id_order-after_sales" ALTER COLUMN id SET DEFAULT isa
 ALTER TABLE ONLY isahl."zc_id_order_rr_obj-rep" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((317)::bigint);
 ALTER TABLE ONLY isahl."zc_id_order_rr_subj-rep" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((318)::bigint);
 ALTER TABLE ONLY isahl."zc_id_orga-department_rr_project" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((319)::bigint);
+ALTER TABLE ONLY isahl."zc_id_phen-geohazard" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_phen-weather" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_plan-certification" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_plan-delivery_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_plan-inbound" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38613,9 +38999,6 @@ ALTER TABLE ONLY isahl."zc_id_prod-traffic_rr_contacts" ALTER COLUMN id SET DEFA
 ALTER TABLE ONLY isahl."zc_id_prod-transform" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-transform_r_composition" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((339)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-transport_rr_stop" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((340)::bigint);
-ALTER TABLE ONLY isahl."zc_id_production_r_log-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((341)::bigint);
-ALTER TABLE ONLY isahl."zc_id_production_r_transport-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((343)::bigint);
-ALTER TABLE ONLY isahl."zc_id_project_r_review-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((349)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stan-air" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stan-clause" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stan-operation" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38628,7 +39011,6 @@ ALTER TABLE ONLY isahl."zc_id_stat-mal-voucher" ALTER COLUMN id SET DEFAULT isah
 ALTER TABLE ONLY isahl."zc_id_stat-slf-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-sto-voucher_rr_tsk-meter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((358)::bigint);
-ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((359)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-action" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-make" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-meter" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38645,7 +39027,6 @@ ALTER TABLE ONLY isahl."zc_id_stor-acc-futures" ALTER COLUMN id SET DEFAULT isah
 ALTER TABLE ONLY isahl."zc_id_stor-acc-insurance" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-acc-points" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-acc-stock" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_stor-container_r_tracking-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((360)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-airplane" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-box" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-ctn-cargo" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38676,14 +39057,12 @@ ALTER TABLE ONLY isahl."zc_id_stor-plc-url" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_stor-plc-warehouse" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-plc-yard" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stor-traffic_line_rr_stop" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((361)::bigint);
-ALTER TABLE ONLY isahl."zc_id_storage_r_cnt-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((362)::bigint);
 ALTER TABLE ONLY isahl."zc_id_storage_rr_stock-in" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((363)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-department" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((364)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-legal_person" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((365)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stus-vehicle" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((366)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-bank" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_subj-employee" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_subj-employee_r_employ-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((367)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-group" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_subj-group_rr_project" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((368)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-hierarchy" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38721,7 +39100,6 @@ ALTER TABLE ONLY isahl."zc_id_task_rr_sto-voucher" ALTER COLUMN id SET DEFAULT i
 ALTER TABLE ONLY isahl."zc_id_thre-meeting" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_thread_rr_topic-x" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((383)::bigint);
 ALTER TABLE ONLY isahl."zc_id_vers-context_r_baseline" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((384)::bigint);
-ALTER TABLE ONLY isahl."zc_id_vers-context_r_ver-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((385)::bigint);
 ALTER TABLE ONLY isahl."zc_id_agreement_r_calc" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((249)::bigint);
 ALTER TABLE ONLY isahl."zc_id_audit_rr_auditee" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((253)::bigint);
 ALTER TABLE ONLY isahl."zc_id_audit_rr_conclusion" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((254)::bigint);
@@ -38790,16 +39168,22 @@ ALTER TABLE ONLY isahl."zc_id_appr-purchase" ALTER COLUMN id SET DEFAULT isahl.g
 ALTER TABLE ONLY isahl."zc_id_appr-recruitment" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_appr-req-time_off" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_appr-user_verify" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_bill-check_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((255)::bigint);
+ALTER TABLE ONLY isahl."zc_id_bill-ticket_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((260)::bigint);
 ALTER TABLE ONLY isahl."zc_id_bom-equipment" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bom-file" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bom-gift_set" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_bom-solution" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_calc-prod_pricing" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((387)::bigint);
 ALTER TABLE ONLY isahl."zc_id_calc-sales_bonus" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((388)::bigint);
+ALTER TABLE ONLY isahl."zc_id_deta-bill-check_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((281)::bigint);
+ALTER TABLE ONLY isahl."zc_id_deta-tsk_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((284)::bigint);
+ALTER TABLE ONLY isahl."zc_id_device_r_iot-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((285)::bigint);
 ALTER TABLE ONLY isahl."zc_id_docu-accounting_rr_bills" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((392)::bigint);
 ALTER TABLE ONLY isahl."zc_id_docu-accounting_rr_smt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((393)::bigint);
 ALTER TABLE ONLY isahl."zc_id_empl-agent" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_empl-natural" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_empl-natural_r_marital-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((288)::bigint);
 ALTER TABLE ONLY isahl."zc_id_form-access" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((400)::bigint);
 ALTER TABLE ONLY isahl."zc_id_form-calc_tax" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((402)::bigint);
 ALTER TABLE ONLY isahl."zc_id_geog-area" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((405)::bigint);
@@ -38815,6 +39199,7 @@ ALTER TABLE ONLY isahl."zc_id_geom-polygon" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_invo-electric" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_invo-form" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_invo-proforma" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_invoice_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((298)::bigint);
 ALTER TABLE ONLY isahl."zc_id_law-civil-code" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-common-case" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_law-common-statute" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38822,6 +39207,7 @@ ALTER TABLE ONLY isahl."zc_id_law-intl-custom" ALTER COLUMN id SET DEFAULT isahl
 ALTER TABLE ONLY isahl."zc_id_law-intl-treaty" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_leve-applicable" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((415)::bigint);
 ALTER TABLE ONLY isahl."zc_id_leve-bom_satisfy" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((416)::bigint);
+ALTER TABLE ONLY isahl."zc_id_leve-criticality" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((598)::bigint);
 ALTER TABLE ONLY isahl."zc_id_leve-diploma" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((417)::bigint);
 ALTER TABLE ONLY isahl."zc_id_leve-impact" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((419)::bigint);
 ALTER TABLE ONLY isahl."zc_id_leve-log" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((421)::bigint);
@@ -38831,6 +39217,11 @@ ALTER TABLE ONLY isahl."zc_id_leve-post-seq" ALTER COLUMN id SET DEFAULT isahl.g
 ALTER TABLE ONLY isahl."zc_id_leve-qualification" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((427)::bigint);
 ALTER TABLE ONLY isahl."zc_id_leve-structure" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((431)::bigint);
 ALTER TABLE ONLY isahl."zc_id_leve-substitute" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((432)::bigint);
+ALTER TABLE ONLY isahl."zc_id_leve-threat" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((602)::bigint);
+ALTER TABLE ONLY isahl."zc_id_leve-value" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((604)::bigint);
+ALTER TABLE ONLY isahl."zc_id_leve-vulnerability" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((600)::bigint);
+ALTER TABLE ONLY isahl."zc_id_lifecycle_r_appraval-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((300)::bigint);
+ALTER TABLE ONLY isahl."zc_id_lifecycle_r_lock-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((301)::bigint);
 ALTER TABLE ONLY isahl."zc_id_oper-sign_rr_agreement" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((438)::bigint);
 ALTER TABLE ONLY isahl."zc_id_oper-sign_rr_contract" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((439)::bigint);
 ALTER TABLE ONLY isahl."zc_id_orde-ahbl" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38956,6 +39347,9 @@ ALTER TABLE ONLY isahl."zc_id_prod-survey-sales" ALTER COLUMN id SET DEFAULT isa
 ALTER TABLE ONLY isahl."zc_id_prod-transfer_p2p-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-transfer_p2p-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-transfer_p2p-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_production_r_log-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((341)::bigint);
+ALTER TABLE ONLY isahl."zc_id_production_r_transport-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((343)::bigint);
+ALTER TABLE ONLY isahl."zc_id_project_r_review-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((349)::bigint);
 ALTER TABLE ONLY isahl."zc_id_rate-angle" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((471)::bigint);
 ALTER TABLE ONLY isahl."zc_id_rate-area" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((472)::bigint);
 ALTER TABLE ONLY isahl."zc_id_rate-attrition" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((473)::bigint);
@@ -39027,10 +39421,14 @@ ALTER TABLE ONLY isahl."zc_id_segm-weight" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_stat-smt-bank" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-cash" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-smt-channel" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_stat-task_r_verify-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((359)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-trade_order_rr_bill-pricing" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((538)::bigint);
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-m_volume" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-tsk-m_weight" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_stor-container_r_tracking-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((360)::bigint);
+ALTER TABLE ONLY isahl."zc_id_storage_r_cnt-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((362)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-country" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_subj-employee_r_employ-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((367)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-group_rr_member" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((540)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-ministry_rr_subordinate" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((541)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subj-org" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -39040,6 +39438,7 @@ ALTER TABLE ONLY isahl."zc_id_subj-supranational" ALTER COLUMN id SET DEFAULT is
 ALTER TABLE ONLY isahl."zc_id_tick-admission" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_tick-discount" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_tick-lading" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_vers-context_r_ver-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((385)::bigint);
 ALTER TABLE ONLY isahl."zc_id_bom_rr_item" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((386)::bigint);
 ALTER TABLE ONLY isahl."zc_id_contract_rr_deal" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((389)::bigint);
 ALTER TABLE ONLY isahl."zc_id_contract_rr_demand" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((390)::bigint);
