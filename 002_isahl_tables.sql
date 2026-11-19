@@ -7142,6 +7142,71 @@ INHERITS (isahl."zc_id_message_rr_contact-info");
 
 
 
+CREATE TABLE isahl.zc_id_military (
+    created_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_created_at_not_null NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() CONSTRAINT zc_id_lifecycle_updated_at_not_null NOT NULL,
+    id bigint NOT NULL,
+    created_by_id bigint,
+    updated_by_id bigint,
+    notice text,
+    t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
+    code text,
+    o_number text,
+    comments text,
+    ak_benefit_user bigint[],
+    ak_permit_user bigint[],
+    ak_access_user bigint[],
+    projection text,
+    _f_ text,
+    _t_ text,
+    dk_scene bigint,
+    dk_factor bigint,
+    dk_function bigint,
+    tpl_id bigint,
+    ak_source bigint[],
+    timeline jsonb,
+    ak_attachment bigint[],
+    tk_version bigint,
+    tk_batch_no bigint,
+    fk_previous bigint,
+    ck_branch bigint,
+    qk_cpe bigint
+)
+INHERITS (isahl."zc_id_proc-context", isahl.zc_id_version);
+
+
+
+CREATE TABLE isahl."zc_id_mili-command" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_military);
+
+
+
+CREATE TABLE isahl."zc_id_mili-obejective" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_military);
+
+
+
+CREATE TABLE isahl."zc_id_mili-resource" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_military);
+
+
+
+CREATE TABLE isahl."zc_id_mili-target" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_military);
+
+
+
 CREATE TABLE isahl."zc_id_msgs-chat_ai" (
     created_at timestamp with time zone DEFAULT now() CONSTRAINT "zc_id_msgs-chat-ai_created_at_not_null" NOT NULL,
     updated_at timestamp with time zone DEFAULT now() CONSTRAINT "zc_id_msgs-chat-ai_updated_at_not_null" NOT NULL,
@@ -23039,6 +23104,38 @@ ALTER TABLE ONLY isahl.zc_id_message_rr_recipients ALTER COLUMN id SET DEFAULT i
 
 
 
+ALTER TABLE ONLY isahl."zc_id_mili-command" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_mili-command" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_mili-obejective" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_mili-obejective" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_mili-resource" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_mili-resource" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_mili-target" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_mili-target" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_msgs-open_form" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -28184,6 +28281,31 @@ ALTER TABLE ONLY isahl.zc_id_message_rr_copy
 
 ALTER TABLE ONLY isahl.zc_id_message_rr_recipients
     ADD CONSTRAINT zc_id_message_rr_recipients_pkey PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_mili-command"
+    ADD CONSTRAINT "zc_id_mili-command_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_mili-obejective"
+    ADD CONSTRAINT "zc_id_mili-obejective_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_mili-resource"
+    ADD CONSTRAINT "zc_id_mili-resource_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_mili-target"
+    ADD CONSTRAINT "zc_id_mili-target_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl.zc_id_military
+    ADD CONSTRAINT zc_id_military_pkey PRIMARY KEY (id);
 
 
 
@@ -38816,6 +38938,7 @@ ALTER TABLE ONLY isahl."zc_id_lifecycle_r_evaluation" ALTER COLUMN id SET DEFAUL
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((208)::bigint);
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_tags" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((209)::bigint);
 ALTER TABLE ONLY isahl."zc_id_lifecycle_rr_non_self" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((210)::bigint);
+ALTER TABLE ONLY isahl."zc_id_military" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_operation" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_phenomena" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_plan" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -38880,6 +39003,10 @@ ALTER TABLE ONLY isahl."zc_id_law-mixed" ALTER COLUMN id SET DEFAULT isahl.gen_n
 ALTER TABLE ONLY isahl."zc_id_law-religious" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_primary-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((302)::bigint);
 ALTER TABLE ONLY isahl."zc_id_lifecycle_r_rollback-status" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((617)::bigint);
+ALTER TABLE ONLY isahl."zc_id_mili-command" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_mili-obejective" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_mili-resource" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_mili-target" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-action_prj" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-amend" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_oper-approve" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
