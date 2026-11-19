@@ -7173,7 +7173,11 @@ CREATE TABLE isahl.zc_id_military (
     tk_batch_no bigint,
     fk_previous bigint,
     ck_branch bigint,
-    qk_cpe bigint
+    qk_cpe bigint,
+    lk_criticality bigint,
+    lk_vulnerability bigint,
+    lv_threat bigint,
+    lk_value bigint
 )
 INHERITS (isahl."zc_id_proc-context", isahl.zc_id_version);
 
