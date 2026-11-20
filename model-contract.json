@@ -175,7 +175,7 @@
     "zc_id_stus-duty": 0,
     "zc_id_stus-employ": 3,
     "zc_id_stus-entity": 4,
-    "zc_id_stus-event": 20,
+    "zc_id_stus-event": 26,
     "zc_id_stus-file": 9,
     "zc_id_stus-identity": 0,
     "zc_id_stus-inspection": 8,
@@ -216,7 +216,7 @@
     "zc_id_stus-storage": 5,
     "zc_id_stus-subject": 0,
     "zc_id_stus-supranational": 0,
-    "zc_id_stus-task": 5,
+    "zc_id_stus-task": 10,
     "zc_id_stus-template": 0,
     "zc_id_stus-threads": 0,
     "zc_id_stus-ticket": 0,
@@ -289,7 +289,7 @@
     "zc_id_unit-weight": 7,
     "zc_id_unit-working": 3
   },
-  "published_at": "2026-11-19T20:36:43.534377+00:00",
+  "published_at": "2026-11-20T13:13:17.139678+00:00",
   "row_layer": {
     "zc_id_cate-inv-title": "carry",
     "zc_id_cate-ope-title": "carry",
@@ -608,5 +608,5 @@
     "zc_id_unit-weight",
     "zc_id_unit-working"
   ],
-  "version": "v10.0.94"
+  "version": "v10.0.95"
 }
