@@ -4830,8 +4830,7 @@ CREATE TABLE isahl.zc_id_device (
     tpl_id bigint,
     fk_user bigint,
     sk_currency bigint,
-    fk_owner bigint,
-    fk_location bigint
+    qk_geopoint bigint
 )
 INHERITS (isahl.zc_id_entity);
 
@@ -32926,15 +32925,7 @@ CREATE INDEX idx_zc_id_detail_fk_list ON isahl.zc_id_detail USING btree (fk_list
 
 
 
-CREATE INDEX "idx_zc_id_devi-camera_fk_owner" ON isahl."zc_id_devi-camera" USING btree (fk_owner);
-
-
-
 CREATE INDEX "idx_zc_id_devi-camera_fk_user" ON isahl."zc_id_devi-camera" USING btree (fk_user);
-
-
-
-CREATE INDEX "idx_zc_id_devi-chess_fk_owner" ON isahl."zc_id_devi-chess" USING btree (fk_owner);
 
 
 
@@ -32942,15 +32933,7 @@ CREATE INDEX "idx_zc_id_devi-chess_fk_user" ON isahl."zc_id_devi-chess" USING bt
 
 
 
-CREATE INDEX "idx_zc_id_devi-control_board_fk_owner" ON isahl."zc_id_devi-control_board" USING btree (fk_owner);
-
-
-
 CREATE INDEX "idx_zc_id_devi-control_board_fk_user" ON isahl."zc_id_devi-control_board" USING btree (fk_user);
-
-
-
-CREATE INDEX "idx_zc_id_devi-display_fk_owner" ON isahl."zc_id_devi-display" USING btree (fk_owner);
 
 
 
@@ -32958,23 +32941,11 @@ CREATE INDEX "idx_zc_id_devi-display_fk_user" ON isahl."zc_id_devi-display" USIN
 
 
 
-CREATE INDEX "idx_zc_id_devi-measure_fk_owner" ON isahl."zc_id_devi-measure" USING btree (fk_owner);
-
-
-
 CREATE INDEX "idx_zc_id_devi-measure_fk_user" ON isahl."zc_id_devi-measure" USING btree (fk_user);
 
 
 
-CREATE INDEX "idx_zc_id_devi-sensor_fk_owner" ON isahl."zc_id_devi-sensor" USING btree (fk_owner);
-
-
-
 CREATE INDEX "idx_zc_id_devi-sensor_fk_user" ON isahl."zc_id_devi-sensor" USING btree (fk_user);
-
-
-
-CREATE INDEX idx_zc_id_device_fk_owner ON isahl.zc_id_device USING btree (fk_owner);
 
 
 
