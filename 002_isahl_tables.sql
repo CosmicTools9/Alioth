@@ -4279,30 +4279,6 @@ INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
 
-CREATE TABLE isahl.zc_id_contract_r_calc (
-    id bigint NOT NULL
-)
-INHERITS (isahl.zc_id_lifecycle_r_evaluation);
-
-
-
-CREATE TABLE isahl.zc_id_contract_r_term (
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    id bigint NOT NULL,
-    created_by_id bigint,
-    updated_by_id bigint,
-    notice text,
-    t_color_ text,
-    code text,
-    ref_left bigint,
-    ref_right bigint,
-    comments text
-)
-INHERITS (isahl.zc_id_lifecycle_r_evaluation);
-
-
-
 CREATE TABLE isahl.zc_id_contract_rr_agreement (
 )
 INHERITS (isahl.zc_id_lifecycle_rr_non_self);
@@ -22217,14 +22193,6 @@ ALTER TABLE ONLY isahl.zc_id_container_rr_device ALTER COLUMN id SET DEFAULT isa
 
 
 
-ALTER TABLE ONLY isahl.zc_id_contract_r_calc ALTER COLUMN created_at SET DEFAULT now();
-
-
-
-ALTER TABLE ONLY isahl.zc_id_contract_r_calc ALTER COLUMN updated_at SET DEFAULT now();
-
-
-
 ALTER TABLE ONLY isahl.zc_id_contract_rr_agreement ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -27519,16 +27487,6 @@ ALTER TABLE ONLY isahl.zc_id_contract
 
 
 
-ALTER TABLE ONLY isahl.zc_id_contract_r_calc
-    ADD CONSTRAINT zc_id_contract_r_calc_pkey PRIMARY KEY (id);
-
-
-
-ALTER TABLE ONLY isahl.zc_id_contract_r_term
-    ADD CONSTRAINT zc_id_contract_r_term_pkey PRIMARY KEY (id);
-
-
-
 ALTER TABLE ONLY isahl.zc_id_contract_rr_deal
     ADD CONSTRAINT zc_id_contract_rr_deal_pkey PRIMARY KEY (id);
 
@@ -32802,14 +32760,6 @@ CREATE INDEX idx_zc_id_contacts_rr_infos_ref_right ON isahl.zc_id_contacts_rr_in
 
 
 CREATE INDEX idx_zc_id_container_rr_device_ref_right ON isahl.zc_id_container_rr_device USING btree (ref_right);
-
-
-
-CREATE INDEX idx_zc_id_contract_r_calc_ref_right ON isahl.zc_id_contract_r_calc USING btree (ref_right);
-
-
-
-CREATE INDEX idx_zc_id_contract_r_term_ref_right ON isahl.zc_id_contract_r_term USING btree (ref_right);
 
 
 
@@ -38089,14 +38039,6 @@ CREATE UNIQUE INDEX uq_zc_id_container_rr_device_ref_left_ref_right_qk_period ON
 
 
 
-CREATE UNIQUE INDEX uq_zc_id_contract_r_calc_ref_left_ref_right_qk_period ON isahl.zc_id_contract_r_calc USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
-
-
-
-CREATE UNIQUE INDEX uq_zc_id_contract_r_term_ref_left_ref_right_qk_period ON isahl.zc_id_contract_r_term USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
-
-
-
 CREATE UNIQUE INDEX uq_zc_id_contract_rr_agreement_ref_left_ref_right_qk_period ON isahl.zc_id_contract_rr_agreement USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
@@ -39484,8 +39426,6 @@ ALTER TABLE ONLY isahl."zc_id_audit_rr_conclusion" ALTER COLUMN id SET DEFAULT i
 ALTER TABLE ONLY isahl."zc_id_bill_rr_process" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((261)::bigint);
 ALTER TABLE ONLY isahl."zc_id_bill_rr_recipients" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((262)::bigint);
 ALTER TABLE ONLY isahl."zc_id_contacts_rr_infos" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((270)::bigint);
-ALTER TABLE ONLY isahl."zc_id_contract_r_calc" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((272)::bigint);
-ALTER TABLE ONLY isahl."zc_id_contract_r_term" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((273)::bigint);
 ALTER TABLE ONLY isahl."zc_id_contract_rr_law" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((275)::bigint);
 ALTER TABLE ONLY isahl."zc_id_contract_rr_matter" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((276)::bigint);
 ALTER TABLE ONLY isahl."zc_id_contract_rr_party" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((277)::bigint);
