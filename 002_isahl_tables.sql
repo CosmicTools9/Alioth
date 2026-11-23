@@ -9743,6 +9743,13 @@ INHERITS (isahl.zc_id_plan);
 
 
 
+CREATE TABLE isahl."zc_id_plan-recruitment_rr_position" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_lifecycle_rr_non_self);
+
+
+
 CREATE TABLE isahl.zc_id_plan_combat_rr_opord (
     id bigint NOT NULL
 )
@@ -9817,7 +9824,11 @@ CREATE TABLE isahl.zc_id_project (
     lk_health bigint,
     lk_priority bigint,
     qk_amount bigint,
-    fk_parent bigint
+    fk_parent bigint,
+    lk_kpi bigint,
+    ek_calc bigint,
+    qk_target bigint,
+    ek_comp bigint
 )
 INHERITS (isahl.zc_id_version, isahl."zc_id_proc-context");
 
@@ -23690,6 +23701,14 @@ ALTER TABLE ONLY isahl."zc_id_plan-personal" ALTER COLUMN id SET DEFAULT isahl.g
 
 
 
+ALTER TABLE ONLY isahl."zc_id_plan-recruitment_rr_position" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_plan-recruitment_rr_position" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl.zc_id_plan_combat_rr_opord ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -29031,6 +29050,11 @@ ALTER TABLE ONLY isahl."zc_id_plan-purchase_rr_material"
 
 ALTER TABLE ONLY isahl."zc_id_plan-recruitment"
     ADD CONSTRAINT "zc_id_plan-recruitment_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_plan-recruitment_rr_position"
+    ADD CONSTRAINT "zc_id_plan-recruitment_rr_position_pkey" PRIMARY KEY (id);
 
 
 
@@ -38291,6 +38315,10 @@ CREATE UNIQUE INDEX "uq_zc_id_plan-purchase_rr_material_ref_left_ref_right_qk_pe
 
 
 
+CREATE UNIQUE INDEX "uq_zc_id_plan-recruitment_rr_position_ref_left_ref_right_qk_per" ON isahl."zc_id_plan-recruitment_rr_position" USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
+
+
+
 CREATE UNIQUE INDEX uq_zc_id_plan_combat_rr_opord_ref_left_ref_right_qk_period ON isahl.zc_id_plan_combat_rr_opord USING btree (ref_left, ref_right, COALESCE(qk_period, ('-1'::integer)::bigint)) WHERE (deleted_at IS NULL);
 
 
@@ -39182,6 +39210,7 @@ ALTER TABLE ONLY isahl."zc_id_plan-promotion" ALTER COLUMN id SET DEFAULT isahl.
 ALTER TABLE ONLY isahl."zc_id_plan-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_plan-purchase_rr_material" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((318)::bigint);
 ALTER TABLE ONLY isahl."zc_id_plan-recruitment" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_plan-recruitment_rr_position" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((577)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prjt-inte_ctrl-case" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prjt-marketing" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prjt-proc_ctrl" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
