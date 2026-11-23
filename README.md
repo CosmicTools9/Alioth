@@ -145,7 +145,7 @@ The Factor dimension is divided into five domains corresponding to the five indi
 | P | Place | Location subgroup | Where trading |
 | F | Finance | Process & information subgroup | How value flows |
 
-Domain membership is derived via `ck_category` → `zc_id_cons-factor-cate.a_type_`. A complete exchange snapshot **must** cover all five domains — formally, the image of the domain map covers `{L, C, G, P, F}` (no symmetry breaking allowed), enforced by the model inference engine at generation time.
+Domain membership is derived via `ck_category` → `zc_id_cons-factor-cate.a_type_`. A complete exchange snapshot **must** cover all five domains — formally, the image of the domain map covers `{L, C, G, P, F}` (no symmetry breaking allowed); the model inference engine evaluates coverage per chain + status window and explicitly reports missing domains.
 
 ### State Expression in Lifecycles
 
