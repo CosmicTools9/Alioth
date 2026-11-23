@@ -7188,6 +7188,13 @@ INHERITS (isahl.zc_id_military);
 
 
 
+CREATE TABLE isahl."zc_id_msgs-action_command" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_message);
+
+
+
 CREATE TABLE isahl."zc_id_msgs-chat_ai" (
     created_at timestamp with time zone DEFAULT now() CONSTRAINT "zc_id_msgs-chat-ai_created_at_not_null" NOT NULL,
     updated_at timestamp with time zone DEFAULT now() CONSTRAINT "zc_id_msgs-chat-ai_updated_at_not_null" NOT NULL,
@@ -7354,6 +7361,13 @@ CREATE TABLE isahl."zc_id_msgs-review" (
     "fk_sender-addr" bigint,
     content text,
     fk_approve bigint
+)
+INHERITS (isahl.zc_id_message);
+
+
+
+CREATE TABLE isahl."zc_id_msgs-sensor_reading" (
+    id bigint NOT NULL
 )
 INHERITS (isahl.zc_id_message);
 
@@ -9209,7 +9223,6 @@ CREATE TABLE isahl.zc_id_place (
     dk_factor bigint,
     dk_function bigint,
     tpl_id bigint,
-    qk_fence bigint,
     fk_parent bigint,
     ck_timezone bigint
 )
@@ -17395,8 +17408,7 @@ CREATE TABLE isahl."zc_id_stor-place" (
     tpl_id bigint,
     fk_parent bigint,
     fk_trustee bigint,
-    qk_capacity bigint,
-    fk_address bigint
+    qk_capacity bigint
 )
 INHERITS (isahl.zc_id_place, isahl.zc_id_storage);
 
@@ -17422,14 +17434,15 @@ CREATE TABLE isahl."zc_id_stor-plc-airport" (
     tpl_id bigint,
     fk_trustee bigint,
     qk_capacity bigint,
-    fk_address bigint
+    qk_geofence bigint
 )
 INHERITS (isahl."zc_id_stor-place");
 
 
 
 CREATE TABLE isahl."zc_id_stor-plc-area" (
-    id bigint NOT NULL
+    id bigint NOT NULL,
+    qk_geofence bigint
 )
 INHERITS (isahl."zc_id_stor-place");
 
@@ -17462,8 +17475,8 @@ CREATE TABLE isahl."zc_id_stor-plc-bin" (
     tpl_id bigint,
     fk_trustee bigint,
     qk_capacity bigint,
-    fk_address bigint,
-    fk_warehouse bigint
+    fk_warehouse bigint,
+    qk_geofence bigint
 )
 INHERITS (isahl."zc_id_stor-place");
 
@@ -17488,15 +17501,15 @@ CREATE TABLE isahl."zc_id_stor-plc-channel" (
     dk_function bigint,
     tpl_id bigint,
     fk_trustee bigint,
-    qk_capacity bigint,
-    fk_address bigint
+    qk_capacity bigint
 )
 INHERITS (isahl."zc_id_stor-place");
 
 
 
 CREATE TABLE isahl."zc_id_stor-plc-division" (
-    id bigint NOT NULL
+    id bigint NOT NULL,
+    qk_geofence bigint
 )
 INHERITS (isahl."zc_id_stor-place");
 
@@ -17522,7 +17535,7 @@ CREATE TABLE isahl."zc_id_stor-plc-dock" (
     tpl_id bigint,
     fk_trustee bigint,
     qk_capacity bigint,
-    fk_address bigint
+    qk_geofence bigint
 )
 INHERITS (isahl."zc_id_stor-place");
 
@@ -17548,7 +17561,7 @@ CREATE TABLE isahl."zc_id_stor-plc-garage" (
     tpl_id bigint,
     fk_trustee bigint,
     qk_capacity bigint,
-    fk_address bigint
+    qk_geofence bigint
 )
 INHERITS (isahl."zc_id_stor-place");
 
@@ -17573,8 +17586,7 @@ CREATE TABLE isahl."zc_id_stor-plc-path" (
     dk_function bigint,
     tpl_id bigint,
     fk_trustee bigint,
-    qk_capacity bigint,
-    fk_address bigint
+    qk_capacity bigint
 )
 INHERITS (isahl."zc_id_stor-data", isahl."zc_id_stor-place");
 
@@ -17600,7 +17612,7 @@ CREATE TABLE isahl."zc_id_stor-plc-platform" (
     tpl_id bigint,
     fk_trustee bigint,
     qk_capacity bigint,
-    fk_address bigint
+    qk_geofence bigint
 )
 INHERITS (isahl."zc_id_stor-place");
 
@@ -17633,15 +17645,16 @@ CREATE TABLE isahl."zc_id_stor-plc-shipping_port" (
     tpl_id bigint,
     fk_trustee bigint,
     qk_capacity bigint,
-    fk_address bigint,
-    p_code text
+    p_code text,
+    qk_geofence bigint
 )
 INHERITS (isahl."zc_id_stor-place");
 
 
 
 CREATE TABLE isahl."zc_id_stor-plc-shop" (
-    id bigint NOT NULL
+    id bigint NOT NULL,
+    qk_geofence bigint
 )
 INHERITS (isahl."zc_id_stor-place");
 
@@ -17667,7 +17680,7 @@ CREATE TABLE isahl."zc_id_stor-plc-stop" (
     tpl_id bigint,
     fk_trustee bigint,
     qk_capacity bigint,
-    fk_address bigint
+    qk_geofence bigint
 )
 INHERITS (isahl."zc_id_stor-place");
 
@@ -17693,7 +17706,7 @@ CREATE TABLE isahl."zc_id_stor-plc-terminal" (
     tpl_id bigint,
     fk_trustee bigint,
     qk_capacity bigint,
-    fk_address bigint
+    qk_geofence bigint
 )
 INHERITS (isahl."zc_id_stor-place");
 
@@ -17704,9 +17717,9 @@ CREATE TABLE isahl."zc_id_stor-plc-url" (
     updated_at timestamp with time zone DEFAULT now(),
     id bigint NOT NULL,
     fk_parent bigint,
-    fk_address bigint
+    ck_timezone bigint
 )
-INHERITS (isahl.zc_id_place, isahl."zc_id_stor-data");
+INHERITS (isahl."zc_id_stor-data", isahl."zc_id_stor-place");
 
 
 
@@ -17730,7 +17743,7 @@ CREATE TABLE isahl."zc_id_stor-plc-warehouse" (
     tpl_id bigint,
     fk_trustee bigint,
     qk_capacity bigint,
-    fk_address bigint
+    qk_geofence bigint
 )
 INHERITS (isahl."zc_id_stor-place");
 
@@ -17756,7 +17769,7 @@ CREATE TABLE isahl."zc_id_stor-plc-yard" (
     tpl_id bigint,
     fk_trustee bigint,
     qk_capacity bigint,
-    fk_address bigint
+    qk_geofence bigint
 )
 INHERITS (isahl."zc_id_stor-place");
 
@@ -23189,11 +23202,27 @@ ALTER TABLE ONLY isahl."zc_id_mili-target" ALTER COLUMN updated_at SET DEFAULT n
 
 
 
+ALTER TABLE ONLY isahl."zc_id_msgs-action_command" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_msgs-action_command" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_msgs-open_form" ALTER COLUMN created_at SET DEFAULT now();
 
 
 
 ALTER TABLE ONLY isahl."zc_id_msgs-open_form" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_msgs-sensor_reading" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_msgs-sensor_reading" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -28432,6 +28461,11 @@ ALTER TABLE ONLY isahl.zc_id_military
 
 
 
+ALTER TABLE ONLY isahl."zc_id_msgs-action_command"
+    ADD CONSTRAINT "zc_id_msgs-action_command_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_msgs-chat_ai"
     ADD CONSTRAINT "zc_id_msgs-chat-ai_pkey" PRIMARY KEY (id);
 
@@ -28464,6 +28498,11 @@ ALTER TABLE ONLY isahl."zc_id_msgs-open_form"
 
 ALTER TABLE ONLY isahl."zc_id_msgs-review"
     ADD CONSTRAINT "zc_id_msgs-review_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_msgs-sensor_reading"
+    ADD CONSTRAINT "zc_id_msgs-sensor_reading_pkey" PRIMARY KEY (id);
 
 
 
@@ -35923,15 +35962,7 @@ CREATE INDEX "idx_zc_id_stor-place_fk_trustee" ON isahl."zc_id_stor-place" USING
 
 
 
-CREATE INDEX "idx_zc_id_stor-plc-airport_fk_address" ON isahl."zc_id_stor-plc-airport" USING btree (fk_address);
-
-
-
 CREATE INDEX "idx_zc_id_stor-plc-airport_fk_trustee" ON isahl."zc_id_stor-plc-airport" USING btree (fk_trustee);
-
-
-
-CREATE INDEX "idx_zc_id_stor-plc-bin_fk_address" ON isahl."zc_id_stor-plc-bin" USING btree (fk_address);
 
 
 
@@ -35943,15 +35974,7 @@ CREATE INDEX "idx_zc_id_stor-plc-bin_fk_warehouse" ON isahl."zc_id_stor-plc-bin"
 
 
 
-CREATE INDEX "idx_zc_id_stor-plc-channel_fk_address" ON isahl."zc_id_stor-plc-channel" USING btree (fk_address);
-
-
-
 CREATE INDEX "idx_zc_id_stor-plc-channel_fk_trustee" ON isahl."zc_id_stor-plc-channel" USING btree (fk_trustee);
-
-
-
-CREATE INDEX "idx_zc_id_stor-plc-dock_fk_address" ON isahl."zc_id_stor-plc-dock" USING btree (fk_address);
 
 
 
@@ -35959,15 +35982,7 @@ CREATE INDEX "idx_zc_id_stor-plc-dock_fk_trustee" ON isahl."zc_id_stor-plc-dock"
 
 
 
-CREATE INDEX "idx_zc_id_stor-plc-garage_fk_address" ON isahl."zc_id_stor-plc-garage" USING btree (fk_address);
-
-
-
 CREATE INDEX "idx_zc_id_stor-plc-garage_fk_trustee" ON isahl."zc_id_stor-plc-garage" USING btree (fk_trustee);
-
-
-
-CREATE INDEX "idx_zc_id_stor-plc-path_fk_address" ON isahl."zc_id_stor-plc-path" USING btree (fk_address);
 
 
 
@@ -35975,15 +35990,7 @@ CREATE INDEX "idx_zc_id_stor-plc-path_fk_trustee" ON isahl."zc_id_stor-plc-path"
 
 
 
-CREATE INDEX "idx_zc_id_stor-plc-platform_fk_address" ON isahl."zc_id_stor-plc-platform" USING btree (fk_address);
-
-
-
 CREATE INDEX "idx_zc_id_stor-plc-platform_fk_trustee" ON isahl."zc_id_stor-plc-platform" USING btree (fk_trustee);
-
-
-
-CREATE INDEX "idx_zc_id_stor-plc-shipping_port_fk_address" ON isahl."zc_id_stor-plc-shipping_port" USING btree (fk_address);
 
 
 
@@ -35991,15 +35998,7 @@ CREATE INDEX "idx_zc_id_stor-plc-shipping_port_fk_trustee" ON isahl."zc_id_stor-
 
 
 
-CREATE INDEX "idx_zc_id_stor-plc-stop_fk_address" ON isahl."zc_id_stor-plc-stop" USING btree (fk_address);
-
-
-
 CREATE INDEX "idx_zc_id_stor-plc-stop_fk_trustee" ON isahl."zc_id_stor-plc-stop" USING btree (fk_trustee);
-
-
-
-CREATE INDEX "idx_zc_id_stor-plc-terminal_fk_address" ON isahl."zc_id_stor-plc-terminal" USING btree (fk_address);
 
 
 
@@ -36011,15 +36010,7 @@ CREATE INDEX "idx_zc_id_stor-plc-url_fk_trustee" ON isahl."zc_id_stor-plc-url" U
 
 
 
-CREATE INDEX "idx_zc_id_stor-plc-warehouse_fk_address" ON isahl."zc_id_stor-plc-warehouse" USING btree (fk_address);
-
-
-
 CREATE INDEX "idx_zc_id_stor-plc-warehouse_fk_trustee" ON isahl."zc_id_stor-plc-warehouse" USING btree (fk_trustee);
-
-
-
-CREATE INDEX "idx_zc_id_stor-plc-yard_fk_address" ON isahl."zc_id_stor-plc-yard" USING btree (fk_address);
 
 
 
@@ -39047,6 +39038,7 @@ ALTER TABLE ONLY isahl."zc_id_info-postal" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_info-telephone" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_info-url" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_info-zipcode" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_msgs-action_command" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-chat_ai" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-comments" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-email" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -39054,6 +39046,7 @@ ALTER TABLE ONLY isahl."zc_id_msgs-feedback" ALTER COLUMN id SET DEFAULT isahl.g
 ALTER TABLE ONLY isahl."zc_id_msgs-im" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-open_form" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-review" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_msgs-sensor_reading" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-system" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-telephone" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_msgs-zchat" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
