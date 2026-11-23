@@ -7177,7 +7177,8 @@ CREATE TABLE isahl.zc_id_military (
     lk_criticality bigint,
     lk_vulnerability bigint,
     lv_threat bigint,
-    lk_value bigint
+    lk_value bigint,
+    "fk_eval-std" bigint
 )
 INHERITS (isahl."zc_id_proc-context", isahl.zc_id_version);
 
@@ -9826,9 +9827,8 @@ CREATE TABLE isahl.zc_id_project (
     qk_amount bigint,
     fk_parent bigint,
     lk_kpi bigint,
-    ek_calc bigint,
     qk_target bigint,
-    ek_comp bigint
+    "fk_eval-std" bigint
 )
 INHERITS (isahl.zc_id_version, isahl."zc_id_proc-context");
 
@@ -12592,6 +12592,41 @@ INHERITS (isahl.zc_id_lifecycle_rr_non_self);
 
 
 
+CREATE TABLE isahl."zc_id_prod-publicity" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_production);
+
+
+
+CREATE TABLE isahl."zc_id_prod-publicity-made" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_prod-made", isahl."zc_id_prod-publicity");
+
+
+
+CREATE TABLE isahl."zc_id_prod-publicity-purchase" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_prod-publicity", isahl."zc_id_prod-purchase");
+
+
+
+CREATE TABLE isahl."zc_id_prod-publicity-request" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_prod-publicity", isahl."zc_id_prod-request");
+
+
+
+CREATE TABLE isahl."zc_id_prod-publicity-sales" (
+    id bigint NOT NULL
+)
+INHERITS (isahl."zc_id_prod-publicity", isahl."zc_id_prod-sales");
+
+
+
 CREATE TABLE isahl."zc_id_prod-purchase_rr_project" (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -14404,7 +14439,7 @@ INHERITS (isahl.zc_id_protocol);
 
 
 CREATE TABLE isahl."zc_id_prot-profile_config" (
-    fk_employee bigint
+    fk_subject bigint
 )
 INHERITS (isahl.zc_id_protocol);
 
@@ -15190,7 +15225,8 @@ CREATE TABLE isahl."zc_id_relation-post_view_r_tags" (
     ref_left bigint,
     ref_right bigint,
     comments text,
-    qk_period bigint
+    qk_period bigint,
+    "fk_std-qualification" bigint
 )
 INHERITS (isahl.zc_ad_relation_r_scalar);
 
@@ -16128,6 +16164,13 @@ INHERITS (isahl.zc_id_standard);
 
 
 
+CREATE TABLE isahl."zc_id_stan-qualification" (
+    id bigint NOT NULL
+)
+INHERITS (isahl.zc_id_standard);
+
+
+
 CREATE TABLE isahl.zc_id_standard_r_formula (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -16136,13 +16179,18 @@ CREATE TABLE isahl.zc_id_standard_r_formula (
     updated_by_id bigint,
     notice text,
     t_color_ text,
+    deleted_at timestamp with time zone,
+    deleted_by_id bigint,
+    operated_by_id bigint,
     code text,
     ref_left bigint,
     ref_right bigint,
     comments text,
-    qk_period bigint
+    qk_period bigint,
+    is_active boolean DEFAULT true,
+    seq integer
 )
-INHERITS (isahl.zc_ad_tensor_r_scalar);
+INHERITS (isahl.zc_id_lifecycle_r_evaluation);
 
 
 
@@ -24553,6 +24601,46 @@ ALTER TABLE ONLY isahl."zc_id_prod-prj_vcs_file-sales" ALTER COLUMN encoding SET
 
 
 
+ALTER TABLE ONLY isahl."zc_id_prod-publicity" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-publicity" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-publicity-made" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-publicity-made" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-publicity-purchase" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-publicity-purchase" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-publicity-request" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-publicity-request" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-publicity-sales" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-publicity-sales" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-fo_express-made" ALTER COLUMN created_at SET DEFAULT now();
 
 
@@ -25366,6 +25454,14 @@ ALTER TABLE ONLY isahl."zc_id_stan-performance" ALTER COLUMN created_at SET DEFA
 
 
 ALTER TABLE ONLY isahl."zc_id_stan-performance" ALTER COLUMN updated_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stan-qualification" ALTER COLUMN created_at SET DEFAULT now();
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stan-qualification" ALTER COLUMN updated_at SET DEFAULT now();
 
 
 
@@ -29818,6 +29914,31 @@ ALTER TABLE ONLY isahl."zc_id_prod-pub_affairs"
 
 
 
+ALTER TABLE ONLY isahl."zc_id_prod-publicity-made"
+    ADD CONSTRAINT "zc_id_prod-publicity-made_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-publicity-purchase"
+    ADD CONSTRAINT "zc_id_prod-publicity-purchase_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-publicity-request"
+    ADD CONSTRAINT "zc_id_prod-publicity-request_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-publicity-sales"
+    ADD CONSTRAINT "zc_id_prod-publicity-sales_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_prod-publicity"
+    ADD CONSTRAINT "zc_id_prod-publicity_pkey" PRIMARY KEY (id);
+
+
+
 ALTER TABLE ONLY isahl."zc_id_prod-purchase"
     ADD CONSTRAINT "zc_id_prod-purchase_pkey" PRIMARY KEY (id);
 
@@ -30775,6 +30896,11 @@ ALTER TABLE ONLY isahl."zc_id_stan-performance"
 
 ALTER TABLE ONLY isahl."zc_id_stan-prod_quality"
     ADD CONSTRAINT "zc_id_stan-prod_quality_pkey" PRIMARY KEY (id);
+
+
+
+ALTER TABLE ONLY isahl."zc_id_stan-qualification"
+    ADD CONSTRAINT "zc_id_stan-qualification_pkey" PRIMARY KEY (id);
 
 
 
@@ -39069,7 +39195,6 @@ ALTER TABLE ONLY isahl."zc_id_process" ALTER COLUMN id SET DEFAULT isahl.gen_nex
 ALTER TABLE ONLY isahl."zc_id_production" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_project" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_standard" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
-ALTER TABLE ONLY isahl."zc_id_standard_r_formula" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((220)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subjects" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_task" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_appr-payment_rr_invoice" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((253)::bigint);
@@ -39239,6 +39364,7 @@ ALTER TABLE ONLY isahl."zc_id_prod-payload" ALTER COLUMN id SET DEFAULT isahl.ge
 ALTER TABLE ONLY isahl."zc_id_prod-proxy" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-proxy_rr_principal" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((330)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-pub_affairs" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-publicity" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-retail_r_barcode" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((331)::bigint);
@@ -39255,6 +39381,7 @@ ALTER TABLE ONLY isahl."zc_id_stan-clause" ALTER COLUMN id SET DEFAULT isahl.gen
 ALTER TABLE ONLY isahl."zc_id_stan-operation" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stan-performance" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stan-prod_quality" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_stan-qualification" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-bok-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-cnt-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_stat-com-voucher" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
@@ -39398,6 +39525,7 @@ ALTER TABLE ONLY isahl."zc_id_rate" ALTER COLUMN id SET DEFAULT isahl.gen_next_u
 ALTER TABLE ONLY isahl."zc_id_ratio" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((347)::bigint);
 ALTER TABLE ONLY isahl."zc_id_scale" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((348)::bigint);
 ALTER TABLE ONLY isahl."zc_id_segment" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((349)::bigint);
+ALTER TABLE ONLY isahl."zc_id_standard_r_formula" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((220)::bigint);
 ALTER TABLE ONLY isahl."zc_id_standard_rr_law" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((350)::bigint);
 ALTER TABLE ONLY isahl."zc_id_standard_rr_reference" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((351)::bigint);
 ALTER TABLE ONLY isahl."zc_id_subjects_rr_partner" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((368)::bigint);
@@ -39555,6 +39683,10 @@ ALTER TABLE ONLY isahl."zc_id_prod-project-made" ALTER COLUMN id SET DEFAULT isa
 ALTER TABLE ONLY isahl."zc_id_prod-project-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-project-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-project-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-publicity-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-publicity-purchase" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-publicity-request" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
+ALTER TABLE ONLY isahl."zc_id_prod-publicity-sales" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-purchase_rr_project" ALTER COLUMN id SET DEFAULT isahl.gen_next_uid((461)::bigint);
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-auto_mfg-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
 ALTER TABLE ONLY isahl."zc_id_prod-pxy-components-made" ALTER COLUMN id SET DEFAULT isahl.gen_next_zuid();
